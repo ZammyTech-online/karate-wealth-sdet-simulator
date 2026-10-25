@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Karate Master Academy & Logic Gym | Söderberg & Partners</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --purple: #c084fc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* SIDEBAR */
+    .sidebar {
+      width: 320px;
+      background: #111827;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .brand {
+      padding: 18px;
+      border-bottom: 1px solid var(--border);
+      background: #0f172a;
+    }
+    .brand h1 { font-size: 1.1rem; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+    .brand p { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .tabs-nav {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: #1e293b;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+    .module-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .module-item {
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 6px;
+      background: #1f2937;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+    .module-item:hover { border-color: var(--accent); }
+    .module-item.active { background: #374151; border-color: var(--accent); }
+    .module-item .badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #374151;
+      color: var(--accent);
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .module-item h4 { font-size: 0.85rem; color: var(--text); }
+
+    /* MAIN VIEW */
+    .main-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .top-bar {
+      padding: 12px 24px;
+      background: #111827;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-bar h2 { font-size: 1rem; color: var(--text); }
+    .btn {
+      background: var(--accent);
+      color: #0b1120;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-success { background: var(--success); color: #fff; }
+    .content-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* CARD STYLES */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .card h3 {
+      font-size: 0.95rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .theory-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    /* QUIZ STYLES */
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .quiz-opt {
+      padding: 10px 14px;
+      border-radius: 6px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.15s;
+    }
+    .quiz-opt:hover { border-color: var(--accent); }
+    .quiz-opt.correct { background: rgba(34, 197, 94, 0.2); border-color: var(--success); color: #4ade80; }
+    .quiz-opt.wrong { background: rgba(239, 68, 68, 0.2); border-color: var(--danger); color: #f87171; }
+
+    /* CODE EDITOR AREA */
+    .editor-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    textarea.code-editor {
+      width: 100%;
+      height: 220px;
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #38bdf8;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      padding: 12px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .output-console {
+      background: #050811;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 12px;
+      font-family: Consolas, monospace;
+      font-size: 0.8rem;
+      min-height: 60px;
+      color: #94a3b8;
+      white-space: pre-wrap;
+    }
+    .output-console.success { color: var(--success); border-color: var(--success); }
+    .output-console.error { color: var(--danger); border-color: var(--danger); }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">
+      <h1>🥋 Karate Master Academy</h1>
+      <p>Söderberg & Partners SDET Training Simulator</p>
+    </div>
+    <div class="tabs-nav">
+      <button class="tab-btn active" id="tabKarate" onclick="switchTab('karate')">📘 Karate DSL (0-100)</button>
+      <button class="tab-btn" id="tabLogic" onclick="switchTab('logic')">🧠 Logic Gym (0-100)</button>
+    </div>
+    <div class="module-list" id="moduleList">
+      <!-- Items dynamically populated -->
+    </div>
+  </div>
+
+  <!-- MAIN VIEW -->
+  <div class="main-view">
+    <div class="top-bar">
+      <div>
+        <h2 id="viewTitle">Cargando Módulo...</h2>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="openSwagger()">📖 Swagger Backend</button>
+        <button class="btn btn-secondary" onclick="openReport()">📑 Reporte Karate</button>
+      </div>
+    </div>
+
+    <div class="content-scroll" id="contentArea">
+      <!-- DYNAMIC CONTENT -->
+    </div>
+  </div>
+
+  <script>
+    let currentTab = 'karate';
+    let curriculum = null;
+    let selectedItem = null;
+
+    async function init() {
+      try {
+        const res = await fetch('/api/curriculum');
+        curriculum = await res.json();
+        renderSidebar();
+        if (curriculum.karateModules.length > 0) {
+          selectKarateModule(curriculum.karateModules[0].id);
+        }
+      } catch (err) {
+        console.error("Error loading curriculum:", err);
+      }
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.getElementById('tabKarate').className = 'tab-btn' + (tab === 'karate' ? ' active' : '');
+      document.getElementById('tabLogic').className = 'tab-btn' + (tab === 'logic' ? ' active' : '');
+      renderSidebar();
+      if (tab === 'karate' && curriculum.karateModules.length > 0) {
+        selectKarateModule(curriculum.karateModules[0].id);
+      } else if (tab === 'logic' && curriculum.logicGym.length > 0) {
+        selectLogicProblem(curriculum.logicGym[0].id);
+      }
+    }
+
+    function renderSidebar() {
+      const list = document.getElementById('moduleList');
+      list.innerHTML = '';
+
+      if (currentTab === 'karate') {
+        curriculum.karateModules.forEach(m => {
+          const item = document.createElement('div');
+          item.className = 'module-item' + (selectedItem && selectedItem.id === m.id ? ' active' : '');
+          item.innerHTML = `<span class="badge">${m.level}</span><h4>${m.title}</h4>`;
+          item.onclick = () => selectKarateModule(m.id);
+          list.appendChild(item);
+        });
+      } else {
+        curriculum.logicGym.forEach(l => {
+          const item = document.createElement('div');
+          item.className = 'module-item' + (selectedItem && selectedItem.id === l.id ? ' active' : '');
+          item.innerHTML = `<span class="badge" style="color:var(--purple);">${l.level}</span><h4>${l.title}</h4>`;
+          item.onclick = () => selectLogicProblem(l.id);
+          list.appendChild(item);
+        });
+      }
+    }
+
+    function selectKarateModule(id) {
+      selectedItem = curriculum.karateModules.find(m => m.id === id);
+      document.getElementById('viewTitle').innerText = `${selectedItem.level} - ${selectedItem.title}`;
+      renderSidebar();
+
+      const area = document.getElementById('contentArea');
+      area.innerHTML = `
+        <!-- TEORÍA -->
+        <div class="card">
+          <h3>📖 1. Teoría Senior & Arquitectura</h3>
+          <div class="theory-text">${selectedItem.theory}</div>
+        </div>
+
+        <!-- QUIZ EXAMEN -->
+        <div class="card">
+          <h3>❓ 2. Quiz de Evaluación Senior</h3>
+          <div class="theory-text"><strong>${selectedItem.quiz.question}</strong></div>
+          <div class="quiz-options" id="quizOptions">
+            ${selectedItem.quiz.options.map((opt, i) => `
+              <div class="quiz-opt" onclick="checkQuiz(${i})">${opt}</div>
+            `).join('')}
+          </div>
+          <div id="quizFeedback" style="margin-top:10px; font-size:0.85rem; display:none;"></div>
+        </div>
+
+        <!-- RETO CODIFICACIÓN -->
+        <div class="card">
+          <h3>💻 3. Reto Práctico: Escribe tu Feature en Vivo</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">
+            ${selectedItem.challenge.instruction}
+          </p>
+          <div class="editor-container">
+            <textarea class="code-editor" id="codeEditor" spellcheck="false">${selectedItem.challenge.initialCode}</textarea>
+            <div style="display:flex; justify-content:flex-end;">
+              <button class="btn btn-success" id="verifyBtn" onclick="verifyKarateChallenge()">
+                ⚡ Ejecutar y Validar contra Backend
+              </button>
+            </div>
+            <div class="output-console" id="consoleOutput">La consola de ejecución se mostrará aquí...</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function checkQuiz(selectedIndex) {
+      const opts = document.querySelectorAll('.quiz-opt');
+      const feedback = document.getElementById('quizFeedback');
+      opts.forEach((o, idx) => {
+        o.className = 'quiz-opt';
+        if (idx === selectedItem.quiz.answerIndex) {
+          o.classList.add('correct');
+        } else if (idx === selectedIndex) {
+          o.classList.add('wrong');
+        }
+      });
+      feedback.style.display = 'block';
+      if (selectedIndex === selectedItem.quiz.answerIndex) {
+        feedback.innerHTML = `<span style="color:var(--success);">✅ ¡Correcto!</span> ${selectedItem.quiz.explanation}`;
+      } else {
+        feedback.innerHTML = `<span style="color:var(--danger);">❌ Incorrecto.</span> ${selectedItem.quiz.explanation}`;
+      }
+    }
+
+    async function verifyKarateChallenge() {
+      const btn = document.getElementById('verifyBtn');
+      const consoleOut = document.getElementById('consoleOutput');
+      const code = document.getElementById('codeEditor').value;
+
+      btn.innerText = '⏳ Ejecutando Maven Karate...';
+      btn.disabled = true;
+      consoleOut.className = 'output-console';
+      consoleOut.innerText = 'Ejecutando feature contra el backend .NET en http://localhost:5125...';
+
+      try {
+        const res = await fetch('/api/verify-karate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: selectedItem.id, code })
+        });
+        const result = await res.json();
+
+        if (result.passed) {
+          consoleOut.className = 'output-console success';
+          consoleOut.innerText = result.feedback;
+        } else {
+          consoleOut.className = 'output-console error';
+          consoleOut.innerText = result.feedback;
+        }
+      } catch (err) {
+        consoleOut.className = 'output-console error';
+        consoleOut.innerText = 'Error comunicando con el bot evaluador: ' + err;
+      } finally {
+        btn.innerText = '⚡ Ejecutar y Validar contra Backend';
+        btn.disabled = false;
+      }
+    }
+
+    function selectLogicProblem(id) {
+      selectedItem = curriculum.logicGym.find(l => l.id === id);
+      document.getElementById('viewTitle').innerText = `${selectedItem.level} - ${selectedItem.title}`;
+      renderSidebar();
+
+      const area = document.getElementById('contentArea');
+      area.innerHTML = `
+        <div class="card">
+          <h3>🧠 Fundamento Algorítmico</h3>
+          <div class="theory-text">${selectedItem.theory}</div>
+        </div>
+
+        <div class="card">
+          <h3>⚡ Problema de Lógica: ${selectedItem.title}</h3>
+          <p style="font-size:0.9rem; color:#cbd5e1; margin-bottom:14px;">
+            ${selectedItem.problem}
+          </p>
+          <div class="editor-container">
+            <textarea class="code-editor" id="logicEditor" spellcheck="false">${selectedItem.initialCode}</textarea>
+            <div style="display:flex; justify-content:flex-end;">
+              <button class="btn btn-success" id="verifyLogicBtn" onclick="verifyLogicChallenge()">
+                🧪 Probar Casos de Prueba (Automated Unit Tests)
+              </button>
+            </div>
+            <div class="output-console" id="logicConsole">Resultados de los unit tests...</div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function verifyLogicChallenge() {
+      const btn = document.getElementById('verifyLogicBtn');
+      const consoleOut = document.getElementById('logicConsole');
+      const code = document.getElementById('logicEditor').value;
+
+      btn.innerText = '⏳ Ejecutando Tests...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/verify-logic', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: selectedItem.id, code })
+        });
+        const result = await res.json();
+
+        if (result.passed) {
+          consoleOut.className = 'output-console success';
+          consoleOut.innerText = result.feedback;
+        } else {
+          consoleOut.className = 'output-console error';
+          consoleOut.innerText = result.feedback + (result.details ? '\n' + JSON.stringify(result.details, null, 2) : '');
+        }
+      } catch (err) {
+        consoleOut.className = 'output-console error';
+        consoleOut.innerText = 'Error ejecutando test: ' + err;
+      } finally {
+        btn.innerText = '🧪 Probar Casos de Prueba (Automated Unit Tests)';
+        btn.disabled = false;
+      }
+    }
+
+    function openSwagger() {
+      window.open('http://localhost:5125', '_blank');
+    }
+
+    async function openReport() {
+      const res = await fetch('/api/report-status');
+      const data = await res.json();
+      if (data.exists) {
+        window.open('file:///' + data.path, '_blank');
+      } else {
+        alert('Ejecuta primero una regresión para generar el reporte.');
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

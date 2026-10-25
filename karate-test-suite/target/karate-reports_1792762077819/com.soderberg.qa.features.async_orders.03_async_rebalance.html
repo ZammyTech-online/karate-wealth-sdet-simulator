@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="res/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="res/karate-report.css" type="text/css"/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <script type="text/javascript" src="res/jquery.min.js"></script>
+    <script type="text/javascript" src="res/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="res/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="res/bootstrap.min.js"></script>
+    <script type="text/javascript" src="res/karate-report.js"></script>
+    <script type="text/javascript" src="res/Resemble.js"></script>
+    <script>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
+  api_host:'https://app.posthog.com',
+  persistence:'localStorage',
+  autocapture:false,
+  capture_pageview:false,
+  api_transport:'sendBeacon',
+  loaded: function(posthog) { 
+    posthog.capture("report_feature",{distinct_id:"b767b7ee-b3c5-4ef0-85d1-f9eac5d32130",karate_version:"1.4.1",karate_meta:null});
+  }
+});
+</script>
+
+    <title>com.soderberg.qa.features.async_orders.03_async_rebalance</title>
+  </head>
+  <body>
+    <div id="root-container">
+      <div id="leftnav">
+        
+        <div>
+  <div class="nav-logo">
+    <a href="https://karatelabs.io">
+      <img src="karate-labs-logo-ring.svg" alt="Karate Labs"/>
+    </a>
+    <div class="nav-count">
+      <div id="nav-pass" class="bg-success">0</div>
+      <div id="nav-fail" class="bg-danger">1</div>
+    </div>
+  </div>
+  <div id="nav-env">
+    <div></div>
+  </div>
+  <div id="nav-type">
+    <div>Scenarios</div>
+  </div>
+  <div id="nav-date">
+    <div>2026-10-23 03:26:34 PM</div>
+  </div>
+</div>
+
+        <div class="nav-container">
+          <div class="nav-item failed">
+            <a href="#[1:28]"><span>[1:28]</span> <span>Trigger async rebalancing order and poll until COMPLETED</span></a>
+          </div>
+        </div>
+      </div>
+      <div id="content">
+        <div class="page-heading alert alert-primary">
+          <a href="karate-summary.html">Summary</a><span class="feature-label">|</span>
+          <a href="karate-tags.html">Tags</a><span class="feature-label">|</span>
+          <span class="feature-label">Feature:</span>
+          <span class="feature-path">com/soderberg/qa/features/async_orders/03_async_rebalance.feature</span><span class="feature-label">|</span>
+          <span class="feature-name">Level 03 - Asynchronous Pension Rebalancing with Retry-Until</span>
+          <span class="feature-description"></span>
+        </div>
+        <div class="scenario">
+          <div class="scenario-heading" id="[1:28]">
+            <div class="heading-container">
+              <div class="scenario-tags">
+                <a class="badge badge-primary" href="karate-tags.html">async</a><a class="badge badge-primary" href="karate-tags.html">polling</a>
+              </div>
+              <div class="scenario-keyword">
+                Scenario: <span>[1:28]</span>
+                <span class="scenario-name">Trigger async rebalancing order and poll until COMPLETED</span>
+                <span></span>
+              </div>
+            </div>
+            <div class="scenario-time failed">
+              <span>ms:</span>&nbsp;<span>452</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-container" id="[1:28]bg">
+              <div class="step-ref bg-step">&gt;&gt;</div>
+              <div class="step-cell passed">Background:</div>
+            </div>
+            <div class="time-cell passed"></div>
+          </div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.5">
+      <div class="step-ref bg-step">5</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.5">15:26:34.473 karate.env active system property: local 
+</div>   
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.6">
+      <div class="step-ref bg-step">6</div>
+      
+      <div class="step-cell failed">
+        <span>*</span>&nbsp;<span>def auth = karate.callonce(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)</span>
+      </div>
+    </div>
+    <div class="time-cell failed">450</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.6">15:26:34.977 classpath:com/soderberg/qa/features/async_orders/03_async_rebalance.feature:6
+* def auth = karate.callonce(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)
+js failed:
+&gt;&gt;&gt;&gt;
+01: karate.callonce(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)
+&lt;&lt;&lt;&lt;
+org.graalvm.polyglot.PolyglotException: status code was: 400, expected: 200, response time in milliseconds: 55, url: http://localhost:5125/api/v1/auth/token, response: 
+Microsoft.AspNetCore.Http.BadHttpRequestException: Failed to read parameter &quot;TokenRequest req&quot; from the request body as JSON.
+ ---&gt; System.Text.Json.JsonException: The JSON value could not be converted to TokenRequest. Path: $.ttlMinutes | LineNumber: 0 | BytePositionInLine: 90.
+ ---&gt; System.FormatException: Either the JSON value is not in a supported format, or is out of bounds for an Int32.
+   at System.Text.Json.ThrowHelper.ThrowFormatException(NumericType numericType)
+   at System.Text.Json.Utf8JsonReader.GetInt32WithQuotes()
+   at System.Text.Json.Serialization.Converters.NullableConverter`1.ReadNumberWithCustomHandling(Utf8JsonReader&amp; reader, JsonNumberHandling numberHandling, JsonSerializerOptions options)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+   at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.TryRead[TArg](ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo, TArg&amp; arg)
+   at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.ReadAndCacheConstructorArgument(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.ReadConstructorArgumentsWithContinuation(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonSerializerOptions options)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.OnTryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, JsonSerializerOptions options, ReadStack&amp; state)
+   --- End of inner exception stack trace ---
+   at System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack&amp; state, Utf8JsonReader&amp; reader, Exception ex)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, JsonSerializerOptions options, ReadStack&amp; state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize(ReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync(Stream utf8Json, CancellationToken cancellationToken)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsObjectAsync(Stream utf8Json, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.Log.InvalidJsonRequestBody(HttpContext httpContext, String parameterTypeName, String parameterName, Exception exception, Boolean shouldThrow)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass102_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Connection: keep-alive
+Host: localhost:5125
+User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+Accept-Encoding: gzip,deflate
+Content-Type: application/json; charset=UTF-8
+Content-Length: 91
+
+classpath:com/soderberg/qa/reusable/auth-token.feature:13
+- com.intuit.karate.core.FeatureResult.getErrorMessagesCombined(FeatureResult.java:215)
+- com.intuit.karate.core.ScenarioEngine.callFeature(ScenarioEngine.java:2046)
+- com.intuit.karate.core.ScenarioEngine.call(ScenarioEngine.java:1948)
+- com.intuit.karate.core.ScenarioEngine.callOnce(ScenarioEngine.java:2023)
+- com.intuit.karate.core.ScenarioEngine.call(ScenarioEngine.java:1961)
+- com.intuit.karate.core.ScenarioBridge.callonce(ScenarioBridge.java:269)
+- com.intuit.karate.core.ScenarioBridge.callonce(ScenarioBridge.java:264)
+
+classpath:com/soderberg/qa/features/async_orders/03_async_rebalance.feature:6
+</div>   
+
+  <div>
+        
+    <div class="step-row">
+      <div class="step-container" id="0.6.0.call">
+        <div class="step-ref bg-step">&gt;&gt;</div>
+        <div class="step-indent"></div>
+        <div class="step-cell passed">com.soderberg.qa.reusable.auth-token</div>
+      </div>
+      <div class="time-cell passed">364</div>
+    </div>
+    <div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.5">
+      <div class="step-ref bg-step">5</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">5</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.6.0.call.0.5">15:26:34.557 &gt;&gt; lock acquired, begin callonce: read(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)
+</div>   
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.6">
+      <div class="step-ref bg-step">6</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>path &#39;/api/v1/auth/token&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.7">
+      <div class="step-ref bg-step">7</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def requestedUsername = __arg &amp;&amp; __arg.username ? __arg.username : advisorUser</span>
+      </div>
+    </div>
+    <div class="time-cell passed">9</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.8">
+      <div class="step-ref bg-step">8</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def requestedPassword = __arg &amp;&amp; __arg.password ? __arg.password : advisorPass</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.9">
+      <div class="step-ref bg-step">9</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def requestedTtl = __arg &amp;&amp; __arg.ttlMinutes ? parseInt(__arg.ttlMinutes) : 15</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.11">
+      <div class="step-ref bg-step">11</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>request { username: requestedUsername, password: requestedPassword, ttlMinutes: requestedTtl }</span>
+      </div>
+    </div>
+    <div class="time-cell passed">44</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.12">
+      <div class="step-ref bg-step">12</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell passed">285</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.6.0.call.0.12">15:26:34.854 request:
+1 &gt; POST http://localhost:5125/api/v1/auth/token
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Content-Length: 91
+1 &gt; Host: localhost:5125
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+1 &gt; Accept-Encoding: gzip,deflate
+{
+  &quot;username&quot;: &quot;requestedUsername&quot;,
+  &quot;password&quot;: &quot;requestedPassword&quot;,
+  &quot;ttlMinutes&quot;: &quot;requestedTtl&quot;
+}
+
+
+15:26:34.914 response time in milliseconds: 55
+1 &lt; 400
+1 &lt; Content-Type: text/plain; charset=utf-8
+1 &lt; Date: Fri, 23 Oct 2026 13:26:34 GMT
+1 &lt; Server: Kestrel
+1 &lt; Transfer-Encoding: chunked
+Microsoft.AspNetCore.Http.BadHttpRequestException: Failed to read parameter &quot;TokenRequest req&quot; from the request body as JSON.
+ ---&gt; System.Text.Json.JsonException: The JSON value could not be converted to TokenRequest. Path: $.ttlMinutes | LineNumber: 0 | BytePositionInLine: 90.
+ ---&gt; System.FormatException: Either the JSON value is not in a supported format, or is out of bounds for an Int32.
+   at System.Text.Json.ThrowHelper.ThrowFormatException(NumericType numericType)
+   at System.Text.Json.Utf8JsonReader.GetInt32WithQuotes()
+   at System.Text.Json.Serialization.Converters.NullableConverter`1.ReadNumberWithCustomHandling(Utf8JsonReader&amp; reader, JsonNumberHandling numberHandling, JsonSerializerOptions options)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+   at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.TryRead[TArg](ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo, TArg&amp; arg)
+   at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.ReadAndCacheConstructorArgument(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.ReadConstructorArgumentsWithContinuation(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonSerializerOptions options)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.OnTryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, JsonSerializerOptions options, ReadStack&amp; state)
+   --- End of inner exception stack trace ---
+   at System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack&amp; state, Utf8JsonReader&amp; reader, Exception ex)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, JsonSerializerOptions options, ReadStack&amp; state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize(ReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync(Stream utf8Json, CancellationToken cancellationToken)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsObjectAsync(Stream utf8Json, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.Log.InvalidJsonRequestBody(HttpContext httpContext, String parameterTypeName, String parameterName, Exception exception, Boolean shouldThrow)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass102_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Connection: keep-alive
+Host: localhost:5125
+User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+Accept-Encoding: gzip,deflate
+Content-Type: application/json; charset=UTF-8
+Content-Length: 91
+
+
+</div>   
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.13">
+      <div class="step-ref bg-step">13</div>
+      <div class="step-indent"></div>
+      <div class="step-cell failed">
+        <span>*</span>&nbsp;<span>status 200</span>
+      </div>
+    </div>
+    <div class="time-cell failed">16</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.6.0.call.0.13">15:26:34.939 classpath:com/soderberg/qa/reusable/auth-token.feature:13
+* status 200
+status code was: 400, expected: 200, response time in milliseconds: 55, url: http://localhost:5125/api/v1/auth/token, response: 
+Microsoft.AspNetCore.Http.BadHttpRequestException: Failed to read parameter &quot;TokenRequest req&quot; from the request body as JSON.
+ ---&gt; System.Text.Json.JsonException: The JSON value could not be converted to TokenRequest. Path: $.ttlMinutes | LineNumber: 0 | BytePositionInLine: 90.
+ ---&gt; System.FormatException: Either the JSON value is not in a supported format, or is out of bounds for an Int32.
+   at System.Text.Json.ThrowHelper.ThrowFormatException(NumericType numericType)
+   at System.Text.Json.Utf8JsonReader.GetInt32WithQuotes()
+   at System.Text.Json.Serialization.Converters.NullableConverter`1.ReadNumberWithCustomHandling(Utf8JsonReader&amp; reader, JsonNumberHandling numberHandling, JsonSerializerOptions options)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+   at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.TryRead[TArg](ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo, TArg&amp; arg)
+   at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.ReadAndCacheConstructorArgument(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.ReadConstructorArgumentsWithContinuation(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonSerializerOptions options)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.OnTryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, JsonSerializerOptions options, ReadStack&amp; state)
+   --- End of inner exception stack trace ---
+   at System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack&amp; state, Utf8JsonReader&amp; reader, Exception ex)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, JsonSerializerOptions options, ReadStack&amp; state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize(ReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync(Stream utf8Json, CancellationToken cancellationToken)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsObjectAsync(Stream utf8Json, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.Log.InvalidJsonRequestBody(HttpContext httpContext, String parameterTypeName, String parameterName, Exception exception, Boolean shouldThrow)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass102_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Connection: keep-alive
+Host: localhost:5125
+User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+Accept-Encoding: gzip,deflate
+Content-Type: application/json; charset=UTF-8
+Content-Length: 91
+
+classpath:com/soderberg/qa/reusable/auth-token.feature:13
+</div>   
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.14">
+      <div class="step-ref bg-step">14</div>
+      <div class="step-indent"></div>
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>def authToken = response.access_token</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.15">
+      <div class="step-ref bg-step">15</div>
+      <div class="step-indent"></div>
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>def authRole = response.role</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.6.0.call">
+    <div class="step-container" id="0.6.0.call.0.16">
+      <div class="step-ref bg-step">16</div>
+      <div class="step-indent"></div>
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>karate.log(&#39;Generated token for role:&#39;, authRole, &#39;with length:&#39;, authToken.length)</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+    </div>    
+  </div>
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.7">
+      <div class="step-ref bg-step">7</div>
+      
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>def advisorToken = auth.authToken</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.8">
+      <div class="step-ref bg-step">8</div>
+      
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>def clientRes = karate.call(&#39;classpath:com/soderberg/qa/reusable/create-client.feature&#39;)</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.9">
+      <div class="step-ref bg-step">9</div>
+      
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>def clientId = clientRes.createdClientId</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Create portfolio for this client with 100% allocation</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.12">
+      <div class="step-ref bg-step">12</div>
+      
+      <div class="step-cell skipped">
+        <span>Given</span>&nbsp;<span>path &#39;/api/v1/clients&#39;, clientId, &#39;portfolios&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.13">
+      <div class="step-ref bg-step">13</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>header Authorization = &#39;Bearer &#39; + advisorToken</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.14">
+      <div class="step-ref bg-step">14</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>request</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  <div class="preformatted" data-parent="0.14">{
+  name: &#39;Nordic Growth Pension 2026&#39;,
+  allocations: [
+    { isin: &#39;SE0001&#39;, percentage: 60.0 },
+    { isin: &#39;SE0003&#39;, percentage: 40.0 }
+  ]
+}</div>
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.24">
+      <div class="step-ref bg-step">24</div>
+      
+      <div class="step-cell skipped">
+        <span>When</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.25">
+      <div class="step-ref bg-step">25</div>
+      
+      <div class="step-cell skipped">
+        <span>Then</span>&nbsp;<span>status 201</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:28]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.26">
+      <div class="step-ref bg-step">26</div>
+      
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>def portfolioId = response.id</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Step 1: Submit async order -&gt; returns 202 Accepted</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.30">
+      <div class="step-ref skipped">30</div>
+      
+      <div class="step-cell skipped">
+        <span>Given</span>&nbsp;<span>path &#39;/api/v1/orders/rebalance&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.31">
+      <div class="step-ref skipped">31</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>header Authorization = &#39;Bearer &#39; + advisorToken</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.32">
+      <div class="step-ref skipped">32</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>request { portfolioId: portfolioId, strategy: &#39;DYNAMIC_HARVEST&#39; }</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.33">
+      <div class="step-ref skipped">33</div>
+      
+      <div class="step-cell skipped">
+        <span>When</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.34">
+      <div class="step-ref skipped">34</div>
+      
+      <div class="step-cell skipped">
+        <span>Then</span>&nbsp;<span>status 202</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.35">
+      <div class="step-ref skipped">35</div>
+      
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>def orderId = response.orderId</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.36">
+      <div class="step-ref skipped">36</div>
+      
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>match response.status == &#39;PROCESSING&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Step 2: Senior Polling Pattern using Karate &#39;retry until&#39;</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Backend marks order COMPLETED after 3 seconds</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.40">
+      <div class="step-ref skipped">40</div>
+      
+      <div class="step-cell skipped">
+        <span>*</span>&nbsp;<span>configure retry = { count: 6, interval: 1000 }</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.41">
+      <div class="step-ref skipped">41</div>
+      
+      <div class="step-cell skipped">
+        <span>Given</span>&nbsp;<span>path &#39;/api/v1/orders&#39;, orderId, &#39;status&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.42">
+      <div class="step-ref skipped">42</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>header Authorization = &#39;Bearer &#39; + advisorToken</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.43">
+      <div class="step-ref skipped">43</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>retry until response.status == &#39;COMPLETED&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.44">
+      <div class="step-ref skipped">44</div>
+      
+      <div class="step-cell skipped">
+        <span>When</span>&nbsp;<span>method get</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.45">
+      <div class="step-ref skipped">45</div>
+      
+      <div class="step-cell skipped">
+        <span>Then</span>&nbsp;<span>status 200</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.46">
+      <div class="step-ref skipped">46</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>match response.status == &#39;COMPLETED&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.47">
+      <div class="step-ref skipped">47</div>
+      
+      <div class="step-cell skipped">
+        <span>And</span>&nbsp;<span>match response.completedAt == &#39;#notnull&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell skipped">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

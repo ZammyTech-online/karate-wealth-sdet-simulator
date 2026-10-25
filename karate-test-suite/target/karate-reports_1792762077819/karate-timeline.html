@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Karate Timeline</title>
+    <style>
+      body, html { font-family: arial, sans-serif; font-size: 11pt; }
+      #visualization { box-sizing: border-box; width: 100%; height: 300px; }
+      .vis-item.failed { background-color: #F2928C; }
+      .page-heading { padding: 0.5em; margin-bottom: 0.5em; background-color: lightcyan; border: 1px solid gray; }
+    </style>
+    <script src="res/vis.min.js"></script>
+    <link href="res/vis.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="page-heading">
+      <a href="karate-summary.html">Summary</a>
+    </div>     
+    <div id="visualization"></div>
+    <script>
+var groups = [{"content":"pool-2-thread-1","id":1},{"content":"pool-2-thread-2","id":2},{"content":"pool-2-thread-3","id":3}];
+var items = [{"id":1,"group":1,"content":"com\/soderberg\/qa\/features\/async_orders\/03_async_rebalance[1:28]","start":1792761994333,"end":1792761994977,"title":"com\/soderberg\/qa\/features\/async_orders\/03_async_rebalance[1:28] 15:26:34.333-15:26:34.977 Trigger async rebalancing order and poll until COMPLETED","className":"failed"},{"id":2,"group":2,"content":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[1:7]","start":1792761994333,"end":1792761995049,"title":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[1:7] 15:26:34.333-15:26:35.049 Verify Public Pension Funds Catalog returns 200 with fuzzy matchers"},{"id":3,"group":3,"content":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[2:28]","start":1792761994333,"end":1792761994967,"title":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[2:28] 15:26:34.333-15:26:34.967 Filter funds by AssetClass and Currency query parameters"},{"id":4,"group":3,"content":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[3:36]","start":1792761994993,"end":1792761995029,"title":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[3:36] 15:26:34.993-15:26:35.029 Attempt to fetch non-existent ISIN returns 404 Not Found"},{"id":5,"group":1,"content":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[1:11]","start":1792761994998,"end":1792761995140,"title":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[1:11] 15:26:34.998-15:26:35.140 Successfully approve transfer with valid HMAC-SHA256 signature","className":"failed"},{"id":6,"group":3,"content":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[2:27]","start":1792761995043,"end":1792761995216,"title":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[2:27] 15:26:35.043-15:26:35.216 Reject transfer when signature header is forged (401 Unauthorized)","className":"failed"},{"id":7,"group":2,"content":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[1:10]","start":1792761995067,"end":1792761995216,"title":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[1:10] 15:26:35.067-15:26:35.216 Create new client and verify retrieval by ID","className":"failed"},{"id":8,"group":1,"content":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[2:24]","start":1792761995154,"end":1792761995266,"title":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[2:24] 15:26:35.154-15:26:35.266 Prevent duplicate Personnummer registration (409 Conflict)","className":"failed"},{"id":9,"group":3,"content":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[3:33]","start":1792761995230,"end":1792761995303,"title":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[3:33] 15:26:35.230-15:26:35.303 Reject invalid Swedish Personnummer format (422 Unprocessable Entity)","className":"failed"}];
+</script>
+    <script>
+      var container = document.getElementById('visualization');
+      var timeline = new vis.Timeline(container);
+      timeline.setOptions({groupOrder: 'content'});
+      timeline.setGroups(new vis.DataSet(groups));
+      timeline.setItems(new vis.DataSet(items));
+    </script>
+  </body>
+</html>

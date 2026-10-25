@@ -1,0 +1,170 @@
+{
+  "karateModules": [
+    {
+      "id": "k01",
+      "level": "Nivel 00 - Fundamentos de Red",
+      "title": "Anatomía de una petición HTTP & Status Codes",
+      "theory": "En un entorno financiero, una petición HTTP consta de: Verbo (GET/POST/PUT/DELETE), URL/Path, Headers (Auth, Content-Type, Tracing) y Payload opcional. En Karate DSL, `Given url`, `And path`, `When method` y `Then status` forman el flujo base. Los códigos estándar son: 200 (OK), 201 (Created), 400 (Bad Request), 401 (Unauthorized), 403 (Forbidden), 404 (Not Found), 409 (Conflict), 422 (Unprocessable Entity).",
+      "quiz": {
+        "question": "¿Qué código HTTP esperas cuando envías un cuerpo JSON sintácticamente válido pero que viola una regla de negocio (por ejemplo, pesos de un portafolio que suman 90% en vez de 100%)?",
+        "options": [
+          "200 OK con mensaje de error",
+          "404 Not Found",
+          "422 Unprocessable Entity (o 400 Bad Request)",
+          "500 Internal Server Error"
+        ],
+        "answerIndex": 2,
+        "explanation": "El código 422 Unprocessable Entity es el estándar RFC 4918 para peticiones bien formadas cuya semántica no cumple con las reglas del dominio."
+      },
+      "challenge": {
+        "instruction": "Escribe un escenario en Karate que consulte el catálogo de fondos de pensiones en '/api/v1/funds' usando método GET y verifique que el status es 200 y que la propiedad 'total' es de tipo número.",
+        "initialCode": "Feature: Challenge 01 - Consulta de Fondos\n\n  Background:\n    * url baseUrl\n\n  Scenario: Obtener fondos de pensiones\n    # COMPLETA EL CÓDIGO AQUÍ\n    # 1. Given path ...\n    # 2. When method ...\n    # 3. Then status ...\n    # 4. And match response.total == '#number'\n",
+        "solutionRegex": "path\\s+['\"/api/v1/funds['\"]\\s*[\\r\\n]+.*method\\s+get\\s*[\\r\\n]+.*status\\s+200\\s*[\\r\\n]+.*match\\s+response\\.total\\s*==\\s*['\"]#number['\"]"
+      }
+    },
+    {
+      "id": "k02",
+      "level": "Nivel 25 - Fuzzy Matchers & Esquemas Estrictos",
+      "title": "Validación Difusa y Contratos de Datos",
+      "theory": "Un SDET Senior nunca hace `match response == { ... }` con valores estáticos que cambian día a día (como precios NAV o fechas). Usamos Fuzzy Matchers: `#string`, `#number`, `#boolean`, `#array`, `#null`, `#notnull`, `#regex ^PATRON$` y funciones predicado `#? _ > 0`.",
+      "quiz": {
+        "question": "En Karate, ¿cuál es la diferencia entre `##string` y `#string`?",
+        "options": [
+          "`##string` es una cadena encriptada",
+          "`##string` es opcional (puede ser string o null/inexistente)",
+          "`##string` obliga a que el string tenga al menos dos caracteres",
+          "No existe `##string` en Karate"
+        ],
+        "answerIndex": 1,
+        "explanation": "El doble símbolo (ej. `##string`, `##number`, `##array`) indica que el campo es OPCIONAL (nullable o ausente)."
+      },
+      "challenge": {
+        "instruction": "Haz un GET a '/api/v1/funds/SE0001' y valida mediante fuzzy matchers que 'isin' cumpla el formato exacto de 2 letras y 4 números con regex, y que 'nav' sea estrictamente mayor a 100 usando '#? _ > 100'.",
+        "initialCode": "Feature: Challenge 02 - Fuzzy Matching Senior\n\n  Background:\n    * url baseUrl\n\n  Scenario: Validar ISIN y NAV del fondo\n    Given path '/api/v1/funds/SE0001'\n    When method get\n    Then status 200\n    # Escribe las aserciones para 'isin' y 'nav':\n",
+        "solutionRegex": "match\\s+response\\.isin\\s*==\\s*['\"]#regex\\s+\\^[A-Za-z]{2}\\d{4}\\$['\"].*match\\s+response\\.nav\\s*==\\s*['\"]#\\?\\s+_\\s*>\\s*100['\"]"
+      }
+    },
+    {
+      "id": "k03",
+      "level": "Nivel 50 - Scopes & Reusabilidad (call vs callonce)",
+      "title": "Gestión de Sesiones, Tokens y Aislamiento de Variables",
+      "theory": "`karate.call` ejecuta un feature pasando parámetros aislados y reejecuta todo cada vez. `karate.callonce` ejecuta el feature una sola vez por hilo de pruebas y cachea el resultado en memoria. En flujos bancarios, el token de OAuth2 NUNCA se solicita en cada escenario individual porque provocaría bloqueo por rate-limiting o 429 Too Many Requests.",
+      "quiz": {
+        "question": "Si modificas una variable global dentro de un feature llamado con `callonce`, ¿qué le ocurre al resto de escenarios?",
+        "options": [
+          "Karate reinicia el proceso automáticamente",
+          "Los cambios se propagan a todos los hilos produciendo condiciones de carrera (Race Conditions)",
+          "El test falla de inmediato con compilación errónea",
+          "Karate clona el scope de manera inmutable de forma nativa"
+        ],
+        "answerIndex": 1,
+        "explanation": "callonce comparte el objeto en memoria. Mutar sus propiedades directamente es la causa número 1 de 'tests flaky' (intermitentes) en suites bancarias complejas."
+      },
+      "challenge": {
+        "instruction": "Utiliza `karate.callonce` para llamar a 'classpath:com/soderberg/qa/reusable/auth-token.feature' y almacena el token resultante en una variable `myToken`.",
+        "initialCode": "Feature: Challenge 03 - Reutilización de Tokens\n\n  Scenario: Autenticación eficiente\n    # Llama a auth-token.feature con callonce y extrae authToken\n",
+        "solutionRegex": "callonce\\(['\"]classpath:com/soderberg/qa/reusable/auth-token\\.feature['\"]\\).*myToken\\s*=\\s*.*authToken"
+      }
+    },
+    {
+      "id": "k04",
+      "level": "Nivel 75 - Patrón Polling Asíncrono (202 Accepted)",
+      "title": "Manejo de Transacciones Bancarias Asíncronas",
+      "theory": "En banca de inversiones, el rebalanceo de millones en pensiones no es instantáneo. La API devuelve `202 Accepted` con una URL de estado. Como SDET Senior, jamás uses pausas estáticas (`Thread.sleep`). En Karate usamos: `* configure retry = { count: 5, interval: 1000 }` seguido de `retry until response.status == 'COMPLETED'`.",
+      "quiz": {
+        "question": "¿Por qué `Thread.sleep()` es un antipatrón en testing de automatización de APIs?",
+        "options": [
+          "Porque consume batería del ordenador",
+          "Porque hace la suite lenta e impredecible: si la API tarda menos pierdes tiempo, y si tarda más el test falla",
+          "Porque Karate prohíbe el uso de comandos Java",
+          "Porque requiere permisos de administrador en Windows"
+        ],
+        "answerIndex": 1,
+        "explanation": "El sleep estático degrada el tiempo de ejecución en CI/CD y no se adapta dinámicamente a la carga del servidor. El patrón polling (retry until) verifica la condición tan pronto como se cumple."
+      },
+      "challenge": {
+        "instruction": "Configura un reintento de 5 veces con intervalo de 1000 ms y realiza un GET a '/api/v1/orders/ORD-123/status' con la condición de reintento hasta que `response.status == 'COMPLETED'`.",
+        "initialCode": "Feature: Challenge 04 - Asincronía Bancaria\n\n  Background:\n    * url baseUrl\n\n  Scenario: Esperar confirmación de orden\n    # Configura retry y ejecuta el GET con retry until\n",
+        "solutionRegex": "configure\\s+retry\\s*=\\s*\\{\\s*count:\\s*5,\\s*interval:\\s*1000\\s*\\}.*retry\\s+until\\s+response\\.status\\s*==\\s*['\"]COMPLETED['\"]"
+      }
+    },
+    {
+      "id": "k05",
+      "level": "Nivel 100 - Senior Java Interop & Firmas Criptográficas",
+      "title": "Integración Java Criptográfica y Cabeceras Firmadas",
+      "theory": "En sistemas bancarios como Söderberg & Partners, las transferencias de capital requieren una cabecera `X-Signature` que consiste en un HMAC-SHA256 del cuerpo JSON firmado con una llave secreta. Karate permite importar clases Java arbitrarias mediante `Java.type('nombre.paquete.Clase')` y llamar a métodos estáticos o de instancia.",
+      "quiz": {
+        "question": "¿Qué palabra clave de Karate DSL se utiliza para importar una clase Java en el contexto del feature?",
+        "options": [
+          "* import java 'MiClase'",
+          "* def MiClase = Java.type('com.paquete.MiClase')",
+          "* require('MiClase.class')",
+          "* java.include('MiClase')"
+        ],
+        "answerIndex": 1,
+        "explanation": "`Java.type('...')` es la función del motor GraalVM/Karate para enlazar tipos Java dentro del DSL."
+      },
+      "challenge": {
+        "instruction": "Importa la clase Java 'com.soderberg.qa.helpers.CryptoSigner', almacénala en la variable `Signer` y llama a su método `signPayload('{\"test\":123}')` guardando el resultado en `sig`.",
+        "initialCode": "Feature: Challenge 05 - Java Interop Senior\n\n  Scenario: Firmar payload bancario\n    # Importa CryptoSigner y genera la firma\n",
+        "solutionRegex": "Java\\.type\\(['\"]com\\.soderberg\\.qa\\.helpers\\.CryptoSigner['\"]\\).*signPayload\\("
+      }
+    }
+  ],
+  "logicGym": [
+    {
+      "id": "l01",
+      "level": "Nivel 00 - Validación de Formatos y Regex",
+      "title": "Validador de Identidad Nórdica (Personnummer)",
+      "theory": "Como SDET, debes validar que los datos generados sintéticamente cumplan las especificaciones del país. En Suecia, el Personnummer sigue la norma YYYYMMDD-XXXX (8 dígitos, guion, 4 dígitos).",
+      "problem": "Implementa una función `validatePersonnummer(id)` que retorne `true` si el string cumple con el formato exacto YYYYMMDD-XXXX y `false` en caso contrario.",
+      "initialCode": "function validatePersonnummer(id) {\n  // Escribe tu regex o lógica aquí\n  return false;\n}",
+      "testCases": [
+        { "input": "19880520-4321", "expected": true },
+        { "input": "1988052-4321", "expected": false },
+        { "input": "198805204321", "expected": false },
+        { "input": "abcd1234-5678", "expected": false }
+      ]
+    },
+    {
+      "id": "l02",
+      "level": "Nivel 35 - Algoritmos de Portafolio",
+      "title": "Verificador de Asignación de Activos (Suma 100%)",
+      "theory": "En un portafolio de pensiones, un cliente asigna porcentajes a distintos fondos ISIN. La suma exacta de los porcentajes de asignación debe ser estrictamente 100.0%. Si hay discrepancias por redondeo decimal o error del usuario, el sistema debe rechazarlo.",
+      "problem": "Crea una función `validateAllocation(allocations)` que reciba un arreglo de objetos `{ isin: string, percentage: number }` y retorne `true` si y solo si la suma de los porcentajes es exactamente 100, y no hay porcentajes negativos o iguales a cero.",
+      "initialCode": "function validateAllocation(allocations) {\n  // Tu lógica aquí\n  return false;\n}",
+      "testCases": [
+        { "input": [ { "isin": "SE0001", "percentage": 60 }, { "isin": "SE0002", "percentage": 40 } ], "expected": true },
+        { "input": [ { "isin": "SE0001", "percentage": 50 }, { "isin": "SE0002", "percentage": 40 } ], "expected": false },
+        { "input": [ { "isin": "SE0001", "percentage": 100 }, { "isin": "SE0002", "percentage": 0 } ], "expected": false },
+        { "input": [], "expected": false }
+      ]
+    },
+    {
+      "id": "l03",
+      "level": "Nivel 70 - Cálculos Financieros y Retenciones",
+      "title": "Calculadora de Retención Fiscal Actuarial",
+      "theory": "Al aportar a un plan de pensiones, la ley nórdica aplica retención en la fuente: si el plan es Individual se descuenta un 15%, pero si es Corporativo se descuenta solo un 5%.",
+      "problem": "Escribe una función `calculateNetInvestment(grossAmount, planType)` que devuelva el monto neto redondeado a 2 decimales. Si grossAmount <= 0 debe retornar 0.",
+      "initialCode": "function calculateNetInvestment(grossAmount, planType) {\n  // Retorna el neto después de descontar el impuesto\n  return 0;\n}",
+      "testCases": [
+        { "input": [1000, "Individual"], "expected": 850 },
+        { "input": [1000, "Corporate"], "expected": 950 },
+        { "input": [-500, "Individual"], "expected": 0 }
+      ]
+    },
+    {
+      "id": "l04",
+      "level": "Nivel 100 - Deep Diffing de Payloads JSON",
+      "title": "Comparador Semántico de Respuestas de API",
+      "theory": "En pruebas de regresión bancaria, dos respuestas JSON pueden tener claves en diferente orden pero ser funcionalmente idénticas. Como SDET Senior, necesitas detectar diferencias clave sin falsos positivos.",
+      "problem": "Escribe una función `deepEqual(objA, objB)` que verifique si dos objetos o arrays son semánticamente idénticos recursivamente, ignorando el orden de las propiedades en objetos.",
+      "initialCode": "function deepEqual(objA, objB) {\n  // Lógica recursiva\n  return JSON.stringify(objA) === JSON.stringify(objB);\n}",
+      "testCases": [
+        { "input": [{ "a": 1, "b": 2 }, { "b": 2, "a": 1 }], "expected": true },
+        { "input": [{ "a": [1, 2] }, { "a": [2, 1] }], "expected": false },
+        { "input": [{ "a": 1 }, { "a": 2 }], "expected": false }
+      ]
+    }
+  ]
+}

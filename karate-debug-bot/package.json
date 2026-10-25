@@ -1,0 +1,10 @@
+{
+  "name": "karate-debug-bot",
+  "version": "1.0.0",
+  "description": "Visual Architecture Graph, Scope Tracer and Senior Debugging Assistant for Karate DSL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}

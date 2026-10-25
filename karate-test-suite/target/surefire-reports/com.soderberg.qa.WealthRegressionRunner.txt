@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.soderberg.qa.WealthRegressionRunner
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.218 s -- in com.soderberg.qa.WealthRegressionRunner

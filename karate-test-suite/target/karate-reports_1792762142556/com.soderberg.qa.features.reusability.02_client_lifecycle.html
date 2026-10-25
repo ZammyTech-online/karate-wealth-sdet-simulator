@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="res/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="res/karate-report.css" type="text/css"/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <script type="text/javascript" src="res/jquery.min.js"></script>
+    <script type="text/javascript" src="res/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="res/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="res/bootstrap.min.js"></script>
+    <script type="text/javascript" src="res/karate-report.js"></script>
+    <script type="text/javascript" src="res/Resemble.js"></script>
+    <script>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
+  api_host:'https://app.posthog.com',
+  persistence:'localStorage',
+  autocapture:false,
+  capture_pageview:false,
+  api_transport:'sendBeacon',
+  loaded: function(posthog) { 
+    posthog.capture("report_feature",{distinct_id:"b767b7ee-b3c5-4ef0-85d1-f9eac5d32130",karate_version:"1.4.1",karate_meta:null});
+  }
+});
+</script>
+
+    <title>com.soderberg.qa.features.reusability.02_client_lifecycle</title>
+  </head>
+  <body>
+    <div id="root-container">
+      <div id="leftnav">
+        
+        <div>
+  <div class="nav-logo">
+    <a href="https://karatelabs.io">
+      <img src="karate-labs-logo-ring.svg" alt="Karate Labs"/>
+    </a>
+    <div class="nav-count">
+      <div id="nav-pass" class="bg-success">3</div>
+      <div id="nav-fail" class="bg-danger">0</div>
+    </div>
+  </div>
+  <div id="nav-env">
+    <div></div>
+  </div>
+  <div id="nav-type">
+    <div>Scenarios</div>
+  </div>
+  <div id="nav-date">
+    <div>2026-10-23 03:28:40 PM</div>
+  </div>
+</div>
+
+        <div class="nav-container">
+          <div class="nav-item passed">
+            <a href="#[1:10]"><span>[1:10]</span> <span>Create new client and verify retrieval by ID</span></a>
+          </div>
+          <div class="nav-item passed">
+            <a href="#[2:24]"><span>[2:24]</span> <span>Prevent duplicate Personnummer registration (409 Conflict)</span></a>
+          </div>
+          <div class="nav-item passed">
+            <a href="#[3:33]"><span>[3:33]</span> <span>Reject invalid Swedish Personnummer format (422 Unprocessable Entity)</span></a>
+          </div>
+        </div>
+      </div>
+      <div id="content">
+        <div class="page-heading alert alert-primary">
+          <a href="karate-summary.html">Summary</a><span class="feature-label">|</span>
+          <a href="karate-tags.html">Tags</a><span class="feature-label">|</span>
+          <span class="feature-label">Feature:</span>
+          <span class="feature-path">com/soderberg/qa/features/reusability/02_client_lifecycle.feature</span><span class="feature-label">|</span>
+          <span class="feature-name">Level 02 - Client Lifecycle and Reusable Call Isolation</span>
+          <span class="feature-description"></span>
+        </div>
+        <div class="scenario">
+          <div class="scenario-heading" id="[1:10]">
+            <div class="heading-container">
+              <div class="scenario-tags">
+                <a class="badge badge-primary" href="karate-tags.html">clients</a><a class="badge badge-primary" href="karate-tags.html">reusability</a>
+              </div>
+              <div class="scenario-keyword">
+                Scenario: <span>[1:10]</span>
+                <span class="scenario-name">Create new client and verify retrieval by ID</span>
+                <span></span>
+              </div>
+            </div>
+            <div class="scenario-time passed">
+              <span>ms:</span>&nbsp;<span>235</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-container" id="[1:10]bg">
+              <div class="step-ref bg-step">&gt;&gt;</div>
+              <div class="step-cell passed">Background:</div>
+            </div>
+            <div class="time-cell passed"></div>
+          </div>
+          <div data-parent="[1:10]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.5">
+      <div class="step-ref bg-step">5</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.5">15:28:38.923 karate.env active system property: local 
+</div>   
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:10]bg"><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Senior Pattern: Use karate.callonce to cache advisor token across scenarios</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.7">
+      <div class="step-ref bg-step">7</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def auth = karate.callonce(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">65</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.7">15:28:38.994 this thread waited 60 milliseconds for callonce lock: read(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)
+</div>   
+
+  
+
+</div>
+</div>
+          <div data-parent="[1:10]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.8">
+      <div class="step-ref bg-step">8</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def advisorToken = auth.authToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Step 1: Call reusable create-client feature</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.12">
+      <div class="step-ref passed">12</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def newClientRes = karate.call(&#39;classpath:com/soderberg/qa/reusable/create-client.feature&#39;, { riskProfile: &#39;Aggressive&#39; })</span>
+      </div>
+    </div>
+    <div class="time-cell passed">132</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  <div>
+        
+    <div class="step-row">
+      <div class="step-container" id="0.12.0.call">
+        <div class="step-ref passed">&gt;&gt;</div>
+        <div class="step-indent"></div>
+        <div class="step-cell passed">com.soderberg.qa.reusable.create-client</div>
+      </div>
+      <div class="time-cell passed">101</div>
+    </div>
+    <div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.5">
+      <div class="step-ref passed">5</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def authResult = karate.call(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">47</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  <div>
+        
+    <div class="step-row" data-parent="0.12.0.call">
+      <div class="step-container" id="0.12.0.call.0.5.0.call">
+        <div class="step-ref passed">&gt;&gt;</div>
+        <div class="step-indent"></div>
+        <div class="step-indent"></div>
+        <div class="step-cell passed">com.soderberg.qa.reusable.auth-token</div>
+      </div>
+      <div class="time-cell passed">23</div>
+    </div>
+    <div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.5">
+      <div class="step-ref passed">5</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.6">
+      <div class="step-ref passed">6</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>path &#39;/api/v1/auth/token&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.7">
+      <div class="step-ref passed">7</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def isArgPresent = typeof __arg !== &#39;undefined&#39; &amp;&amp; __arg !== null</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.8">
+      <div class="step-ref passed">8</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def reqUser = isArgPresent &amp;&amp; __arg.username ? __arg.username : advisorUser</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.9">
+      <div class="step-ref passed">9</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def reqPass = isArgPresent &amp;&amp; __arg.password ? __arg.password : advisorPass</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.10">
+      <div class="step-ref passed">10</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def reqTtl = isArgPresent &amp;&amp; __arg.ttlMinutes ? parseInt(__arg.ttlMinutes) : 15</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.12">
+      <div class="step-ref passed">12</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>request { username: &#39;#(reqUser)&#39;, password: &#39;#(reqPass)&#39;, ttlMinutes: &#39;#(reqTtl)&#39; }</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.13">
+      <div class="step-ref passed">13</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell passed">17</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.12.0.call.0.5.0.call.0.13">15:28:39.051 request:
+1 &gt; POST http://localhost:5125/api/v1/auth/token
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Content-Length: 67
+1 &gt; Host: localhost:5125
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+1 &gt; Accept-Encoding: gzip,deflate
+{
+  &quot;username&quot;: &quot;advisor&quot;,
+  &quot;password&quot;: &quot;NordicPass2026!&quot;,
+  &quot;ttlMinutes&quot;: 15
+}
+
+
+15:28:39.065 response time in milliseconds: 13
+1 &lt; 200
+1 &lt; Content-Type: application/json; charset=utf-8
+1 &lt; Date: Fri, 23 Oct 2026 13:28:38 GMT
+1 &lt; Server: Kestrel
+1 &lt; Transfer-Encoding: chunked
+{
+  &quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkdmlzb3IiLCJyb2xlIjoiQWR2aXNvciIsInNjb3BlIjoid2VhbHRoOnJlYWQgd2VhbHRoOndyaXRlIHBlbnNpb246dHJhbnNhY3QiLCJuYmYiOjE3OTI3NjIxMTksImV4cCI6MTc5Mjc2MzAxOSwiaWF0IjoxNzkyNzYyMTE5LCJpc3MiOiJzb2RlcmJlcmctd2VhbHRoLWlzc3VlciIsImF1ZCI6InNvZGVyYmVyZy13ZWFsdGgtY2xpZW50cyJ9.Ku5_EDs1BjwLuw1wqrVsZwZCSjFw01eVocQ44hsmu3Y&quot;,
+  &quot;token_type&quot;: &quot;Bearer&quot;,
+  &quot;expires_in&quot;: 900,
+  &quot;role&quot;: &quot;Advisor&quot;
+}
+
+
+</div>   
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.14">
+      <div class="step-ref passed">14</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>status 200</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.15">
+      <div class="step-ref passed">15</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def authToken = response.access_token</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.16">
+      <div class="step-ref passed">16</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def authRole = response.role</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call.0.5.0.call">
+    <div class="step-container" id="0.12.0.call.0.5.0.call.0.17">
+      <div class="step-ref passed">17</div>
+      <div class="step-indent"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>karate.log(&#39;Generated token for role:&#39;, authRole, &#39;with length:&#39;, authToken.length)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.12.0.call.0.5.0.call.0.17">15:28:39.070 Generated token for role: Advisor with length: 361 
+</div>   
+
+  
+
+</div>
+</div>
+    </div>    
+  </div>
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.6">
+      <div class="step-ref passed">6</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def advisorToken = authResult.authToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.9">
+      <div class="step-ref passed">9</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.10">
+      <div class="step-ref passed">10</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>path &#39;/api/v1/clients&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.11">
+      <div class="step-ref passed">11</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>header Authorization = &#39;Bearer &#39; + advisorToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      <div class="step-indent"></div>
+      <div class="step-cell comment"># Dynamic generation of unique Swedish Personnummer (YYYYMMDD-XXXX)</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.14">
+      <div class="step-ref passed">14</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def isArgPresent = typeof __arg !== &#39;undefined&#39; &amp;&amp; __arg !== null</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.15">
+      <div class="step-ref passed">15</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def randomSuffix = Math.floor(1000 + Math.random() * 9000)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">3</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.16">
+      <div class="step-ref passed">16</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def randomDay = Math.floor(10 + Math.random() * 18)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.17">
+      <div class="step-ref passed">17</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def generatedPersonnummer = &#39;198711&#39; + randomDay + &#39;-&#39; + randomSuffix</span>
+      </div>
+    </div>
+    <div class="time-cell passed">3</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.18">
+      <div class="step-ref passed">18</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def generatedName = &#39;Client &#39; + randomSuffix</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.19">
+      <div class="step-ref passed">19</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def generatedEmail = &#39;client.&#39; + randomSuffix + &#39;@soderberg-test.se&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.20">
+      <div class="step-ref passed">20</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def risk = isArgPresent &amp;&amp; __arg.riskProfile ? __arg.riskProfile : &#39;Balanced&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">11</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.22">
+      <div class="step-ref passed">22</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>request { nationalId: &#39;#(generatedPersonnummer)&#39;, fullName: &#39;#(generatedName)&#39;, email: &#39;#(generatedEmail)&#39;, riskProfile: &#39;#(risk)&#39; }</span>
+      </div>
+    </div>
+    <div class="time-cell passed">11</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.23">
+      <div class="step-ref passed">23</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell passed">13</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.12.0.call.0.23">15:28:39.112 request:
+1 &gt; POST http://localhost:5125/api/v1/clients
+1 &gt; Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkdmlzb3IiLCJyb2xlIjoiQWR2aXNvciIsInNjb3BlIjoid2VhbHRoOnJlYWQgd2VhbHRoOndyaXRlIHBlbnNpb246dHJhbnNhY3QiLCJuYmYiOjE3OTI3NjIxMTksImV4cCI6MTc5Mjc2MzAxOSwiaWF0IjoxNzkyNzYyMTE5LCJpc3MiOiJzb2RlcmJlcmctd2VhbHRoLWlzc3VlciIsImF1ZCI6InNvZGVyYmVyZy13ZWFsdGgtY2xpZW50cyJ9.Ku5_EDs1BjwLuw1wqrVsZwZCSjFw01eVocQ44hsmu3Y
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Content-Length: 122
+1 &gt; Host: localhost:5125
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+1 &gt; Accept-Encoding: gzip,deflate
+{
+  &quot;nationalId&quot;: &quot;19871126-7758&quot;,
+  &quot;fullName&quot;: &quot;Client 7758&quot;,
+  &quot;email&quot;: &quot;client.7758@soderberg-test.se&quot;,
+  &quot;riskProfile&quot;: &quot;Aggressive&quot;
+}
+
+
+15:28:39.120 response time in milliseconds: 7
+1 &lt; 201
+1 &lt; Content-Type: application/json; charset=utf-8
+1 &lt; Date: Fri, 23 Oct 2026 13:28:38 GMT
+1 &lt; Server: Kestrel
+1 &lt; Location: /api/v1/clients/CLI-40513
+1 &lt; Transfer-Encoding: chunked
+{
+  &quot;id&quot;: &quot;CLI-40513&quot;,
+  &quot;nationalId&quot;: &quot;19871126-7758&quot;,
+  &quot;fullName&quot;: &quot;Client 7758&quot;,
+  &quot;email&quot;: &quot;client.7758@soderberg-test.se&quot;,
+  &quot;riskProfile&quot;: &quot;Aggressive&quot;,
+  &quot;status&quot;: &quot;ACTIVE&quot;,
+  &quot;createdAt&quot;: &quot;2026-10-23T13:28:39.11883Z&quot;
+}
+
+
+</div>   
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.24">
+      <div class="step-ref passed">24</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>status 201</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.25">
+      <div class="step-ref passed">25</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def createdClient = response</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.26">
+      <div class="step-ref passed">26</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def createdClientId = response.id</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.12.0.call">
+    <div class="step-container" id="0.12.0.call.0.27">
+      <div class="step-ref passed">27</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>karate.log(&#39;Created client with ID:&#39;, createdClientId)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.12.0.call.0.27">15:28:39.126 Created client with ID: CLI-40513 
+</div>   
+
+  
+
+</div>
+</div>
+    </div>    
+  </div>
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.13">
+      <div class="step-ref passed">13</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def clientId = newClientRes.createdClientId</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Step 2: Query client by Id</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.16">
+      <div class="step-ref passed">16</div>
+      
+      <div class="step-cell passed">
+        <span>Given</span>&nbsp;<span>path &#39;/api/v1/clients&#39;, clientId</span>
+      </div>
+    </div>
+    <div class="time-cell passed">3</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.17">
+      <div class="step-ref passed">17</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>header Authorization = &#39;Bearer &#39; + advisorToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.18">
+      <div class="step-ref passed">18</div>
+      
+      <div class="step-cell passed">
+        <span>When</span>&nbsp;<span>method get</span>
+      </div>
+    </div>
+    <div class="time-cell passed">20</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.18">15:28:39.138 request:
+1 &gt; GET http://localhost:5125/api/v1/clients/CLI-40513
+1 &gt; Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkdmlzb3IiLCJyb2xlIjoiQWR2aXNvciIsInNjb3BlIjoid2VhbHRoOnJlYWQgd2VhbHRoOndyaXRlIHBlbnNpb246dHJhbnNhY3QiLCJuYmYiOjE3OTI3NjIxMTgsImV4cCI6MTc5Mjc2MzAxOCwiaWF0IjoxNzkyNzYyMTE4LCJpc3MiOiJzb2RlcmJlcmctd2VhbHRoLWlzc3VlciIsImF1ZCI6InNvZGVyYmVyZy13ZWFsdGgtY2xpZW50cyJ9.4jYeRYEiY5uiVEVhenPIMQMWMCHGx_9119p-Fg5jeUw
+1 &gt; Host: localhost:5125
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+1 &gt; Accept-Encoding: gzip,deflate
+
+
+15:28:39.152 response time in milliseconds: 12
+1 &lt; 200
+1 &lt; Content-Type: application/json; charset=utf-8
+1 &lt; Date: Fri, 23 Oct 2026 13:28:38 GMT
+1 &lt; Server: Kestrel
+1 &lt; Transfer-Encoding: chunked
+{
+  &quot;id&quot;: &quot;CLI-40513&quot;,
+  &quot;nationalId&quot;: &quot;19871126-7758&quot;,
+  &quot;fullName&quot;: &quot;Client 7758&quot;,
+  &quot;email&quot;: &quot;client.7758@soderberg-test.se&quot;,
+  &quot;riskProfile&quot;: &quot;Aggressive&quot;,
+  &quot;status&quot;: &quot;ACTIVE&quot;,
+  &quot;createdAt&quot;: &quot;2026-10-23T13:28:39.11883Z&quot;
+}
+
+
+</div>   
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.19">
+      <div class="step-ref passed">19</div>
+      
+      <div class="step-cell passed">
+        <span>Then</span>&nbsp;<span>status 200</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.20">
+      <div class="step-ref passed">20</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>match response.id == clientId</span>
+      </div>
+    </div>
+    <div class="time-cell passed">4</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.21">
+      <div class="step-ref passed">21</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>match response.riskProfile == &#39;Aggressive&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">4</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.22">
+      <div class="step-ref passed">22</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>match response.status == &#39;ACTIVE&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">4</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+        </div>
+        <div class="scenario">
+          <div class="scenario-heading" id="[2:24]">
+            <div class="heading-container">
+              <div class="scenario-tags">
+                <a class="badge badge-primary" href="karate-tags.html">clients</a><a class="badge badge-primary" href="karate-tags.html">reusability</a>
+              </div>
+              <div class="scenario-keyword">
+                Scenario: <span>[2:24]</span>
+                <span class="scenario-name">Prevent duplicate Personnummer registration (409 Conflict)</span>
+                <span></span>
+              </div>
+            </div>
+            <div class="scenario-time passed">
+              <span>ms:</span>&nbsp;<span>87</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-container" id="[2:24]bg">
+              <div class="step-ref bg-step">&gt;&gt;</div>
+              <div class="step-cell passed">Background:</div>
+            </div>
+            <div class="time-cell passed"></div>
+          </div>
+          <div data-parent="[2:24]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.5">
+      <div class="step-ref bg-step">5</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.5">15:28:38.927 karate.env active system property: local 
+</div>   
+
+  
+
+</div>
+</div>
+          <div data-parent="[2:24]bg"><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Senior Pattern: Use karate.callonce to cache advisor token across scenarios</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.7">
+      <div class="step-ref bg-step">7</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def auth = karate.callonce(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">65</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.7">15:28:38.994 &lt;&lt; lock released, cached callonce: read(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)
+</div>   
+
+  <div>
+        
+    <div class="step-row">
+      <div class="step-container" id="0.7.0.call">
+        <div class="step-ref bg-step">&gt;&gt;</div>
+        <div class="step-indent"></div>
+        <div class="step-cell passed">com.soderberg.qa.reusable.auth-token</div>
+      </div>
+      <div class="time-cell passed">41</div>
+    </div>
+    <div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.5">
+      <div class="step-ref bg-step">5</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.7.0.call.0.5">15:28:38.934 &gt;&gt; lock acquired, begin callonce: read(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)
+</div>   
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.6">
+      <div class="step-ref bg-step">6</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>path &#39;/api/v1/auth/token&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.7">
+      <div class="step-ref bg-step">7</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def isArgPresent = typeof __arg !== &#39;undefined&#39; &amp;&amp; __arg !== null</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.8">
+      <div class="step-ref bg-step">8</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def reqUser = isArgPresent &amp;&amp; __arg.username ? __arg.username : advisorUser</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.9">
+      <div class="step-ref bg-step">9</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def reqPass = isArgPresent &amp;&amp; __arg.password ? __arg.password : advisorPass</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.10">
+      <div class="step-ref bg-step">10</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def reqTtl = isArgPresent &amp;&amp; __arg.ttlMinutes ? parseInt(__arg.ttlMinutes) : 15</span>
+      </div>
+    </div>
+    <div class="time-cell passed">8</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.12">
+      <div class="step-ref bg-step">12</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>request { username: &#39;#(reqUser)&#39;, password: &#39;#(reqPass)&#39;, ttlMinutes: &#39;#(reqTtl)&#39; }</span>
+      </div>
+    </div>
+    <div class="time-cell passed">6</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.13">
+      <div class="step-ref bg-step">13</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell passed">11</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.7.0.call.0.13">15:28:38.975 request:
+1 &gt; POST http://localhost:5125/api/v1/auth/token
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Content-Length: 67
+1 &gt; Host: localhost:5125
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+1 &gt; Accept-Encoding: gzip,deflate
+{
+  &quot;username&quot;: &quot;advisor&quot;,
+  &quot;password&quot;: &quot;NordicPass2026!&quot;,
+  &quot;ttlMinutes&quot;: 15
+}
+
+
+15:28:38.982 response time in milliseconds: 6
+1 &lt; 200
+1 &lt; Content-Type: application/json; charset=utf-8
+1 &lt; Date: Fri, 23 Oct 2026 13:28:38 GMT
+1 &lt; Server: Kestrel
+1 &lt; Transfer-Encoding: chunked
+{
+  &quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkdmlzb3IiLCJyb2xlIjoiQWR2aXNvciIsInNjb3BlIjoid2VhbHRoOnJlYWQgd2VhbHRoOndyaXRlIHBlbnNpb246dHJhbnNhY3QiLCJuYmYiOjE3OTI3NjIxMTgsImV4cCI6MTc5Mjc2MzAxOCwiaWF0IjoxNzkyNzYyMTE4LCJpc3MiOiJzb2RlcmJlcmctd2VhbHRoLWlzc3VlciIsImF1ZCI6InNvZGVyYmVyZy13ZWFsdGgtY2xpZW50cyJ9.4jYeRYEiY5uiVEVhenPIMQMWMCHGx_9119p-Fg5jeUw&quot;,
+  &quot;token_type&quot;: &quot;Bearer&quot;,
+  &quot;expires_in&quot;: 900,
+  &quot;role&quot;: &quot;Advisor&quot;
+}
+
+
+</div>   
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.14">
+      <div class="step-ref bg-step">14</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>status 200</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.15">
+      <div class="step-ref bg-step">15</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def authToken = response.access_token</span>
+      </div>
+    </div>
+    <div class="time-cell passed">5</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.16">
+      <div class="step-ref bg-step">16</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def authRole = response.role</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+      <div><div>
+  
+
+  
+
+  <div class="step-row" data-parent="0.7.0.call">
+    <div class="step-container" id="0.7.0.call.0.17">
+      <div class="step-ref bg-step">17</div>
+      <div class="step-indent"></div>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>karate.log(&#39;Generated token for role:&#39;, authRole, &#39;with length:&#39;, authToken.length)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">3</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.7.0.call.0.17">15:28:38.993 Generated token for role: Advisor with length: 361 
+</div>   
+
+  
+
+</div>
+</div>
+    </div>    
+  </div>
+
+</div>
+</div>
+          <div data-parent="[2:24]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.8">
+      <div class="step-ref bg-step">8</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def advisorToken = auth.authToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Astrid Lindgren pre-seeded Nordic Personnummer</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.26">
+      <div class="step-ref passed">26</div>
+      
+      <div class="step-cell passed">
+        <span>Given</span>&nbsp;<span>path &#39;/api/v1/clients&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.27">
+      <div class="step-ref passed">27</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>header Authorization = &#39;Bearer &#39; + advisorToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.28">
+      <div class="step-ref passed">28</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>request { nationalId: &#39;19850412-1234&#39;, fullName: &#39;Duplicate Astrid&#39;, email: &#39;dup@soderberg.se&#39;, riskProfile: &#39;Balanced&#39; }</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.29">
+      <div class="step-ref passed">29</div>
+      
+      <div class="step-cell passed">
+        <span>When</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell passed">16</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.29">15:28:38.999 request:
+1 &gt; POST http://localhost:5125/api/v1/clients
+1 &gt; Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkdmlzb3IiLCJyb2xlIjoiQWR2aXNvciIsInNjb3BlIjoid2VhbHRoOnJlYWQgd2VhbHRoOndyaXRlIHBlbnNpb246dHJhbnNhY3QiLCJuYmYiOjE3OTI3NjIxMTgsImV4cCI6MTc5Mjc2MzAxOCwiaWF0IjoxNzkyNzYyMTE4LCJpc3MiOiJzb2RlcmJlcmctd2VhbHRoLWlzc3VlciIsImF1ZCI6InNvZGVyYmVyZy13ZWFsdGgtY2xpZW50cyJ9.4jYeRYEiY5uiVEVhenPIMQMWMCHGx_9119p-Fg5jeUw
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Content-Length: 112
+1 &gt; Host: localhost:5125
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+1 &gt; Accept-Encoding: gzip,deflate
+{
+  &quot;nationalId&quot;: &quot;19850412-1234&quot;,
+  &quot;fullName&quot;: &quot;Duplicate Astrid&quot;,
+  &quot;email&quot;: &quot;dup@soderberg.se&quot;,
+  &quot;riskProfile&quot;: &quot;Balanced&quot;
+}
+
+
+15:28:39.012 response time in milliseconds: 13
+1 &lt; 409
+1 &lt; Content-Type: application/json; charset=utf-8
+1 &lt; Date: Fri, 23 Oct 2026 13:28:38 GMT
+1 &lt; Server: Kestrel
+1 &lt; Transfer-Encoding: chunked
+{
+  &quot;error&quot;: &quot;client_already_exists&quot;,
+  &quot;message&quot;: &quot;NationalId registered&quot;
+}
+
+
+</div>   
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.30">
+      <div class="step-ref passed">30</div>
+      
+      <div class="step-cell passed">
+        <span>Then</span>&nbsp;<span>status 409</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.31">
+      <div class="step-ref passed">31</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>match response.error == &#39;client_already_exists&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">3</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+        </div>
+        <div class="scenario">
+          <div class="scenario-heading" id="[3:33]">
+            <div class="heading-container">
+              <div class="scenario-tags">
+                <a class="badge badge-primary" href="karate-tags.html">clients</a><a class="badge badge-primary" href="karate-tags.html">reusability</a>
+              </div>
+              <div class="scenario-keyword">
+                Scenario: <span>[3:33]</span>
+                <span class="scenario-name">Reject invalid Swedish Personnummer format (422 Unprocessable Entity)</span>
+                <span></span>
+              </div>
+            </div>
+            <div class="scenario-time passed">
+              <span>ms:</span>&nbsp;<span>20</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-container" id="[3:33]bg">
+              <div class="step-ref bg-step">&gt;&gt;</div>
+              <div class="step-cell passed">Background:</div>
+            </div>
+            <div class="time-cell passed"></div>
+          </div>
+          <div data-parent="[3:33]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.5">
+      <div class="step-ref bg-step">5</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>url baseUrl</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.5">15:28:39.030 karate.env active system property: local 
+</div>   
+
+  
+
+</div>
+</div>
+          <div data-parent="[3:33]bg"><div>
+  
+
+  <div class="step-row">
+    <div class="step-container">
+      <div class="step-ref passed"></div>
+      
+      <div class="step-cell comment"># Senior Pattern: Use karate.callonce to cache advisor token across scenarios</div>
+    </div>
+    <div class="time-cell comment"></div>            
+  </div>
+
+  <div class="step-row">
+    <div class="step-container" id="0.7">
+      <div class="step-ref bg-step">7</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def auth = karate.callonce(&#39;classpath:com/soderberg/qa/reusable/auth-token.feature&#39;)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">5</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div data-parent="[3:33]bg"><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.8">
+      <div class="step-ref bg-step">8</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def advisorToken = auth.authToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.34">
+      <div class="step-ref passed">34</div>
+      
+      <div class="step-cell passed">
+        <span>Given</span>&nbsp;<span>path &#39;/api/v1/clients&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.35">
+      <div class="step-ref passed">35</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>header Authorization = &#39;Bearer &#39; + advisorToken</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.36">
+      <div class="step-ref passed">36</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>request { nationalId: &#39;12345&#39;, fullName: &#39;Bad Format&#39;, email: &#39;bad@soderberg.se&#39;, riskProfile: &#39;Balanced&#39; }</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.37">
+      <div class="step-ref passed">37</div>
+      
+      <div class="step-cell passed">
+        <span>When</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell passed">9</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.37">15:28:39.045 request:
+1 &gt; POST http://localhost:5125/api/v1/clients
+1 &gt; Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkdmlzb3IiLCJyb2xlIjoiQWR2aXNvciIsInNjb3BlIjoid2VhbHRoOnJlYWQgd2VhbHRoOndyaXRlIHBlbnNpb246dHJhbnNhY3QiLCJuYmYiOjE3OTI3NjIxMTgsImV4cCI6MTc5Mjc2MzAxOCwiaWF0IjoxNzkyNzYyMTE4LCJpc3MiOiJzb2RlcmJlcmctd2VhbHRoLWlzc3VlciIsImF1ZCI6InNvZGVyYmVyZy13ZWFsdGgtY2xpZW50cyJ9.4jYeRYEiY5uiVEVhenPIMQMWMCHGx_9119p-Fg5jeUw
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Content-Length: 98
+1 &gt; Host: localhost:5125
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.12.1)
+1 &gt; Accept-Encoding: gzip,deflate
+{
+  &quot;nationalId&quot;: &quot;12345&quot;,
+  &quot;fullName&quot;: &quot;Bad Format&quot;,
+  &quot;email&quot;: &quot;bad@soderberg.se&quot;,
+  &quot;riskProfile&quot;: &quot;Balanced&quot;
+}
+
+
+15:28:39.049 response time in milliseconds: 4
+1 &lt; 422
+1 &lt; Content-Type: application/json; charset=utf-8
+1 &lt; Date: Fri, 23 Oct 2026 13:28:38 GMT
+1 &lt; Server: Kestrel
+1 &lt; Transfer-Encoding: chunked
+{
+  &quot;error&quot;: &quot;invalid_national_id&quot;,
+  &quot;message&quot;: &quot;NationalId must match Swedish/Nordic format YYYYMMDD-XXXX (e.g. 19880520-4321)&quot;
+}
+
+
+</div>   
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.38">
+      <div class="step-ref passed">38</div>
+      
+      <div class="step-cell passed">
+        <span>Then</span>&nbsp;<span>status 422</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.39">
+      <div class="step-ref passed">39</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>match response.error == &#39;invalid_national_id&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">2</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

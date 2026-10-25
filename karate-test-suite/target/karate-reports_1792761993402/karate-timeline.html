@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Karate Timeline</title>
+    <style>
+      body, html { font-family: arial, sans-serif; font-size: 11pt; }
+      #visualization { box-sizing: border-box; width: 100%; height: 300px; }
+      .vis-item.failed { background-color: #F2928C; }
+      .page-heading { padding: 0.5em; margin-bottom: 0.5em; background-color: lightcyan; border: 1px solid gray; }
+    </style>
+    <script src="res/vis.min.js"></script>
+    <link href="res/vis.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="page-heading">
+      <a href="karate-summary.html">Summary</a>
+    </div>     
+    <div id="visualization"></div>
+    <script>
+var groups = [{"content":"pool-2-thread-1","id":1},{"content":"pool-2-thread-2","id":2},{"content":"pool-2-thread-3","id":3}];
+var items = [{"id":1,"group":1,"content":"com\/soderberg\/qa\/features\/async_orders\/03_async_rebalance[1:28]","start":1792761950733,"end":1792761951569,"title":"com\/soderberg\/qa\/features\/async_orders\/03_async_rebalance[1:28] 15:25:50.733-15:25:51.569 Trigger async rebalancing order and poll until COMPLETED","className":"failed"},{"id":2,"group":2,"content":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[1:7]","start":1792761950733,"end":1792761951517,"title":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[1:7] 15:25:50.733-15:25:51.517 Verify Public Pension Funds Catalog returns 200 with fuzzy matchers","className":"failed"},{"id":3,"group":3,"content":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[2:28]","start":1792761950733,"end":1792761951519,"title":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[2:28] 15:25:50.733-15:25:51.519 Filter funds by AssetClass and Currency query parameters"},{"id":4,"group":3,"content":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[3:36]","start":1792761951532,"end":1792761951556,"title":"com\/soderberg\/qa\/features\/basics\/01_funds_catalog[3:36] 15:25:51.532-15:25:51.556 Attempt to fetch non-existent ISIN returns 404 Not Found"},{"id":5,"group":2,"content":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[1:11]","start":1792761951532,"end":1792761951607,"title":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[1:11] 15:25:51.532-15:25:51.607 Successfully approve transfer with valid HMAC-SHA256 signature","className":"failed"},{"id":6,"group":3,"content":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[2:27]","start":1792761951567,"end":1792761951667,"title":"com\/soderberg\/qa\/features\/crypto_interop\/04_crypto_transfer[2:27] 15:25:51.567-15:25:51.667 Reject transfer when signature header is forged (401 Unauthorized)","className":"failed"},{"id":7,"group":1,"content":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[1:10]","start":1792761951589,"end":1792761951682,"title":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[1:10] 15:25:51.589-15:25:51.682 Create new client and verify retrieval by ID","className":"failed"},{"id":8,"group":2,"content":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[2:24]","start":1792761951620,"end":1792761951727,"title":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[2:24] 15:25:51.620-15:25:51.727 Prevent duplicate Personnummer registration (409 Conflict)","className":"failed"},{"id":9,"group":3,"content":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[3:33]","start":1792761951683,"end":1792761951764,"title":"com\/soderberg\/qa\/features\/reusability\/02_client_lifecycle[3:33] 15:25:51.683-15:25:51.764 Reject invalid Swedish Personnummer format (422 Unprocessable Entity)","className":"failed"}];
+</script>
+    <script>
+      var container = document.getElementById('visualization');
+      var timeline = new vis.Timeline(container);
+      timeline.setOptions({groupOrder: 'content'});
+      timeline.setGroups(new vis.DataSet(groups));
+      timeline.setItems(new vis.DataSet(items));
+    </script>
+  </body>
+</html>
