@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SoderbergWealthApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+94c32bd5403bed817d5efe104d121e47eb2bcf99")]
 [assembly: System.Reflection.AssemblyProductAttribute("SoderbergWealthApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SoderbergWealthApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -39,3 +39,4 @@ D:\WORKSPACE_KARATE\soderberg-wealth-api\obj\Debug\net8.0\refint\SoderbergWealth
 D:\WORKSPACE_KARATE\soderberg-wealth-api\obj\Debug\net8.0\SoderbergWealthApi.pdb
 D:\WORKSPACE_KARATE\soderberg-wealth-api\obj\Debug\net8.0\SoderbergWealthApi.genruntimeconfig.cache
 D:\WORKSPACE_KARATE\soderberg-wealth-api\obj\Debug\net8.0\ref\SoderbergWealthApi.dll
+D:\WORKSPACE_KARATE\soderberg-wealth-api\obj\Debug\net8.0\SoderbergWealthApi.sourcelink.json
