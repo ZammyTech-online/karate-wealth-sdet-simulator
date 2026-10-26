@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/bank-accounts/{id}/review
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{bankAccountVerificationUrl}}/api/v1/bank-accounts/{id}/review
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "decision": "valor",
+    "comment": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/bank-account-verification.md
+}

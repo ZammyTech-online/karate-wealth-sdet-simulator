@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v2/compositions/master-agreement
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{compositionServiceUrl}}/api/v2/compositions/master-agreement
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/composition-service.md
+}

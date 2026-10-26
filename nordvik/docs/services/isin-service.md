@@ -11,6 +11,8 @@ Genera ISIN válidos y valida el dígito de control de cualquier ISIN.
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | — |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6008/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

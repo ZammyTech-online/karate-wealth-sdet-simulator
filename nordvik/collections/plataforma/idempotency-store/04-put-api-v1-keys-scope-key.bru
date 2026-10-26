@@ -1,0 +1,31 @@
+meta {
+  name: PUT /api/v1/keys/{scope}/{key}
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{idempotencyStoreUrl}}/api/v1/keys/{scope}/{key}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "requestHash": "valor",
+    "ttlSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/idempotency-store.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/texts/lorem
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{textFactoryUrl}}/api/v1/texts/lorem
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/text-factory.md
+}

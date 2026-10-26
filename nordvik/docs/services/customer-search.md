@@ -11,6 +11,8 @@ Búsqueda rápida de clientes por nombre, número o email. Se actualiza cada seg
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | customer-registry, permission-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6304/swagger |
 | Colección Bruno | `collections/clientes` |
 

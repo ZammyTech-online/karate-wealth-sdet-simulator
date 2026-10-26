@@ -11,10 +11,12 @@ Domicilio actual e historial de domicilios del cliente; el código postal debe c
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, customer-registry, permission-service, address-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6302/swagger |
 | Colección Bruno | `collections/clientes` |
 
-## Endpoints (6)
+## Endpoints (7)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -22,6 +24,7 @@ Domicilio actual e historial de domicilios del cliente; el código postal debe c
 | `GET` | `/api/v1/customers/{customerId}/address` |  |
 | `PUT` | `/api/v1/customers/{customerId}/address` |  |
 | `GET` | `/api/v1/customers/{customerId}/address/history` |  |
+| `GET` | `/api/v1/internal/customers/{customerId}/address` |  |
 | `GET` | `/health` |  |
 | `GET` | `/info` |  |
 
@@ -101,6 +104,23 @@ Domicilio actual e historial de domicilios del cliente; el código postal debe c
 | Código | Contenido |
 | --- | --- |
 | 200 | `[] customerId`, `[] version`, `[] street`, `[] number`, `[] postalCode`, `[] city`, `[] country`, `[] validFrom`, `[] validTo` |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### GET /api/v1/internal/customers/{customerId}/address
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `customerId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | `customerId`, `version`, `street`, `number`, `postalCode`, `city`, `country`, `validFrom`, `validTo` |
 | 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
 
 ### GET /health

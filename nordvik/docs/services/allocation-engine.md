@@ -11,6 +11,8 @@ Reglas de asignación: porcentaje en renta variable según riesgo, tope por hori
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | product-catalog |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6901/swagger |
 | Colección Bruno | `collections/inversiones` |
 

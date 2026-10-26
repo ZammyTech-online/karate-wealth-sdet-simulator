@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/deposits
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{paymentsGatewayUrl}}/api/v1/deposits
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "expectedAmount": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/payments-gateway.md
+}

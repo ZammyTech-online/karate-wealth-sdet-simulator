@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v2/contracts/{id}/signatures
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{contractServiceUrl}}/api/v2/contracts/{id}/signatures
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

@@ -52,7 +52,8 @@ public class PlatformTests
     {
         var r = await _f.Get(port, "/health");
         Assert.True(r.Headers.Contains("X-Service"));
-        Assert.Equal("1.0.0", r.Headers.GetValues("X-Service-Version").Single());
+        Assert.Equal(r.Str("version"), r.Headers.GetValues("X-Service-Version").Single());
+        Assert.Matches(@"^\d+\.\d+\.\d+$", r.Str("version"));
     }
 
     [Fact]

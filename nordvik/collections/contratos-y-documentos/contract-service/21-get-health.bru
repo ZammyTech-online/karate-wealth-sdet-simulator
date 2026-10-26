@@ -1,0 +1,24 @@
+meta {
+  name: GET /health
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{contractServiceUrl}}/health
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

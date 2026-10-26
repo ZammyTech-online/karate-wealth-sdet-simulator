@@ -1,0 +1,30 @@
+meta {
+  name: POST /rp/v6/cancel
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{nordidSimUrl}}/rp/v6/cancel
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "orderRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordid-sim.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/mailbox
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{notificationServiceUrl}}/api/v1/mailbox
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/notification-service.md
+}

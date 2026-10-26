@@ -7,7 +7,11 @@ meta {
 post {
   url: {{sequenceServiceUrl}}/api/v1/sequences/demo/next
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

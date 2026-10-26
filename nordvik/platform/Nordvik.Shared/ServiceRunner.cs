@@ -90,6 +90,8 @@ public static class ServiceRunner
             ["port"] = ctx.ActualPort,
             ["jsonNaming"] = info.Naming.ToString(),
             ["dependsOn"] = info.DependsOn ?? Array.Empty<string>(),
+            ["emits"] = info.Emits ?? Array.Empty<string>(),
+            ["consumes"] = info.Consumes ?? Array.Empty<string>(),
             ["profile"] = settings.ProfileName,
             ["learningMode"] = settings.LearningMode,
             ["openApi"] = $"http://localhost:{ctx.ActualPort}/swagger/v1/swagger.json",

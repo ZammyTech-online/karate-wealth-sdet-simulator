@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/billing-runs
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{feeBillingUrl}}/api/v1/billing-runs
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/fee-billing.md
+}

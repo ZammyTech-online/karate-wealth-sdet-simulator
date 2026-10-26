@@ -1,0 +1,24 @@
+meta {
+  name: GET /info
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{signingServiceUrl}}/info
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/signing-service.md
+}

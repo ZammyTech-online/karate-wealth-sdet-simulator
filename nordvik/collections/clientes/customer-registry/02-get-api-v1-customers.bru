@@ -7,7 +7,11 @@ meta {
 get {
   url: {{customerRegistryUrl}}/api/v1/customers
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

@@ -60,6 +60,28 @@ public static class Downstream
     public static Task<DownstreamReply> Get(HttpContext? caller, string service, string path, bool forwardAuth = true, TimeSpan? timeout = null) =>
         Send(caller, service, HttpMethod.Get, path, null, forwardAuth, null, timeout);
 
+    /// <summary>Envía bytes tal cual (ficheros) a otro servicio.</summary>
+    public static async Task<DownstreamReply> SendBytes(HttpContext? caller, string service, string path, byte[] data, string contentType, IDictionary<string, string>? headers = null)
+    {
+        var req = new HttpRequestMessage(HttpMethod.Post, ServiceDirectory.UrlOf(service) + path);
+        if (caller?.Items[NordvikMiddleware.CorrelationKey] is string corr) req.Headers.TryAddWithoutValidation(NordvikMiddleware.CorrelationHeader, corr);
+        if (headers is not null) foreach (var (k, v) in headers) req.Headers.TryAddWithoutValidation(k, v);
+        req.Content = new ByteArrayContent(data);
+        req.Content.Headers.TryAddWithoutValidation("Content-Type", contentType);
+        try
+        {
+            using var res = await Http.SendAsync(req);
+            var raw = await res.Content.ReadAsStringAsync();
+            JsonElement? json = null;
+            if (!string.IsNullOrWhiteSpace(raw)) { try { json = JsonDocument.Parse(raw).RootElement.Clone(); } catch { } }
+            return new DownstreamReply((int)res.StatusCode, json, raw);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+        {
+            throw new DependencyUnavailableException(service, $"{service} no responde ({ex.GetType().Name}).");
+        }
+    }
+
     /// <summary>Llamada a una URL completa (sistemas externos simulados o callbacks).</summary>
     public static async Task<DownstreamReply> SendUrl(HttpMethod method, string url, object? body = null, IDictionary<string, string>? headers = null, TimeSpan? timeout = null, string? correlationId = null)
     {

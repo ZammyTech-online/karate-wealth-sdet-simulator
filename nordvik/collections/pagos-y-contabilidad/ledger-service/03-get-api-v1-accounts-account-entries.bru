@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/accounts/{account}/entries
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{ledgerServiceUrl}}/api/v1/accounts/{account}/entries
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/ledger-service.md
+}

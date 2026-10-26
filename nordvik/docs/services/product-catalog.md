@@ -11,6 +11,8 @@ Catálogo de fondos de Nordvik: categoría, divisa, riesgo SRI (1-7), estado y c
 | Versión | 1.0.0 |
 | Convención JSON | SnakeCase |
 | Depende de | — |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6801/swagger |
 | Colección Bruno | `collections/inversiones` |
 

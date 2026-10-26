@@ -7,7 +7,11 @@ meta {
 post {
   url: {{permissionServiceUrl}}/api/v1/permissions/check
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

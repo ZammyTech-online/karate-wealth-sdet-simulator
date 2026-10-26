@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/documents/{id}/links
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{documentVaultUrl}}/api/v1/documents/{id}/links
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "ttlSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/document-vault.md
+}

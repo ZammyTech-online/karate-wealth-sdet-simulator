@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v2/contracts
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{contractServiceUrl}}/api/v2/contracts
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

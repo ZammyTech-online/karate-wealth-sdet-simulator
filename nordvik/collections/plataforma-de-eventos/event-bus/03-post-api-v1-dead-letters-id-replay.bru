@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/dead-letters/{id}/replay
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{eventBusUrl}}/api/v1/dead-letters/{id}/replay
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/event-bus.md
+}

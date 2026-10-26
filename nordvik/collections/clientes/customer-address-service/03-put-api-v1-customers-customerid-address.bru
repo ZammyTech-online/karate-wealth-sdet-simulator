@@ -7,7 +7,11 @@ meta {
 put {
   url: {{customerAddressServiceUrl}}/api/v1/customers/{customerId}/address
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

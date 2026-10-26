@@ -11,6 +11,8 @@ Genera IBAN de prueba válidos de bancos ficticios y valida IBAN (longitud por p
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | — |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6007/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

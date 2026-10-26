@@ -7,7 +7,11 @@ meta {
 post {
   url: {{iamServiceUrl}}/api/v1/oauth/revoke
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

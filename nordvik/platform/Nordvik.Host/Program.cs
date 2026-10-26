@@ -75,6 +75,7 @@ File.WriteAllText(Path.Combine(dataDir, "host.json"), JsonSerializer.Serialize(n
 {
     pid = Environment.ProcessId,
     profile = profile.Name,
+    only = Arg("--only") is { Length: > 0 },
     startedAt = DateTimeOffset.Now.ToString("O"),
     services = apps.Select(a => new { name = a.Svc.Info.Name, port = a.Svc.Info.Port }).ToList(),
 }, new JsonSerializerOptions { WriteIndented = true }));

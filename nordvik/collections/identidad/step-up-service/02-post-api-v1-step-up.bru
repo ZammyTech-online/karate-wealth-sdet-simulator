@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/step-up
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{stepUpServiceUrl}}/api/v1/step-up
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "method": "valor",
+    "reason": "valor",
+    "channel": "valor",
+    "destination": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/step-up-service.md
+}

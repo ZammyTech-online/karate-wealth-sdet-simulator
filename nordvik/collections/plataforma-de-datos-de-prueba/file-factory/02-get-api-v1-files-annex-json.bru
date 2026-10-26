@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/files/annex-json
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{fileFactoryUrl}}/api/v1/files/annex-json
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/file-factory.md
+}

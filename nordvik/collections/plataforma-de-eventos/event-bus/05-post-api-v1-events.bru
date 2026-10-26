@@ -1,0 +1,28 @@
+meta {
+  name: POST /api/v1/events
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{eventBusUrl}}/api/v1/events
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {}
+}
+
+docs {
+  
+  Ficha completa: docs/services/event-bus.md
+}

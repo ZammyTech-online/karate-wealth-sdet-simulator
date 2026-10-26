@@ -11,16 +11,19 @@ Preferencias de comunicación del cliente. Si nunca las guardó, devuelve los va
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, customer-registry, permission-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6303/swagger |
 | Colección Bruno | `collections/clientes` |
 
-## Endpoints (5)
+## Endpoints (6)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v1/customers/{customerId}/preferences` |  |
 | `PUT` | `/api/v1/customers/{customerId}/preferences` |  |
+| `GET` | `/api/v1/internal/customers/{customerId}/preferences` |  |
 | `GET` | `/health` |  |
 | `GET` | `/info` |  |
 
@@ -76,6 +79,23 @@ Preferencias de comunicación del cliente. Si nunca las guardó, devuelve los va
 | `channel` | string, puede ser null |
 | `marketingConsent` | boolean, puede ser null |
 | `quietHours` | objeto |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | `customerId`, `language`, `channel`, `marketingConsent`, `quietHours`, `isDefault`, `updatedAt` |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### GET /api/v1/internal/customers/{customerId}/preferences
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `customerId` | path | string | sí |
 
 **Respuestas**
 

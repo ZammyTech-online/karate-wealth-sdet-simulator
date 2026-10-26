@@ -1,0 +1,312 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "nordid-sim",
+    "description": "E1 NordID: autenticación y firma electrónica con orderRef y sondeo de collect. Escenarios por personalNumber en /__admin/scenarios.\n\nDominio: X-external · Equipo: Sistema externo (simulado) · Oleada: 2 · Puerto: 7701\n\nDepende de: clock-service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/__admin/behaviour": {
+      "get": {
+        "tags": [
+          "Administración del simulador"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Administración del simulador"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BehaviourRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/__admin/behaviour/reset": {
+      "post": {
+        "tags": [
+          "Administración del simulador"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/__admin/scenarios": {
+      "post": {
+        "tags": [
+          "Administración del simulador"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Administración del simulador"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/rp/v6/auth": {
+      "post": {
+        "tags": [
+          "NordID RP API v6"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NordIdAuthRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/rp/v6/sign": {
+      "post": {
+        "tags": [
+          "NordID RP API v6"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NordIdSignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/rp/v6/collect": {
+      "post": {
+        "tags": [
+          "NordID RP API v6"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NordIdOrderRef"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/rp/v6/cancel": {
+      "post": {
+        "tags": [
+          "NordID RP API v6"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NordIdOrderRef"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BehaviourRequest": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "nullable": true
+          },
+          "delayMs": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "failNext": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NordIdAuthRequest": {
+        "type": "object",
+        "properties": {
+          "personalNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "endUserIp": {
+            "type": "string",
+            "nullable": true
+          },
+          "userVisibleData": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NordIdOrderRef": {
+        "type": "object",
+        "properties": {
+          "orderRef": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NordIdSignRequest": {
+        "type": "object",
+        "properties": {
+          "personalNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "endUserIp": {
+            "type": "string",
+            "nullable": true
+          },
+          "userVisibleData": {
+            "type": "string",
+            "nullable": true
+          },
+          "userNonVisibleData": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ScenarioRequest": {
+        "type": "object",
+        "properties": {
+          "personalNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "outcome": {
+            "type": "string",
+            "nullable": true
+          },
+          "pendingPolls": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

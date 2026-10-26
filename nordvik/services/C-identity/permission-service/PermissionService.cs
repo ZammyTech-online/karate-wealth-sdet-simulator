@@ -35,13 +35,13 @@ public sealed class PermissionService : INordvikService
     {
         "Admin" => "ALL",
         "Operations" => action is "customer:close" ? "NONE" : "ALL",
-        "Compliance" => action.EndsWith(":read") ? "ALL" : "NONE",
+        "Compliance" => action.EndsWith(":read") || action == "contract:sign" ? "ALL" : "NONE",
         "Advisor" => action is "customer:create" ? "ALL"
             : action is "customer:close" or "portfolio:close" or "payment:create" or "bank-account:write" or "contract:withdraw" ? "NONE" : "ASSIGNED",
         "Customer" => action is "customer:create" or "customer:close" ? "NONE" : "OWN",
         // Cuentas de máquina (client_credentials): solo lo que necesitan las sagas internas
-        "Service" => action is "order:create" or "order:read" or "order:cancel" or "position:read" or "cash:read" or "portfolio:read" or "portfolio:create"
-                     or "customer:read" or "contract:create" or "contract:read" ? "ALL" : "NONE",
+        "Service" => action is "order:create" or "order:read" or "order:cancel" or "position:read" or "cash:read" or "portfolio:read" or "portfolio:create" or "portfolio:close"
+                     or "customer:read" or "customer:close" or "contract:create" or "contract:read" or "bank-account:read" or "bank-account:write" or "address:write" or "contact:write" ? "ALL" : "NONE",
         _ => "NONE",
     };
 

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v2/compositions/portability-export/{id}
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{compositionServiceUrl}}/api/v2/compositions/portability-export/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/composition-service.md
+}

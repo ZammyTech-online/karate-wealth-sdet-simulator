@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/contract-templates/{type}/versions/{version}
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{contractTemplateServiceUrl}}/api/v1/contract-templates/{type}/versions/{version}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-template-service.md
+}

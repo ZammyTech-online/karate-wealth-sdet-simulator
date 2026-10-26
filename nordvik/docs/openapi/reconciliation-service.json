@@ -1,0 +1,264 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "reconciliation-service",
+    "description": "Cuadre diario: ledger contra extracto del banco y libro de posiciones contra el custodio. Lista los descuadres (breaks).\n\nDominio: K-payments · Equipo: Pagos y contabilidad · Oleada: 2 · Puerto: 7005\n\nDepende de: ledger-service, nordpay-adapter, position-keeping, custody-adapter, clock-service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/reconciliations": {
+      "post": {
+        "tags": [
+          "Conciliación"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReconcileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reconciliation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Conciliación"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/reconciliations/{id}": {
+      "get": {
+        "tags": [
+          "Conciliación"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/internal/outbox": {
+      "get": {
+        "tags": [
+          "Interno"
+        ],
+        "parameters": [
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CashCheck": {
+        "type": "object",
+        "properties": {
+          "ledgerBalance": {
+            "type": "string",
+            "nullable": true
+          },
+          "bankBalance": {
+            "type": "string",
+            "nullable": true
+          },
+          "difference": {
+            "type": "string",
+            "nullable": true
+          },
+          "matched": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PositionBreak": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "isin": {
+            "type": "string",
+            "nullable": true
+          },
+          "ourUnits": {
+            "type": "string",
+            "nullable": true
+          },
+          "custodianUnits": {
+            "type": "string",
+            "nullable": true
+          },
+          "difference": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReconcileRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Reconciliation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "cash": {
+            "$ref": "#/components/schemas/CashCheck"
+          },
+          "cashError": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkedPositions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "positionBreaks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PositionBreak"
+            },
+            "nullable": true
+          },
+          "positionsError": {
+            "type": "string",
+            "nullable": true
+          },
+          "runAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "runBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

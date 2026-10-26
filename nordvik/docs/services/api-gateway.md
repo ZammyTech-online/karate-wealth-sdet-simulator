@@ -11,6 +11,8 @@ Entrada única: enruta /{servicio}/... al microservicio, aplica cuotas, valida t
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | rate-limiter, iam-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6100/swagger |
 | Colección Bruno | `collections/plataforma` |
 

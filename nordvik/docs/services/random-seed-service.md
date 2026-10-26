@@ -11,6 +11,8 @@ Números y elecciones aleatorias reproducibles a partir de una semilla, para rep
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6004/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

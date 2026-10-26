@@ -1,0 +1,24 @@
+meta {
+  name: POST /_test/contracts/{id}/tamper
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{contractServiceUrl}}/_test/contracts/{id}/tamper
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

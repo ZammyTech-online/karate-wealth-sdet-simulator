@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/reconciliations
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{reconciliationServiceUrl}}/api/v1/reconciliations
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "date": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/reconciliation-service.md
+}

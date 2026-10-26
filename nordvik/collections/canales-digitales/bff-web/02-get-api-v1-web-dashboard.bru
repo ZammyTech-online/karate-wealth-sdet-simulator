@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/web/dashboard
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{bffWebUrl}}/api/v1/web/dashboard
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/bff-web.md
+}

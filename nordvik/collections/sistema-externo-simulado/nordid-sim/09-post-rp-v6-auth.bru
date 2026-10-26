@@ -1,0 +1,32 @@
+meta {
+  name: POST /rp/v6/auth
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{nordidSimUrl}}/rp/v6/auth
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "personalNumber": "valor",
+    "endUserIp": "valor",
+    "userVisibleData": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordid-sim.md
+}

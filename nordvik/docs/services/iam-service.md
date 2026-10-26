@@ -11,6 +11,8 @@ Login OAuth2 (password, client_credentials, refresh_token), tokens JWT de 5 minu
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, session-service, config-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6200/swagger |
 | Colección Bruno | `collections/identidad` |
 

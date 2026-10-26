@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/eid/auth
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{eidBrokerUrl}}/api/v1/eid/auth
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "personalNumber": "valor",
+    "purpose": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/eid-broker.md
+}

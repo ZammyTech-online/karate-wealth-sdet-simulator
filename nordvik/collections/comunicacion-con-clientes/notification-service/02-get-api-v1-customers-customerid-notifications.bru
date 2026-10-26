@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/customers/{customerId}/notifications
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{notificationServiceUrl}}/api/v1/customers/{customerId}/notifications
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/notification-service.md
+}

@@ -11,6 +11,8 @@ Da un prefijo único por ejecución y borra todo lo creado con él en todos los 
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6009/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

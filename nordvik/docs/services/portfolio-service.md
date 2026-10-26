@@ -11,15 +11,19 @@ Carteras (ISK, KF, DEPOT) con asignación objetivo por fondo. Valida fondos con 
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, customer-registry, permission-service, product-catalog, config-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6900/swagger |
 | Colección Bruno | `collections/inversiones` |
 
-## Endpoints (8)
+## Endpoints (10)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v1/customers/{customerId}/portfolios` |  |
+| `GET` | `/api/v1/internal/portfolios` |  |
+| `GET` | `/api/v1/internal/portfolios/{id}` |  |
 | `POST` | `/api/v1/portfolios` |  |
 | `DELETE` | `/api/v1/portfolios/{id}` |  |
 | `GET` | `/api/v1/portfolios/{id}` |  |
@@ -60,6 +64,41 @@ Carteras (ISK, KF, DEPOT) con asignación objetivo por fondo. Valida fondos con 
 | Código | Contenido |
 | --- | --- |
 | 200 | `[] id`, `[] customerId`, `[] name`, `[] type`, `[] status`, `[] targetAllocation`, `[] version`, `[] createdAt`, `[] updatedAt` |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### GET /api/v1/internal/portfolios
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `status` | query | string | no |
+| `customerId` | query | string | no |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | `[] id`, `[] customerId`, `[] name`, `[] type`, `[] status`, `[] targetAllocation`, `[] version`, `[] createdAt`, `[] updatedAt` |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### GET /api/v1/internal/portfolios/{id}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `id` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | `id`, `customerId`, `name`, `type`, `status`, `targetAllocation`, `version`, `createdAt`, `updatedAt` |
 | 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
 
 ### POST /api/v1/portfolios

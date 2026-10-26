@@ -11,6 +11,8 @@ Personas sintéticas nórdicas: nombre, número nacional válido (Luhn), edad se
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, address-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6005/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

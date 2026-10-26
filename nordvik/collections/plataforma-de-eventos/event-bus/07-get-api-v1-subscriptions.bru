@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/subscriptions
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{eventBusUrl}}/api/v1/subscriptions
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/event-bus.md
+}

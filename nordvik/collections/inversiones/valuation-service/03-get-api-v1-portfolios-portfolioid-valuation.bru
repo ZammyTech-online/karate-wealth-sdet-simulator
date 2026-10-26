@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/portfolios/{portfolioId}/valuation
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{valuationServiceUrl}}/api/v1/portfolios/{portfolioId}/valuation
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/valuation-service.md
+}

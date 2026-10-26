@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v1/signing-sessions
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{signingServiceUrl}}/api/v1/signing-sessions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "contractId": "valor",
+    "party": "valor",
+    "personalNumber": "valor",
+    "contentHash": "valor",
+    "templateVersion": 1,
+    "title": "valor",
+    "signer": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/signing-service.md
+}

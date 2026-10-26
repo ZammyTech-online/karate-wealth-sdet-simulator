@@ -7,7 +7,11 @@ meta {
 post {
   url: {{feeEngineUrl}}/api/v1/fees/calculate
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

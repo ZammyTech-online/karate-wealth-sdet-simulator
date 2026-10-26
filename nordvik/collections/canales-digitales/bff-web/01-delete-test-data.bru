@@ -1,0 +1,24 @@
+meta {
+  name: DELETE /_test/data
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{bffWebUrl}}/_test/data
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/bff-web.md
+}

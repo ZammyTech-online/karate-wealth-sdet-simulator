@@ -11,6 +11,8 @@ Calcula la comisión de entrada (BUY), de salida (SELL) o el coste anual de gest
 | Versión | 1.0.0 |
 | Convención JSON | SnakeCase |
 | Depende de | product-catalog |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6806/swagger |
 | Colección Bruno | `collections/inversiones` |
 

@@ -11,6 +11,8 @@ Medios de contacto del cliente con verificación por código: 3 intentos, caduci
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, customer-registry, permission-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6301/swagger |
 | Colección Bruno | `collections/clientes` |
 

@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/render
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{renderServiceUrl}}/api/v1/render
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "title": "valor",
+    "lines": "valor",
+    "footer": "valor",
+    "format": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/render-service.md
+}

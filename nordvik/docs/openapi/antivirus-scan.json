@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "antivirus-scan",
+    "description": "Escaneo de adjuntos: EICAR = INFECTED, tipo real por magic bytes frente al declarado, límite de 5 MB. Acepta multipart o el fichero en el cuerpo.\n\nDominio: H-contracts · Equipo: Contratos y documentos · Oleada: 2 · Puerto: 6706",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/scans": {
+      "post": {
+        "tags": [
+          "Escaneo"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/signatures": {
+      "get": {
+        "tags": [
+          "Escaneo"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ScanResult": {
+        "type": "object",
+        "properties": {
+          "scanId": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sha256": {
+            "type": "string",
+            "nullable": true
+          },
+          "declaredMime": {
+            "type": "string",
+            "nullable": true
+          },
+          "detectedMime": {
+            "type": "string",
+            "nullable": true
+          },
+          "mimeMismatch": {
+            "type": "boolean"
+          },
+          "verdict": {
+            "type": "string",
+            "nullable": true
+          },
+          "signature": {
+            "type": "string",
+            "nullable": true
+          },
+          "scannedAt": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

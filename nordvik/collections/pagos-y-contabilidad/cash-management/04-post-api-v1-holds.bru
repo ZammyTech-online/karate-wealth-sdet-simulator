@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/holds
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{cashManagementUrl}}/api/v1/holds
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "amount": "valor",
+    "reference": "valor",
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/cash-management.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: POST /_test/audit/repair
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{auditServiceUrl}}/_test/audit/repair
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/audit-service.md
+}

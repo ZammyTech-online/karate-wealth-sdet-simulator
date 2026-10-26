@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/mfa/challenges
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{mfaServiceUrl}}/api/v1/mfa/challenges
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "channel": "valor",
+    "destination": "valor",
+    "purpose": "valor",
+    "language": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/mfa-service.md
+}

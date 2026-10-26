@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/step-up/{id}/verify
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{stepUpServiceUrl}}/api/v1/step-up/{id}/verify
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "code": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/step-up-service.md
+}

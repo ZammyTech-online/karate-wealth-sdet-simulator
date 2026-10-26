@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v1/corporate-actions
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{corporateActionsUrl}}/api/v1/corporate-actions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "isin": "valor",
+    "effectiveDate": "valor",
+    "ratio": "valor",
+    "amountPerUnit": "valor",
+    "targetIsin": "valor",
+    "description": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/corporate-actions.md
+}

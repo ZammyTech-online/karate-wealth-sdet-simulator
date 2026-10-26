@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/clauses/resolve
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{clauseEngineUrl}}/api/v1/clauses/resolve
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "templateType": "valor",
+    "version": 1,
+    "customerId": "valor",
+    "facts": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/clause-engine.md
+}

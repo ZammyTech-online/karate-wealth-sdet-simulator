@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/advisor/customers/{customerId}/overview
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{bffAdvisorUrl}}/api/v1/advisor/customers/{customerId}/overview
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/bff-advisor.md
+}

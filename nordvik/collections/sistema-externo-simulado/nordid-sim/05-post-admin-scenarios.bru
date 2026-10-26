@@ -1,0 +1,32 @@
+meta {
+  name: POST /__admin/scenarios
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{nordidSimUrl}}/__admin/scenarios
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "personalNumber": "valor",
+    "outcome": "valor",
+    "pendingPolls": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordid-sim.md
+}

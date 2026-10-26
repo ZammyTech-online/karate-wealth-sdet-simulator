@@ -1,0 +1,35 @@
+meta {
+  name: POST /api/v1/instructions
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{paymentInstructionsUrl}}/api/v1/instructions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "paymentId": "valor",
+    "customerId": "valor",
+    "amount": "valor",
+    "creditorIban": "valor",
+    "creditorName": "valor",
+    "remittance": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/payment-instructions.md
+}

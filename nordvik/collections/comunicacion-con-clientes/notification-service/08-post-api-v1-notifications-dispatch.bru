@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/notifications/dispatch
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{notificationServiceUrl}}/api/v1/notifications/dispatch
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/notification-service.md
+}

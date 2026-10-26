@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/batches/run
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{orderRouterUrl}}/api/v1/batches/run
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/order-router.md
+}

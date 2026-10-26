@@ -7,7 +7,11 @@ meta {
 get {
   url: {{marketDataUrl}}/api/v1/prices/SE0000000001/latest
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

@@ -1,0 +1,33 @@
+meta {
+  name: POST /__admin/accounts
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{nordpaySimUrl}}/__admin/accounts
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "iban": "valor",
+    "nationalId": "valor",
+    "name": "valor",
+    "status": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordpay-sim.md
+}

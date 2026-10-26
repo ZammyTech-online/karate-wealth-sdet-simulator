@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v2/internal/contracts/{id}/signatures
+  type: http
+  seq: 20
+}
+
+post {
+  url: {{contractServiceUrl}}/api/v2/internal/contracts/{id}/signatures
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "party": "valor",
+    "sessionId": "valor",
+    "signedHash": "valor",
+    "templateVersion": 1,
+    "signature": "valor",
+    "signedAt": "valor",
+    "signer": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

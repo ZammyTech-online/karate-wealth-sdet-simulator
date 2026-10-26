@@ -1,0 +1,32 @@
+meta {
+  name: POST /__admin/break-holding
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{custodianSimUrl}}/__admin/break-holding
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "accountId": "valor",
+    "isin": "valor",
+    "deltaUnits": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/custodian-sim.md
+}

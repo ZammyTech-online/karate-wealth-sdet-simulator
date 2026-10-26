@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/subscriptions
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{eventBusUrl}}/api/v1/subscriptions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "name": "valor",
+    "topic": "valor",
+    "callbackUrl": "valor",
+    "secret": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/event-bus.md
+}

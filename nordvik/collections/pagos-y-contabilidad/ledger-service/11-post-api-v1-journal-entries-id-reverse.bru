@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/journal-entries/{id}/reverse
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{ledgerServiceUrl}}/api/v1/journal-entries/{id}/reverse
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/ledger-service.md
+}

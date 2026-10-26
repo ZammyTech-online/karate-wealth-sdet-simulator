@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/documents/{id}
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{documentVaultUrl}}/api/v1/documents/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/document-vault.md
+}

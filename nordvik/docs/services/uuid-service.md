@@ -11,6 +11,8 @@ Genera identificadores únicos UUID v4 y v7, solos o en lote, y valida UUID.
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6001/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

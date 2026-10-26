@@ -32,6 +32,13 @@ public sealed class CustomerAddressService : INordvikService
     {
         var g = app.MapGroup("/api/v1/customers/{customerId}/address").WithTags("Domicilio");
 
+        app.MapGet("/api/v1/internal/customers/{customerId}/address", (HttpContext http, string customerId) =>
+        {
+            using var db = ctx.OpenDb();
+            var a = db.QuerySingleOrDefault<CustomerAddress>(Sel + " WHERE customer_id = @customerId AND valid_to IS NULL", new { customerId });
+            return a is null ? Problems.NotFound(http, "ADDRESS_NOT_FOUND", "El cliente no tiene domicilio registrado.", null) : Results.Ok(a);
+        }).WithTags("Interno").WithSummary("Domicilio actual para otros servicios (red interna)").Produces<CustomerAddress>();
+
         g.MapGet("", async (HttpContext http, IClock clock, string customerId) =>
         {
             var denied = Auth.Require(http, clock, out var p);

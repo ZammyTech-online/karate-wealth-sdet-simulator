@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/billing-runs
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{feeBillingUrl}}/api/v1/billing-runs
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "month": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/fee-billing.md
+}

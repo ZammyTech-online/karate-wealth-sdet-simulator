@@ -11,6 +11,8 @@ Decide permisos por rol y propiedad del recurso: el cliente ve lo suyo, el aseso
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6202/swagger |
 | Colección Bruno | `collections/identidad` |
 

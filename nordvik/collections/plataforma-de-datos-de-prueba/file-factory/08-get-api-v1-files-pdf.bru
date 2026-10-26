@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/files/pdf
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{fileFactoryUrl}}/api/v1/files/pdf
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/file-factory.md
+}

@@ -7,7 +7,11 @@ meta {
 get {
   url: {{clockServiceUrl}}/api/v1/clock/now
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

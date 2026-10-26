@@ -1,0 +1,32 @@
+meta {
+  name: POST /__admin/behaviour
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{nordidSimUrl}}/__admin/behaviour
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "mode": "valor",
+    "delayMs": 1,
+    "failNext": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordid-sim.md
+}

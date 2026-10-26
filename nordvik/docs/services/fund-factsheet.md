@@ -11,6 +11,8 @@ Ficha comercial del fondo por idioma: objetivo, explicación del riesgo, comisio
 | Versión | 1.0.0 |
 | Convención JSON | SnakeCase |
 | Depende de | product-catalog, market-data, clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6805/swagger |
 | Colección Bruno | `collections/inversiones` |
 

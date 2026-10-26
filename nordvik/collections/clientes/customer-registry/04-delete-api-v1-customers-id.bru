@@ -7,7 +7,11 @@ meta {
 delete {
   url: {{customerRegistryUrl}}/api/v1/customers/{id}
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

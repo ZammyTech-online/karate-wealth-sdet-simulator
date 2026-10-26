@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/payments/{endToEndId}
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{nordpayAdapterUrl}}/api/v1/payments/{endToEndId}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordpay-adapter.md
+}

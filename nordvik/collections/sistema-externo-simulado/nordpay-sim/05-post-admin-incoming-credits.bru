@@ -1,0 +1,34 @@
+meta {
+  name: POST /__admin/incoming-credits
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{nordpaySimUrl}}/__admin/incoming-credits
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "debtorIban": "valor",
+    "debtorName": "valor",
+    "amount": "valor",
+    "reference": "valor",
+    "bookingDate": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordpay-sim.md
+}

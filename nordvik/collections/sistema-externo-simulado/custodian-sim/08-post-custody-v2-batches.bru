@@ -1,0 +1,33 @@
+meta {
+  name: POST /custody/v2/batches
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{custodianSimUrl}}/custody/v2/batches
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "batchId": "valor",
+    "tradeDate": "valor",
+    "callbackUrl": "valor",
+    "orders": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/custodian-sim.md
+}

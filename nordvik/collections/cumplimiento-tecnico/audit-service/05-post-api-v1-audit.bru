@@ -1,0 +1,34 @@
+meta {
+  name: POST /api/v1/audit
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{auditServiceUrl}}/api/v1/audit
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "actor": "valor",
+    "action": "valor",
+    "resource": "valor",
+    "outcome": "valor",
+    "details": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/audit-service.md
+}

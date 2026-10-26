@@ -11,6 +11,8 @@ Precios NAV diarios con 4 decimales, historial y último precio publicado (con E
 | Versión | 1.0.0 |
 | Convención JSON | SnakeCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6802/swagger |
 | Colección Bruno | `collections/inversiones` |
 

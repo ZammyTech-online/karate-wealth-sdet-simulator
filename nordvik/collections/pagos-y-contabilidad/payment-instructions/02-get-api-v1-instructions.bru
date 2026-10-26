@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/instructions
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{paymentInstructionsUrl}}/api/v1/instructions
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/payment-instructions.md
+}

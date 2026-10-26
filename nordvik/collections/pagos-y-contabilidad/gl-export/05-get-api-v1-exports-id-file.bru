@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/exports/{id}/file
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{glExportUrl}}/api/v1/exports/{id}/file
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/gl-export.md
+}

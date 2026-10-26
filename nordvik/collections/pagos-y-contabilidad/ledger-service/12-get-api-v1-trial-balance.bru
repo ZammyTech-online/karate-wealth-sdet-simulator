@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/trial-balance
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{ledgerServiceUrl}}/api/v1/trial-balance
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/ledger-service.md
+}

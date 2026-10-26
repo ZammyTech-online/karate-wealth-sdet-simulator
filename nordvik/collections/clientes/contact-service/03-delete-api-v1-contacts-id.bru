@@ -7,7 +7,11 @@ meta {
 delete {
   url: {{contactServiceUrl}}/api/v1/contacts/{id}
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

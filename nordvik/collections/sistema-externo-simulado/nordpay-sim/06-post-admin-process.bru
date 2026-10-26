@@ -1,0 +1,24 @@
+meta {
+  name: POST /__admin/process
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{nordpaySimUrl}}/__admin/process
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordpay-sim.md
+}

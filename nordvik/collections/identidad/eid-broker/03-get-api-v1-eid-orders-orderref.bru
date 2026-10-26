@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/eid/orders/{orderRef}
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{eidBrokerUrl}}/api/v1/eid/orders/{orderRef}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/eid-broker.md
+}

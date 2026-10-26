@@ -1,0 +1,184 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "performance-service",
+    "description": "Rentabilidad ponderada por tiempo (TWR) y por dinero (MWR/TIR anualizada) entre dos fechas, con la serie diaria de valores y flujos.\n\nDominio: J-investment · Equipo: Inversiones · Oleada: 2 · Puerto: 6907\n\nDepende de: position-keeping, execution-service, market-data, fx-rates, portfolio-service, permission-service, clock-service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/portfolios/{portfolioId}/performance": {
+      "get": {
+        "tags": [
+          "Rentabilidad"
+        ],
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "series",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Performance"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Performance": {
+        "type": "object",
+        "properties": {
+          "portfolioId": {
+            "type": "string",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "nullable": true
+          },
+          "to": {
+            "type": "string",
+            "nullable": true
+          },
+          "tradingDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startValueSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "endValueSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "netFlowsSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "gainSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "twrPercent": {
+            "type": "string",
+            "nullable": true
+          },
+          "mwrPercentAnnualized": {
+            "type": "string",
+            "nullable": true
+          },
+          "series": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PerformancePoint"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PerformancePoint": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "valueSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "flowSek": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

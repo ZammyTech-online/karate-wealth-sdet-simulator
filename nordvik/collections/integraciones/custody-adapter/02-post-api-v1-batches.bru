@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/batches
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{custodyAdapterUrl}}/api/v1/batches
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "batchId": "valor",
+    "tradeDate": "valor",
+    "orders": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/custody-adapter.md
+}

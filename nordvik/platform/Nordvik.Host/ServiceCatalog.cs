@@ -26,6 +26,9 @@ public static class ServiceCatalog
         new RefundsReturns(), new GlExport(), new ReconciliationService(), new FeeBilling(),
         new OrderManagement(), new OrderRouter(), new ExecutionService(), new PositionKeeping(), new ValuationService(), new PerformanceService(),
         new RebalancingEngine(), new CorporateActions(),
+        new ContractService(), new ContractTemplateService(), new ClauseEngine(), new SigningService(), new DocumentVault(), new RenderService(), new AntivirusScan(),
+        new TextFactory(), new FileFactory(),
+        new CompositionService(), new BffWeb(), new BffMobile(), new BffAdvisor(), new OnboardingOrchestrator(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
         new NordIdSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(),
     };

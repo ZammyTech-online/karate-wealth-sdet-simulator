@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/mobile/orders
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{bffMobileUrl}}/api/v1/mobile/orders
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/bff-mobile.md
+}

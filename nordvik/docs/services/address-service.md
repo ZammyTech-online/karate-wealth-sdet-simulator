@@ -11,6 +11,8 @@ Direcciones sintéticas nórdicas con código postal coherente y validación de 
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | — |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6006/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

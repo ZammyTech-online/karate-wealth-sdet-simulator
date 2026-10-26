@@ -4,6 +4,10 @@
 .EXAMPLE
   .\nordvik up                 # arranca el perfil nivel-0
   .\nordvik up -Profile nivel-3
+  .\nordvik up -Only order-management,payments-gateway   # un dominio suelto + sus dependencias (menos RAM)
+  .\nordvik profiles           # perfiles disponibles y cuántos servicios enciende cada uno
+  .\nordvik docs               # regenera fichas, OpenAPI y colecciones Bruno de lo que está encendido
+  .\nordvik trace corr-1234    # cadena de llamadas de un X-Correlation-Id (correlation-tracer)
   .\nordvik status             # servicios, puertos, salud y RAM
   .\nordvik smoke              # prueba de humo: salud de todo + presupuesto de RAM
   .\nordvik test               # pruebas unitarias y de API del backend
@@ -12,9 +16,10 @@
   .\nordvik down
 #>
 param(
-  [Parameter(Position = 0)][ValidateSet('up', 'down', 'status', 'smoke', 'test', 'reset', 'logs', 'help')][string]$Command = 'help',
+  [Parameter(Position = 0)][ValidateSet('up', 'down', 'status', 'smoke', 'test', 'reset', 'logs', 'docs', 'trace', 'profiles', 'help')][string]$Command = 'help',
   [Parameter(Position = 1)][string]$Target,
   [string]$Profile = 'nivel-0',
+  [string]$Only,
   [switch]$Build,
   [switch]$NoLearning
 )
@@ -64,12 +69,13 @@ function Invoke-Up {
   }
   $hostArgs = @("`"$HostDll`"", '--profile', $Profile)
   if ($NoLearning) { $hostArgs += '--no-learning' }
+  if ($Only) { $hostArgs += @('--only', $Only) }
   Remove-Item (Join-Path $Data 'host.json') -ErrorAction SilentlyContinue
   $proc = Start-Process -FilePath 'dotnet' -ArgumentList $hostArgs -WorkingDirectory $Root -WindowStyle Hidden -PassThru `
     -RedirectStandardOutput (Join-Path $Logs 'host.out.log') -RedirectStandardError (Join-Path $Logs 'host.err.log')
   Set-Content -Path $PidFile -Value $proc.Id
   Write-Host "Arrancando perfil $Profile (PID $($proc.Id))..." -ForegroundColor Cyan
-  $deadline = (Get-Date).AddSeconds(60)
+  $deadline = (Get-Date).AddSeconds(120)
   while ((Get-Date) -lt $deadline) {
     Start-Sleep -Milliseconds 500
     if ($proc.HasExited) { Get-Content (Join-Path $Logs 'host.err.log') | Out-Host; throw 'El anfitrión se ha cerrado al arrancar.' }
@@ -112,7 +118,7 @@ function Invoke-Smoke {
   $p = Get-HostProcess; $p.Refresh()
   $ram = [math]::Round($p.WorkingSet64 / 1MB, 0)
   $budget = $profileData.ramBudgetMb
-  $expected = $profileData.services.Count
+  $expected = if ($hostInfo.only) { $hostInfo.services.Count } else { $profileData.services.Count }
   $running = $hostInfo.services.Count
   Write-Host "  Servicios: $running/$expected · RAM: $ram MB de $budget MB de presupuesto"
   if ($ok -and $running -eq $expected -and $ram -le $budget) { Write-Host '  PRUEBA DE HUMO SUPERADA' -ForegroundColor Green; exit 0 }
@@ -126,6 +132,22 @@ switch ($Command) {
   'smoke' { Invoke-Smoke }
   'test' { dotnet test (Join-Path $Root 'Nordvik.sln') -nologo; exit $LASTEXITCODE }
   'reset' { Invoke-Down; Get-ChildItem $Data -Filter *.db* | Remove-Item -Force; Write-Host 'Bases de datos borradas: al arrancar se recrean con los datos semilla.' -ForegroundColor Cyan }
+  'profiles' {
+    Get-ChildItem (Join-Path $Root 'profiles') -Filter *.json | ForEach-Object {
+      $d = Get-Content $_.FullName -Raw -Encoding UTF8 | ConvertFrom-Json
+      [pscustomobject]@{ Perfil = $d.name; Oleada = $d.wave; Servicios = $d.services.Count; 'RAM máx. (MB)' = $d.ramBudgetMb; Descripción = $d.description }
+    } | Format-Table -AutoSize -Wrap | Out-Host
+  }
+  'docs' {
+    if (-not (Get-HostProcess)) { throw "Arranca primero Nordvik (nordvik up -Profile ...): la documentación se genera desde los servicios encendidos." }
+    node (Join-Path $Root 'tools\docs-gen.mjs')
+  }
+  'trace' {
+    if (-not $Target) { throw 'Uso: nordvik trace <correlationId>' }
+    $t = Invoke-RestMethod -Uri "http://localhost:6108/api/v1/traces/$Target"
+    Write-Host "  $($t.hops) llamadas · $($t.services.Count) servicios · $($t.totalMs) ms · errores: $($t.errors)" -ForegroundColor Cyan
+    Write-Host $t.tree
+  }
   'logs' {
     if (-not $Target) { Get-ChildItem $Logs -Filter *.log | Select-Object Name, Length, LastWriteTime | Format-Table | Out-Host; return }
     Get-Content (Join-Path $Logs "$Target.log") -Tail 30 -Encoding UTF8

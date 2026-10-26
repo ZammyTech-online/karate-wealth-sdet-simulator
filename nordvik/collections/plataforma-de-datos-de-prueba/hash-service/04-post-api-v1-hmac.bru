@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/hmac
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{hashServiceUrl}}/api/v1/hmac
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "key": "valor",
+    "message": "valor",
+    "encoding": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/hash-service.md
+}

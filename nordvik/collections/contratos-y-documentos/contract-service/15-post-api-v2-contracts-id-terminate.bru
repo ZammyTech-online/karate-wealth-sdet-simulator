@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v2/contracts/{id}/terminate
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{contractServiceUrl}}/api/v2/contracts/{id}/terminate
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

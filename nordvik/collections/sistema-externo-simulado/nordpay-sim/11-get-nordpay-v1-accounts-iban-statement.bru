@@ -1,0 +1,24 @@
+meta {
+  name: GET /nordpay/v1/accounts/{iban}/statement
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{nordpaySimUrl}}/nordpay/v1/accounts/{iban}/statement
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordpay-sim.md
+}

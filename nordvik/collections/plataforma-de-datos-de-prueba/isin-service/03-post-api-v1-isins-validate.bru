@@ -7,7 +7,11 @@ meta {
 post {
   url: {{isinServiceUrl}}/api/v1/isins/validate
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 headers {

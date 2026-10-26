@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v2/contracts
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{contractServiceUrl}}/api/v2/contracts
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "customerId": "valor",
+    "accountType": "valor",
+    "facts": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

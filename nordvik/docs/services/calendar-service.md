@@ -11,6 +11,8 @@ Calendario bursátil de XSTO, XOSL, XCSE y XHEL: festivos, días hábiles, T+N y
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6804/swagger |
 | Colección Bruno | `collections/plataforma` |
 

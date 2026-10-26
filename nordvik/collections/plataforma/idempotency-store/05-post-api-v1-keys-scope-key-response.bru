@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/keys/{scope}/{key}/response
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{idempotencyStoreUrl}}/api/v1/keys/{scope}/{key}/response
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "status": 1,
+    "body": "valor",
+    "location": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/idempotency-store.md
+}

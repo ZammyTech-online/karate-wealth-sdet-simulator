@@ -11,6 +11,8 @@ Cuotas por minuto por clave. El api-gateway le pregunta en cada petición; el l�
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, config-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6101/swagger |
 | Colección Bruno | `collections/plataforma` |
 

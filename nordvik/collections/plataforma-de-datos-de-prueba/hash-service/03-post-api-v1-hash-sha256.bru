@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/hash/sha256
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{hashServiceUrl}}/api/v1/hash/sha256
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "text": "valor",
+    "encoding": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/hash-service.md
+}

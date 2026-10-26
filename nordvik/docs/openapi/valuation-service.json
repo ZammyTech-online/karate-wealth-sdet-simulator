@@ -1,0 +1,226 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "valuation-service",
+    "description": "Valoración de carteras a una fecha: participaciones × NAV × tipo de cambio, con coste, plusvalía latente y peso de cada fondo.\n\nDominio: J-investment · Equipo: Inversiones · Oleada: 2 · Puerto: 6906\n\nDepende de: position-keeping, market-data, fx-rates, product-catalog, portfolio-service, permission-service, clock-service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/internal/portfolios/{portfolioId}/valuation": {
+      "get": {
+        "tags": [
+          "Interno"
+        ],
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Valuation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/portfolios/{portfolioId}/valuation": {
+      "get": {
+        "tags": [
+          "Valoración"
+        ],
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Valuation"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Valuation": {
+        "type": "object",
+        "properties": {
+          "portfolioId": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "priceDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalValueSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalCostSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "unrealizedGainSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "unrealizedGainPercent": {
+            "type": "string",
+            "nullable": true
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValuationLine"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValuationLine": {
+        "type": "object",
+        "properties": {
+          "isin": {
+            "type": "string",
+            "nullable": true
+          },
+          "fundName": {
+            "type": "string",
+            "nullable": true
+          },
+          "units": {
+            "type": "string",
+            "nullable": true
+          },
+          "nav": {
+            "type": "string",
+            "nullable": true
+          },
+          "navDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "fundCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "fxRate": {
+            "type": "string",
+            "nullable": true
+          },
+          "valueSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "costSek": {
+            "type": "string",
+            "nullable": true
+          },
+          "weightPercent": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

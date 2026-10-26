@@ -11,6 +11,8 @@ Tipos de cambio diarios entre SEK, EUR, NOK, DKK, USD y GBP, y conversión de im
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6803/swagger |
 | Colección Bruno | `collections/tesoreria` |
 

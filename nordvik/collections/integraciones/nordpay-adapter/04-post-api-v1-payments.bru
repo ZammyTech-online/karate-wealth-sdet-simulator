@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v1/payments
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{nordpayAdapterUrl}}/api/v1/payments
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "msgId": "valor",
+    "endToEndId": "valor",
+    "amount": "valor",
+    "creditorIban": "valor",
+    "creditorName": "valor",
+    "remittance": "valor",
+    "requestedDate": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordpay-adapter.md
+}

@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/hash/canonical
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{hashServiceUrl}}/api/v1/hash/canonical
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "json": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/hash-service.md
+}

@@ -1,0 +1,34 @@
+meta {
+  name: POST /api/v1/portfolios
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{portfolioServiceUrl}}/api/v1/portfolios
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "name": "valor",
+    "type": "valor",
+    "targetAllocation": "valor",
+    "externalRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/portfolio-service.md
+}

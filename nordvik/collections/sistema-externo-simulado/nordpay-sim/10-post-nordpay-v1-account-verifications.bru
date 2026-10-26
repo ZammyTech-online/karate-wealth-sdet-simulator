@@ -1,0 +1,32 @@
+meta {
+  name: POST /nordpay/v1/account-verifications
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{nordpaySimUrl}}/nordpay/v1/account-verifications
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "iban": "valor",
+    "nationalId": "valor",
+    "name": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/nordpay-sim.md
+}

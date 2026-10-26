@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/portfolios
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{portfolioServiceUrl}}/api/v1/internal/portfolios
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/portfolio-service.md
+}

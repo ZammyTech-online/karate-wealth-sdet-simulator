@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/templates/{key}
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{messageTemplateServiceUrl}}/api/v1/templates/{key}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/message-template-service.md
+}

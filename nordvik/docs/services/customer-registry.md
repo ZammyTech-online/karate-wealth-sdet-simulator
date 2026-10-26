@@ -11,6 +11,8 @@ Alta, consulta, modificación (con If-Match) y cierre de clientes. Enmascara el 
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service, sequence-service, permission-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6300/swagger |
 | Colección Bruno | `collections/clientes` |
 

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/customers/{customerId}/cash
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{cashManagementUrl}}/api/v1/internal/customers/{customerId}/cash
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/cash-management.md
+}

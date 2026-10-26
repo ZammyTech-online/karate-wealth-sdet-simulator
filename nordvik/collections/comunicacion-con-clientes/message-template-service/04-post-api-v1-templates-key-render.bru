@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/templates/{key}/render
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{messageTemplateServiceUrl}}/api/v1/templates/{key}/render
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "language": "valor",
+    "version": 1,
+    "vars": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/message-template-service.md
+}

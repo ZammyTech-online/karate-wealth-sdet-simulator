@@ -1,0 +1,24 @@
+meta {
+  name: POST /_test/contracts/{id}/bump-template
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{contractServiceUrl}}/_test/contracts/{id}/bump-template
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-service.md
+}

@@ -11,6 +11,8 @@ Escenarios precargados: cliente básico, cliente con cartera, cliente jubilado. 
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | iam-service, synthetic-person-service, customer-registry, customer-address-service, portfolio-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6010/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

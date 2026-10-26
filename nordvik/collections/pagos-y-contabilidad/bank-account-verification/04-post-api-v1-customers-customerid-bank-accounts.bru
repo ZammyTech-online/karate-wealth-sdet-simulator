@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/customers/{customerId}/bank-accounts
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{bankAccountVerificationUrl}}/api/v1/customers/{customerId}/bank-accounts
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "iban": "valor",
+    "label": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/bank-account-verification.md
+}

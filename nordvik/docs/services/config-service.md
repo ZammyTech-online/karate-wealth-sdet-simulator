@@ -11,6 +11,8 @@ Valores de configuración de cada servicio (horas de corte, límites, TTL) con v
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | clock-service |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6102/swagger |
 | Colección Bruno | `collections/plataforma` |
 

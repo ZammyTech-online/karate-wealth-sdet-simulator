@@ -1,0 +1,24 @@
+meta {
+  name: DELETE /api/v1/documents/{id}
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{documentVaultUrl}}/api/v1/documents/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/document-vault.md
+}

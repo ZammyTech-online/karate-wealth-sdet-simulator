@@ -1,0 +1,24 @@
+meta {
+  name: GET /health
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{positionKeepingUrl}}/health
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/position-keeping.md
+}

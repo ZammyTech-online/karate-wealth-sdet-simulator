@@ -1,0 +1,24 @@
+meta {
+  name: GET /feed/v1/nav
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{pricefeedSimUrl}}/feed/v1/nav
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/pricefeed-sim.md
+}

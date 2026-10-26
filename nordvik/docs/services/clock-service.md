@@ -11,6 +11,8 @@ Reloj virtual del sistema. Todos los servicios preguntan aquí la hora; tus test
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
 | Depende de | — |
+| Publica eventos | — |
+| Consume eventos | — |
 | Swagger | http://localhost:6003/swagger |
 | Colección Bruno | `collections/plataforma-de-datos-de-prueba` |
 

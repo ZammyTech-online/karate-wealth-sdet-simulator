@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/texts/customer-message
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{textFactoryUrl}}/api/v1/texts/customer-message
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "scenario": "valor",
+    "language": "valor",
+    "includePii": "valor",
+    "seed": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/text-factory.md
+}
