@@ -1,0 +1,24 @@
+meta {
+  name: PUT /api/v1/archive/{id}
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{archiveServiceUrl}}/api/v1/archive/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/archive-service.md
+}

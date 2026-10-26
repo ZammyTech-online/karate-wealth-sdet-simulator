@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/transcripts/{callId}
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{transcriptionServiceUrl}}/api/v1/transcripts/{callId}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/transcription-service.md
+}

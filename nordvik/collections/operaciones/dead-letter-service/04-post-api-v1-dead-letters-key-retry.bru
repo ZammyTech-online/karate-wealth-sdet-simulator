@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/dead-letters/{key}/retry
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{deadLetterServiceUrl}}/api/v1/dead-letters/{key}/retry
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/dead-letter-service.md
+}

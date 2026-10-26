@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/erasure-requests
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{erasureOrchestratorUrl}}/api/v1/erasure-requests
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/erasure-orchestrator.md
+}

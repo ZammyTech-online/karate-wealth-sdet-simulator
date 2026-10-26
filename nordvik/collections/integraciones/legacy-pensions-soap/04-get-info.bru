@@ -1,0 +1,24 @@
+meta {
+  name: GET /info
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{legacyPensionsSoapUrl}}/info
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/legacy-pensions-soap.md
+}

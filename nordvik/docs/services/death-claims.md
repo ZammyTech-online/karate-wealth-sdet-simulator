@@ -10,7 +10,7 @@ Reclamaciones por fallecimiento: congelación de planes, suspensión de cobros, 
 | Oleada | 3 |
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
-| Depende de | pension-plan-service, payout-planner, beneficiary-service, valuation-service, customer-registry, clock-service |
+| Depende de | pension-plan-service, payout-planner, beneficiary-service, valuation-service, customer-registry, insurance-policy, clock-service |
 | Publica eventos | `death-claim.opened`, `death-claim.verified`, `death-claim.settled` |
 | Consume eventos | — |
 | Swagger | http://localhost:7113/swagger |

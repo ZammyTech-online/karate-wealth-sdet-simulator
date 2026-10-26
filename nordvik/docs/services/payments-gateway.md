@@ -16,7 +16,7 @@ Ingresos con referencia OCR y retiradas con Idempotency-Key, step-up (acr=high) 
 | Swagger | http://localhost:7000/swagger |
 | Colección Bruno | `collections/pagos-y-contabilidad` |
 
-## Endpoints (11)
+## Endpoints (13)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -24,6 +24,8 @@ Ingresos con referencia OCR y retiradas con Idempotency-Key, step-up (acr=high) 
 | `GET` | `/api/v1/customers/{customerId}/payments` |  |
 | `POST` | `/api/v1/deposits` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `GET` | `/api/v1/payments/{id}` |  |
 | `GET` | `/api/v1/unmatched-credits` |  |
@@ -89,6 +91,40 @@ Ingresos con referencia OCR y retiradas con Idempotency-Key, step-up (acr=high) 
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

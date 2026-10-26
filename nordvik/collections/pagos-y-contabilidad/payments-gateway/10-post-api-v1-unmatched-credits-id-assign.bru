@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/unmatched-credits/{id}/assign
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{paymentsGatewayUrl}}/api/v1/unmatched-credits/{id}/assign
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/payments-gateway.md
+}

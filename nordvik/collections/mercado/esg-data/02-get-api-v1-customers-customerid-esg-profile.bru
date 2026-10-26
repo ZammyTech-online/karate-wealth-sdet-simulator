@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/customers/{customerId}/esg-profile
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{esgDataUrl}}/api/v1/customers/{customerId}/esg-profile
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/esg-data.md
+}

@@ -1,0 +1,148 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "legacy-mainframe-bridge",
+    "description": "Puente con el mainframe: ficheros de ancho fijo de 80 columnas, lote nocturno en la ventana 02:00-04:00 y códigos de retorno numéricos por línea.\n\nDominio: P-integrations · Equipo: Integraciones · Oleada: 4 · Puerto: 7509\n\nDepende de: pension-plan-service, clock-service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/return-codes": {
+      "get": {
+        "tags": [
+          "Mainframe"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/layouts": {
+      "get": {
+        "tags": [
+          "Mainframe"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/batches/run": {
+      "post": {
+        "tags": [
+          "Mainframe"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/batches/{date}/export": {
+      "get": {
+        "tags": [
+          "Mainframe"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/inbound/balances": {
+      "post": {
+        "tags": [
+          "Mainframe"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/legacy-balances/{planId}": {
+      "get": {
+        "tags": [
+          "Mainframe"
+        ],
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

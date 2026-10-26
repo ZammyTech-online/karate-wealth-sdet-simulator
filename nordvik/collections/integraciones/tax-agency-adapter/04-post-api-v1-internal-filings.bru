@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/internal/filings
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{taxAgencyAdapterUrl}}/api/v1/internal/filings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "year": 1,
+    "kind": "valor",
+    "lines": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-agency-adapter.md
+}

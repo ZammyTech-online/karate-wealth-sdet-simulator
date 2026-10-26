@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/devices/{id}/revoke
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{deviceTrustUrl}}/api/v1/devices/{id}/revoke
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/device-trust.md
+}

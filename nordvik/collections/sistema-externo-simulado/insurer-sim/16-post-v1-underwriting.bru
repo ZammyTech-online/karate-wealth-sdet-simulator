@@ -1,0 +1,36 @@
+meta {
+  name: POST /v1/underwriting
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{insurerSimUrl}}/v1/underwriting
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "applicantRef": "valor",
+    "age": 1,
+    "capital": "valor",
+    "smoker": "valor",
+    "bmi": 1,
+    "conditions": "valor",
+    "hospitalizedLast5y": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurer-sim.md
+}

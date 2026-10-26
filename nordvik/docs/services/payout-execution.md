@@ -1,6 +1,6 @@
 # payout-execution
 
-Ejecución mensual de pagos de pensión: bruto, retención provisional del 30 %, neto y asiento contable; idempotente por plan y mes, salta planes congelados.
+Ejecución mensual de pagos de pensión: bruto, retención según tax-withholding (30 % provisional si no responde), neto y asiento; idempotente por plan y mes.
 
 | Dato | Valor |
 | --- | --- |
@@ -10,18 +10,19 @@ Ejecución mensual de pagos de pensión: bruto, retención provisional del 30 %,
 | Oleada | 3 |
 | Versión | 1.0.0 |
 | Convención JSON | CamelCase |
-| Depende de | payout-planner, pension-plan-service, ledger-service, permission-service, clock-service |
+| Depende de | payout-planner, pension-plan-service, tax-withholding, ledger-service, permission-service, clock-service |
 | Publica eventos | `payout.paid`, `payout-run.completed` |
 | Consume eventos | — |
 | Swagger | http://localhost:7111/swagger |
 | Colección Bruno | `collections/pensiones` |
 
-## Endpoints (7)
+## Endpoints (8)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
+| `GET` | `/api/v1/internal/payments` |  |
 | `GET` | `/api/v1/payout-plans/{id}/payments` |  |
 | `POST` | `/api/v1/payout-runs` |  |
 | `GET` | `/api/v1/payout-runs/{id}` |  |
@@ -55,6 +56,24 @@ Ejecución mensual de pagos de pensión: bruto, retención provisional del 30 %,
 | --- | --- | --- | --- |
 | `after` | query | integer (int64) | no |
 | `limit` | query | integer (int32) | no |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### GET /api/v1/internal/payments
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `year` | query | string | no |
+| `customerId` | query | string | no |
 
 **Respuestas**
 

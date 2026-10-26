@@ -1,0 +1,34 @@
+meta {
+  name: PUT /api/v1/flags/{key}
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{featureFlagsUrl}}/api/v1/flags/{key}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "enabled": "valor",
+    "percentage": 1,
+    "allowCustomers": "valor",
+    "denyCustomers": "valor",
+    "description": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/feature-flags.md
+}

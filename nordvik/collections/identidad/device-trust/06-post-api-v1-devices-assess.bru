@@ -1,0 +1,35 @@
+meta {
+  name: POST /api/v1/devices/assess
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{deviceTrustUrl}}/api/v1/devices/assess
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "platform": "valor",
+    "userAgent": "valor",
+    "screen": "valor",
+    "timezone": "valor",
+    "name": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/device-trust.md
+}

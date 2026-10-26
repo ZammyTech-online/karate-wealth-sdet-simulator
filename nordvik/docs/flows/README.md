@@ -1,4 +1,4 @@
-# Flujos de negocio de Nordvik (oleadas 1 a 3)
+# Flujos de negocio de Nordvik (oleadas 1 a 4)
 
 Cada flujo dice **quién llama a quién**, **qué evento sale** y **dónde lo pruebas**. Los eventos viajan siempre igual:
 el productor los escribe en su *outbox* → `outbox-relay` (7401) los publica en `event-bus` (7400) → cada consumidor los
@@ -15,3 +15,7 @@ en tus tests se espera con `retry until` (academia L18).
 | [F-06 · Fichero mensual de un empleador](F-06-fichero-empleador.md) | Webhook firmado del clearing → validación línea a línea → aportaciones → acuse | `EmployerPensionTests` | — |
 | [F-07 · Traspaso entrante](F-07-traspaso.md) | Saga con valoración en días virtuales, firma mutua, aprobación y tolerancia del 2 % | `TransferTests` | — |
 | [F-08 · Cobro y fallecimiento](F-08-cobro-y-fallecimiento.md) | Renta mensual con retención, congelación y reparto entre beneficiarios | `PayoutTests`, `DeathClaimTests` | — |
+| [F-09 · Seguro ligado a la pensión](F-09-seguro-ligado-a-la-pension.md) | Cuestionario efímero, suscripción OAuth2 con la aseguradora, póliza, siniestro y pago | `InsuranceTests` | — |
+| [F-10 · Fiscalidad](F-10-fiscalidad.md) | Retención por tabla municipal o SINK, informe anual a la Agencia, certificados y extractos | `TaxTests` | — |
+| [F-11 · Derechos RGPD](F-11-derechos-rgpd.md) | Borrado con crypto-shredding, acceso y portabilidad, brechas en 72 h | `DataRightsTests`, `GovernanceTests` | — |
+| [F-12 · Sistemas heredados](F-12-sistemas-heredados.md) | Mainframe de ancho fijo con códigos rc y pensiones antiguas en SOAP | `LegacyAndQualityTests` | — |

@@ -1,6 +1,6 @@
 # chaos-control
 
-Inyecta latencia y errores en cualquier servicio (faults con probabilidad, veces y caducidad) y gestiona el catálogo de trampas T1-T20.
+Inyecta latencia y errores en cualquier servicio (faults con probabilidad, veces y caducidad) y gestiona el catálogo de trampas T1-T30.
 
 | Dato | Valor |
 | --- | --- |

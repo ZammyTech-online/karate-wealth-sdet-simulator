@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/outbox
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{executionServiceUrl}}/api/v1/internal/outbox
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/execution-service.md
+}

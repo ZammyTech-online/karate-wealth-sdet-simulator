@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/insurance-policies/{id}
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{insurancePolicyUrl}}/api/v1/insurance-policies/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurance-policy.md
+}

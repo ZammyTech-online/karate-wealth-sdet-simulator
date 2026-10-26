@@ -16,12 +16,14 @@ Transcripción con hablantes y tiempos, redactada ([NATIONAL_ID], [IBAN], [HEALT
 | Swagger | http://localhost:6607/swagger |
 | Colección Bruno | `collections/asesoramiento-y-comunicacion` |
 
-## Endpoints (9)
+## Endpoints (11)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `DELETE` | `/api/v1/internal/transcripts/{callId}` |  |
 | `GET` | `/api/v1/transcripts/{callId}` |  |
@@ -50,6 +52,40 @@ Transcripción con hablantes y tiempos, redactada ([NATIONAL_ID], [IBAN], [HEALT
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

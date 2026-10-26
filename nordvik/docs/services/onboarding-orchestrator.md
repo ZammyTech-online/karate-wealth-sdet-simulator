@@ -16,12 +16,14 @@ Saga de alta F1 en 8 pasos con compensación; queda AWAITING_SIGNATURE hasta que
 | Swagger | http://localhost:6305/swagger |
 | Colección Bruno | `collections/clientes` |
 
-## Endpoints (7)
+## Endpoints (9)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `POST` | `/api/v1/onboardings` |  |
 | `GET` | `/api/v1/onboardings/{id}` |  |
@@ -48,6 +50,40 @@ Saga de alta F1 en 8 pasos con compensación; queda AWAITING_SIGNATURE hasta que
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

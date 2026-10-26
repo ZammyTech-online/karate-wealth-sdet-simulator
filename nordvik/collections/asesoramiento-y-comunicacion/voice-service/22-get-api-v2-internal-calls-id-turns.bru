@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v2/internal/calls/{id}/turns
+  type: http
+  seq: 22
+}
+
+get {
+  url: {{voiceServiceUrl}}/api/v2/internal/calls/{id}/turns
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/voice-service.md
+}

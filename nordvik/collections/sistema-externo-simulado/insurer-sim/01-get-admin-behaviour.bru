@@ -1,0 +1,24 @@
+meta {
+  name: GET /__admin/behaviour
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{insurerSimUrl}}/__admin/behaviour
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurer-sim.md
+}

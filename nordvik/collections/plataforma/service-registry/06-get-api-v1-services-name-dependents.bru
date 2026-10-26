@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/services/{name}/dependents
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{serviceRegistryUrl}}/api/v1/services/demo/dependents
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/service-registry.md
+}

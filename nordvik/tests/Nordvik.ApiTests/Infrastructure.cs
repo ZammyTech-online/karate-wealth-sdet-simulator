@@ -152,6 +152,9 @@ public static class Ports
     public const int InsurancePolicies = 7200, HealthDeclarations = 7201, Premiums = 7202, InsuranceClaims = 7203;
     public const int Withholding = 7300, TaxReports = 7301, AnnualStatements = 7302, Statements = 7303, Analytics = 7304;
     public const int TaxAgencyAdapter = 7507, InsurerAdapter = 7508, TaxAgencySim = 7708, InsurerSim = 7711;
+    public const int ServiceRegistry = 6110, SchemaRegistry = 6111, FeatureFlags = 6112, Delegations = 6207, Devices = 6208, Segments = 6309;
+    public const int Complaints = 6407, RegReports = 6408, Erasure = 6507, Dsar = 6508, Breaches = 6509, Archive = 6707, Esg = 6808;
+    public const int DeadLetters = 7406, Mainframe = 7509, LegacySoap = 7510, ContractCheck = 7603, TestInsights = 7604;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
@@ -168,6 +171,8 @@ public static class Ports
         PublicPensionAdapter, ClearingAdapter, ProviderAdapter, PublicPensionSim, ClearingSim, ProviderSim,
         InsurancePolicies, HealthDeclarations, Premiums, InsuranceClaims, Withholding, TaxReports, AnnualStatements, Statements, Analytics,
         TaxAgencyAdapter, InsurerAdapter, TaxAgencySim, InsurerSim,
+        ServiceRegistry, SchemaRegistry, FeatureFlags, Delegations, Devices, Segments, Complaints, RegReports, Erasure, Dsar, Breaches, Archive, Esg,
+        DeadLetters, Mainframe, LegacySoap, ContractCheck, TestInsights,
     };
 }
 

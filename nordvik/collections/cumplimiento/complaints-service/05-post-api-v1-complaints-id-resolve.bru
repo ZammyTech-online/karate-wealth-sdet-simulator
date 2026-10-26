@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/complaints/{id}/resolve
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{complaintsServiceUrl}}/api/v1/complaints/{id}/resolve
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "outcome": "valor",
+    "explanation": "valor",
+    "compensation": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/complaints-service.md
+}

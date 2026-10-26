@@ -1,0 +1,26 @@
+meta {
+  name: 00 · Login (guarda el token)
+  type: http
+  seq: 0
+}
+
+post {
+  url: http://localhost:6200/api/v1/oauth/token
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  grant_type: password
+  username: asesor.erik
+  password: Erik2026!
+}
+
+script:post-response {
+  bru.setEnvVar("token", res.body.access_token);
+}
+
+docs {
+  Ejecútalo primero: guarda el token (5 minutos de reloj virtual) en la variable token del entorno.
+  Usuarios: cliente.ana / Ana2026!, asesor.erik / Erik2026!, operaciones.olof / Olof2026!, compliance.karin / Karin2026!, admin / Admin2026!
+}

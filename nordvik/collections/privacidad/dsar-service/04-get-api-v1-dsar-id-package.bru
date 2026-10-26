@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/dsar/{id}/package
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{dsarServiceUrl}}/api/v1/dsar/{id}/package
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/dsar-service.md
+}

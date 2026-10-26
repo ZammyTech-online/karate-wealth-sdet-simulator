@@ -1,0 +1,34 @@
+meta {
+  name: POST /api/v1/premiums/quote
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{premiumCalculatorUrl}}/api/v1/premiums/quote
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "age": 1,
+    "capital": "valor",
+    "coverage": "valor",
+    "loadingPct": 1,
+    "termYears": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/premium-calculator.md
+}

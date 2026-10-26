@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/regulatory-reports
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{regulatoryReportingUrl}}/api/v1/regulatory-reports
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "date": "valor",
+    "month": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/regulatory-reporting.md
+}

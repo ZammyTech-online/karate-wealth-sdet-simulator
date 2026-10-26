@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/withholding/calculate
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{taxWithholdingUrl}}/api/v1/withholding/calculate
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "gross": "valor",
+    "incomeType": "valor",
+    "year": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-withholding.md
+}

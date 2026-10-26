@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/insurance-claims
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{insuranceClaimsUrl}}/api/v1/insurance-claims
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "policyId": "valor",
+    "type": "valor",
+    "eventDate": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurance-claims.md
+}

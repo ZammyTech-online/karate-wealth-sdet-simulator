@@ -16,12 +16,14 @@ Resumen de 5 líneas sin PII (comprobado con redaction-service) de cada llamada,
 | Swagger | http://localhost:6609/swagger |
 | Colección Bruno | `collections/asesoramiento-y-comunicacion` |
 
-## Endpoints (6)
+## Endpoints (8)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `GET` | `/api/v1/summaries/{callId}` |  |
 | `GET` | `/health` |  |
@@ -47,6 +49,40 @@ Resumen de 5 líneas sin PII (comprobado con redaction-service) de cada llamada,
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

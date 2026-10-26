@@ -16,13 +16,15 @@ Tokenización de datos personales: cifrados con la clave del cliente, detokeniza
 | Swagger | http://localhost:6500/swagger |
 | Colección Bruno | `collections/privacidad-y-proteccion-de-datos` |
 
-## Endpoints (11)
+## Endpoints (13)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v1/customers/{customerId}/tokens` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `POST` | `/api/v1/internal/tokens/{token}/detokenize` |  |
 | `GET` | `/api/v1/purposes` |  |
@@ -69,6 +71,40 @@ Tokenización de datos personales: cifrados con la clave del cliente, detokeniza
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/checks
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{contractCheckUrl}}/api/v1/checks
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-check.md
+}

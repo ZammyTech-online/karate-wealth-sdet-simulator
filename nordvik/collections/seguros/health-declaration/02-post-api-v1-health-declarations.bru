@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/health-declarations
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{healthDeclarationUrl}}/api/v1/health-declarations
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "consentToProcessHealthData": "valor",
+    "answers": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/health-declaration.md
+}

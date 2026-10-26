@@ -1,0 +1,24 @@
+meta {
+  name: POST /__admin/tokens/expire-all
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{insurerSimUrl}}/__admin/tokens/expire-all
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurer-sim.md
+}

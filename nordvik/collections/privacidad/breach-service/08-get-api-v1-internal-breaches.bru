@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/breaches
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{breachServiceUrl}}/api/v1/internal/breaches
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/breach-service.md
+}

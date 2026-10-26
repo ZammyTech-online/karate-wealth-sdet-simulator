@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/segments/simulate
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{segmentationServiceUrl}}/api/v1/segments/simulate
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "assets": "valor",
+    "age": 1,
+    "hasEmployerPlan": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/segmentation-service.md
+}

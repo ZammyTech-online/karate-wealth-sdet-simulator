@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/tax-reports
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{taxReportingUrl}}/api/v1/tax-reports
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "year": 1,
+    "kind": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-reporting.md
+}

@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/dead-letters/{key}/discard
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{deadLetterServiceUrl}}/api/v1/dead-letters/{key}/discard
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/dead-letter-service.md
+}

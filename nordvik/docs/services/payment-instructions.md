@@ -16,7 +16,7 @@ Instrucciones de pago hacia NordPay: identificadores ISO 20022, cola de reintent
 | Swagger | http://localhost:7001/swagger |
 | Colección Bruno | `collections/pagos-y-contabilidad` |
 
-## Endpoints (8)
+## Endpoints (10)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -25,6 +25,8 @@ Instrucciones de pago hacia NordPay: identificadores ISO 20022, cola de reintent
 | `POST` | `/api/v1/instructions` |  |
 | `GET` | `/api/v1/instructions/{id}` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `GET` | `/health` |  |
 | `GET` | `/info` |  |
@@ -106,6 +108,40 @@ Instrucciones de pago hacia NordPay: identificadores ISO 20022, cola de reintent
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

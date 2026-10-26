@@ -1,7 +1,7 @@
 {
   "name": "completo",
   "wave": 4,
-  "description": "Oleadas 0 a 4 · niveles 11 y 12: la empresa completa. Todo lo de nivel-9 más seguros (pólizas, declaración de salud efímera, primas, siniestros) con la aseguradora (E11), fiscalidad (retenciones, informe anual, certificados, extractos, analítica anonimizada) con la Agencia Tributaria (E8), y el resto de la oleada 4.",
+  "description": "Oleadas 0 a 4 · niveles 11 y 12: la empresa completa. Todo lo de nivel-9 más seguros (pólizas, declaración de salud efímera, primas, siniestros) con la aseguradora (E11), fiscalidad (retenciones, informe anual, certificados, extractos, analítica anonimizada) con la Agencia Tributaria (E8), y el resto de la oleada 4, registro de servicios y de esquemas, feature flags, apoderados y dispositivos de confianza, segmentación, reclamaciones e informes al supervisor, borrado, acceso y brechas (RGPD), archivo legal inmutable, ESG, mensajes muertos, el mainframe (ancho fijo) y el sistema de pensiones SOAP, y la calidad (contract-check y test-insights).",
   "learningMode": true,
   "ramBudgetMb": 2000,
   "services": [
@@ -154,6 +154,24 @@
     "tax-agency-adapter",
     "insurer-adapter",
     "tax-agency-sim",
-    "insurer-sim"
+    "insurer-sim",
+    "service-registry",
+    "schema-registry",
+    "feature-flags",
+    "delegation-service",
+    "device-trust",
+    "segmentation-service",
+    "complaints-service",
+    "regulatory-reporting",
+    "erasure-orchestrator",
+    "dsar-service",
+    "breach-service",
+    "archive-service",
+    "esg-data",
+    "dead-letter-service",
+    "legacy-mainframe-bridge",
+    "legacy-pensions-soap",
+    "contract-check",
+    "test-insights"
   ]
 }

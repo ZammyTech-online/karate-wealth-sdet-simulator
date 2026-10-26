@@ -48,6 +48,50 @@
         }
       }
     },
+    "/api/v1/internal/consumer/retry/{eventId}": {
+      "post": {
+        "tags": [
+          "Interno"
+        ],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/internal/consumer/failures/{eventId}": {
+      "delete": {
+        "tags": [
+          "Interno"
+        ],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/v1/internal/transcripts/{callId}": {
       "delete": {
         "tags": [

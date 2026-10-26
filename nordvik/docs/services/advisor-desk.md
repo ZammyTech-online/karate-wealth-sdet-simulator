@@ -16,7 +16,7 @@ Expediente de asesoramiento: datos confirmados en llamadas (con evidencia), idon
 | Swagger | http://localhost:6603/swagger |
 | Colección Bruno | `collections/asesoramiento-y-comunicacion` |
 
-## Endpoints (10)
+## Endpoints (12)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -25,6 +25,8 @@ Expediente de asesoramiento: datos confirmados en llamadas (con evidencia), idon
 | `GET` | `/api/v1/customers/{customerId}/recommendations` |  |
 | `POST` | `/api/v1/customers/{customerId}/recommendations` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `POST` | `/api/v1/recommendations/{id}/accept` |  |
 | `POST` | `/api/v1/recommendations/{id}/decline` |  |
@@ -110,6 +112,40 @@ Expediente de asesoramiento: datos confirmados en llamadas (con evidencia), idon
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

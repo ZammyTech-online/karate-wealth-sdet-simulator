@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/portfolios/{portfolioId}/movements
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{positionKeepingUrl}}/api/v1/portfolios/{portfolioId}/movements
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/position-keeping.md
+}

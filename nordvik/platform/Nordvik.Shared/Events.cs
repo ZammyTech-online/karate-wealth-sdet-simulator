@@ -71,6 +71,8 @@ public sealed class EventConsumer
     public long Processed { get; private set; }
     public string? LastError { get; private set; }
     private static readonly ConcurrentDictionary<string, EventConsumer> All = new();
+    /// <summary>Servicios de este anfitrión que consumen eventos (dead-letter-service los recorre).</summary>
+    public static IReadOnlyCollection<string> ConsumerNames => All.Keys.ToList();
 
     private EventConsumer(ServiceContext ctx, string name, string[] topics, Func<EventEnvelope, Task> handle)
     {
@@ -95,6 +97,35 @@ public sealed class EventConsumer
                 .Select(f => new { eventId = f.EventId, topic = f.Topic, attempts = f.Attempts, lastError = f.LastError }).ToList();
             return Results.Ok(new { consumer = c._name, topics = c._topics, cursor = seq, processed = c.Processed, lastError = c.LastError, failures });
         }).WithTags("Interno").WithSummary("Estado del consumidor de eventos de este servicio");
+        // dead-letter-service: reintentar a mano un evento que este consumidor no pudo procesar, o descartarlo
+        app.MapPost("/api/v1/internal/consumer/retry/{eventId}", async (HttpContext http, string eventId) =>
+        {
+            var r = await Downstream.Send(null, "event-bus", HttpMethod.Get, $"/api/v1/events/{eventId}");
+            if (!r.Ok) return Problems.NotFound(http, "EVENT_NOT_FOUND", $"event-bus no tiene el evento {eventId}.", null);
+            var env = r.Json.Deserialize<EventEnvelope>(Canonical.Web)!;
+            using var db = ctx.OpenDb();
+            try
+            {
+                await c._handle(env);
+                db.Execute("INSERT OR IGNORE INTO consumer_processed VALUES (@id, @at)", new { id = eventId, at = DateTimeOffset.UtcNow.ToString("O") });
+                db.Execute("DELETE FROM consumer_failures WHERE event_id = @id", new { id = eventId });
+                c.Processed++;
+                return Results.Ok(new { eventId, retried = true, outcome = "PROCESSED" });
+            }
+            catch (Exception ex)
+            {
+                var err = $"{env.Topic} {eventId}: {ex.GetType().Name} {ex.Message}";
+                db.Execute(@"INSERT INTO consumer_failures VALUES (@id, @topic, 1, @err) ON CONFLICT(event_id) DO UPDATE SET attempts = attempts + 1, last_error = excluded.last_error",
+                    new { id = eventId, topic = env.Topic, err });
+                return Problems.Unprocessable(http, "RETRY_FAILED", "El evento sigue fallando: " + err, "Corrige el dato o la causa y vuelve a intentarlo, o descártalo.");
+            }
+        }).WithTags("Interno").WithSummary("Reintentar un evento fallido (dead-letter-service)");
+        app.MapDelete("/api/v1/internal/consumer/failures/{eventId}", (HttpContext http, string eventId) =>
+        {
+            using var db = ctx.OpenDb();
+            var n = db.Execute("DELETE FROM consumer_failures WHERE event_id = @id", new { id = eventId });
+            return n == 0 ? Problems.NotFound(http, "FAILURE_NOT_FOUND", $"No hay fallo registrado para {eventId}.", null) : Results.Ok(new { eventId, discarded = true });
+        }).WithTags("Interno").WithSummary("Descartar un evento fallido (dead-letter-service)");
         return c;
     }
 

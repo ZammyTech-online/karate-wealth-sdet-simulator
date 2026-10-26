@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "chaos-control",
-    "description": "Inyecta latencia y errores en cualquier servicio (faults con probabilidad, veces y caducidad) y gestiona el catálogo de trampas T1-T20.\n\nDominio: Q-quality · Equipo: Calidad y test · Oleada: 3 · Puerto: 7600",
+    "description": "Inyecta latencia y errores en cualquier servicio (faults con probabilidad, veces y caducidad) y gestiona el catálogo de trampas T1-T30.\n\nDominio: Q-quality · Equipo: Calidad y test · Oleada: 3 · Puerto: 7600",
     "version": "1.0.0"
   },
   "paths": {

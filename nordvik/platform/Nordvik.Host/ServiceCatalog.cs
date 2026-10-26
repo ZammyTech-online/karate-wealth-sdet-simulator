@@ -42,6 +42,9 @@ public static class ServiceCatalog
         new PremiumCalculator(), new HealthDeclaration(), new InsurancePolicy(), new InsuranceClaims(),
         new TaxWithholding(), new TaxReporting(), new AnnualStatement(), new StatementService(), new AnalyticsReporting(),
         new TaxAgencyAdapter(), new InsurerAdapter(),
+        new ServiceRegistry(), new SchemaRegistry(), new FeatureFlags(), new DelegationService(), new DeviceTrust(), new SegmentationService(),
+        new ComplaintsService(), new RegulatoryReporting(), new ErasureOrchestrator(), new DsarService(), new BreachService(), new ArchiveService(), new EsgData(),
+        new DeadLetterService(), new LegacyMainframeBridge(), new LegacyPensionsSoap(), new ContractCheck(), new TestInsights(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
         new NordIdSim(), new PopulationSim(), new SanctionScreenSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(), new TelephonySim(),
         new PublicPensionSim(), new EmployerClearingSim(), new ProviderNetworkSim(),

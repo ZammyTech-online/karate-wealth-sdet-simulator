@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/refunds
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{refundsReturnsUrl}}/api/v1/refunds
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "entryId": "valor",
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/refunds-returns.md
+}

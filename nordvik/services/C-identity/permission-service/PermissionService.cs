@@ -41,7 +41,7 @@ public sealed class PermissionService : INordvikService
         "Customer" => action is "customer:create" or "customer:close" ? "NONE" : "OWN",
         // Cuentas de máquina (client_credentials): solo lo que necesitan las sagas internas
         "Service" => action is "order:create" or "order:read" or "order:cancel" or "position:read" or "cash:read" or "portfolio:read" or "portfolio:create" or "portfolio:close"
-                     or "customer:read" or "customer:close" or "contract:create" or "contract:read" or "bank-account:read" or "bank-account:write" or "address:write" or "contact:write" ? "ALL" : "NONE",
+                     or "customer:read" or "customer:close" or "contract:create" or "contract:read" or "bank-account:read" or "bank-account:write" or "address:write" or "contact:write" or "preferences:write" ? "ALL" : "NONE",
         _ => "NONE",
     };
 

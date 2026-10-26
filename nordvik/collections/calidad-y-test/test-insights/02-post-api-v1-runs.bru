@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/runs
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{testInsightsUrl}}/api/v1/runs
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "suite": "valor",
+    "environment": "valor",
+    "commit": "valor",
+    "results": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/test-insights.md
+}

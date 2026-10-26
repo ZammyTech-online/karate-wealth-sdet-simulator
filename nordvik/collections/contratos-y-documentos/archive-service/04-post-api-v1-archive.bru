@@ -1,0 +1,35 @@
+meta {
+  name: POST /api/v1/archive
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{archiveServiceUrl}}/api/v1/archive
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "sourceService": "valor",
+    "documentType": "valor",
+    "content": "valor",
+    "customerId": "valor",
+    "retentionYears": 1,
+    "reference": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/archive-service.md
+}

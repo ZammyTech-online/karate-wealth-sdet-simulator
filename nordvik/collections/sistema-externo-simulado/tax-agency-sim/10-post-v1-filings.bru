@@ -1,0 +1,33 @@
+meta {
+  name: POST /v1/filings
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{taxAgencySimUrl}}/v1/filings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "reporter": "valor",
+    "year": 1,
+    "kind": "valor",
+    "lines": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-agency-sim.md
+}

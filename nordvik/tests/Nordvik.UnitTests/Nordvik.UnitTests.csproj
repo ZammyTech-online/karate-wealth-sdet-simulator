@@ -12,6 +12,16 @@
     <ProjectReference Include="../../platform/Nordvik.Shared/Nordvik.Shared.csproj" />
     <ProjectReference Include="../../services/A-utilities/uuid-service/UuidService.csproj" />
     <ProjectReference Include="../../services/I-market/market-data/MarketData.csproj" />
+    <ProjectReference Include="../../services/B-platform/schema-registry/SchemaRegistry.csproj" />
+    <ProjectReference Include="../../services/B-platform/feature-flags/FeatureFlags.csproj" />
+    <ProjectReference Include="../../services/E-compliance/complaints-service/ComplaintsService.csproj" />
+    <ProjectReference Include="../../services/P-integrations/legacy-mainframe-bridge/LegacyMainframeBridge.csproj" />
+    <ProjectReference Include="../../services/P-integrations/legacy-pensions-soap/LegacyPensionsSoap.csproj" />
+    <ProjectReference Include="../../services/Q-quality/test-insights/TestInsights.csproj" />
+    <ProjectReference Include="../../services/Q-quality/contract-check/ContractCheck.csproj" />
+    <ProjectReference Include="../../services/D-customer/segmentation-service/SegmentationService.csproj" />
+    <ProjectReference Include="../../services/C-identity/delegation-service/DelegationService.csproj" />
+    <ProjectReference Include="../../services/H-contracts/archive-service/ArchiveService.csproj" />
     <ProjectReference Include="../../services/M-insurance/premium-calculator/PremiumCalculator.csproj" />
     <ProjectReference Include="../../services/N-tax/statement-service/StatementService.csproj" />
     <ProjectReference Include="../../services/N-tax/analytics-reporting/AnalyticsReporting.csproj" />

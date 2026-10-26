@@ -1,0 +1,24 @@
+meta {
+  name: DELETE /api/v1/cache
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{taxAgencyAdapterUrl}}/api/v1/cache
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-agency-adapter.md
+}

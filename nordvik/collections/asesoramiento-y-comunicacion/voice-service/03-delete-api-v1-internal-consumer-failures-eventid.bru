@@ -1,0 +1,24 @@
+meta {
+  name: DELETE /api/v1/internal/consumer/failures/{eventId}
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{voiceServiceUrl}}/api/v1/internal/consumer/failures/{eventId}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/voice-service.md
+}

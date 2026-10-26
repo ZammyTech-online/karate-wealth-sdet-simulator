@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/archive-verify
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{archiveServiceUrl}}/api/v1/archive-verify
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/archive-service.md
+}

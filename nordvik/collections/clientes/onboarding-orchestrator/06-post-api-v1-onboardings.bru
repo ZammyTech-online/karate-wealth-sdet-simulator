@@ -1,0 +1,37 @@
+meta {
+  name: POST /api/v1/onboardings
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{onboardingOrchestratorUrl}}/api/v1/onboardings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "person": "valor",
+    "address": "valor",
+    "iban": "valor",
+    "riskProfile": 1,
+    "horizonYears": 1,
+    "esg": "valor",
+    "accountType": "valor",
+    "externalRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/onboarding-orchestrator.md
+}

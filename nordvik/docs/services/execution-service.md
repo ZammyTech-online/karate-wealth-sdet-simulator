@@ -16,7 +16,7 @@ Ejecuciones y liquidaciones del custodio: las enlaza con la orden, las contabili
 | Swagger | http://localhost:6904/swagger |
 | Colección Bruno | `collections/inversiones` |
 
-## Endpoints (7)
+## Endpoints (9)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -24,6 +24,8 @@ Ejecuciones y liquidaciones del custodio: las enlaza con la orden, las contabili
 | `GET` | `/api/v1/executions` |  |
 | `GET` | `/api/v1/executions/{id}` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `GET` | `/health` |  |
 | `GET` | `/info` |  |
@@ -83,6 +85,40 @@ Ejecuciones y liquidaciones del custodio: las enlaza con la orden, las contabili
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

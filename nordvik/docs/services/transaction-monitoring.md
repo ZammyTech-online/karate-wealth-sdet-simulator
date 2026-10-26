@@ -16,7 +16,7 @@ Alertas por patrones: estructuración, transferencias grandes, entrada y salida 
 | Swagger | http://localhost:6404/swagger |
 | Colección Bruno | `collections/cumplimiento-normativo` |
 
-## Endpoints (11)
+## Endpoints (13)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -26,6 +26,8 @@ Alertas por patrones: estructuración, transferencias grandes, entrada y salida 
 | `POST` | `/api/v1/alerts/{id}/close` |  |
 | `GET` | `/api/v1/customers/{customerId}/transactions` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `GET` | `/api/v1/rules` |  |
 | `POST` | `/api/v1/transactions` |  |
@@ -129,6 +131,40 @@ Alertas por patrones: estructuración, transferencias grandes, entrada y salida 
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

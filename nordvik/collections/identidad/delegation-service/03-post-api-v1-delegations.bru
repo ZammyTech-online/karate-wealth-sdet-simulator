@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v1/delegations
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{delegationServiceUrl}}/api/v1/delegations
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "grantorId": "valor",
+    "attorneyId": "valor",
+    "type": "valor",
+    "scopes": "valor",
+    "validFrom": "valor",
+    "validTo": "valor",
+    "documentRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/delegation-service.md
+}

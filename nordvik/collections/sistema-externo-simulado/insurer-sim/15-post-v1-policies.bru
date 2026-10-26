@@ -1,0 +1,34 @@
+meta {
+  name: POST /v1/policies
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{insurerSimUrl}}/v1/policies
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "applicantRef": "valor",
+    "coverage": "valor",
+    "capital": "valor",
+    "monthlyPremium": "valor",
+    "underwritingId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurer-sim.md
+}

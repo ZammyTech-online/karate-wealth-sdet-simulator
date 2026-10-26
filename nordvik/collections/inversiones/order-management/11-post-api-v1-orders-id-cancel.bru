@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/orders/{id}/cancel
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{orderManagementUrl}}/api/v1/orders/{id}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/order-management.md
+}

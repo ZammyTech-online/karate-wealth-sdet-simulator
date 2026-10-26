@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v2/calls/{id}/chunks
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{voiceServiceUrl}}/api/v2/calls/{id}/chunks
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "[] turn": 1,
+    "[] speaker": "valor",
+    "[] startMs": 1,
+    "[] endMs": 1,
+    "[] text": "valor",
+    "[] confidence": 1,
+    "[] language": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/voice-service.md
+}

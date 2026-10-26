@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/tokens
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{piiVaultUrl}}/api/v1/tokens
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "value": "valor",
+    "customerId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/pii-vault.md
+}

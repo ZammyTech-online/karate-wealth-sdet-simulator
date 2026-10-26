@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/internal/insights/{callId}/{field}/confirm
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{insightExtractionUrl}}/api/v1/internal/insights/{callId}/{field}/confirm
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "accept": "valor",
+    "value": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/insight-extraction.md
+}

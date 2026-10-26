@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/returns
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{refundsReturnsUrl}}/api/v1/returns
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/refunds-returns.md
+}

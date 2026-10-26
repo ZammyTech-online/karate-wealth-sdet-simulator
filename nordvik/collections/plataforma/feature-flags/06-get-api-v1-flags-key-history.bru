@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/flags/{key}/history
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{featureFlagsUrl}}/api/v1/flags/{key}/history
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/feature-flags.md
+}

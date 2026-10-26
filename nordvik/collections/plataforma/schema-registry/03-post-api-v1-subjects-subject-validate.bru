@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/subjects/{subject}/validate
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{schemaRegistryUrl}}/api/v1/subjects/{subject}/validate
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "payload": "valor",
+    "version": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/schema-registry.md
+}

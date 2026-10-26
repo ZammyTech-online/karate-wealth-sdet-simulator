@@ -1,0 +1,24 @@
+meta {
+  name: POST /__admin/reset
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{taxAgencySimUrl}}/__admin/reset
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-agency-sim.md
+}

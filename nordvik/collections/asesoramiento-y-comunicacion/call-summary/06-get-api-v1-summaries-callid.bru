@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/summaries/{callId}
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{callSummaryUrl}}/api/v1/summaries/{callId}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/call-summary.md
+}

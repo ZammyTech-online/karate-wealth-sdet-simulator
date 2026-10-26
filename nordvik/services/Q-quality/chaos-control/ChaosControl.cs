@@ -12,14 +12,14 @@ public sealed record Trap(string Id, string Name, string Symptom, string HowToFi
 /// <summary>
 /// chaos-control: caos deliberado para aprender a depurar. Dos herramientas:
 /// 1) faults: latencia o errores en cualquier servicio/ruta, con probabilidad, número de veces y caducidad (los aplica el middleware de todos los servicios);
-/// 2) traps: el catálogo de trampas del simulador (T1-T20), las que ya son comportamiento del sistema y las activables.
+/// 2) traps: el catálogo de trampas del simulador (T1-T30), las que ya son comportamiento del sistema y las activables.
 /// Para una sola petición basta la cabecera X-Chaos-Scenario: latency=1500;status=503.
 /// </summary>
 public sealed class ChaosControl : INordvikService
 {
     public NordvikServiceInfo Info { get; } = new(
         "chaos-control", "Q-quality", 7600, 3, "Calidad y test",
-        "Inyecta latencia y errores en cualquier servicio (faults con probabilidad, veces y caducidad) y gestiona el catálogo de trampas T1-T20.");
+        "Inyecta latencia y errores en cualquier servicio (faults con probabilidad, veces y caducidad) y gestiona el catálogo de trampas T1-T30.");
 
     public static readonly Trap[] Catalog =
     {
@@ -43,6 +43,17 @@ public sealed class ChaosControl : INordvikService
         new("T18", "Firma sobre el JSON reformateado", "INVALID_SIGNATURE aunque la clave sea correcta", "Firma el texto exacto que se envía (hash-service /hmac)", "SIEMPRE", 2, true),
         new("T19", "Latencia del custodio de 8 s", "Timeouts intermitentes", "configure readTimeout y reintentos; actívala con mock-control", "ACTIVABLE", 3, false),
         new("T20", "Moneda implícita", "Un fondo en EUR se suma a saldos en SEK", "Valida currency en cada importe", "ACTIVABLE", 4, false),
+        // Oleada 4
+        new("T21", "Ancho fijo con relleno", "El id del plan llega con espacios a la derecha y tu comparación falla", "Recorta con trim() y valida la longitud exacta de 80 columnas (legacy-mainframe-bridge)", "SIEMPRE", 4, true),
+        new("T22", "SOAP Fault con HTTP 500", "Un error de negocio llega como 500 y tu test lo trata como caída", "Lee faultcode y detail/errorCode del XML (legacy-pensions-soap)", "SIEMPRE", 4, true),
+        new("T23", "Token OAuth2 de un tercero que caduca", "La aseguradora devuelve 401 aunque nada ha cambiado", "Comprueba que el adaptador renueva una sola vez (insurer-adapter /token-status)", "SIEMPRE", 4, true),
+        new("T24", "Retención distinta por municipio", "El neto de dos pensiones iguales no coincide", "Calcula con el ratePct que devuelve la línea, no con un 30 % fijo", "SIEMPRE", 3, true),
+        new("T25", "k-anonimato: null no es cero", "Un grupo suprimido parece vacío", "suppressed: true y los recuentos a null, nunca 0", "SIEMPRE", 3, true),
+        new("T26", "Esquema incompatible por un campo obligatorio nuevo", "El consumidor antiguo deja de procesar eventos", "Registra la versión en schema-registry antes de publicar", "SIEMPRE", 4, true),
+        new("T27", "Plazos en días hábiles", "El vencimiento cae un festivo y tu cálculo con +2 días falla", "Usa el calendario XSTO (calendar-service) para contar días hábiles", "SIEMPRE", 3, true),
+        new("T28", "Descargas limitadas", "El paquete DSAR responde 410 a la cuarta descarga", "Cuenta X-Downloads-Left; no descargues en un retry until", "SIEMPRE", 3, true),
+        new("T29", "Contrato publicado desfasado", "La respuesta real no cumple el OpenAPI y nadie lo ha notado", "contract-check sobre cada servicio (actívala junto con T9)", "SIEMPRE", 4, true),
+        new("T30", "Test inestable", "Un test pasa y falla sin cambios en el código", "Manda tus resultados a test-insights y mira /flaky", "SIEMPRE", 4, true),
     };
 
     public void MapEndpoints(WebApplication app, ServiceContext ctx)

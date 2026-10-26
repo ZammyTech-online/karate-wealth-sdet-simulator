@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/internal/orders/mark-sent
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{orderManagementUrl}}/api/v1/internal/orders/mark-sent
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "orderIds": "valor",
+    "batchId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/order-management.md
+}

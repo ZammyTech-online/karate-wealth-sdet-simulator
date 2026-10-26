@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/health-declarations/{id}
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{healthDeclarationUrl}}/api/v1/internal/health-declarations/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/health-declaration.md
+}

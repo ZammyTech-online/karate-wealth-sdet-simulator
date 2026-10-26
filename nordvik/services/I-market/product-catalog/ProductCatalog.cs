@@ -86,8 +86,18 @@ public sealed class ProductCatalog : INordvikService
         {
             var row = Find(http, ctx, isin, out var problem);
             if (row is null) return problem!;
-            return Results.Ok(new FundDetail(row.Isin, row.Name, row.Category, row.BaseCurrency, row.Sri, row.Status, row.LaunchDate, row.Manager,
-                Fees(row), $"{row.Name} es un fondo de categoría {row.Category} en {row.BaseCurrency} con riesgo SRI {row.Sri} sobre 7."));
+            var detail = new FundDetail(row.Isin, row.Name, row.Category, row.BaseCurrency, row.Sri, row.Status, row.LaunchDate, row.Manager,
+                Fees(row), $"{row.Name} es un fondo de categoría {row.Category} en {row.BaseCurrency} con riesgo SRI {row.Sri} sobre 7.");
+            if (Chaos.TrapOn("T9"))
+            {
+                // Trampa T9: el equipo "v2" renombró isin → instrumentId sin tocar el OpenAPI publicado
+                var opts = http.RequestServices.GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions>)) is Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions> o ? o.Value.SerializerOptions : Canonical.Web;
+                var node = System.Text.Json.Nodes.JsonNode.Parse(System.Text.Json.JsonSerializer.Serialize(detail, opts))!.AsObject();
+                node.Remove("isin");
+                node["instrumentId"] = row.Isin;
+                return Results.Content(node.ToJsonString(), "application/json", System.Text.Encoding.UTF8);
+            }
+            return Results.Ok(detail);
         }).WithSummary("Detalle de un fondo").Produces<FundDetail>();
 
         g.MapGet("/{isin}/fees", (HttpContext http, string isin) =>

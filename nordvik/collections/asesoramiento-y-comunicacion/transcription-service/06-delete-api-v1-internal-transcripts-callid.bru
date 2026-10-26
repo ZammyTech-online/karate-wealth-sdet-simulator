@@ -1,0 +1,24 @@
+meta {
+  name: DELETE /api/v1/internal/transcripts/{callId}
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{transcriptionServiceUrl}}/api/v1/internal/transcripts/{callId}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/transcription-service.md
+}

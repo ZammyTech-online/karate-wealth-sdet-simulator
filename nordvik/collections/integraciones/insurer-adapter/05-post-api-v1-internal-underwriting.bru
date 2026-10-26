@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/internal/underwriting
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{insurerAdapterUrl}}/api/v1/internal/underwriting
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurer-adapter.md
+}

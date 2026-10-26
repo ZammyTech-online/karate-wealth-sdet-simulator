@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/internal/consumer/retry/{eventId}
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{positionKeepingUrl}}/api/v1/internal/consumer/retry/{eventId}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/position-keeping.md
+}

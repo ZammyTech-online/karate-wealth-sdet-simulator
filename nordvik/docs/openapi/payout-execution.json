@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "payout-execution",
-    "description": "Ejecución mensual de pagos de pensión: bruto, retención provisional del 30 %, neto y asiento contable; idempotente por plan y mes, salta planes congelados.\n\nDominio: L-pensions · Equipo: Pensiones · Oleada: 3 · Puerto: 7111\n\nDepende de: payout-planner, pension-plan-service, ledger-service, permission-service, clock-service",
+    "description": "Ejecución mensual de pagos de pensión: bruto, retención según tax-withholding (30 % provisional si no responde), neto y asiento; idempotente por plan y mes.\n\nDominio: L-pensions · Equipo: Pensiones · Oleada: 3 · Puerto: 7111\n\nDepende de: payout-planner, pension-plan-service, tax-withholding, ledger-service, permission-service, clock-service",
     "version": "1.0.0"
   },
   "paths": {
@@ -26,6 +26,34 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/internal/payments": {
+      "get": {
+        "tags": [
+          "Interno"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],

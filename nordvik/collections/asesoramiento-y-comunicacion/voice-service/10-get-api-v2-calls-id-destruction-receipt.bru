@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v2/calls/{id}/destruction-receipt
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{voiceServiceUrl}}/api/v2/calls/{id}/destruction-receipt
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/voice-service.md
+}

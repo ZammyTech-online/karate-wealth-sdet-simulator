@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/tests/{name}/history
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{testInsightsUrl}}/api/v1/tests/demo/history
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/test-insights.md
+}

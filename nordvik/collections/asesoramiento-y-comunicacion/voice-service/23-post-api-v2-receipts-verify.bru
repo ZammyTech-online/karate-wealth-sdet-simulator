@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v2/receipts/verify
+  type: http
+  seq: 23
+}
+
+post {
+  url: {{voiceServiceUrl}}/api/v2/receipts/verify
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "receipt": "valor",
+    "signature": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/voice-service.md
+}

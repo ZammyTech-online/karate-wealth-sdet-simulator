@@ -52,6 +52,9 @@ public sealed class MessageTemplateService : INordvikService
         ("message.new", "sv", 1, "EMAIL", "Nytt säkert meddelande", "Hej {{firstName}}! Du har ett nytt meddelande i Nordvik. Logga in för att läsa det."),
         ("message.new", "en", 1, "EMAIL", "New secure message", "Hi {{firstName}}! You have a new message in Nordvik. Log in to read it."),
         ("message.new", "es", 1, "EMAIL", "Nuevo mensaje seguro", "¡Hola, {{firstName}}! Tienes un mensaje nuevo en Nordvik. Entra para leerlo."),
+        ("breach.notice", "sv", 1, "EMAIL", "Viktig information om dina uppgifter", "Hej {{firstName}}! Vi har upptäckt en incident som kan ha påverkat dina uppgifter ({{categories}}). Läs mer och se vad du kan göra i Nordvik-appen."),
+        ("breach.notice", "en", 1, "EMAIL", "Important information about your data", "Hi {{firstName}}! We detected an incident that may have affected your data ({{categories}}). Read more and see what you can do in the Nordvik app."),
+        ("breach.notice", "es", 1, "EMAIL", "Información importante sobre tus datos", "¡Hola, {{firstName}}! Hemos detectado un incidente que puede haber afectado a tus datos ({{categories}}). Entra en Nordvik para saber más y qué puedes hacer."),
     };
 
     private static List<string> VarsOf(string? subject, string body) =>

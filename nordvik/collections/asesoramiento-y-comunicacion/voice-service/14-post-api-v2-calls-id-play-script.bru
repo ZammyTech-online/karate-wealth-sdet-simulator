@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v2/calls/{id}/play-script
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{voiceServiceUrl}}/api/v2/calls/{id}/play-script
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "scriptId": "valor",
+    "variables": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/voice-service.md
+}

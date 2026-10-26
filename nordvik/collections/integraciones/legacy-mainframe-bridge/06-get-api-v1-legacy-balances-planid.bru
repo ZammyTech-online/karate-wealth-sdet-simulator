@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/legacy-balances/{planId}
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{legacyMainframeBridgeUrl}}/api/v1/legacy-balances/{planId}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/legacy-mainframe-bridge.md
+}

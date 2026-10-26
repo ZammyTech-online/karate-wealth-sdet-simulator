@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "death-claims",
-    "description": "Reclamaciones por fallecimiento: congelación de planes, suspensión de cobros, verificación, reparto por beneficiarios (o ESTATE) y liquidación.\n\nDominio: L-pensions · Equipo: Pensiones · Oleada: 3 · Puerto: 7113\n\nDepende de: pension-plan-service, payout-planner, beneficiary-service, valuation-service, customer-registry, clock-service",
+    "description": "Reclamaciones por fallecimiento: congelación de planes, suspensión de cobros, verificación, reparto por beneficiarios (o ESTATE) y liquidación.\n\nDominio: L-pensions · Equipo: Pensiones · Oleada: 3 · Puerto: 7113\n\nDepende de: pension-plan-service, payout-planner, beneficiary-service, valuation-service, customer-registry, insurance-policy, clock-service",
     "version": "1.0.0"
   },
   "paths": {

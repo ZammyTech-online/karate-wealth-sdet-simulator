@@ -1,0 +1,24 @@
+meta {
+  name: POST /oauth/token
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{insurerSimUrl}}/oauth/token
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurer-sim.md
+}

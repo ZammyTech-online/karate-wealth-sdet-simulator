@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/reports/pension-plans
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{analyticsReportingUrl}}/api/v1/reports/pension-plans
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/analytics-reporting.md
+}

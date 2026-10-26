@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/portfolios/{portfolioId}/rebalances
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{rebalancingEngineUrl}}/api/v1/portfolios/{portfolioId}/rebalances
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/rebalancing-engine.md
+}

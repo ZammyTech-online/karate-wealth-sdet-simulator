@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/breaches/overdue
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{breachServiceUrl}}/api/v1/breaches/overdue
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/breach-service.md
+}

@@ -1,0 +1,31 @@
+meta {
+  name: POST /__admin/claims/{id}/decide
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{insurerSimUrl}}/__admin/claims/{id}/decide
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "decision": "valor",
+    "amount": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/insurer-sim.md
+}

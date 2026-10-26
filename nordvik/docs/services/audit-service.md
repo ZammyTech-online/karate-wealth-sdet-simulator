@@ -16,7 +16,7 @@ Registro de auditoría inmutable (cadena SHA-256). Recibe registros directos y c
 | Swagger | http://localhost:7402/swagger |
 | Colección Bruno | `collections/cumplimiento-tecnico` |
 
-## Endpoints (13)
+## Endpoints (15)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -31,6 +31,8 @@ Registro de auditoría inmutable (cadena SHA-256). Recibe registros directos y c
 | `PUT` | `/api/v1/audit/{id}` |  |
 | `GET` | `/api/v1/audit/verify` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `GET` | `/health` |  |
 | `GET` | `/info` |  |
 
@@ -204,6 +206,40 @@ Registro de auditoría inmutable (cadena SHA-256). Recibe registros directos y c
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

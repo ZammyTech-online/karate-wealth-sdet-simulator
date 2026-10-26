@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/complaints/{id}/acknowledge
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{complaintsServiceUrl}}/api/v1/complaints/{id}/acknowledge
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/complaints-service.md
+}

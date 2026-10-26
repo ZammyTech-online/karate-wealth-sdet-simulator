@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/withdrawals
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{paymentsGatewayUrl}}/api/v1/withdrawals
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "amount": "valor",
+    "bankAccountId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/payments-gateway.md
+}

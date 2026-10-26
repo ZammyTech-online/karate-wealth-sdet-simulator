@@ -70,7 +70,7 @@ public class ChaosTests : IAsyncLifetime
         (await _f.Post(Ports.Chaos, "/api/v1/faults", "{\"service\":\"uuid-service\",\"status\":302}")).ShouldBeProblem(400, "VALIDATION_FAILED");
         (await _f.Post(Ports.Chaos, "/api/v1/faults", "{\"service\":\"uuid-service\",\"status\":500,\"probability\":1.5}")).ShouldBeProblem(400, "VALIDATION_FAILED");
         var traps = await _f.Get(Ports.Chaos, "/api/v1/traps");
-        Assert.Equal(20, traps.Int("count"));
+        Assert.Equal(30, traps.Int("count"));
         Assert.True(traps.Json.GetProperty("items").EnumerateArray().First(t => t.GetProperty("id").GetString() == "T6").GetProperty("enabled").GetBoolean());
         (await _f.Send(HttpMethod.Put, Ports.Chaos, "/api/v1/traps/T6", "{\"enabled\":false}")).ShouldBeProblem(409, "TRAP_ALWAYS_ON");
         var on = await _f.Send(HttpMethod.Put, Ports.Chaos, "/api/v1/traps/t4", "{\"enabled\":true}");

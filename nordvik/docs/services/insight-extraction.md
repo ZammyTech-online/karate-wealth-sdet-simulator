@@ -16,7 +16,7 @@ Datos estructurados desde la transcripción redactada (aportación, horizonte, r
 | Swagger | http://localhost:6608/swagger |
 | Colección Bruno | `collections/asesoramiento-y-comunicacion` |
 
-## Endpoints (8)
+## Endpoints (10)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -24,6 +24,8 @@ Datos estructurados desde la transcripción redactada (aportación, horizonte, r
 | `POST` | `/api/v1/extract/preview` |  |
 | `GET` | `/api/v1/insights/{callId}` |  |
 | `GET` | `/api/v1/internal/consumer` |  |
+| `DELETE` | `/api/v1/internal/consumer/failures/{eventId}` |  |
+| `POST` | `/api/v1/internal/consumer/retry/{eventId}` |  |
 | `POST` | `/api/v1/internal/insights/{callId}/{field}/confirm` |  |
 | `GET` | `/api/v1/internal/outbox` |  |
 | `GET` | `/health` |  |
@@ -82,6 +84,40 @@ Datos estructurados desde la transcripción redactada (aportación, horizonte, r
 ### GET /api/v1/internal/consumer
 
 
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### DELETE /api/v1/internal/consumer/failures/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | Success |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### POST /api/v1/internal/consumer/retry/{eventId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `eventId` | path | string | sí |
 
 **Respuestas**
 

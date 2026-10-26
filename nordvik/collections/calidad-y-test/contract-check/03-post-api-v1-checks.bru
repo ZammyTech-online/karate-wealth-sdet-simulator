@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/checks
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{contractCheckUrl}}/api/v1/checks
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "service": "valor",
+    "path": "valor",
+    "asService": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/contract-check.md
+}

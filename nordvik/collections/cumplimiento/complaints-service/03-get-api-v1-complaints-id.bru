@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/complaints/{id}
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{complaintsServiceUrl}}/api/v1/complaints/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/complaints-service.md
+}

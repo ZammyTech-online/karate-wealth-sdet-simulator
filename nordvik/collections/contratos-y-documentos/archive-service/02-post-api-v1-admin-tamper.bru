@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/admin/tamper
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{archiveServiceUrl}}/api/v1/admin/tamper
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "recordId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/archive-service.md
+}
