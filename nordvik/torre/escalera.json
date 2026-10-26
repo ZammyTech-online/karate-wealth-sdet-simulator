@@ -1,0 +1,1262 @@
+{
+  "version": 1,
+  "note": "Fuente única de la escalera: qué nivel, qué perfil, qué lecciones y qué misiones. Los servicios de cada nivel salen del código (oleada de cada servicio): nivel N = todos los servicios con oleada <= N. La Torre de control, nordvik.cmd y la academia leen este fichero; tests/Nordvik.ApiTests/TowerTests.cs comprueba que todo cuadra.",
+  "levels": [
+    {
+      "id": 0,
+      "name": "Principiante",
+      "title": "Leer el mercado",
+      "profile": "nivel-0",
+      "route": "0-2",
+      "lessons": [
+        "L00",
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11",
+        "L12",
+        "L13",
+        "L14",
+        "L15"
+      ],
+      "summary": "Ocho servicios de solo lectura (fondos, precios, divisas, calendario) y cuatro utilidades. Nada se rompe y cada error trae una pista.",
+      "karate": [
+        "url, path, method, status",
+        "match y contains",
+        "param y params",
+        "Background y def",
+        "Errores RFC 9457",
+        "POST y request",
+        "Fuzzy matchers (#string, #uuid…)",
+        "match each, karate.filter",
+        "Scenario Outline",
+        "Cabeceras y caché",
+        "Reloj virtual",
+        "call y funciones JS"
+      ],
+      "business": [
+        "Catálogo de fondos",
+        "NAV por día hábil",
+        "Tipos de cambio",
+        "Calendario de Estocolmo",
+        "UUID, secuencias y reloj"
+      ],
+      "checkpoint": "La suite de mercado de L15 en verde: catálogo, precios, divisas y calendario con un solo comando.",
+      "externals": []
+    },
+    {
+      "id": 1,
+      "name": "Básico",
+      "title": "Clientes y permisos",
+      "profile": "nivel-3",
+      "route": "3-5",
+      "lessons": [
+        "L16",
+        "L17"
+      ],
+      "summary": "Entran la identidad (OAuth2), los clientes, las carteras y los generadores de datos de prueba. Ahora cada petición lleva un token.",
+      "karate": [
+        "form field para OAuth2",
+        "callonce y tokens reutilizados",
+        "401 frente a 403",
+        "IDOR: que cada uno vea solo lo suyo",
+        "Payloads con #(variables)"
+      ],
+      "business": [
+        "Alta, consulta y baja de clientes",
+        "Roles: cliente, asesor, operaciones",
+        "Búsqueda de clientes",
+        "Carteras con asignación al 100 %",
+        "Personas sintéticas con número nacional válido"
+      ],
+      "checkpoint": "La matriz de permisos de los tres roles sobre clientes y carteras, sin un solo token pegado a mano.",
+      "externals": []
+    },
+    {
+      "id": 2,
+      "name": "Intermedio",
+      "title": "El dinero se mueve",
+      "profile": "nivel-6",
+      "route": "6-8",
+      "lessons": [
+        "L18",
+        "L19",
+        "L20",
+        "L21"
+      ],
+      "summary": "Ingresos, órdenes de compra, contabilidad, contratos con firma electrónica y composición de APIs. Aparecen la asincronía y los primeros sistemas externos simulados.",
+      "karate": [
+        "retry until en vez de dormir",
+        "Idempotency-Key",
+        "Máquinas de estado",
+        "Webhooks y eventos",
+        "Dos APIs, un JSON"
+      ],
+      "business": [
+        "Ingreso con referencia OCR",
+        "Orden de compra hasta EXECUTED",
+        "Libro mayor y efectivo",
+        "Contrato y firma NordID",
+        "Composición contract-bundle"
+      ],
+      "checkpoint": "El flujo de primera inversión completo (ingreso, orden, ejecución, posición) y una composición validada campo a campo.",
+      "externals": [
+        "E1 NordID",
+        "E4 Custodio",
+        "E5 Precios",
+        "E6 NordPay"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Avanzado",
+      "title": "Datos sensibles y sagas",
+      "profile": "nivel-9",
+      "route": "9-10",
+      "lessons": [
+        "L22",
+        "L23",
+        "L24",
+        "L25",
+        "L26",
+        "L27"
+      ],
+      "summary": "Privacidad de verdad (tokens, claves que se trituran, pasaportes de un solo uso), caos, cumplimiento, voz, pensiones y sagas largas con el reloj virtual.",
+      "karate": [
+        "Probar lo que NO sale (PII)",
+        "X-Chaos-Scenario y reintentos",
+        "Respuestas parciales",
+        "202 Accepted y pipelines",
+        "HMAC desde Karate",
+        "Sagas con reloj virtual"
+      ],
+      "business": [
+        "pii-vault y crypto-shredding",
+        "KYC, sanciones y PEP",
+        "Llamadas con transcripción y destrucción",
+        "Ficheros de empleadores",
+        "Traspasos entre gestoras",
+        "Cobro de la pensión y fallecimiento"
+      ],
+      "checkpoint": "La suite @privacy en verde y un traspaso de pensión de punta a punta controlando el reloj.",
+      "externals": [
+        "E2 Registro de Población",
+        "E3 SanctionScreen",
+        "E7 Pensión pública",
+        "E9 Clearing de empleadores",
+        "E10 Red de gestoras",
+        "E12 Telefonía"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Senior",
+      "title": "La empresa completa",
+      "profile": "completo",
+      "route": "11-12",
+      "lessons": [
+        "L28",
+        "L29",
+        "L30",
+        "L31",
+        "L32",
+        "L33"
+      ],
+      "summary": "Los 156 servicios y los 12 sistemas externos. Sistemas heredados, seguros, fiscalidad, RGPD, contratos de API y calidad de la propia suite.",
+      "karate": [
+        "SOAP y XPath",
+        "Ficheros de ancho fijo",
+        "OAuth2 client credentials",
+        "Esquemas y deriva de OpenAPI",
+        "Medir tests inestables",
+        "Proyecto final en cinco servicios"
+      ],
+      "business": [
+        "Mainframe y pensiones SOAP",
+        "Seguro de vida ligado a la pensión",
+        "Retenciones e informe anual",
+        "Borrado, acceso y brechas (RGPD)",
+        "Registro de esquemas y contract-check"
+      ],
+      "checkpoint": "El derecho al olvido de punta a punta (L33) y tu suite medida con test-insights: menos de un 1 % inestable.",
+      "externals": [
+        "E8 Agencia Tributaria",
+        "E11 Aseguradora"
+      ]
+    }
+  ],
+  "missions": [
+    {
+      "id": "M01",
+      "level": 0,
+      "title": "Explorar el catálogo de fondos",
+      "story": "Tu primer contacto: listar fondos, abrir uno y provocar un 404 con un ISIN inventado.",
+      "services": [
+        "product-catalog"
+      ],
+      "steps": [
+        {
+          "service": "product-catalog",
+          "method": "GET",
+          "path": "/api/v1/funds",
+          "what": "Lista de fondos; prueba ?category=EQUITY"
+        },
+        {
+          "service": "product-catalog",
+          "method": "GET",
+          "path": "/api/v1/funds/{isin}",
+          "what": "Ficha de SE0000000001"
+        },
+        {
+          "service": "product-catalog",
+          "method": "GET",
+          "path": "/api/v1/funds/{isin}/fees",
+          "what": "Comisiones del fondo"
+        }
+      ],
+      "lessons": [
+        "L00",
+        "L01",
+        "L02",
+        "L03",
+        "L04"
+      ],
+      "flow": null,
+      "traps": []
+    },
+    {
+      "id": "M02",
+      "level": 0,
+      "title": "Precio de un fondo en un día hábil",
+      "story": "Pedir el NAV de un fondo en una fecha y descubrir qué pasa en fin de semana o festivo.",
+      "services": [
+        "market-data",
+        "calendar-service",
+        "fx-rates"
+      ],
+      "steps": [
+        {
+          "service": "calendar-service",
+          "method": "GET",
+          "path": "/api/v1/calendar/{market}/is-trading-day",
+          "what": "¿Es hábil en XSTO?"
+        },
+        {
+          "service": "market-data",
+          "method": "GET",
+          "path": "/api/v1/prices/{isin}",
+          "what": "NAV de una fecha (404 NO_PRICE_FOR_DATE si no es hábil)"
+        },
+        {
+          "service": "market-data",
+          "method": "GET",
+          "path": "/api/v1/prices/{isin}/latest",
+          "what": "Último NAV con ETag"
+        },
+        {
+          "service": "fx-rates",
+          "method": "GET",
+          "path": "/api/v1/rates/{from}/{to}",
+          "what": "USD → SEK para fondos en dólares"
+        }
+      ],
+      "lessons": [
+        "L05",
+        "L06",
+        "L11"
+      ],
+      "flow": null,
+      "traps": [
+        "T7",
+        "T20"
+      ]
+    },
+    {
+      "id": "M03",
+      "level": 0,
+      "title": "Viajar en el tiempo",
+      "story": "Congelar el reloj virtual, avanzar días y ver cómo cambian el calendario y los precios.",
+      "services": [
+        "clock-service",
+        "calendar-service",
+        "market-data"
+      ],
+      "steps": [
+        {
+          "service": "clock-service",
+          "method": "GET",
+          "path": "/api/v1/clock/now",
+          "what": "Hora virtual actual"
+        },
+        {
+          "service": "clock-service",
+          "method": "POST",
+          "path": "/api/v1/clock/freeze",
+          "what": "Congelar en una hora de Estocolmo"
+        },
+        {
+          "service": "clock-service",
+          "method": "POST",
+          "path": "/api/v1/clock/advance",
+          "what": "Avanzar minutos u horas"
+        },
+        {
+          "service": "calendar-service",
+          "method": "GET",
+          "path": "/api/v1/calendar/{market}/today",
+          "what": "El día de negocio según el reloj"
+        },
+        {
+          "service": "clock-service",
+          "method": "POST",
+          "path": "/api/v1/clock/reset",
+          "what": "Volver a la hora real"
+        }
+      ],
+      "lessons": [
+        "L12",
+        "L15"
+      ],
+      "flow": null,
+      "traps": [
+        "T3"
+      ]
+    },
+    {
+      "id": "M04",
+      "level": 1,
+      "title": "Alta de un cliente",
+      "story": "Pedir un token como asesor, dar de alta un cliente con una persona sintética y encontrarlo en la búsqueda.",
+      "services": [
+        "iam-service",
+        "synthetic-person-service",
+        "customer-registry",
+        "customer-search"
+      ],
+      "steps": [
+        {
+          "service": "iam-service",
+          "method": "POST",
+          "path": "/api/v1/oauth/token",
+          "what": "Token de asesor.erik (form field)"
+        },
+        {
+          "service": "synthetic-person-service",
+          "method": "POST",
+          "path": "/api/v1/persons",
+          "what": "Una persona con número nacional válido"
+        },
+        {
+          "service": "customer-registry",
+          "method": "POST",
+          "path": "/api/v1/customers",
+          "what": "201 + Location"
+        },
+        {
+          "service": "customer-search",
+          "method": "GET",
+          "path": "/api/v1/search/customers",
+          "what": "Aparece tras un instante (consistencia eventual)"
+        }
+      ],
+      "lessons": [
+        "L16"
+      ],
+      "flow": null,
+      "traps": [
+        "T8",
+        "T15"
+      ]
+    },
+    {
+      "id": "M05",
+      "level": 1,
+      "title": "Quién ve qué",
+      "story": "El mismo cliente consultado por su dueño, por otro cliente y por un asesor: 200, 404 y campos enmascarados.",
+      "services": [
+        "iam-service",
+        "customer-registry"
+      ],
+      "steps": [
+        {
+          "service": "iam-service",
+          "method": "POST",
+          "path": "/api/v1/oauth/token",
+          "what": "Tokens de cliente.ana, cliente.lars y asesor.erik"
+        },
+        {
+          "service": "customer-registry",
+          "method": "GET",
+          "path": "/api/v1/customers/{id}",
+          "what": "Con cada token, compara la respuesta"
+        },
+        {
+          "service": "iam-service",
+          "method": "GET",
+          "path": "/api/v1/users/me",
+          "what": "Quién eres según el token"
+        }
+      ],
+      "lessons": [
+        "L16",
+        "L17"
+      ],
+      "flow": null,
+      "traps": []
+    },
+    {
+      "id": "M06",
+      "level": 1,
+      "title": "Primera cartera",
+      "story": "Crear una cartera cuya asignación sume 100 % y comprobar las validaciones cuando no suma.",
+      "services": [
+        "iam-service",
+        "customer-registry",
+        "portfolio-service",
+        "allocation-engine"
+      ],
+      "steps": [
+        {
+          "service": "portfolio-service",
+          "method": "POST",
+          "path": "/api/v1/portfolios",
+          "what": "Asignación [{isin, percent}] que sume 100"
+        },
+        {
+          "service": "portfolio-service",
+          "method": "GET",
+          "path": "/api/v1/customers/{customerId}/portfolios",
+          "what": "Carteras del cliente"
+        },
+        {
+          "service": "portfolio-service",
+          "method": "PUT",
+          "path": "/api/v1/portfolios/{id}/allocation",
+          "what": "Cambiar la asignación"
+        }
+      ],
+      "lessons": [
+        "L17"
+      ],
+      "flow": null,
+      "traps": []
+    },
+    {
+      "id": "M07",
+      "level": 2,
+      "title": "Ingreso de dinero",
+      "story": "Un ingreso con referencia OCR, el banco simulado que abona y el pago que pasa a RECEIVED sin dormir.",
+      "services": [
+        "payments-gateway",
+        "nordpay-sim",
+        "nordpay-adapter",
+        "cash-management",
+        "ledger-service"
+      ],
+      "steps": [
+        {
+          "service": "payments-gateway",
+          "method": "POST",
+          "path": "/api/v1/deposits",
+          "what": "AWAITING_FUNDS + referencia OCR"
+        },
+        {
+          "service": "nordpay-sim",
+          "method": "POST",
+          "path": "/__admin/incoming-credits",
+          "what": "El banco abona con esa referencia"
+        },
+        {
+          "service": "payments-gateway",
+          "method": "GET",
+          "path": "/api/v1/payments/{id}",
+          "what": "retry until status == RECEIVED"
+        },
+        {
+          "service": "cash-management",
+          "method": "GET",
+          "path": "/api/v1/customers/{customerId}/cash",
+          "what": "Efectivo disponible"
+        }
+      ],
+      "lessons": [
+        "L18"
+      ],
+      "flow": "F-01-ingreso.md",
+      "traps": [
+        "T6"
+      ]
+    },
+    {
+      "id": "M08",
+      "level": 2,
+      "title": "Orden de compra hasta su ejecución",
+      "story": "Una orden con Idempotency-Key, el lote del día, el custodio que ejecuta a las 18:05 y la posición resultante.",
+      "services": [
+        "order-management",
+        "order-router",
+        "custody-adapter",
+        "custodian-sim",
+        "execution-service",
+        "position-keeping",
+        "valuation-service"
+      ],
+      "steps": [
+        {
+          "service": "order-management",
+          "method": "POST",
+          "path": "/api/v1/orders",
+          "what": "201 CREATED; repetida, misma respuesta"
+        },
+        {
+          "service": "clock-service",
+          "method": "POST",
+          "path": "/api/v1/clock/freeze",
+          "what": "Pasar a las 15:30"
+        },
+        {
+          "service": "order-router",
+          "method": "POST",
+          "path": "/api/v1/batches/run",
+          "what": "Enviar el lote al custodio"
+        },
+        {
+          "service": "order-management",
+          "method": "GET",
+          "path": "/api/v1/orders/{id}",
+          "what": "retry until EXECUTED (tras congelar a las 18:05)"
+        },
+        {
+          "service": "valuation-service",
+          "method": "GET",
+          "path": "/api/v1/portfolios/{portfolioId}/valuation",
+          "what": "Valor de la cartera"
+        }
+      ],
+      "lessons": [
+        "L19"
+      ],
+      "flow": "F-02-orden.md",
+      "traps": [
+        "T1",
+        "T2",
+        "T4",
+        "T19",
+        "T20"
+      ]
+    },
+    {
+      "id": "M09",
+      "level": 2,
+      "title": "Contrato y firma electrónica",
+      "story": "Un contrato en borrador, enviado a firmar con NordID simulado, hasta ACTIVE y su PDF en el archivo.",
+      "services": [
+        "contract-service",
+        "signing-service",
+        "eid-broker",
+        "nordid-sim",
+        "document-vault"
+      ],
+      "steps": [
+        {
+          "service": "contract-service",
+          "method": "POST",
+          "path": "/api/v2/contracts",
+          "what": "DRAFT + contentHash"
+        },
+        {
+          "service": "contract-service",
+          "method": "POST",
+          "path": "/api/v2/contracts/{id}/send",
+          "what": "PENDING_SIGNATURE"
+        },
+        {
+          "service": "contract-service",
+          "method": "POST",
+          "path": "/api/v2/contracts/{id}/signing-sessions",
+          "what": "Sesión de firma del cliente"
+        },
+        {
+          "service": "contract-service",
+          "method": "GET",
+          "path": "/api/v2/contracts/{id}",
+          "what": "retry until ACTIVE"
+        }
+      ],
+      "lessons": [
+        "L20"
+      ],
+      "flow": "F-03-contrato.md",
+      "traps": [
+        "T18"
+      ]
+    },
+    {
+      "id": "M10",
+      "level": 2,
+      "title": "Dos APIs, un JSON",
+      "story": "La composición contract-bundle: comprobar que cada parte es idéntica a lo que devuelve su fuente.",
+      "services": [
+        "composition-service",
+        "contract-service",
+        "document-vault"
+      ],
+      "steps": [
+        {
+          "service": "composition-service",
+          "method": "GET",
+          "path": "/api/v2/compositions/contract-bundle/{contractId}",
+          "what": "COMPLETE o PARTIAL"
+        },
+        {
+          "service": "contract-service",
+          "method": "GET",
+          "path": "/api/v2/contracts/{id}",
+          "what": "Fuente 1"
+        },
+        {
+          "service": "composition-service",
+          "method": "GET",
+          "path": "/api/v2/compositions/customer-360/{customerId}",
+          "what": "Otra composición: la ficha 360"
+        }
+      ],
+      "lessons": [
+        "L21"
+      ],
+      "flow": "F-04-composicion.md",
+      "traps": [
+        "T10"
+      ]
+    },
+    {
+      "id": "M11",
+      "level": 2,
+      "title": "Segundo factor y step-up",
+      "story": "Un código de 6 dígitos que llega al buzón simulado y se cambia por un token de nivel alto.",
+      "services": [
+        "mfa-service",
+        "step-up-service",
+        "notification-service",
+        "payments-gateway"
+      ],
+      "steps": [
+        {
+          "service": "mfa-service",
+          "method": "POST",
+          "path": "/api/v1/mfa/challenges",
+          "what": "Pedir el código"
+        },
+        {
+          "service": "notification-service",
+          "method": "GET",
+          "path": "/api/v1/mailbox",
+          "what": "Leer el código en el buzón"
+        },
+        {
+          "service": "mfa-service",
+          "method": "POST",
+          "path": "/api/v1/mfa/challenges/{id}/verify",
+          "what": "Verificarlo (3 intentos)"
+        },
+        {
+          "service": "step-up-service",
+          "method": "POST",
+          "path": "/api/v1/step-up",
+          "what": "Token acr=high para una retirada grande"
+        }
+      ],
+      "lessons": [],
+      "flow": "F-05-mfa-step-up.md",
+      "traps": []
+    },
+    {
+      "id": "M12",
+      "level": 3,
+      "title": "Tokenizar y triturar",
+      "story": "Guardar un IBAN en el vault, leerlo con una finalidad, triturar la clave del cliente y ver el 410.",
+      "services": [
+        "pii-vault",
+        "key-management",
+        "consent-ledger",
+        "data-passport"
+      ],
+      "steps": [
+        {
+          "service": "pii-vault",
+          "method": "POST",
+          "path": "/api/v1/tokens",
+          "what": "Tokenizar un dato personal"
+        },
+        {
+          "service": "pii-vault",
+          "method": "POST",
+          "path": "/api/v1/tokens/{token}/detokenize",
+          "what": "Leerlo con una finalidad permitida"
+        },
+        {
+          "service": "key-management",
+          "method": "POST",
+          "path": "/api/v1/keys/{id}/shred",
+          "what": "Triturar la clave"
+        },
+        {
+          "service": "data-passport",
+          "method": "POST",
+          "path": "/api/v1/passports/{id}/read",
+          "what": "Pasaporte de un solo uso: la segunda lectura falla"
+        }
+      ],
+      "lessons": [
+        "L22"
+      ],
+      "flow": null,
+      "traps": [
+        "T15",
+        "T16"
+      ]
+    },
+    {
+      "id": "M13",
+      "level": 3,
+      "title": "Caos y resiliencia",
+      "story": "Hacer que un servicio falle o vaya lento a propósito y comprobar que tus tests lo detectan.",
+      "services": [
+        "chaos-control",
+        "mock-control",
+        "sanctions-adapter"
+      ],
+      "steps": [
+        {
+          "service": "chaos-control",
+          "method": "POST",
+          "path": "/api/v1/faults",
+          "what": "Regla de fallo: 503 dos veces"
+        },
+        {
+          "service": "chaos-control",
+          "method": "GET",
+          "path": "/api/v1/traps",
+          "what": "Las 30 trampas y cuáles puedes encender"
+        },
+        {
+          "service": "mock-control",
+          "method": "GET",
+          "path": "/api/v1/mocks",
+          "what": "Comportamiento de los simuladores"
+        },
+        {
+          "service": "chaos-control",
+          "method": "POST",
+          "path": "/api/v1/reset",
+          "what": "Todo vuelve a la normalidad"
+        }
+      ],
+      "lessons": [
+        "L23"
+      ],
+      "flow": null,
+      "traps": []
+    },
+    {
+      "id": "M14",
+      "level": 3,
+      "title": "KYC y sanciones",
+      "story": "Un cliente que se parece a alguien de una lista de sanciones: coincidencia difusa y decisión.",
+      "services": [
+        "kyc-aml-service",
+        "sanctions-adapter",
+        "sanctionscreen-sim",
+        "pep-service",
+        "risk-scoring"
+      ],
+      "steps": [
+        {
+          "service": "sanctions-adapter",
+          "method": "POST",
+          "path": "/api/v1/screenings",
+          "what": "Cribado de un nombre y fecha"
+        },
+        {
+          "service": "sanctions-adapter",
+          "method": "POST",
+          "path": "/api/v1/screenings/{id}/decision",
+          "what": "Falso positivo o coincidencia"
+        },
+        {
+          "service": "kyc-aml-service",
+          "method": "POST",
+          "path": "/api/v1/customers/{customerId}/kyc-cases",
+          "what": "Abrir el caso KYC"
+        },
+        {
+          "service": "kyc-aml-service",
+          "method": "POST",
+          "path": "/api/v1/kyc-cases/{id}/decision",
+          "what": "Aprobar o rechazar"
+        }
+      ],
+      "lessons": [
+        "L24"
+      ],
+      "flow": null,
+      "traps": []
+    },
+    {
+      "id": "M15",
+      "level": 3,
+      "title": "Una llamada de voz",
+      "story": "Una llamada asesor-cliente: transcripción con datos tapados, resumen y recibo firmado de destrucción.",
+      "services": [
+        "voice-service",
+        "transcription-service",
+        "insight-extraction",
+        "call-summary",
+        "telephony-sim",
+        "consent-ledger"
+      ],
+      "steps": [
+        {
+          "service": "voice-service",
+          "method": "POST",
+          "path": "/api/v2/calls",
+          "what": "Abrir la llamada"
+        },
+        {
+          "service": "voice-service",
+          "method": "POST",
+          "path": "/api/v2/calls/{id}/play-script",
+          "what": "Reproducir un guion"
+        },
+        {
+          "service": "voice-service",
+          "method": "POST",
+          "path": "/api/v2/calls/{id}/end",
+          "what": "202: empieza el pipeline"
+        },
+        {
+          "service": "voice-service",
+          "method": "GET",
+          "path": "/api/v2/calls/{id}/summary",
+          "what": "retry until el resumen existe"
+        },
+        {
+          "service": "voice-service",
+          "method": "GET",
+          "path": "/api/v2/calls/{id}/destruction-receipt",
+          "what": "La grabación ya no existe"
+        }
+      ],
+      "lessons": [
+        "L25"
+      ],
+      "flow": null,
+      "traps": []
+    },
+    {
+      "id": "M16",
+      "level": 3,
+      "title": "Fichero mensual de un empleador",
+      "story": "El clearing simulado avisa con un webhook firmado y el fichero CSV se reparte en aportaciones.",
+      "services": [
+        "employer-portal-api",
+        "employer-clearing-sim",
+        "employer-clearing-adapter",
+        "employer-file-ingest",
+        "contribution-service",
+        "pension-plan-service"
+      ],
+      "steps": [
+        {
+          "service": "employer-portal-api",
+          "method": "POST",
+          "path": "/api/v1/employers",
+          "what": "Alta de la empresa"
+        },
+        {
+          "service": "employer-portal-api",
+          "method": "POST",
+          "path": "/api/v1/employer/employees",
+          "what": "Alta de un empleado (plan OCCUPATIONAL)"
+        },
+        {
+          "service": "employer-clearing-sim",
+          "method": "POST",
+          "path": "/__admin/files",
+          "what": "Publicar un fichero"
+        },
+        {
+          "service": "employer-file-ingest",
+          "method": "GET",
+          "path": "/api/v1/employer-files/{id}/receipt",
+          "what": "Acuse: aceptadas y rechazadas"
+        }
+      ],
+      "lessons": [
+        "L26"
+      ],
+      "flow": "F-06-fichero-empleador.md",
+      "traps": []
+    },
+    {
+      "id": "M17",
+      "level": 3,
+      "title": "Traspaso de una pensión",
+      "story": "Traer una pensión de otra gestora: valoración en días virtuales, aprobación y comparación al 2 %.",
+      "services": [
+        "transfer-service",
+        "transfer-valuation",
+        "provider-network-adapter",
+        "provider-network-sim",
+        "pension-plan-service",
+        "contribution-service"
+      ],
+      "steps": [
+        {
+          "service": "pension-plan-service",
+          "method": "POST",
+          "path": "/api/v1/pension-plans",
+          "what": "Plan destino"
+        },
+        {
+          "service": "transfer-service",
+          "method": "POST",
+          "path": "/api/v1/transfers",
+          "what": "VALUATION_PENDING"
+        },
+        {
+          "service": "clock-service",
+          "method": "POST",
+          "path": "/api/v1/clock/advance",
+          "what": "Pasar los días de valoración"
+        },
+        {
+          "service": "transfer-service",
+          "method": "POST",
+          "path": "/api/v1/transfers/{id}/confirm",
+          "what": "AWAITING_APPROVAL"
+        },
+        {
+          "service": "transfer-service",
+          "method": "POST",
+          "path": "/api/v1/transfers/{id}/approve",
+          "what": "COMPLETED o MANUAL_REVIEW"
+        }
+      ],
+      "lessons": [
+        "L27"
+      ],
+      "flow": "F-07-traspaso.md",
+      "traps": [
+        "T27"
+      ]
+    },
+    {
+      "id": "M18",
+      "level": 3,
+      "title": "Cobro de la pensión y fallecimiento",
+      "story": "Un plan de cobro mensual y su primer pago (en este nivel con la retención provisional del 30 %) y, después, la reclamación por fallecimiento.",
+      "services": [
+        "payout-planner",
+        "payout-execution",
+        "annuity-calculator",
+        "death-claims",
+        "beneficiary-service",
+        "pension-plan-service"
+      ],
+      "steps": [
+        {
+          "service": "payout-planner",
+          "method": "POST",
+          "path": "/api/v1/pension-plans/{planId}/payout-plans",
+          "what": "Plan de cobro DRAFT"
+        },
+        {
+          "service": "payout-planner",
+          "method": "POST",
+          "path": "/api/v1/payout-plans/{id}/activate",
+          "what": "ACTIVE"
+        },
+        {
+          "service": "payout-execution",
+          "method": "POST",
+          "path": "/api/v1/payout-runs",
+          "what": "Pagar el mes"
+        },
+        {
+          "service": "death-claims",
+          "method": "POST",
+          "path": "/api/v1/death-claims",
+          "what": "Planes congelados"
+        },
+        {
+          "service": "death-claims",
+          "method": "POST",
+          "path": "/api/v1/death-claims/{id}/settle",
+          "what": "Reparto a beneficiarios"
+        }
+      ],
+      "lessons": [],
+      "flow": "F-08-cobro-y-fallecimiento.md",
+      "traps": [
+        "T24"
+      ]
+    },
+    {
+      "id": "M19",
+      "level": 4,
+      "title": "Seguro ligado a la pensión",
+      "story": "Cuestionario de salud efímero, póliza con recargo médico y un siniestro que decide la aseguradora.",
+      "services": [
+        "health-declaration",
+        "insurance-policy",
+        "premium-calculator",
+        "insurance-claims",
+        "insurer-adapter",
+        "insurer-sim"
+      ],
+      "steps": [
+        {
+          "service": "health-declaration",
+          "method": "POST",
+          "path": "/api/v1/health-declarations",
+          "what": "Con consentimiento explícito"
+        },
+        {
+          "service": "insurance-policy",
+          "method": "POST",
+          "path": "/api/v1/insurance-policies",
+          "what": "Póliza LIFE sobre un plan"
+        },
+        {
+          "service": "insurance-claims",
+          "method": "POST",
+          "path": "/api/v1/insurance-claims",
+          "what": "Siniestro"
+        },
+        {
+          "service": "insurer-sim",
+          "method": "POST",
+          "path": "/__admin/claims/{id}/decide",
+          "what": "La aseguradora decide"
+        },
+        {
+          "service": "insurance-claims",
+          "method": "GET",
+          "path": "/api/v1/insurance-claims/{id}",
+          "what": "APPROVED → PAID"
+        }
+      ],
+      "lessons": [
+        "L30"
+      ],
+      "flow": "F-09-seguro-ligado-a-la-pension.md",
+      "traps": [
+        "T23"
+      ]
+    },
+    {
+      "id": "M20",
+      "level": 4,
+      "title": "Fiscalidad del año",
+      "story": "Cuánto retener a cada cliente, el fichero anual a la Agencia Tributaria y el certificado en PDF.",
+      "services": [
+        "tax-withholding",
+        "tax-reporting",
+        "annual-statement",
+        "tax-agency-adapter",
+        "tax-agency-sim",
+        "tax-residency-service",
+        "payout-execution"
+      ],
+      "steps": [
+        {
+          "service": "tax-withholding",
+          "method": "GET",
+          "path": "/api/v1/customers/{customerId}/withholding",
+          "what": "Tabla municipal o SINK 25 %"
+        },
+        {
+          "service": "payout-execution",
+          "method": "POST",
+          "path": "/api/v1/payout-runs",
+          "what": "Pagar el mes: ahora la retención sale de la tabla del municipio"
+        },
+        {
+          "service": "tax-reporting",
+          "method": "POST",
+          "path": "/api/v1/tax-reports",
+          "what": "Fichero ORIGINAL del año"
+        },
+        {
+          "service": "annual-statement",
+          "method": "GET",
+          "path": "/api/v1/customers/{customerId}/annual-statements/{year}",
+          "what": "Certificado JSON"
+        },
+        {
+          "service": "annual-statement",
+          "method": "GET",
+          "path": "/api/v1/customers/{customerId}/annual-statements/{year}/pdf",
+          "what": "Y en PDF"
+        }
+      ],
+      "lessons": [],
+      "flow": "F-10-fiscalidad.md",
+      "traps": [
+        "T24",
+        "T25"
+      ]
+    },
+    {
+      "id": "M21",
+      "level": 4,
+      "title": "Derecho al olvido",
+      "story": "Borrar a un cliente de verdad: bloqueos legales, claves trituradas, certificado y lo que se retiene por ley.",
+      "services": [
+        "erasure-orchestrator",
+        "dsar-service",
+        "breach-service",
+        "pii-vault",
+        "key-management",
+        "consent-ledger",
+        "customer-registry"
+      ],
+      "steps": [
+        {
+          "service": "erasure-orchestrator",
+          "method": "POST",
+          "path": "/api/v1/erasure-requests",
+          "what": "COMPLETED o BLOCKED con blockers"
+        },
+        {
+          "service": "erasure-orchestrator",
+          "method": "GET",
+          "path": "/api/v1/erasure-requests/{id}",
+          "what": "Certificado SHA-256"
+        },
+        {
+          "service": "dsar-service",
+          "method": "POST",
+          "path": "/api/v1/dsar",
+          "what": "Acceso o portabilidad"
+        },
+        {
+          "service": "breach-service",
+          "method": "POST",
+          "path": "/api/v1/breaches",
+          "what": "Una brecha y su plazo de 72 h"
+        }
+      ],
+      "lessons": [
+        "L33"
+      ],
+      "flow": "F-11-derechos-rgpd.md",
+      "traps": [
+        "T28"
+      ]
+    },
+    {
+      "id": "M22",
+      "level": 4,
+      "title": "Sistemas heredados",
+      "story": "El mainframe que habla en líneas de 80 columnas y el sistema de pensiones antiguo en SOAP.",
+      "services": [
+        "legacy-mainframe-bridge",
+        "legacy-pensions-soap",
+        "pension-plan-service"
+      ],
+      "steps": [
+        {
+          "service": "legacy-mainframe-bridge",
+          "method": "GET",
+          "path": "/api/v1/layouts",
+          "what": "Posición y longitud de cada campo"
+        },
+        {
+          "service": "legacy-mainframe-bridge",
+          "method": "POST",
+          "path": "/api/v1/batches/run",
+          "what": "Lote en la ventana 02:00-04:00"
+        },
+        {
+          "service": "legacy-mainframe-bridge",
+          "method": "POST",
+          "path": "/api/v1/inbound/balances",
+          "what": "Líneas BL con su rc"
+        },
+        {
+          "service": "legacy-pensions-soap",
+          "method": "POST",
+          "path": "/soap/LegacyPensionService",
+          "what": "SOAPAction GetLegacyPlans"
+        }
+      ],
+      "lessons": [
+        "L28",
+        "L29"
+      ],
+      "flow": "F-12-sistemas-heredados.md",
+      "traps": [
+        "T21",
+        "T22"
+      ]
+    },
+    {
+      "id": "M23",
+      "level": 4,
+      "title": "Contratos de API y tests inestables",
+      "story": "Registrar un esquema, detectar la deriva de una API y medir qué tests de tu suite fallan a ratos.",
+      "services": [
+        "schema-registry",
+        "contract-check",
+        "test-insights",
+        "product-catalog"
+      ],
+      "steps": [
+        {
+          "service": "schema-registry",
+          "method": "POST",
+          "path": "/api/v1/subjects/{subject}/versions",
+          "what": "Nueva versión compatible"
+        },
+        {
+          "service": "contract-check",
+          "method": "POST",
+          "path": "/api/v1/checks",
+          "what": "Comparar la API viva con su contrato"
+        },
+        {
+          "service": "test-insights",
+          "method": "POST",
+          "path": "/api/v1/runs",
+          "what": "Subir una ejecución de tu suite"
+        },
+        {
+          "service": "test-insights",
+          "method": "GET",
+          "path": "/api/v1/suites/{suite}/flaky",
+          "what": "Tests inestables"
+        }
+      ],
+      "lessons": [
+        "L31",
+        "L32"
+      ],
+      "flow": null,
+      "traps": [
+        "T9",
+        "T26",
+        "T29",
+        "T30"
+      ]
+    }
+  ]
+}

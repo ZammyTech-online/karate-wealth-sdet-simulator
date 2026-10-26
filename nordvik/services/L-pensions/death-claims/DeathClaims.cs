@@ -22,7 +22,8 @@ public sealed class DeathClaims : INordvikService
     public NordvikServiceInfo Info { get; } = new(
         "death-claims", "L-pensions", 7113, 3, "Pensiones",
         "Reclamaciones por fallecimiento: congelación de planes, suspensión de cobros, verificación, reparto por beneficiarios (o ESTATE) y liquidación.",
-        DependsOn: new[] { "pension-plan-service", "payout-planner", "beneficiary-service", "valuation-service", "customer-registry", "insurance-policy", "clock-service" },
+        DependsOn: new[] { "pension-plan-service", "payout-planner", "beneficiary-service", "valuation-service", "customer-registry", "clock-service" },
+        OptionalDependsOn: new[] { "insurance-policy" },
         Emits: new[] { "death-claim.opened", "death-claim.verified", "death-claim.settled" });
 
     /// <summary>Reparte un importe por porcentajes al céntimo; el resto del redondeo va a la primera línea.</summary>
@@ -51,7 +52,9 @@ public sealed class DeathClaims : INordvikService
         {
             id = r.Id, customerId = r.Cust, dateOfDeath = r.Dod, reportedBy = r.By, status = r.Status, frozenPlans = JsonDocument.Parse(r.Plans).RootElement,
             distribution = r.Dist is null ? (JsonElement?)null : JsonDocument.Parse(r.Dist).RootElement, certificateRef = r.Cert, rejectionReason = r.Reason,
-            insurancePart = ins.GetArrayLength() == 0
+            insurancePart = ins.ValueKind == JsonValueKind.Null
+                ? new { status = "NOT_CHECKED", policies = ins, note = "insurance-policy estaba apagado (es del nivel 4): revisa los seguros de vida antes de liquidar." }
+                : ins.GetArrayLength() == 0
                 ? new { status = "NO_POLICIES", policies = ins, note = "El cliente no tenía seguros de vida activos." }
                 : new { status = "CLAIM_REQUIRED", policies = ins, note = "Operaciones abre un siniestro DEATH por cada póliza LIFE en insurance-claims." },
             openedAt = r.At, updatedAt = r.Up,
@@ -100,13 +103,14 @@ public sealed class DeathClaims : INordvikService
                 frozen.Add(new { planId = plId, statusBefore = before, portfolioId = pl.GetProperty("portfolioId").GetString(), suspendedPayoutPlans = suspended });
             }
             var id = "dc_" + Guid.NewGuid().ToString("N")[..12];
-            var pols = await Downstream.Get(http, "insurance-policy", $"/api/v1/internal/insurance-policies?customerId={b.CustomerId}&status=ACTIVE", forwardAuth: false);
-            var insurance = pols.Ok ? pols.Json.GetProperty("items").EnumerateArray().Where(x => x.GetProperty("coverage").GetString() == "LIFE")
-                .Select(x => new { policyId = x.GetProperty("id").GetString(), coverage = "LIFE", capital = x.GetProperty("capital").GetProperty("amount").GetString() }).ToList() : new();
+            var pols = await Downstream.GetOptional(http, "insurance-policy", $"/api/v1/internal/insurance-policies?customerId={b.CustomerId}&status=ACTIVE", forwardAuth: false);
+            // insurance-policy es del nivel 4: si está apagado la reclamación sigue, pero dice que los seguros no se han revisado.
+            var insurance = pols is { Ok: true } ? JsonSerializer.Serialize(pols.Json.GetProperty("items").EnumerateArray().Where(x => x.GetProperty("coverage").GetString() == "LIFE")
+                .Select(x => new { policyId = x.GetProperty("id").GetString(), coverage = "LIFE", capital = x.GetProperty("capital").GetProperty("amount").GetString() }).ToList(), Canonical.Web) : "null";
             using var db = ctx.OpenDb();
             using (var tx = db.BeginTransaction())
             {
-                db.Execute("INSERT INTO claim_insurance VALUES (@id, @p)", new { id, p = JsonSerializer.Serialize(insurance, Canonical.Web) }, tx);
+                db.Execute("INSERT INTO claim_insurance VALUES (@id, @p)", new { id, p = insurance }, tx);
                 db.Execute("INSERT INTO claims VALUES (@id, @CustomerId, @dod, @ReportedBy, 'OPEN', @plans, NULL, NULL, NULL, @at, @at)",
                     new { id, b.CustomerId, dod = Money.Date(dod), b.ReportedBy, plans = JsonSerializer.Serialize(frozen, Canonical.Web), at = Nordic.Iso(clock.LocalNow) }, tx);
                 Outbox.Add(db, http, clock, "death-claim.opened", id, new { claimId = id, customerId = b.CustomerId, frozenPlans = frozen.Count }, tx);

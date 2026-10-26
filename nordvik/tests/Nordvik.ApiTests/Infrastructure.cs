@@ -13,9 +13,13 @@ namespace Nordvik.ApiTests;
 public sealed class NordvikFixture : IAsyncLifetime
 {
     public const int Offset = 10000;
-    private readonly List<WebApplication> _apps = new();
+    private WebApplication? _tower;
     public string Root { get; } = Path.Combine(Path.GetTempPath(), "nordvik-tests-" + Guid.NewGuid().ToString("N")[..8]);
     public HttpClient Http { get; } = new() { Timeout = TimeSpan.FromSeconds(20) };
+    /// <summary>El supervisor que enciende y apaga los servicios (el mismo que usa Nordvik.Host).</summary>
+    public Supervisor Supervisor { get; private set; } = null!;
+    /// <summary>La carpeta del repositorio (escalera, docs y academia).</summary>
+    public static string RepoRoot { get; } = FindRepoRoot();
 
     public async Task InitializeAsync()
     {
@@ -29,18 +33,25 @@ public sealed class NordvikFixture : IAsyncLifetime
         ServiceDirectory.Offset = Offset;
         ServiceDirectory.Register(all.Select(s => s.Info));
         Nordvik.Services.ApiGateway.UseCatalog(all.Select(s => s.Info));
-        foreach (var svc in all.OrderBy(s => s.Info.Name == "clock-service" ? 0 : 1))
-        {
-            var app = ServiceRunner.Build(svc, settings);
-            await app.StartAsync();
-            _apps.Add(app);
-        }
+        Supervisor = new Supervisor(all, settings);
+        var r = await Supervisor.Start(all.Select(s => s.Info.Name));
+        Assert.True(r.Failed.Count == 0, "No arrancaron: " + string.Join(", ", r.Failed.Select(f => f.Key + ": " + f.Value)));
+        _tower = ControlTower.Build(Supervisor, RepoRoot);
+        await _tower.StartAsync();
     }
 
     public async Task DisposeAsync()
     {
-        foreach (var app in _apps) await app.DisposeAsync();
+        if (_tower is not null) await _tower.DisposeAsync();
+        await Supervisor.StopAll();
         try { Directory.Delete(Root, recursive: true); } catch { /* ficheros en uso en Windows: no pasa nada */ }
+    }
+
+    private static string FindRepoRoot()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "Nordvik.sln"))) dir = dir.Parent;
+        return dir?.FullName ?? Directory.GetCurrentDirectory();
     }
 
     public static string Url(int port, string path) => $"http://localhost:{port + Offset}{path}";
@@ -121,6 +132,8 @@ public sealed class NordvikCollection : ICollectionFixture<NordvikFixture> { }
 
 public static class Ports
 {
+    /// <summary>La Torre de control (fuera del catálogo: vive en el anfitrión).</summary>
+    public const int Tower = 3000;
     public const int Uuid = 6001, Sequence = 6002, Clock = 6003, Random = 6004;
     public const int Person = 6005, Address = 6006, Iban = 6007, Isin = 6008, Reset = 6009, Fixture = 6010;
     public const int Gateway = 6100, RateLimiter = 6101, Config = 6102;

@@ -20,7 +20,8 @@ Pistas en tres niveles: la **pista 1** está en el ejercicio, la **pista 2** con
 
 ```text
 1.  cd D:\WORKSPACE_KARATE\nordvik
-    nordvik up                    (arranca los 8 servicios de la oleada 0, unos 70 MB de RAM)
+    nordvik up -Nivel 0           (arranca los 8 servicios del nivel 0, unos 70 MB de RAM)
+    nordvik torre                 (opcional: la Torre de control en http://localhost:3000)
 
 2.  cd academia
     academia leer L00             (lee la teoría)
@@ -29,6 +30,19 @@ Pistas en tres niveles: la **pista 1** está en el ejercicio, la **pista 2** con
 3.  Abre lecciones\L00-que-es-una-api\ejercicios\E01.feature en VS Code,
     cambia los ___ y ejecuta:     academia corregir L00
 ```
+
+## Niveles de la escalera y lecciones
+
+Cada lección pertenece a un nivel de la escalera (`torre/escalera.json`). Si Nordvik está en marcha, `academia ejemplo Lxx`
+le pide a la Torre de control que encienda en caliente lo que falte para esa lección; si no, arranca el perfil del nivel.
+
+| Nivel | Lecciones | Perfil |
+| --- | --- | --- |
+| 0 · Principiante | L00-L15 | nivel-0 |
+| 1 · Básico | L16-L17 | nivel-3 |
+| 2 · Intermedio | L18-L21 | nivel-6 |
+| 3 · Avanzado | L22-L27 | nivel-9 |
+| 4 · Senior | L28-L33 | completo |
 
 ## Tramo 1 · Fundamentos (L00-L15)
 

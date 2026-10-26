@@ -36,7 +36,7 @@ public sealed class ServiceRegistry : INordvikService
     private static object View(NordvikServiceInfo i, string? status) => new
     {
         name = i.Name, domain = i.Domain, port = i.Port, url = ServiceDirectory.UrlOf(i.Name), wave = i.Wave, version = i.Version, team = i.Team,
-        external = i.Domain == "X-external", dependsOn = i.DependsOn ?? Array.Empty<string>(), emits = i.Emits ?? Array.Empty<string>(), status,
+        external = i.Domain == "X-external", dependsOn = i.DependsOn ?? Array.Empty<string>(), optionalDependsOn = i.OptionalDependsOn ?? Array.Empty<string>(), emits = i.Emits ?? Array.Empty<string>(), status,
     };
 
     public void MapEndpoints(WebApplication app, ServiceContext ctx)
@@ -62,7 +62,7 @@ public sealed class ServiceRegistry : INordvikService
             var all = All();
             if (!all.TryGetValue(name, out var i)) return Problems.NotFound(http, "SERVICE_NOT_FOUND", $"No hay ningún servicio llamado {name}.", null);
             var trans = Transitive(name, all);
-            return Results.Ok(new { name, direct = i.DependsOn ?? Array.Empty<string>(), transitive = trans, transitiveCount = trans.Count });
+            return Results.Ok(new { name, direct = i.DependsOn ?? Array.Empty<string>(), optional = i.OptionalDependsOn ?? Array.Empty<string>(), transitive = trans, transitiveCount = trans.Count });
         }).WithTags("Registro").WithSummary("Dependencias directas y transitivas (lo que tiene que estar encendido)");
 
         app.MapGet("/api/v1/services/{name}/dependents", (HttpContext http, string name) =>

@@ -35,19 +35,30 @@ function Test-Port([int]$port) {
   try { $null = Invoke-RestMethod "http://localhost:$port/health" -TimeoutSec 2; return $true } catch { return $false }
 }
 
-# El tramo 1 (L00-L15) cabe en nivel-0; el tramo 2 (L16 en adelante) necesita nivel-6.
+# Qué perfil necesita cada lección: lo dice la escalera (torre/escalera.json), la misma que usa la Torre de control.
 function Get-PerfilNecesario([string]$leccion) {
-  if ($leccion -eq 'todas' -or $leccion -match '^L(2[89]|[3-9]\d)') { return @{ Perfil = 'completo'; Puerto = 7604 } }
-  if ($leccion -match '^L2[2-7]') { return @{ Perfil = 'nivel-9'; Puerto = 7108 } }
-  if ($leccion -match '^L(1[6-9]|2[01])') { return @{ Perfil = 'nivel-6'; Puerto = 6700 } }
-  return @{ Perfil = 'nivel-0'; Puerto = 6801 }
+  $escalera = Get-Content (Join-Path (Split-Path $Root -Parent) 'torre\escalera.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $niveles = $escalera.levels | Sort-Object id
+  $nivel = if ($leccion -eq 'todas' -or -not $leccion) { $niveles[-1] } else { $niveles | Where-Object { $_.lessons -contains $leccion.Substring(0, 3).ToUpper() } | Select-Object -First 1 }
+  if (-not $nivel) { $nivel = $niveles[-1] }
+  # Puerto de un servicio que solo existe a partir de ese nivel: si responde, el perfil ya está encendido.
+  $sonda = @{ 0 = 6801; 1 = 6200; 2 = 6700; 3 = 7108; 4 = 7604 }
+  return @{ Perfil = $nivel.profile; Puerto = $sonda[[int]$nivel.id]; Nivel = $nivel.id }
 }
 
 function Invoke-Maven([string]$modo, [string]$leccion) {
   $need = Get-PerfilNecesario $leccion
-  if (-not (Test-Port $need.Puerto)) {
+  if (Test-Port 3000) {
+    # Nordvik ya está en marcha: la Torre de control enciende en caliente solo lo que falta para esta lección.
+    try {
+      $ruta = if ($leccion -eq 'todas' -or -not $leccion) { "niveles/$($need.Nivel)/encender?modo=sumar" } else { "lecciones/$($leccion.Substring(0, 3).ToUpper())/preparar" }
+      $r = Invoke-RestMethod -Method Post "http://localhost:3000/api/v1/$ruta" -TimeoutSec 120
+      if ($r.started.Count -gt 0) { Write-Host "La Torre de control ha encendido $($r.started.Count) servicios para esta lección." -ForegroundColor Yellow }
+    } catch { Write-Host "La Torre de control no pudo preparar la lección: $($_.Exception.Message)" -ForegroundColor Red }
+  }
+  elseif (-not (Test-Port $need.Puerto)) {
     $nordvik = Join-Path (Split-Path $Root -Parent) 'tools\nordvik.ps1'
-    Write-Host "Esta lección necesita Nordvik con el perfil $($need.Perfil). Lo arranco por ti (tarda un poco la primera vez)..." -ForegroundColor Yellow
+    Write-Host "Esta lección es del nivel $($need.Nivel): necesita Nordvik con el perfil $($need.Perfil). Lo arranco por ti (tarda un poco la primera vez)..." -ForegroundColor Yellow
     if (Test-Port 6001) { & $nordvik down | Out-Null }
     & $nordvik up -Profile $need.Perfil | Out-Null
   }

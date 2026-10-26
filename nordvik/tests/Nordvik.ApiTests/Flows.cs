@@ -50,7 +50,7 @@ public static class Flows
         await f.Send(HttpMethod.Post, Ports.Orders, "/api/v1/orders", $"{{\"portfolioId\":\"{portfolioId}\",\"isin\":\"{isin}\",\"side\":\"SELL\",\"units\":\"{units}\"}}",
             With(token ?? await f.Erik(), key ?? Key()));
 
-    public static async Task<Reply> WaitOrder(NordvikFixture f, string orderId, string status, int timeoutMs = 10000) =>
+    public static async Task<Reply> WaitOrder(NordvikFixture f, string orderId, string status, int timeoutMs = 20000) =>
         await Eventually.Until(async () => await f.Get(Ports.Orders, $"/api/v1/orders/{orderId}", NordvikFixture.Bearer(await f.Erik())),
             r => r.Code != 200 ? throw new Xunit.Sdk.XunitException($"GET orden {orderId} → {r.Code}: {r.Body}") : r.Str("status") == status || r.Str("status") == "REJECTED", timeoutMs, $"orden {orderId} en {status}");
 

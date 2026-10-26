@@ -23,12 +23,16 @@ public class PlatformRegistryTests
         Assert.Equal(29, (await _f.Get(Ports.ServiceRegistry, "/api/v1/services?wave=4&external=false")).Int("count"));
         var one = await _f.Get(Ports.ServiceRegistry, "/api/v1/services/order-management");
         Assert.Equal(6902 + NordvikFixture.Offset, int.Parse(one.Str("url").Split(':')[2]));
-        var deps = await _f.Get(Ports.ServiceRegistry, "/api/v1/services/payout-execution/dependencies");
-        Assert.Contains("tax-withholding", deps.Json.GetProperty("direct").EnumerateArray().Select(x => x.GetString()));
+        // payout-execution usa tax-withholding solo si está encendido (dependencia opcional, ADR-014)
+        var payout = await _f.Get(Ports.ServiceRegistry, "/api/v1/services/payout-execution/dependencies");
+        Assert.DoesNotContain("tax-withholding", payout.Json.GetProperty("direct").EnumerateArray().Select(x => x.GetString()));
+        Assert.Contains("tax-withholding", payout.Json.GetProperty("optional").EnumerateArray().Select(x => x.GetString()));
+        var deps = await _f.Get(Ports.ServiceRegistry, "/api/v1/services/tax-withholding/dependencies");
+        Assert.Contains("tax-agency-adapter", deps.Json.GetProperty("direct").EnumerateArray().Select(x => x.GetString()));
         Assert.Contains("tax-agency-sim", deps.Json.GetProperty("transitive").EnumerateArray().Select(x => x.GetString()));
         var dependents = await _f.Get(Ports.ServiceRegistry, "/api/v1/services/tax-agency-sim/dependents");
         Assert.Contains("tax-agency-adapter", dependents.Json.GetProperty("direct").EnumerateArray().Select(x => x.GetString()));
-        Assert.Contains("payout-execution", dependents.Json.GetProperty("transitive").EnumerateArray().Select(x => x.GetString()));
+        Assert.Contains("tax-withholding", dependents.Json.GetProperty("transitive").EnumerateArray().Select(x => x.GetString()));
         (await _f.Get(Ports.ServiceRegistry, "/api/v1/services/no-existe")).ShouldBeProblem(404, "SERVICE_NOT_FOUND");
         var domains = await _f.Get(Ports.ServiceRegistry, "/api/v1/domains");
         Assert.Equal(18, domains.Json.GetProperty("items").GetArrayLength()); // 17 dominios de negocio + X-external

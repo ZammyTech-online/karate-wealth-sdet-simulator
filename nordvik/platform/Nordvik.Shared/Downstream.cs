@@ -57,6 +57,16 @@ public static class Downstream
         }
     }
 
+    /// <summary>
+    /// Para dependencias opcionales (OptionalDependsOn): si el servicio está apagado devuelve null en vez de lanzar
+    /// DependencyUnavailableException, y quien llama aplica su plan B.
+    /// </summary>
+    public static async Task<DownstreamReply?> GetOptional(HttpContext? caller, string service, string path, bool forwardAuth = true, TimeSpan? timeout = null)
+    {
+        try { return await Get(caller, service, path, forwardAuth, timeout); }
+        catch (DependencyUnavailableException) { return null; }
+    }
+
     public static Task<DownstreamReply> Get(HttpContext? caller, string service, string path, bool forwardAuth = true, TimeSpan? timeout = null) =>
         Send(caller, service, HttpMethod.Get, path, null, forwardAuth, null, timeout);
 

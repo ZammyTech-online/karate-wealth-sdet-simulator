@@ -3,6 +3,9 @@
   CLI de Nordvik: arranca, para y vigila el backend simulado.
 .EXAMPLE
   .\nordvik up                 # arranca el perfil nivel-0
+  .\nordvik up -Nivel 2        # arranca el nivel 2 de la escalera (0 = principiante ... 4 = senior)
+  .\nordvik niveles            # la escalera: qué enciende cada nivel y qué lecciones y misiones trae
+  .\nordvik torre              # abre la Torre de control (http://localhost:3000) en el navegador
   .\nordvik up -Profile nivel-3
   .\nordvik up -Only order-management,payments-gateway   # un dominio suelto + sus dependencias (menos RAM)
   .\nordvik profiles           # perfiles disponibles y cuántos servicios enciende cada uno
@@ -16,9 +19,10 @@
   .\nordvik down
 #>
 param(
-  [Parameter(Position = 0)][ValidateSet('up', 'down', 'status', 'smoke', 'test', 'reset', 'logs', 'docs', 'trace', 'profiles', 'help')][string]$Command = 'help',
+  [Parameter(Position = 0)][ValidateSet('up', 'down', 'status', 'smoke', 'test', 'reset', 'logs', 'docs', 'trace', 'profiles', 'niveles', 'torre', 'help')][string]$Command = 'help',
   [Parameter(Position = 1)][string]$Target,
   [string]$Profile = 'nivel-0',
+  [int]$Nivel = -1,
   [string]$Only,
   [switch]$Build,
   [switch]$NoLearning
@@ -37,6 +41,17 @@ function Get-HostProcess {
   if (-not (Test-Path $PidFile)) { return $null }
   $id = [int](Get-Content $PidFile)
   return Get-Process -Id $id -ErrorAction SilentlyContinue
+}
+
+function Get-Escalera {
+  return Get-Content (Join-Path $Root 'torre\escalera.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+}
+
+# -Nivel N elige el perfil de ese nivel de la escalera (la misma fuente que la Torre de control y la academia)
+if ($Nivel -ge 0) {
+  $lvl = (Get-Escalera).levels | Where-Object { $_.id -eq $Nivel }
+  if (-not $lvl) { throw "No existe el nivel $Nivel. Los niveles van del 0 al 4: nordvik niveles" }
+  $Profile = $lvl.profile
 }
 
 function Get-ProfileData([string]$name) {
@@ -101,7 +116,8 @@ function Invoke-Status {
   $priv = [math]::Round($p.PrivateMemorySize64 / 1MB, 0)
   $hostInfo = Get-Content (Join-Path $Data 'host.json') -Raw -Encoding UTF8 | ConvertFrom-Json
   Write-Host ""
-  Write-Host "  Perfil $($hostInfo.profile) · PID $($p.Id) · RAM $ram MB (privada $priv MB)" -ForegroundColor Cyan
+  Write-Host "  Perfil $($hostInfo.profile) · PID $($p.Id) · RAM $ram MB (privada $priv MB) · $($hostInfo.services.Count) servicios encendidos" -ForegroundColor Cyan
+  if ($hostInfo.tower) { Write-Host "  Torre de control: $($hostInfo.tower)  (enciende y apaga niveles, dominios y servicios)" -ForegroundColor Cyan }
   $rows = foreach ($s in $hostInfo.services) {
     [pscustomobject]@{ Puerto = $s.port; Servicio = $s.name; Salud = $(if (Test-Health $s.port) { 'UP' } else { 'CAÍDO' }); Swagger = "http://localhost:$($s.port)/swagger" }
   }
@@ -137,6 +153,17 @@ switch ($Command) {
       $d = Get-Content $_.FullName -Raw -Encoding UTF8 | ConvertFrom-Json
       [pscustomobject]@{ Perfil = $d.name; Oleada = $d.wave; Servicios = $d.services.Count; 'RAM máx. (MB)' = $d.ramBudgetMb; Descripción = $d.description }
     } | Format-Table -AutoSize -Wrap | Out-Host
+  }
+  'niveles' {
+    (Get-Escalera).levels | Sort-Object id | ForEach-Object {
+      $p = Get-ProfileData $_.profile
+      [pscustomobject]@{ Nivel = "$($_.id) · $($_.name)"; Tema = $_.title; Perfil = $_.profile; Servicios = $p.services.Count; Lecciones = "$($_.lessons[0])-$($_.lessons[-1])"; 'Ruta del plan' = $_.route }
+    } | Format-Table -AutoSize | Out-Host
+    Write-Host '  Arranca un nivel con: nordvik up -Nivel 0   · y cámbialo en caliente desde la Torre de control: nordvik torre' -ForegroundColor Cyan
+  }
+  'torre' {
+    if (-not (Get-HostProcess)) { Write-Host 'Nordvik no está en marcha: arranco el nivel 0 primero.' -ForegroundColor Yellow; Invoke-Up }
+    Start-Process 'http://localhost:3000'
   }
   'docs' {
     if (-not (Get-HostProcess)) { throw "Arranca primero Nordvik (nordvik up -Profile ...): la documentación se genera desde los servicios encendidos." }

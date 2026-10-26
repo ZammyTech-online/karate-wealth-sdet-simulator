@@ -1,6 +1,7 @@
 // Configuración global de la Academia: una URL por microservicio y los usuarios de prueba.
 // Karate ejecuta esta función antes de cada escenario y todas sus claves quedan como variables.
-// Tramo 1 (L00-L15) usa la oleada 0. Tramo 2 (L16-L21) necesita el perfil nivel-6. Tramo 3 (L22-L27), nivel-9. Tramo 4 (L28-L33), completo.
+// Qué servicios necesita cada lección lo dice la escalera (torre/escalera.json): nivel 0 = L00-L15, nivel 1 = L16-L17,
+// nivel 2 = L18-L21, nivel 3 = L22-L27 y nivel 4 = L28-L33. academia.ps1 se lo pide a la Torre de control (puerto 3000).
 function fn() {
   var env = karate.env || 'local';
   var host = 'http://localhost';

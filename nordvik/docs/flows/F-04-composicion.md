@@ -19,7 +19,7 @@
 3. La seguridad es la de las fuentes: otro cliente → 404 `CONTRACT_NOT_FOUND`; sin token → 401.
 4. `X-Composition-Trace: true` añade `trace` con lo que respondió cada fuente; sin la cabecera, `trace` no existe.
 
-Las composiciones C2-C6 siguen el mismo patrón; C7-C10 responden 501 hasta la oleada 3.
+Las composiciones C2-C10 siguen el mismo patrón: C7 (plan de pensión completo), C8 (expediente de traspaso) y C10 (exportación de portabilidad) ya están implementadas.
 
 ## Dónde se prueba
 

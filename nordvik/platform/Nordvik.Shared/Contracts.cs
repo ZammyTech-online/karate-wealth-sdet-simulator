@@ -7,7 +7,8 @@ namespace Nordvik.Shared;
 /// <summary>Convención de nombres JSON del equipo dueño del servicio.</summary>
 public enum JsonNaming { CamelCase, SnakeCase }
 
-/// <summary>Ficha de identidad de un microservicio: nombre, dominio, puerto, oleada y equipo.</summary>
+/// <summary>Ficha de identidad de un microservicio: nombre, dominio, puerto, oleada y equipo.
+/// DependsOn: sin ellos no funciona (la Torre los enciende antes). OptionalDependsOn: los usa si están encendidos y, si no, tiene un plan B.</summary>
 public sealed record NordvikServiceInfo(
     string Name,
     string Domain,
@@ -19,7 +20,8 @@ public sealed record NordvikServiceInfo(
     JsonNaming Naming = JsonNaming.CamelCase,
     string[]? DependsOn = null,
     string[]? Emits = null,
-    string[]? Consumes = null);
+    string[]? Consumes = null,
+    string[]? OptionalDependsOn = null);
 
 /// <summary>Contrato que implementa cada microservicio para poder vivir dentro de Nordvik.Host.</summary>
 public interface INordvikService

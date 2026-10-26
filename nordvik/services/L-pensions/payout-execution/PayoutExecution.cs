@@ -21,7 +21,9 @@ public sealed class PayoutExecution : INordvikService
     public NordvikServiceInfo Info { get; } = new(
         "payout-execution", "L-pensions", 7111, 3, "Pensiones",
         "Ejecución mensual de pagos de pensión: bruto, retención según tax-withholding (30 % provisional si no responde), neto y asiento; idempotente por plan y mes.",
-        DependsOn: new[] { "payout-planner", "pension-plan-service", "tax-withholding", "ledger-service", "permission-service", "clock-service" }, Emits: new[] { "payout.paid", "payout-run.completed" });
+        DependsOn: new[] { "payout-planner", "pension-plan-service", "ledger-service", "permission-service", "clock-service" }, Emits: new[] { "payout.paid", "payout-run.completed" },
+        // Nivel 4: con tax-withholding encendido retiene según la tabla del municipio; en el nivel 3 aplica el 30 % provisional.
+        OptionalDependsOn: new[] { "tax-withholding" });
 
     public const decimal ProvisionalTaxRate = 0.30m;
 
@@ -74,9 +76,9 @@ public sealed class PayoutExecution : INordvikService
                 if (pp.Str("status") == "FROZEN") { lines.Add(new { payoutPlanId = poId, result = "SKIPPED_PLAN_FROZEN" }); skipped++; continue; }
                 var gross = decimal.Parse(po.GetProperty("monthlyGross").GetProperty("amount").GetString()!, Money.Inv);
                 var customerIdW = po.GetProperty("customerId").GetString()!;
-                var wh = await Downstream.Get(http, "tax-withholding", $"/api/v1/internal/customers/{customerIdW}/withholding?incomeType=PENSION&year={period[..4]}", forwardAuth: false);
-                var ratePct = wh.Ok && Money.TryParse(wh.Str("ratePct"), out var rp) ? rp : ProvisionalTaxRate * 100;
-                var basis = wh.Ok ? wh.Str("basis") ?? "TAX_TABLE" : "PROVISIONAL_30";
+                var wh = await Downstream.GetOptional(http, "tax-withholding", $"/api/v1/internal/customers/{customerIdW}/withholding?incomeType=PENSION&year={period[..4]}", forwardAuth: false);
+                var ratePct = wh is { Ok: true } && Money.TryParse(wh.Str("ratePct"), out var rp) ? rp : ProvisionalTaxRate * 100;
+                var basis = wh is { Ok: true } ? wh.Str("basis") ?? "TAX_TABLE" : "PROVISIONAL_30";
                 var (tax, net) = Withhold(gross, ratePct);
                 var payId = "pay_" + Guid.NewGuid().ToString("N")[..12];
                 var entry = await Downstream.Post(http, "ledger-service", "/api/v1/journal-entries", new

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torre de control · Nordvik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 L22 29 H10 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="16" cy="9" r="3" fill="currentColor"/><path d="M5 9 h4 M23 9 h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    <div>
+      <div class="brand-name">Torre de control</div>
+      <div class="brand-sub">Nordvik Wealth &amp; Pension</div>
+    </div>
+  </div>
+  <div class="status" id="status" aria-live="polite">
+    <span class="pill" id="st-level">Nivel —</span>
+    <span class="pill" id="st-services">— servicios</span>
+    <span class="pill" id="st-memory">— MB</span>
+    <span class="pill" id="st-clock">reloj —</span>
+    <span class="pill" id="st-traps">trampas —</span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-view="escalera" aria-selected="true">Escalera</button>
+  <button role="tab" data-view="misiones">Misiones</button>
+  <button role="tab" data-view="mapa">Mapa</button>
+  <button role="tab" data-view="laboratorio">Laboratorio</button>
+  <button role="tab" data-view="guia">Cómo trabajar</button>
+</nav>
+
+<main>
+  <section id="view-escalera" class="view">
+    <div class="intro">
+      <h1>Tu ruta de cero a senior</h1>
+      <p>Cinco niveles. Cada uno enciende solo los servicios que necesitas, trae sus lecciones de Karate y sus misiones, y termina en un checkpoint. Empieza por el nivel 0 y no subas hasta pasar su checkpoint.</p>
+    </div>
+    <ol class="ladder" id="ladder"></ol>
+  </section>
+
+  <section id="view-misiones" class="view" hidden>
+    <div class="intro">
+      <h1>Misiones</h1>
+      <p>Una misión es algo de negocio que vas a probar de principio a fin. Pulsa <b>Preparar</b> y la torre enciende exactamente lo que hace falta; luego sigue los pasos con Karate o desde aquí mismo.</p>
+    </div>
+    <div class="filters" id="mission-filters" role="group" aria-label="Filtrar por nivel"></div>
+    <div class="missions" id="missions"></div>
+  </section>
+
+  <section id="view-mapa" class="view" hidden>
+    <div class="intro">
+      <h1>Mapa de la empresa</h1>
+      <p>Los 156 microservicios en 17 dominios y los 12 sistemas externos simulados. Enciende o apaga un servicio o un dominio entero; la torre se ocupa de las dependencias.</p>
+    </div>
+    <div class="toolbar">
+      <label class="search"><span class="sr-only">Buscar</span><input id="map-search" type="search" placeholder="Buscar servicio (pension, kyc, order…)" autocomplete="off"></label>
+      <label class="select">Hasta el nivel
+        <select id="map-level"><option value="">todos</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+      </label>
+      <label class="check"><input id="map-on" type="checkbox"> solo encendidos</label>
+    </div>
+    <div class="domains" id="domains"></div>
+  </section>
+
+  <section id="view-laboratorio" class="view" hidden>
+    <div class="intro">
+      <h1>Laboratorio</h1>
+      <p>Aquí provocas situaciones para que tus tests las detecten: mover el reloj, encender trampas y meter fallos a propósito. Todo se deshace con un botón.</p>
+    </div>
+    <div class="lab">
+      <article class="panel" id="lab-clock">
+        <h2>Reloj virtual</h2>
+        <p class="muted">Todos los servicios usan esta hora (Europa/Estocolmo). Las órdenes, los cortes y los plazos dependen de ella.</p>
+        <div class="clock-now" id="clock-now">—</div>
+        <div class="row">
+          <label class="grow">Congelar en
+            <input id="clock-at" type="datetime-local" step="1" value="2026-10-20T10:00:00">
+          </label>
+          <button class="btn" id="clock-freeze">Congelar</button>
+        </div>
+        <div class="row wrap">
+          <button class="btn ghost" data-advance='{"hours":1}'>+1 hora</button>
+          <button class="btn ghost" data-advance='{"days":1}'>+1 día</button>
+          <button class="btn ghost" data-advance='{"days":7}'>+7 días</button>
+          <button class="btn ghost" data-freeze="2026-10-20T15:30:00">Martes 15:30 (corte)</button>
+          <button class="btn ghost" data-freeze="2026-10-20T18:05:00">Martes 18:05 (NAV)</button>
+          <button class="btn quiet" id="clock-reset">Hora real</button>
+        </div>
+      </article>
+
+      <article class="panel" id="lab-faults">
+        <h2>Fallos a propósito</h2>
+        <p class="muted">Una regla de caos hace que un servicio responda mal o lento. Para una sola petición también vale la cabecera <code>X-Chaos-Scenario: latency=1500;status=503</code>.</p>
+        <form id="fault-form" class="grid-form">
+          <label>Servicio<select id="fault-service" required></select></label>
+          <label>Ruta que empieza por<input id="fault-path" placeholder="/api/v1"></label>
+          <label>Código HTTP<input id="fault-status" type="number" min="400" max="599" placeholder="503"></label>
+          <label>Retraso (ms)<input id="fault-delay" type="number" min="0" max="30000" placeholder="0"></label>
+          <label>Veces<input id="fault-times" type="number" min="1" placeholder="sin límite"></label>
+          <label>Probabilidad<input id="fault-prob" type="number" min="0" max="1" step="0.1" placeholder="1"></label>
+          <div class="form-actions"><button class="btn" type="submit">Añadir fallo</button></div>
+        </form>
+        <ul class="faults" id="faults"></ul>
+      </article>
+
+      <article class="panel wide" id="lab-traps">
+        <div class="panel-head">
+          <h2>Trampas</h2>
+          <button class="btn quiet" id="traps-reset">Apagar trampas y fallos</button>
+        </div>
+        <p class="muted">Las trampas <b>SIEMPRE</b> son comportamiento real del sistema que tus tests deben respetar. Las <b>ACTIVABLES</b> se encienden aquí para practicar cómo las detecta tu suite.</p>
+        <div class="table-wrap"><table class="traps"><thead><tr><th>Id</th><th>Trampa</th><th>Síntoma</th><th>Nivel</th><th>Tipo</th><th>Estado</th></tr></thead><tbody id="traps"></tbody></table></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="view-guia" class="view" hidden>
+    <div class="intro">
+      <h1>Cómo trabajar sin perderte</h1>
+      <p>El proyecto es grande, pero nunca lo usas entero a la vez. Esta es la rutina de cada sesión.</p>
+    </div>
+    <ol class="guide">
+      <li><h3>Elige tu nivel</h3><p>En <b>Escalera</b>, pulsa <b>Encender solo este nivel</b>. Lo que no es de tu nivel se apaga y deja libre la memoria.</p><pre><code>nordvik up -Nivel 0</code></pre></li>
+      <li><h3>Haz la lección</h3><p>Cada nivel trae sus lecciones. La academia le pide a la torre que encienda lo que falte.</p><pre><code>academia leer L00
+academia ejemplo L00
+academia corregir L00</code></pre></li>
+      <li><h3>Haz una misión</h3><p>En <b>Misiones</b>, pulsa <b>Preparar</b>. Sigue los pasos: primero aquí con <b>Probar</b>, luego escríbelos en Karate.</p></li>
+      <li><h3>Rompe algo</h3><p>En <b>Laboratorio</b> mueve el reloj, enciende una trampa o mete un fallo, y comprueba que tu test lo detecta. Luego pulsa <b>Apagar trampas y fallos</b>.</p></li>
+      <li><h3>Mira la ficha cuando dudes</h3><p>En <b>Mapa</b>, pulsa un servicio: qué hace, sus endpoints, de quién depende, qué lecciones y misiones lo usan y su Swagger.</p></li>
+      <li><h3>Pasa el checkpoint</h3><p>Cada nivel acaba con un reto. Cuando lo tengas en verde, sube al siguiente nivel.</p></li>
+    </ol>
+  </section>
+</main>
+
+<aside class="drawer" id="drawer" hidden aria-label="Ficha del servicio">
+  <div class="drawer-head">
+    <div><div class="eyebrow" id="d-domain"></div><h2 id="d-name"></h2></div>
+    <button class="icon-btn" id="drawer-close" aria-label="Cerrar">×</button>
+  </div>
+  <div class="drawer-body" id="d-body"></div>
+</aside>
+<div class="scrim" id="scrim" hidden></div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>

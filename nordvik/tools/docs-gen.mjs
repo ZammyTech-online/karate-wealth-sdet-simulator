@@ -54,7 +54,7 @@ for (const { info, spec } of services) {
   }
   endpoints.sort((a, b) => a.path.localeCompare(b.path) || a.method.localeCompare(b.method));
   let md = `# ${info.name}\n\n${info.description}\n\n`;
-  md += `| Dato | Valor |\n| --- | --- |\n| Dominio | ${info.domain} |\n| Equipo dueño | ${info.team} |\n| Puerto | ${info.port} |\n| Oleada | ${info.wave} |\n| Versión | ${info.version} |\n| Convención JSON | ${info.jsonNaming} |\n| Depende de | ${(info.dependsOn || []).join(', ') || '—'} |\n| Publica eventos | ${(info.emits || []).map(t => '`' + t + '`').join(', ') || '—'} |\n| Consume eventos | ${(info.consumes || []).map(t => '`' + t + '`').join(', ') || '—'} |\n| Swagger | http://localhost:${info.port}/swagger |\n| Colección Bruno | \`collections/${slug(info.team)}\` |\n\n`;
+  md += `| Dato | Valor |\n| --- | --- |\n| Dominio | ${info.domain} |\n| Equipo dueño | ${info.team} |\n| Puerto | ${info.port} |\n| Oleada | ${info.wave} |\n| Versión | ${info.version} |\n| Convención JSON | ${info.jsonNaming} |\n| Depende de | ${(info.dependsOn || []).join(', ') || '—'} |\n| Usa si está encendido | ${(info.optionalDependsOn || []).join(', ') || '—'} |\n| Nivel de la escalera | ${Math.min(info.wave, 4)} |\n| Publica eventos | ${(info.emits || []).map(t => '`' + t + '`').join(', ') || '—'} |\n| Consume eventos | ${(info.consumes || []).map(t => '`' + t + '`').join(', ') || '—'} |\n| Swagger | http://localhost:${info.port}/swagger |\n| Colección Bruno | \`collections/${slug(info.team)}\` |\n\n`;
   md += `## Endpoints (${endpoints.length})\n\n| Método | Ruta | Para qué |\n| --- | --- | --- |\n`;
   for (const e of endpoints) md += `| \`${e.method}\` | \`${e.path}\` | ${e.op.summary || ''} |\n`;
   for (const e of endpoints) {
@@ -124,7 +124,7 @@ for (const t of Object.keys(topics).sort()) {
 out(path.join(root, 'docs', 'events.md'), ev);
 
 let index = `# Portal de desarrolladores de Nordvik\n\nGenerado automáticamente a partir de los servicios en marcha (perfil **${host.profile}**). No lo edites a mano: ejecuta \`node tools/docs-gen.mjs\`.\n\n`;
-index += `| Sección | Dónde |\n| --- | --- |\n| Fichas de servicio | \`docs/services/\` |\n| Catálogo de eventos | \`docs/events.md\` |\n| Contratos OpenAPI | \`docs/openapi/\` |\n| Colecciones Bruno por equipo | \`collections/\` |\n| Decisiones de arquitectura | \`docs/adr/\` |\n| Flujos | \`docs/flows/\` |\n| Informes de la noche | \`docs/informes/\` |\n\n`;
+index += `| Sección | Dónde |\n| --- | --- |\n| Fichas de servicio | \`docs/services/\` |\n| Catálogo de eventos | \`docs/events.md\` |\n| Contratos OpenAPI | \`docs/openapi/\` |\n| Colecciones Bruno por equipo | \`collections/\` |\n| Decisiones de arquitectura | \`docs/adr/\` |\n| Flujos | \`docs/flows/\` |\n| Informes de la noche | \`docs/informes/\` |\n| Escalera de niveles (0-4) y misiones | \`torre/escalera.json\` · ADR-014 |\n| Torre de control (encender y apagar en caliente) | http://localhost:3000 |\n| Guía paso a paso con capturas | \`docs/guia/\` |\n\n`;
 let total = 0;
 for (const domain of Object.keys(byDomain).sort()) {
   index += `## ${domain}\n\n| Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |\n| --- | --- | --- | --- | --- | --- |\n`;
