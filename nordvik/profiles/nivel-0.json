@@ -12,5 +12,6 @@
     "market-data",
     "fx-rates",
     "calendar-service"
-  ]
+  ],
+  "ramBudgetMb": 300
 }

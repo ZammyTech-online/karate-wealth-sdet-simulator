@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>nordvik</groupId>
+    <artifactId>academia-karate</artifactId>
+    <version>1.0.0</version>
+    <name>Academia Nordvik de Karate</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <karate.version>1.4.1</karate.version>
+        <modo>ejercicios</modo>
+        <leccion>todas</leccion>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.intuit.karate</groupId>
+            <artifactId>karate-junit5</artifactId>
+            <version>${karate.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <testResources>
+            <testResource><directory>config</directory></testResource>
+            <testResource><directory>lecciones</directory><targetPath>lecciones</targetPath></testResource>
+            <testResource><directory>soluciones</directory><targetPath>soluciones</targetPath></testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <includes><include>**/AcademiaTest.java</include></includes>
+                    <argLine>-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8</argLine>
+                    <trimStackTrace>true</trimStackTrace>
+                    <systemPropertyVariables>
+                        <modo>${modo}</modo>
+                        <leccion>${leccion}</leccion>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
