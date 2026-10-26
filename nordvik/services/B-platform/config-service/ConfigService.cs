@@ -30,6 +30,12 @@ public sealed class ConfigService : INordvikService
         ("portfolio-service", "maxFundsPerPortfolio", "10"),
         ("event-bus", "retryBackoffSeconds", "1,2,4,8"),
         ("event-bus", "maxAttempts", "5"),
+        ("payments-gateway", "stepUpThreshold", "10000.00"),
+        ("payments-gateway", "dailyWithdrawalLimit", "50000.00"),
+        ("order-management", "minOrderAmount", "100.00"),
+        ("order-router", "autoRun", "true"),
+        ("rebalancing-engine", "driftThresholdPp", "5.00"),
+        ("rebalancing-engine", "minTradeSek", "100.00"),
     };
 
     public void Initialize(ServiceContext ctx)

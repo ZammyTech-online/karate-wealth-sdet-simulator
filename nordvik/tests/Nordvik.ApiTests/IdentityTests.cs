@@ -329,7 +329,7 @@ public class PermissionAndConfigTests
 
     [Fact]
     public async Task Policies_matrix_covers_5_roles_and_14_actions() =>
-        Assert.Equal(70, (await _f.Get(Ports.Permission, "/api/v1/policies")).Json.GetArrayLength());
+        Assert.Equal(135, (await _f.Get(Ports.Permission, "/api/v1/policies")).Json.GetArrayLength()); // 5 roles × 27 acciones
 
     [Fact]
     public async Task Config_values_are_versioned_and_change_needs_admin()

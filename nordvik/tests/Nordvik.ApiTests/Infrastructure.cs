@@ -134,12 +134,16 @@ public static class Ports
     public const int Eid = 6203, Mfa = 6204, StepUp = 6205, Notification = 6600, Templates = 6601;
     public const int CustodyAdapter = 7500, PriceFeedAdapter = 7501, NordPayAdapter = 7502;
     public const int NordIdSim = 7701, CustodianSim = 7704, PriceFeedSim = 7705, NordPaySim = 7706;
+    public const int Payments = 7000, Instructions = 7001, BankAccounts = 7002, Ledger = 7003, Cash = 7004, Reconciliation = 7005, FeeBilling = 7006, Refunds = 7007, GlExport = 7008;
+    public const int Orders = 6902, Router = 6903, Executions = 6904, Positions = 6905, Valuation = 6906, Performance = 6907, Rebalancing = 6908, CorporateActions = 6909;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
         Customer, Contact, CustomerAddress, Preferences, Search, Catalog, Market, Fx, Calendar, Factsheet, Fee, Benchmark, Portfolio, Allocation,
         Hash, Idempotency, Tracer, EventBus, Relay, Audit, Eid, Mfa, StepUp, Notification, Templates, CustodyAdapter, PriceFeedAdapter, NordPayAdapter,
         NordIdSim, CustodianSim, PriceFeedSim, NordPaySim,
+        Payments, Instructions, BankAccounts, Ledger, Cash, Reconciliation, FeeBilling, Refunds, GlExport,
+        Orders, Router, Executions, Positions, Valuation, Performance, Rebalancing, CorporateActions,
     };
 }
 

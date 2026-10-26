@@ -41,15 +41,22 @@ public sealed class IamService : INordvikService
 
     public static readonly Dictionary<string, string> RoleScopes = new()
     {
-        ["Customer"] = "customers:read portfolios:read portfolios:write profile:read",
-        ["Advisor"] = "customers:read customers:write portfolios:read portfolios:write profile:read",
-        ["Operations"] = "customers:read customers:write portfolios:read portfolios:write profile:read",
-        ["Compliance"] = "customers:read portfolios:read profile:read",
+        ["Customer"] = "customers:read portfolios:read portfolios:write profile:read orders:read orders:write payments:read payments:write contracts:read contracts:write",
+        ["Advisor"] = "customers:read customers:write portfolios:read portfolios:write profile:read orders:read orders:write payments:read contracts:read contracts:write",
+        ["Operations"] = "customers:read customers:write portfolios:read portfolios:write profile:read orders:read orders:write payments:read payments:write contracts:read",
+        ["Compliance"] = "customers:read portfolios:read profile:read orders:read payments:read contracts:read",
         ["Admin"] = "*",
         ["Service"] = "config:read",
     };
 
-    private static readonly Dictionary<string, string> Clients = new() { ["nordvik-batch"] = "batch-secret-2026" };
+    private static readonly Dictionary<string, string> Clients = new() { ["nordvik-batch"] = "batch-secret-2026", ["nordvik-internal"] = "internal-secret-2026" };
+
+    /// <summary>Scopes de cada cliente máquina (client_credentials). nordvik-internal lo usan las sagas que actúan sin usuario (rebalanceo, onboarding).</summary>
+    private static readonly Dictionary<string, string> ClientScopes = new()
+    {
+        ["nordvik-batch"] = "config:read",
+        ["nordvik-internal"] = "config:read customers:read portfolios:read portfolios:write orders:read orders:write payments:read contracts:read contracts:write",
+    };
 
     private static string Hash(string salt, string password) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(salt + ":" + password)));
 
@@ -169,7 +176,7 @@ public sealed class IamService : INordvikService
                         http.Response.Headers.WWWAuthenticate = "Basic";
                         return OAuthError(http, 401, "invalid_client", "Cliente o secreto incorrectos.", "Cliente de prueba: nordvik-batch / batch-secret-2026.");
                     }
-                    return await Issue(id, "Service", RoleScopes["Service"], null, null, withRefresh: false, withSession: false);
+                    return await Issue(id, "Service", ClientScopes[id], null, null, withRefresh: false, withSession: false);
                 }
                 case "refresh_token":
                 {

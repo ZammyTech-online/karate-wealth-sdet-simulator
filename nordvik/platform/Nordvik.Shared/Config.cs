@@ -9,7 +9,9 @@ public static class Config
     {
         try
         {
-            var r = await Downstream.Get(http, "config-service", $"/api/v1/config/{service}/{key}", forwardAuth: false, timeout: TimeSpan.FromSeconds(2));
+            // Las lecturas de configuración van marcadas como sondeo: no llenan el log de config-service.
+            var r = await Downstream.Send(http, "config-service", HttpMethod.Get, $"/api/v1/config/{service}/{key}", forwardAuth: false,
+                headers: new Dictionary<string, string> { [NordvikMiddleware.PollHeader] = "config" }, timeout: TimeSpan.FromSeconds(2));
             return r.Ok && r.Str("value") is { } v ? v : fallback;
         }
         catch (DependencyUnavailableException) { return fallback; }

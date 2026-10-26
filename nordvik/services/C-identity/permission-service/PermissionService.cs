@@ -24,6 +24,10 @@ public sealed class PermissionService : INordvikService
         "customer:create", "customer:read", "customer:update", "customer:close",
         "portfolio:create", "portfolio:read", "portfolio:update", "portfolio:close",
         "contact:read", "contact:write", "preferences:read", "preferences:write", "address:read", "address:write",
+        // Oleada 2
+        "order:create", "order:read", "order:cancel", "position:read", "cash:read",
+        "payment:create", "payment:read", "bank-account:read", "bank-account:write",
+        "contract:create", "contract:read", "contract:sign", "contract:withdraw",
     };
 
     /// <summary>Política: ALL = cualquier cliente, OWN = solo el suyo, ASSIGNED = solo asignados, NONE = nunca.</summary>
@@ -32,8 +36,12 @@ public sealed class PermissionService : INordvikService
         "Admin" => "ALL",
         "Operations" => action is "customer:close" ? "NONE" : "ALL",
         "Compliance" => action.EndsWith(":read") ? "ALL" : "NONE",
-        "Advisor" => action is "customer:create" ? "ALL" : action is "customer:close" or "portfolio:close" ? "NONE" : "ASSIGNED",
+        "Advisor" => action is "customer:create" ? "ALL"
+            : action is "customer:close" or "portfolio:close" or "payment:create" or "bank-account:write" or "contract:withdraw" ? "NONE" : "ASSIGNED",
         "Customer" => action is "customer:create" or "customer:close" ? "NONE" : "OWN",
+        // Cuentas de máquina (client_credentials): solo lo que necesitan las sagas internas
+        "Service" => action is "order:create" or "order:read" or "order:cancel" or "position:read" or "cash:read" or "portfolio:read" or "portfolio:create"
+                     or "customer:read" or "contract:create" or "contract:read" ? "ALL" : "NONE",
         _ => "NONE",
     };
 

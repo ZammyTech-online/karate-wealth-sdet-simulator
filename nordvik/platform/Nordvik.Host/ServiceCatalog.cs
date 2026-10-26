@@ -22,6 +22,10 @@ public static class ServiceCatalog
         new EventBus(), new OutboxRelay(), new AuditService(), new IdempotencyStore(), new HashService(), new CorrelationTracer(),
         new EidBroker(), new MfaService(), new StepUpService(), new MessageTemplateService(), new NotificationService(),
         new CustodyAdapter(), new PriceFeedAdapter(), new NordPayAdapter(),
+        new LedgerService(), new CashManagement(), new BankAccountVerification(), new PaymentInstructions(), new PaymentsGateway(),
+        new RefundsReturns(), new GlExport(), new ReconciliationService(), new FeeBilling(),
+        new OrderManagement(), new OrderRouter(), new ExecutionService(), new PositionKeeping(), new ValuationService(), new PerformanceService(),
+        new RebalancingEngine(), new CorporateActions(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
         new NordIdSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(),
     };

@@ -117,6 +117,19 @@ public sealed class PortfolioService : INordvikService
             return Results.Ok(pf);
         }).WithTags("Carteras").WithSummary("Ver una cartera").Produces<Portfolio>();
 
+        app.MapGet("/api/v1/internal/portfolios/{id}", (HttpContext http, string id) =>
+        {
+            var pf = Load(ctx, id);
+            return pf is null ? Problems.NotFound(http, "PORTFOLIO_NOT_FOUND", $"No existe la cartera {id}.", null) : Results.Ok(pf);
+        }).WithTags("Interno").WithSummary("Cartera para otros servicios (red interna, sin autenticación)").Produces<Portfolio>();
+
+        app.MapGet("/api/v1/internal/portfolios", (string? status, string? customerId) =>
+        {
+            using var db = ctx.OpenDb();
+            var ids = db.Query<string>("SELECT id FROM portfolios WHERE (@status IS NULL OR status = @status) AND (@customerId IS NULL OR customer_id = @customerId) ORDER BY created_at", new { status, customerId });
+            return Results.Ok(ids.Select(i => Load(ctx, i)!).ToList());
+        }).WithTags("Interno").WithSummary("Todas las carteras (red interna)").Produces<List<Portfolio>>();
+
         app.MapGet("/api/v1/customers/{customerId}/portfolios", async (HttpContext http, IClock clock, string customerId, string? status) =>
         {
             var denied = Auth.Require(http, clock, out var p, scope: "portfolios:read");

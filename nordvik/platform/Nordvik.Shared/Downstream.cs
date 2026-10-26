@@ -66,7 +66,8 @@ public static class Downstream
         var req = new HttpRequestMessage(method, url);
         if (correlationId is not null) req.Headers.TryAddWithoutValidation(NordvikMiddleware.CorrelationHeader, correlationId);
         if (headers is not null) foreach (var (k, v) in headers) req.Headers.TryAddWithoutValidation(k, v);
-        if (body is not null) req.Content = new StringContent(body as string ?? JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+        if (body is FormBody form) req.Content = new StringContent(form.Encoded, Encoding.UTF8, "application/x-www-form-urlencoded");
+        else if (body is not null) req.Content = new StringContent(body as string ?? JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
         using var cts = new CancellationTokenSource(timeout ?? TimeSpan.FromSeconds(10));
         using var res = await Http.SendAsync(req, cts.Token);
         var raw = await res.Content.ReadAsStringAsync(cts.Token);

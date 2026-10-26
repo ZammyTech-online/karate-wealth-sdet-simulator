@@ -67,7 +67,7 @@ public sealed class EventBus : INordvikService
                 PublishRequest? r = null;
                 try { r = list[i].Deserialize<PublishRequest>(Canonical.Web); } catch (JsonException) { }
                 if (r is null) { errors.Add(new FieldError($"[{i}]", "no es un evento")); continue; }
-                if (string.IsNullOrWhiteSpace(r.Topic) || !System.Text.RegularExpressions.Regex.IsMatch(r.Topic, @"^[a-z][a-z0-9]*(\.[a-z0-9-]+)+$"))
+                if (string.IsNullOrWhiteSpace(r.Topic) || !System.Text.RegularExpressions.Regex.IsMatch(r.Topic, @"^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$"))
                     errors.Add(new FieldError($"[{i}].topic", "obligatorio, en minúsculas con puntos: dominio.entidad.hecho (order.created)"));
                 if (string.IsNullOrWhiteSpace(r.Key)) errors.Add(new FieldError($"[{i}].key", "obligatorio (id de la entidad)"));
                 if (r.Payload is null || r.Payload.Value.ValueKind != JsonValueKind.Object) errors.Add(new FieldError($"[{i}].payload", "obligatorio, un objeto JSON"));

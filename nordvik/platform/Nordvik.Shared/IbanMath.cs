@@ -30,6 +30,9 @@ public static class IbanMath
         return Numeric(s[4..] + s[..4]) % 97 == 1;
     }
 
+    /// <summary>IBAN enmascarado para mostrarlo: SE45 **** **** **** 7466.</summary>
+    public static string Mask(string iban) => iban[..4] + " **** **** **** " + iban[^4..];
+
     public static string Print(string iban) => string.Join(" ", Enumerable.Range(0, (iban.Length + 3) / 4).Select(i => iban.Substring(i * 4, Math.Min(4, iban.Length - i * 4))));
 
     /// <summary>Cuenta de clientes de Nordvik en Älvbanken (donde entran los ingresos y salen las retiradas).</summary>
