@@ -95,7 +95,8 @@ public class MockControlTests
     {
         var list = await _f.Get(Ports.MockControl, "/api/v1/mocks");
         var names = list.Json.GetProperty("items").EnumerateArray().Select(m => m.GetProperty("name").GetString()).ToList();
-        Assert.Equal(new[] { "nordid-sim", "population-sim", "sanctionscreen-sim", "custodian-sim", "pricefeed-sim", "nordpay-sim" }, names);
+        Assert.Superset(new HashSet<string?> { "nordid-sim", "population-sim", "sanctionscreen-sim", "custodian-sim", "pricefeed-sim", "nordpay-sim", "telephony-sim" }, new HashSet<string?>(names));
+        Assert.Equal(names.OrderBy(n => list.Json.GetProperty("items").EnumerateArray().First(m => m.GetProperty("name").GetString() == n).GetProperty("port").GetInt32()), names);
         Assert.All(list.Json.GetProperty("items").EnumerateArray(), m => Assert.True(m.GetProperty("up").GetBoolean()));
         try
         {

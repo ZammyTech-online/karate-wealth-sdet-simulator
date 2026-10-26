@@ -1,7 +1,7 @@
 {
   "name": "nivel-9",
   "wave": 3,
-  "description": "Oleadas 0 a 3 · niveles 9 y 10: datos sensibles. Todo lo de nivel-6 más privacidad (pii-vault, claves y crypto-shredding, consentimientos, pasaportes del dato, linaje, redacción, retención), los servicios de calidad (caos, control de simuladores, espía de eventos) jwt-forge, secretos e intercambio de tokens, cumplimiento (KYC, sanciones, PEP, riesgo, vigilancia, idoneidad y conveniencia), datos del cliente (familia, empleo, residencia fiscal), casos, tareas y aprobaciones, y los simuladores del Registro de Población (E2) y SanctionScreen (E3). Crece con cada lote de la oleada 3.",
+  "description": "Oleadas 0 a 3 · niveles 9 y 10: datos sensibles. Todo lo de nivel-6 más privacidad (pii-vault, claves y crypto-shredding, consentimientos, pasaportes del dato, linaje, redacción, retención), los servicios de calidad (caos, control de simuladores, espía de eventos) jwt-forge, secretos e intercambio de tokens, cumplimiento (KYC, sanciones, PEP, riesgo, vigilancia, idoneidad y conveniencia), datos del cliente (familia, empleo, residencia fiscal), casos, tareas y aprobaciones, y los simuladores del Registro de Población (E2) y SanctionScreen (E3). Crece con cada lote de la oleada 3, y asesoramiento y voz (agenda, mensajería segura, llamadas con transcripción, extracción, resumen y destrucción) con la telefonía simulada (E12).",
   "learningMode": true,
   "ramBudgetMb": 1400,
   "services": [
@@ -112,6 +112,15 @@
     "approval-service",
     "population-adapter",
     "population-sim",
-    "sanctionscreen-sim"
+    "sanctionscreen-sim",
+    "advisor-directory",
+    "advisor-desk",
+    "meeting-scheduler",
+    "secure-messaging",
+    "voice-service",
+    "transcription-service",
+    "insight-extraction",
+    "call-summary",
+    "telephony-sim"
   ]
 }

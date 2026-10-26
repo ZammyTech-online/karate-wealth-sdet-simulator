@@ -144,6 +144,7 @@ public static class Ports
     public const int Kyc = 6400, Sanctions = 6401, Pep = 6402, Risk = 6403, Monitoring = 6404, Suitability = 6405, Appropriateness = 6406;
     public const int Household = 6306, Employment = 6307, TaxResidency = 6308, Cases = 7403, Tasks = 7404, Approvals = 7405, PopulationAdapter = 7503;
     public const int PopulationSim = 7702, SanctionScreenSim = 7703;
+    public const int AdvisorDirectory = 6602, AdvisorDesk = 6603, Meetings = 6604, Messaging = 6605, Voice = 6606, Transcription = 6607, Insights = 6608, CallSummary = 6609, TelephonySim = 7712;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
@@ -155,6 +156,7 @@ public static class Ports
         Contracts, ContractTemplates, Clauses, Signing, Vault, Render, Antivirus, TextFactory, FileFactory, Composition, BffWeb, BffMobile, BffAdvisor, Onboarding,
         PiiVault, Keys, Consents, Passports, Lineage, Redaction, Retention, Chaos, MockControl, EventSpy, JwtForge, Secrets, TokenExchange,
         Kyc, Sanctions, Pep, Risk, Monitoring, Suitability, Appropriateness, Household, Employment, TaxResidency, Cases, Tasks, Approvals, PopulationAdapter, PopulationSim, SanctionScreenSim,
+        AdvisorDirectory, AdvisorDesk, Meetings, Messaging, Voice, Transcription, Insights, CallSummary, TelephonySim,
     };
 }
 

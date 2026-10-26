@@ -234,7 +234,38 @@ public sealed class CompositionService : INordvikService
             }, "El test de idoneidad nunca viaja en claro: solo su assessmentHash.");
         }).WithSummary("C6 · Mandato de asesoramiento (contrato + tarifa + hash del test de idoneidad)");
 
-        foreach (var (path, wave, name) in new[] { ("/pension-plan/{id}", 3, "C7"), ("/transfer-dossier/{id}", 3, "C8"), ("/call-summary/{id}", 3, "C9"), ("/portability-export/{id}", 4, "C10") })
+        // C9 · resumen de llamada: llamada + resumen + datos confirmados + (si el cliente citó una cláusula) el texto de esa cláusula de su mandato
+        g.MapGet("/call-summary/{callId}", async (HttpContext http, string callId) =>
+        {
+            if (NeedAuth(http) is { } d) return d;
+            var c = new Ctx { Http = http, Clock = clock };
+            var call = await c.Fetch("call", "voice-service", $"/api/v2/calls/{callId}");
+            if (call is null) return Results.Content(c.Raw["call"]!.ToJsonString(), "application/problem+json; charset=utf-8", System.Text.Encoding.UTF8, c.Sources[0].Status);
+            var summary = await c.Fetch("summary", "voice-service", $"/api/v2/calls/{callId}/summary");
+            JsonElement? insights = null;
+            if (http.Items[Auth.PrincipalKey] is not Principal { Role: "Customer" }) insights = await c.Fetch("insights", "voice-service", $"/api/v2/calls/{callId}/insights");
+            object? clause = null;
+            var cited = insights?.GetProperty("items").EnumerateArray().FirstOrDefault(i => i.GetProperty("field").GetString() == "contractClause");
+            if (cited is { ValueKind: JsonValueKind.Object } ci)
+            {
+                var no = ci.GetProperty("value").GetProperty("clauseNo").GetInt32();
+                var customerId = call.Value.GetProperty("customerId").GetString();
+                var list = await c.Fetch("contracts", "contract-service", $"/api/v2/contracts?customerId={customerId}&limit=50");
+                var mandate = list?.GetProperty("items").EnumerateArray().FirstOrDefault(x => x.GetProperty("type").GetString() == "ADVISORY_MANDATE");
+                if (mandate is { ValueKind: JsonValueKind.Object } m)
+                {
+                    var full = await c.Fetch("mandate", "contract-service", $"/api/v2/contracts/{m.GetProperty("id").GetString()}");
+                    var cl = full?.GetProperty("content").GetProperty("clauses").EnumerateArray().FirstOrDefault(x => x.GetProperty("clauseNo").GetInt32() == no);
+                    clause = cl is { ValueKind: JsonValueKind.Object } found
+                        ? new { clauseNo = no, contractId = m.GetProperty("id").GetString(), code = found.GetProperty("code").GetString(), title = found.GetProperty("title").GetString(), text = found.GetProperty("text").GetString(), citedAt = ci.GetProperty("evidence") }
+                        : new { clauseNo = no, contractId = m.GetProperty("id").GetString(), code = (string?)null, title = (string?)null, text = (string?)"El mandato no tiene esa cláusula.", citedAt = ci.GetProperty("evidence") };
+                }
+                else c.Missing.Add("mandate");
+            }
+            return c.Result(new { call, summary, insights = insights?.GetProperty("items"), citedClause = clause });
+        }).WithSummary("C9 · Resumen de llamada + datos confirmados + la cláusula del mandato que citó el cliente");
+
+        foreach (var (path, wave, name) in new[] { ("/pension-plan/{id}", 3, "C7"), ("/transfer-dossier/{id}", 3, "C8"), ("/portability-export/{id}", 4, "C10") })
             g.MapMethods(path, new[] { "GET", "POST" }, (HttpContext http, string id) =>
                 Problems.Of(http, 501, "COMPOSITION_NOT_AVAILABLE_YET", "Aún no disponible", $"La composición {name} llega con la oleada {wave}.", "Mira el plan de oleadas en el documento del sistema."))
                 .WithSummary($"{name} · llega con la oleada {wave}");

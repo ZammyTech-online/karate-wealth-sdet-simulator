@@ -34,8 +34,9 @@ public static class ServiceCatalog
         new ChaosControl(), new MockControl(), new EventSpy(), new JwtForge(), new SecretsService(), new TokenExchange(),
         new KycAmlService(), new SanctionsAdapter(), new PepService(), new RiskScoring(), new TransactionMonitoring(), new SuitabilityService(), new AppropriatenessService(),
         new HouseholdService(), new EmploymentService(), new TaxResidencyService(), new CaseManagement(), new TaskQueue(), new ApprovalService(), new PopulationAdapter(),
+        new AdvisorDirectory(), new AdvisorDesk(), new MeetingScheduler(), new SecureMessaging(), new VoiceService(), new TranscriptionService(), new InsightExtraction(), new CallSummary(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
-        new NordIdSim(), new PopulationSim(), new SanctionScreenSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(),
+        new NordIdSim(), new PopulationSim(), new SanctionScreenSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(), new TelephonySim(),
     };
 
     /// <summary>Un servicio y todo aquello de lo que depende, recursivamente.</summary>

@@ -23,7 +23,7 @@ public sealed class PortfolioService : INordvikService
         "Carteras (ISK, KF, DEPOT) con asignación objetivo por fondo. Valida fondos con product-catalog y permisos con permission-service.",
         DependsOn: new[] { "clock-service", "customer-registry", "permission-service", "product-catalog", "config-service" });
 
-    private static readonly string[] Types = { "ISK", "KF", "DEPOT" };
+    private static readonly string[] Types = { "ISK", "KF", "DEPOT", "PENSION" };
     private const string Sel = "SELECT id, customer_id AS CustomerId, name, type, status, version, created_at AS CreatedAt, updated_at AS UpdatedAt FROM portfolios";
 
     public void Initialize(ServiceContext ctx)
@@ -88,7 +88,8 @@ public sealed class PortfolioService : INordvikService
             var errors = new List<FieldError>();
             if (string.IsNullOrWhiteSpace(body.CustomerId)) errors.Add(new FieldError("customerId", "obligatorio"));
             if (string.IsNullOrWhiteSpace(body.Name) || body.Name.Length > 60) errors.Add(new FieldError("name", "obligatorio, máximo 60"));
-            if (body.Type is null || !Types.Contains(body.Type)) errors.Add(new FieldError("type", "ISK, KF o DEPOT"));
+            if (body.Type is null || !Types.Contains(body.Type) || (body.Type == "PENSION" && p.Role != "Service"))
+                errors.Add(new FieldError("type", "ISK, KF o DEPOT (las carteras PENSION solo las crea pension-plan-service)"));
             if (errors.Count > 0) return Problems.BadRequest(http, "VALIDATION_FAILED", "La cartera no es válida.", "Las carteras de pensión se crean desde pension-core (oleada 3).", errors);
             var guard = await CustomerGuard.Check(http, p, "portfolio:create", body.CustomerId!);
             if (guard is not null) return guard;

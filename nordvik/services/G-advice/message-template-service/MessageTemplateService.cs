@@ -46,6 +46,12 @@ public sealed class MessageTemplateService : INordvikService
         ("marketing.newsletter", "sv", 1, "EMAIL", "Nyheter från Nordvik", "Hej {{firstName}}! Upptäck våra nya fonder."),
         ("marketing.newsletter", "en", 1, "EMAIL", "News from Nordvik", "Hi {{firstName}}! Discover our new funds."),
         ("marketing.newsletter", "es", 1, "EMAIL", "Novedades de Nordvik", "¡Hola, {{firstName}}! Descubre nuestros nuevos fondos."),
+        ("meeting.reminder", "sv", 1, "EMAIL", "Påminnelse: möte med din rådgivare", "Hej {{firstName}}! Du har ett möte ({{channel}}) {{start}}."),
+        ("meeting.reminder", "en", 1, "EMAIL", "Reminder: meeting with your advisor", "Hi {{firstName}}! You have a {{channel}} meeting on {{start}}."),
+        ("meeting.reminder", "es", 1, "EMAIL", "Recordatorio: reunión con tu asesor", "¡Hola, {{firstName}}! Tienes una reunión ({{channel}}) el {{start}}."),
+        ("message.new", "sv", 1, "EMAIL", "Nytt säkert meddelande", "Hej {{firstName}}! Du har ett nytt meddelande i Nordvik. Logga in för att läsa det."),
+        ("message.new", "en", 1, "EMAIL", "New secure message", "Hi {{firstName}}! You have a new message in Nordvik. Log in to read it."),
+        ("message.new", "es", 1, "EMAIL", "Nuevo mensaje seguro", "¡Hola, {{firstName}}! Tienes un mensaje nuevo en Nordvik. Entra para leerlo."),
     };
 
     private static List<string> VarsOf(string? subject, string body) =>
