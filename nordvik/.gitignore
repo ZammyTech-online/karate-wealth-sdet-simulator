@@ -10,3 +10,4 @@ node_modules/
 academia/progreso.json
 academia/target-*.log
 academia/_generador/__pycache__/
+.tmp/

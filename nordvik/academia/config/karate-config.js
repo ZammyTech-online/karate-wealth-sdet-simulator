@@ -1,21 +1,54 @@
-// Configuración global de la Academia: una URL por microservicio de la oleada 0.
+// Configuración global de la Academia: una URL por microservicio y los usuarios de prueba.
 // Karate ejecuta esta función antes de cada escenario y todas sus claves quedan como variables.
+// Tramo 1 (L00-L15) usa la oleada 0. Tramo 2 (L16-L21) necesita el perfil nivel-6.
 function fn() {
   var env = karate.env || 'local';
   var host = 'http://localhost';
   var config = {
     env: env,
+    // Oleada 0 · utilidades y mercado
     uuidUrl: host + ':6001',
     sequenceUrl: host + ':6002',
     clockUrl: host + ':6003',
     randomUrl: host + ':6004',
+    personUrl: host + ':6005',
+    ibanUrl: host + ':6007',
     catalogUrl: host + ':6801',
     marketUrl: host + ':6802',
     fxUrl: host + ':6803',
-    calendarUrl: host + ':6804'
+    calendarUrl: host + ':6804',
+    // Oleadas 1 y 2 · identidad, clientes, contratos, inversión y pagos
+    iamUrl: host + ':6200',
+    customerUrl: host + ':6300',
+    notificationUrl: host + ':6600',
+    contractsUrl: host + ':6700',
+    vaultUrl: host + ':6704',
+    compositionUrl: host + ':6107',
+    portfolioUrl: host + ':6900',
+    ordersUrl: host + ':6902',
+    paymentsUrl: host + ':7000',
+    cashUrl: host + ':7004',
+    nordpaySimUrl: host + ':7706',
+    // Ids de los datos semilla (siempre los mismos)
+    ids: {
+      ana: 'c0000000-0000-4000-8000-000000000001',
+      lars: 'c0000000-0000-4000-8000-000000000002',
+      sofia: 'c0000000-0000-4000-8000-000000000003',
+      carteraAna: 'p0000000-0000-4000-8000-000000000001'
+    },
+    // Usuarios de prueba: call read('_login.feature') usuarios.erik
+    usuarios: {
+      ana: { usuario: 'cliente.ana', clave: 'Ana2026!' },
+      lars: { usuario: 'cliente.lars', clave: 'Lars2026!' },
+      erik: { usuario: 'asesor.erik', clave: 'Erik2026!' },
+      maja: { usuario: 'asesora.maja', clave: 'Maja2026!' },
+      olof: { usuario: 'operaciones.olof', clave: 'Olof2026!' },
+      karin: { usuario: 'compliance.karin', clave: 'Karin2026!' },
+      admin: { usuario: 'admin', clave: 'Admin2026!' }
+    }
   };
   karate.configure('connectTimeout', 5000);
-  karate.configure('readTimeout', 10000);
+  karate.configure('readTimeout', 15000);
   karate.configure('logPrettyResponse', false);
   return config;
 }

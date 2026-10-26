@@ -30,7 +30,7 @@ Pistas en tres niveles: la **pista 1** está en el ejercicio, la **pista 2** con
     cambia los ___ y ejecuta:     academia corregir L00
 ```
 
-## Las 16 lecciones del primer tramo
+## Tramo 1 · Fundamentos (L00-L15)
 
 | Lección | Tema |
 | --- | --- |
@@ -50,6 +50,21 @@ Pistas en tres niveles: la **pista 1** está en el ejercicio, la **pista 2** con
 | L13 | Reutilizar: call y features llamables |
 | L14 | Funciones JavaScript propias |
 | L15 | Proyecto del tramo: una suite de mercado completa |
+
+## Tramo 2 · El Nordvik de verdad (L16-L21)
+
+Necesita el perfil grande. La academia lo arranca sola si no está encendido, o hazlo tú: `nordvik up -Profile nivel-6`.
+
+| Lección | Qué aprendes |
+| --- | --- |
+| L16 | Autenticación y roles: tokens OAuth2, 401 frente a 403, `callonce` |
+| L17 | IDOR y máscaras: que cada uno vea solo lo suyo |
+| L18 | Consistencia eventual: `retry until` en vez de dormir |
+| L19 | Idempotencia: la misma orden dos veces no compra dos veces |
+| L20 | Contratos y firma electrónica: una máquina de estados con NordID |
+| L21 | Dos APIs, un JSON: probar una composición |
+
+Los ayudantes `_login.feature`, `_iban.feature` y `_cliente-con-dinero.feature` están en la carpeta `ejercicios` de cada lección: léelos, son la mejor documentación de cada flujo.
 
 ## Todos los comandos
 

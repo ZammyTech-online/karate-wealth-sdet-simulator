@@ -31,14 +31,23 @@ function Find-Lesson([string]$code) {
   return $dir
 }
 
-function Test-Nordvik {
-  try { $null = Invoke-RestMethod 'http://localhost:6801/health' -TimeoutSec 2; return $true } catch { return $false }
+function Test-Port([int]$port) {
+  try { $null = Invoke-RestMethod "http://localhost:$port/health" -TimeoutSec 2; return $true } catch { return $false }
+}
+
+# El tramo 1 (L00-L15) cabe en nivel-0; el tramo 2 (L16 en adelante) necesita nivel-6.
+function Get-PerfilNecesario([string]$leccion) {
+  if ($leccion -eq 'todas' -or $leccion -match '^L(1[6-9]|[2-9]\d)') { return @{ Perfil = 'nivel-6'; Puerto = 6700 } }
+  return @{ Perfil = 'nivel-0'; Puerto = 6801 }
 }
 
 function Invoke-Maven([string]$modo, [string]$leccion) {
-  if (-not (Test-Nordvik)) {
-    Write-Host 'Nordvik no está arrancado. Lo arranco por ti (perfil nivel-0)...' -ForegroundColor Yellow
-    & (Join-Path (Split-Path $Root -Parent) 'tools\nordvik.ps1') up | Out-Null
+  $need = Get-PerfilNecesario $leccion
+  if (-not (Test-Port $need.Puerto)) {
+    $nordvik = Join-Path (Split-Path $Root -Parent) 'tools\nordvik.ps1'
+    Write-Host "Esta lección necesita Nordvik con el perfil $($need.Perfil). Lo arranco por ti (tarda un poco la primera vez)..." -ForegroundColor Yellow
+    if (Test-Port 6001) { & $nordvik down | Out-Null }
+    & $nordvik up -Profile $need.Perfil | Out-Null
   }
   mvn -q -B test "-Dmodo=$modo" "-Dleccion=$leccion" 2>&1 | Where-Object { $_ -notmatch '^\[(ERROR|INFO)\]|^Tests run|^\s*$|surefire|To see the full stack|Re-run Maven|For more information|Failures: |^\[WARNING\]' } | Out-Host
 }
