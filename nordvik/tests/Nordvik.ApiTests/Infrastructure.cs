@@ -128,10 +128,18 @@ public static class Ports
     public const int Customer = 6300, Contact = 6301, CustomerAddress = 6302, Preferences = 6303, Search = 6304;
     public const int Catalog = 6801, Market = 6802, Fx = 6803, Calendar = 6804, Factsheet = 6805, Fee = 6806, Benchmark = 6807;
     public const int Portfolio = 6900, Allocation = 6901;
+    // Oleada 2
+    public const int Hash = 6011, Idempotency = 6103, Tracer = 6108;
+    public const int EventBus = 7400, Relay = 7401, Audit = 7402;
+    public const int Eid = 6203, Mfa = 6204, StepUp = 6205, Notification = 6600, Templates = 6601;
+    public const int CustodyAdapter = 7500, PriceFeedAdapter = 7501, NordPayAdapter = 7502;
+    public const int NordIdSim = 7701, CustodianSim = 7704, PriceFeedSim = 7705, NordPaySim = 7706;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
         Customer, Contact, CustomerAddress, Preferences, Search, Catalog, Market, Fx, Calendar, Factsheet, Fee, Benchmark, Portfolio, Allocation,
+        Hash, Idempotency, Tracer, EventBus, Relay, Audit, Eid, Mfa, StepUp, Notification, Templates, CustodyAdapter, PriceFeedAdapter, NordPayAdapter,
+        NordIdSim, CustodianSim, PriceFeedSim, NordPaySim,
     };
 }
 

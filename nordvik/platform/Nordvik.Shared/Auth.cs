@@ -17,10 +17,13 @@ public sealed record Principal(
     [property: JsonPropertyName("jti")] string Jti,
     [property: JsonPropertyName("iat")] long Iat,
     [property: JsonPropertyName("exp")] long Exp,
-    [property: JsonPropertyName("iss")] string Iss = "nordvik-iam")
+    [property: JsonPropertyName("iss")] string Iss = "nordvik-iam",
+    [property: JsonPropertyName("acr")] string? Acr = null)
 {
     public IReadOnlyCollection<string> Scopes => Scope.Split(' ', StringSplitOptions.RemoveEmptyEntries);
     public bool HasScope(string s) => Scopes.Contains(s) || Scopes.Contains("*");
+    /// <summary>true si el token viene de una re-autenticación reciente (step-up-service).</summary>
+    public bool IsHighAssurance => Acr == "high";
 }
 
 /// <summary>

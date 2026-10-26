@@ -28,6 +28,8 @@ public sealed class ConfigService : INordvikService
         ("session-service", "idleTimeoutMinutes", "30"),
         ("contact-service", "verificationCodeTtlMinutes", "10"),
         ("portfolio-service", "maxFundsPerPortfolio", "10"),
+        ("event-bus", "retryBackoffSeconds", "1,2,4,8"),
+        ("event-bus", "maxAttempts", "5"),
     };
 
     public void Initialize(ServiceContext ctx)

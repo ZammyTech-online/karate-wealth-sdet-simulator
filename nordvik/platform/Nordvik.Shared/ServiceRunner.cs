@@ -19,6 +19,8 @@ public static class ServiceRunner
 
     public static WebApplication Build(INordvikService svc, HostSettings settings)
     {
+        // Columnas snake_case de SQLite (customer_id) → propiedades CustomerId sin tener que poner alias en cada consulta.
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         var info = svc.Info;
         var ctx = new ServiceContext
         {

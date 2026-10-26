@@ -28,7 +28,7 @@ public sealed class FxRates : INordvikService
     private static decimal SekPer(string ccy, DateOnly d)
     {
         if (ccy == "SEK") return 1m;
-        var phase = (ccy.GetHashCode() & 0xFF) / 40.0;
+        var phase = ((ccy[0] * 31 + ccy[1] * 7 + ccy[2]) & 0xFF) / 40.0; // hash estable: mismo tipo en cada arranque
         var wave = Math.Sin(d.DayNumber / 23.0 + phase) * 0.012 + Math.Sin(d.DayNumber / 5.0 + phase * 2) * 0.003;
         return Math.Round(SekPerUnit[ccy] * (1 + (decimal)wave), 6);
     }

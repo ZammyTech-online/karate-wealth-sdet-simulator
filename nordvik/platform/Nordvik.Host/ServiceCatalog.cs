@@ -18,6 +18,12 @@ public static class ServiceCatalog
         new CustomerRegistry(), new ContactService(), new CustomerAddressService(), new PreferencesService(), new CustomerSearch(),
         new FundFactsheet(), new FeeEngine(), new BenchmarkService(),
         new PortfolioService(), new AllocationEngine(),
+        // ---------- Oleada 2 ----------
+        new EventBus(), new OutboxRelay(), new AuditService(), new IdempotencyStore(), new HashService(), new CorrelationTracer(),
+        new EidBroker(), new MfaService(), new StepUpService(), new MessageTemplateService(), new NotificationService(),
+        new CustodyAdapter(), new PriceFeedAdapter(), new NordPayAdapter(),
+        // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
+        new NordIdSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(),
     };
 
     /// <summary>Un servicio y todo aquello de lo que depende, recursivamente.</summary>

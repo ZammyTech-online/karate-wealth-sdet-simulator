@@ -27,10 +27,10 @@ public sealed record DownstreamReply(int Status, JsonElement? Body, string Raw)
 /// </summary>
 public static class Downstream
 {
-    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(10) };
+    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(60) };
 
     public static async Task<DownstreamReply> Send(HttpContext? caller, string service, HttpMethod method, string path,
-        object? body = null, bool forwardAuth = true, IDictionary<string, string>? headers = null)
+        object? body = null, bool forwardAuth = true, IDictionary<string, string>? headers = null, TimeSpan? timeout = null)
     {
         var req = new HttpRequestMessage(method, ServiceDirectory.UrlOf(service) + path);
         if (caller?.Items[NordvikMiddleware.CorrelationKey] is string corr) req.Headers.TryAddWithoutValidation(NordvikMiddleware.CorrelationHeader, corr);
@@ -41,8 +41,9 @@ public static class Downstream
         if (body is not null) req.Content = new StringContent(body as string ?? JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
         try
         {
-            using var res = await Http.SendAsync(req);
-            var raw = await res.Content.ReadAsStringAsync();
+            using var cts = new CancellationTokenSource(timeout ?? TimeSpan.FromSeconds(10));
+            using var res = await Http.SendAsync(req, cts.Token);
+            var raw = await res.Content.ReadAsStringAsync(cts.Token);
             JsonElement? json = null;
             if (!string.IsNullOrWhiteSpace(raw))
             {
@@ -50,14 +51,29 @@ public static class Downstream
             }
             return new DownstreamReply((int)res.StatusCode, json, raw);
         }
-        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or OperationCanceledException)
         {
             throw new DependencyUnavailableException(service, $"{service} no responde ({ex.GetType().Name}).");
         }
     }
 
-    public static Task<DownstreamReply> Get(HttpContext? caller, string service, string path, bool forwardAuth = true) =>
-        Send(caller, service, HttpMethod.Get, path, null, forwardAuth);
+    public static Task<DownstreamReply> Get(HttpContext? caller, string service, string path, bool forwardAuth = true, TimeSpan? timeout = null) =>
+        Send(caller, service, HttpMethod.Get, path, null, forwardAuth, null, timeout);
+
+    /// <summary>Llamada a una URL completa (sistemas externos simulados o callbacks).</summary>
+    public static async Task<DownstreamReply> SendUrl(HttpMethod method, string url, object? body = null, IDictionary<string, string>? headers = null, TimeSpan? timeout = null, string? correlationId = null)
+    {
+        var req = new HttpRequestMessage(method, url);
+        if (correlationId is not null) req.Headers.TryAddWithoutValidation(NordvikMiddleware.CorrelationHeader, correlationId);
+        if (headers is not null) foreach (var (k, v) in headers) req.Headers.TryAddWithoutValidation(k, v);
+        if (body is not null) req.Content = new StringContent(body as string ?? JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+        using var cts = new CancellationTokenSource(timeout ?? TimeSpan.FromSeconds(10));
+        using var res = await Http.SendAsync(req, cts.Token);
+        var raw = await res.Content.ReadAsStringAsync(cts.Token);
+        JsonElement? json = null;
+        if (!string.IsNullOrWhiteSpace(raw)) { try { json = JsonDocument.Parse(raw).RootElement.Clone(); } catch { } }
+        return new DownstreamReply((int)res.StatusCode, json, raw);
+    }
 
     public static Task<DownstreamReply> Post(HttpContext? caller, string service, string path, object? body, bool forwardAuth = true) =>
         Send(caller, service, HttpMethod.Post, path, body, forwardAuth);

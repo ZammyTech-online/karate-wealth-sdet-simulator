@@ -17,7 +17,9 @@ public sealed record NordvikServiceInfo(
     string Description,
     string Version = "1.0.0",
     JsonNaming Naming = JsonNaming.CamelCase,
-    string[]? DependsOn = null);
+    string[]? DependsOn = null,
+    string[]? Emits = null,
+    string[]? Consumes = null);
 
 /// <summary>Contrato que implementa cada microservicio para poder vivir dentro de Nordvik.Host.</summary>
 public interface INordvikService

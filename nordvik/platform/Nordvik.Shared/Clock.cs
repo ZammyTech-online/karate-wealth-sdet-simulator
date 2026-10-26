@@ -47,6 +47,8 @@ public sealed class RemoteClock : IClock
     {
         _cache = TimeSpan.FromMilliseconds(Math.Max(0, cacheMs));
         _http = new HttpClient { BaseAddress = new Uri(clockUrl), Timeout = TimeSpan.FromMilliseconds(800) };
+        // Las consultas de la hora no se registran en el log de clock-service (serían miles de líneas de ruido).
+        _http.DefaultRequestHeaders.Add("X-Nordvik-Poll", "clock");
     }
 
     private sealed record NowDto([property: JsonPropertyName("utc")] DateTimeOffset Utc, [property: JsonPropertyName("mode")] string Mode);

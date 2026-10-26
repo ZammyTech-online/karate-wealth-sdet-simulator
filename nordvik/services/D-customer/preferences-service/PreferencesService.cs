@@ -44,6 +44,13 @@ public sealed class PreferencesService : INordvikService
             return Results.Ok(stored);
         }).WithSummary("Ver preferencias (o las de por defecto)").Produces<Preferences>();
 
+        app.MapGet("/api/v1/internal/customers/{customerId}/preferences", (string customerId) =>
+        {
+            using var db = ctx.OpenDb();
+            var row = db.QuerySingleOrDefault<(string Json, string UpdatedAt)>("SELECT json, updated_at FROM preferences WHERE customer_id = @customerId", new { customerId });
+            return Results.Ok(row.Json is null ? new Preferences(customerId, "sv", "EMAIL", false, new QuietHours("22:00", "08:00"), true, null) : JsonSerializer.Deserialize<Preferences>(row.Json)!);
+        }).WithTags("Interno").WithSummary("Preferencias para otros servicios (red interna, sin autenticación)").Produces<Preferences>();
+
         g.MapPut("", async (HttpContext http, IClock clock, string customerId, SetPreferencesRequest body) =>
         {
             var denied = Auth.Require(http, clock, out var p);

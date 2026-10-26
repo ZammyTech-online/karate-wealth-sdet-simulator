@@ -15,6 +15,11 @@ public static class Problems
     public const string BaseType = "https://errors.nordvik.local/";
 
     public static IResult Of(HttpContext http, int status, string code, string title, string detail,
+        string? hint = null, IEnumerable<FieldError>? errors = null) =>
+        Results.Json(BodyOf(http, status, code, title, detail, hint, errors), statusCode: status, contentType: "application/problem+json; charset=utf-8");
+
+    /// <summary>El cuerpo del problema sin envolver en IResult (para guardarlo, por ejemplo, en idempotency-store).</summary>
+    public static Dictionary<string, object?> BodyOf(HttpContext http, int status, string code, string title, string detail,
         string? hint = null, IEnumerable<FieldError>? errors = null)
     {
         var body = new Dictionary<string, object?>
@@ -32,7 +37,7 @@ public static class Problems
             body["errors"] = errors.Select(e => new Dictionary<string, object?> { ["field"] = e.Field, ["message"] = e.Message }).ToList();
         if (hint is not null && http.Items[NordvikMiddleware.LearningKey] is true)
             body["hint"] = hint;
-        return Results.Json(body, statusCode: status, contentType: "application/problem+json; charset=utf-8");
+        return body;
     }
 
     public static IResult BadRequest(HttpContext http, string code, string detail, string? hint = null, IEnumerable<FieldError>? errors = null)

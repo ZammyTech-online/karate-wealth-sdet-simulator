@@ -14,6 +14,7 @@ public sealed class NordvikMiddleware
 {
     public const string CorrelationHeader = "X-Correlation-Id";
     public const string LearningHeader = "X-Learning-Mode";
+    public const string PollHeader = "X-Nordvik-Poll";
     public const string CorrelationKey = "nordvik.correlation";
     public const string LearningKey = "nordvik.learning";
     public const string ServiceKey = "nordvik.service";
@@ -77,6 +78,8 @@ public sealed class NordvikMiddleware
     {
         try
         {
+            // Los sondeos internos (outbox-relay, consumidores de eventos) no se registran si van bien: serían miles de líneas de ruido.
+            if (http.Request.Headers.ContainsKey(PollHeader) && http.Response.StatusCode < 400) return;
             var line = JsonSerializer.Serialize(new
             {
                 ts = DateTimeOffset.UtcNow.ToString("O"),
