@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Nordvik.Host</AssemblyName>
+    <!-- ADR-001: un solo proceso para muchos servicios. GC de estación de trabajo para gastar poca RAM. -->
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <TieredPGO>true</TieredPGO>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Nordvik.Shared/Nordvik.Shared.csproj" />
+    <ProjectReference Include="../../services/A-utilities/uuid-service/UuidService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/sequence-service/SequenceService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/clock-service/ClockService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/random-seed-service/RandomSeedService.csproj" />
+    <ProjectReference Include="../../services/I-market/product-catalog/ProductCatalog.csproj" />
+    <ProjectReference Include="../../services/I-market/market-data/MarketData.csproj" />
+    <ProjectReference Include="../../services/I-market/fx-rates/FxRates.csproj" />
+    <ProjectReference Include="../../services/I-market/calendar-service/CalendarService.csproj" />
+  </ItemGroup>
+</Project>

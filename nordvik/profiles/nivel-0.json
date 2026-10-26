@@ -1,0 +1,16 @@
+{
+  "name": "nivel-0",
+  "wave": 0,
+  "description": "Oleada 0 · niveles 0, 1 y 2 de la ruta: utilidades y mercado, todo de solo lectura salvo el reloj y las secuencias.",
+  "learningMode": true,
+  "services": [
+    "clock-service",
+    "uuid-service",
+    "sequence-service",
+    "random-seed-service",
+    "product-catalog",
+    "market-data",
+    "fx-rates",
+    "calendar-service"
+  ]
+}
