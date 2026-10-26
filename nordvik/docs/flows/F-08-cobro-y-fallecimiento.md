@@ -8,6 +8,7 @@ sequenceDiagram
   participant AC as annuity-calculator 7112
   participant VS as valuation-service 6906
   participant PE as payout-execution 7111
+  participant TW as tax-withholding 7300
   participant LG as ledger-service 7003
   participant DC as death-claims 7113
   participant BS as beneficiary-service 7107
@@ -18,7 +19,8 @@ sequenceDiagram
   A->>PL: /activate → ACTIVE (el plan pasa a PAYOUT)
   Note over PE: cada mes (Operaciones o Service)
   PE->>PL: planes de cobro ACTIVE
-  PE->>LG: asiento bruto / retención 30 % / neto  · evento payout.paid
+  PE->>TW: tax-withholding 7300: tabla municipal (E8) o SINK 25 %
+  PE->>LG: asiento bruto / retención / neto  · evento payout.paid
   Note over DC: Operaciones abre una reclamación por fallecimiento
   DC->>PP: todos los planes → FROZEN
   DC->>PL: cobros → SUSPENDED
@@ -39,7 +41,7 @@ sequenceDiagram
 | Segunda reclamación del mismo cliente | 409 `CLAIM_ALREADY_OPEN` |
 | Fecha de fallecimiento futura | 422 `DATE_IN_FUTURE` |
 
-La retención del 30 % es provisional: en la ola 4 la calculará tax-withholding. La parte de seguro de vida queda `PENDING_WAVE_4`.
+La retención la da `tax-withholding`: tabla municipal de la Agencia Tributaria (E8) o SINK del 25 % si la residencia fiscal principal no es Suecia; si no responde, el 30 % provisional. Si el cliente tenía seguros de vida, la reclamación lo indica en `insurancePart` (`CLAIM_REQUIRED`) y Operaciones abre el siniestro en `insurance-claims` (F-09).
 
 ## Dónde se prueba
 

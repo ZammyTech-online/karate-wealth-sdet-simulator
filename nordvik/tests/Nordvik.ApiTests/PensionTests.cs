@@ -493,7 +493,7 @@ public class PayoutTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task A_term_payout_is_planned_activated_paid_monthly_with_30_percent_withholding_once_per_month()
+    public async Task A_term_payout_is_planned_activated_paid_monthly_with_table_withholding_once_per_month()
     {
         var (customer, plan) = await Pensions.FundedPlan(_f, new DateOnly(1960, 5, 10));
         var po = await NewPayout(plan, "{\"type\":\"TERM\",\"termYears\":5,\"startPeriod\":\"2026-11\"}");
@@ -522,7 +522,10 @@ public class PayoutTests : IAsyncLifetime
         var gross = Pensions.D(line.GetProperty("gross").GetString()!);
         var tax = Pensions.D(line.GetProperty("taxWithheld").GetString()!);
         Assert.Equal(monthly, gross);
-        Assert.Equal(Math.Round(gross * 0.30m, 2, MidpointRounding.ToEven), tax);
+        Assert.Equal("TAX_TABLE", line.GetProperty("taxBasis").GetString()); // sin residencia registrada: tabla municipal de la Agencia (E8)
+        var rate = Pensions.D(line.GetProperty("taxRatePct").GetString()!);
+        Assert.InRange(rate, 29m, 35m);
+        Assert.Equal(Math.Round(gross * rate / 100, 2, MidpointRounding.ToEven), tax);
         Assert.Equal(gross - tax, Pensions.D(line.GetProperty("net").GetString()!));
         var twice = await Run("2026-11");
         Assert.Equal("ALREADY_PAID", twice.Json.GetProperty("lines").EnumerateArray().Single(l => l.GetProperty("payoutPlanId").GetString() == id).GetProperty("result").GetString());
@@ -588,7 +591,7 @@ public class DeathClaimTests
         var id = claim.Str("id");
         Assert.Equal("OPEN", claim.Str("status"));
         Assert.Equal(2, claim.Json.GetProperty("frozenPlans").GetArrayLength());
-        Assert.Equal("PENDING_WAVE_4", claim.Json.GetProperty("insurancePart").GetProperty("status").GetString());
+        Assert.Equal("NO_POLICIES", claim.Json.GetProperty("insurancePart").GetProperty("status").GetString());
         foreach (var p in new[] { plan, other }) Assert.Equal("FROZEN", (await Pensions.PlanStatus(_f, p)).Str("status"));
         (await Pensions.Contribute(_f, plan, "500.00")).ShouldBeProblem(409, "PLAN_FROZEN");
         (await _f.Send(HttpMethod.Post, Ports.DeathClaims, "/api/v1/death-claims", Body("2026-10-01"), olof)).ShouldBeProblem(409, "CLAIM_ALREADY_OPEN");

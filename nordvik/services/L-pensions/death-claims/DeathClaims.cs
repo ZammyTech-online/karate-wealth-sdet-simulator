@@ -13,7 +13,8 @@ public sealed record VerifyRequest(string? CertificateRef);
 /// <summary>
 /// death-claims: el fallecimiento de un cliente. Al abrir la reclamación se CONGELAN todos sus planes (FROZEN: ni aportaciones ni cobros) y se
 /// suspenden sus planes de cobro. Al verificarla (certificado) se calcula el reparto de cada plan entre sus beneficiarios por porcentaje
-/// (sin beneficiarios, todo al caudal hereditario: ESTATE). Al liquidarla los planes se cierran. La parte de seguro llega en la ola 4.
+/// (sin beneficiarios, todo al caudal hereditario: ESTATE). Al liquidarla los planes se cierran. Si tenía seguros de vida activos
+/// (insurance-policy), la reclamación lo dice en insurancePart para que Operaciones abra el siniestro.
 /// OPEN → VERIFIED → SETTLED; OPEN → REJECTED. Fuera de orden: 409 INVALID_STATE_TRANSITION.
 /// </summary>
 public sealed class DeathClaims : INordvikService
@@ -21,7 +22,7 @@ public sealed class DeathClaims : INordvikService
     public NordvikServiceInfo Info { get; } = new(
         "death-claims", "L-pensions", 7113, 3, "Pensiones",
         "Reclamaciones por fallecimiento: congelación de planes, suspensión de cobros, verificación, reparto por beneficiarios (o ESTATE) y liquidación.",
-        DependsOn: new[] { "pension-plan-service", "payout-planner", "beneficiary-service", "valuation-service", "customer-registry", "clock-service" },
+        DependsOn: new[] { "pension-plan-service", "payout-planner", "beneficiary-service", "valuation-service", "customer-registry", "insurance-policy", "clock-service" },
         Emits: new[] { "death-claim.opened", "death-claim.verified", "death-claim.settled" });
 
     /// <summary>Reparte un importe por porcentajes al céntimo; el resto del redondeo va a la primera línea.</summary>
@@ -37,17 +38,23 @@ public sealed class DeathClaims : INordvikService
         using var db = ctx.OpenDb();
         Outbox.Ensure(db);
         db.Execute("CREATE TABLE IF NOT EXISTS claims (id TEXT PRIMARY KEY, customer_id TEXT, date_of_death TEXT, reported_by TEXT, status TEXT, plans TEXT, distribution TEXT, certificate TEXT, reason TEXT, opened_at TEXT, updated_at TEXT)");
+        db.Execute("CREATE TABLE IF NOT EXISTS claim_insurance (claim_id TEXT PRIMARY KEY, policies TEXT)");
     }
 
     private static object? Load(Microsoft.Data.Sqlite.SqliteConnection db, string id)
     {
         var r = db.QuerySingleOrDefault<(string Id, string Cust, string Dod, string? By, string Status, string Plans, string? Dist, string? Cert, string? Reason, string At, string Up)>(
             "SELECT id, customer_id, date_of_death, reported_by, status, plans, distribution, certificate, reason, opened_at, updated_at FROM claims WHERE id = @id", new { id });
-        return r.Id is null ? null : new
+        if (r.Id is null) return null;
+        var ins = JsonDocument.Parse(db.ExecuteScalar<string?>("SELECT policies FROM claim_insurance WHERE claim_id = @id", new { id }) ?? "[]").RootElement;
+        return new
         {
             id = r.Id, customerId = r.Cust, dateOfDeath = r.Dod, reportedBy = r.By, status = r.Status, frozenPlans = JsonDocument.Parse(r.Plans).RootElement,
             distribution = r.Dist is null ? (JsonElement?)null : JsonDocument.Parse(r.Dist).RootElement, certificateRef = r.Cert, rejectionReason = r.Reason,
-            insurancePart = new { status = "PENDING_WAVE_4", note = "El capital de seguro de vida lo calculará el servicio de seguros (ola 4)." }, openedAt = r.At, updatedAt = r.Up,
+            insurancePart = ins.GetArrayLength() == 0
+                ? new { status = "NO_POLICIES", policies = ins, note = "El cliente no tenía seguros de vida activos." }
+                : new { status = "CLAIM_REQUIRED", policies = ins, note = "Operaciones abre un siniestro DEATH por cada póliza LIFE en insurance-claims." },
+            openedAt = r.At, updatedAt = r.Up,
         };
     }
 
@@ -93,9 +100,13 @@ public sealed class DeathClaims : INordvikService
                 frozen.Add(new { planId = plId, statusBefore = before, portfolioId = pl.GetProperty("portfolioId").GetString(), suspendedPayoutPlans = suspended });
             }
             var id = "dc_" + Guid.NewGuid().ToString("N")[..12];
+            var pols = await Downstream.Get(http, "insurance-policy", $"/api/v1/internal/insurance-policies?customerId={b.CustomerId}&status=ACTIVE", forwardAuth: false);
+            var insurance = pols.Ok ? pols.Json.GetProperty("items").EnumerateArray().Where(x => x.GetProperty("coverage").GetString() == "LIFE")
+                .Select(x => new { policyId = x.GetProperty("id").GetString(), coverage = "LIFE", capital = x.GetProperty("capital").GetProperty("amount").GetString() }).ToList() : new();
             using var db = ctx.OpenDb();
             using (var tx = db.BeginTransaction())
             {
+                db.Execute("INSERT INTO claim_insurance VALUES (@id, @p)", new { id, p = JsonSerializer.Serialize(insurance, Canonical.Web) }, tx);
                 db.Execute("INSERT INTO claims VALUES (@id, @CustomerId, @dod, @ReportedBy, 'OPEN', @plans, NULL, NULL, NULL, @at, @at)",
                     new { id, b.CustomerId, dod = Money.Date(dod), b.ReportedBy, plans = JsonSerializer.Serialize(frozen, Canonical.Web), at = Nordic.Iso(clock.LocalNow) }, tx);
                 Outbox.Add(db, http, clock, "death-claim.opened", id, new { claimId = id, customerId = b.CustomerId, frozenPlans = frozen.Count }, tx);

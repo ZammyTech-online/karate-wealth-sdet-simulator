@@ -65,6 +65,9 @@ public sealed class NordvikMiddleware
         }
         catch (Exception ex)
         {
+            // El detalle (tipo, mensaje y primera línea propia de la traza) va al log del servicio, nunca a la respuesta
+            var frame = ex.StackTrace?.Split('\n').Select(l => l.Trim()).FirstOrDefault(l => l.Contains("Nordvik")) ?? "";
+            http.Items["nordvik.error"] = $"{ex.GetType().Name}: {ex.Message} {frame}".Trim();
             await Problems.Of(http, 500, "INTERNAL_ERROR", "Error interno", "Error inesperado en " + _ctx.Info.Name + ": " + ex.GetType().Name,
                 "Esto no es culpa de tu test: guarda el correlationId y revisa logs/" + _ctx.Info.Name + ".log").ExecuteAsync(http);
         }
@@ -104,6 +107,8 @@ public sealed class NordvikMiddleware
         return true;
     }
 
+    private static readonly JsonSerializerOptions LogJson = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+
     private void Log(HttpContext http, string correlation, long ms)
     {
         try
@@ -118,8 +123,9 @@ public sealed class NordvikMiddleware
                 path = http.Request.Path.Value + http.Request.QueryString.Value,
                 status = http.Response.StatusCode,
                 ms,
-                correlationId = correlation
-            });
+                correlationId = correlation,
+                error = http.Items.TryGetValue("nordvik.error", out var err) ? err as string : null,
+            }, LogJson);
             var file = Path.Combine(_ctx.LogDir, _ctx.Info.Name + ".log");
             var gate = FileLocks.GetOrAdd(file, _ => new object());
             lock (gate) File.AppendAllText(file, line + Environment.NewLine);

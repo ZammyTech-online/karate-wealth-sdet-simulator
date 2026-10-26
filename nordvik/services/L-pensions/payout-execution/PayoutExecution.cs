@@ -11,7 +11,8 @@ public sealed record PayoutRunRequest(string? Period);
 
 /// <summary>
 /// payout-execution: la nómina mensual de pensiones. Una ejecución por mes paga cada plan de cobro ACTIVE cuyo inicio ya llegó:
-/// bruto, retención provisional plana del 30 % (hasta que llegue tax-withholding en la ola 4) y neto, con su asiento en ledger.
+/// bruto, retención según tax-withholding (tabla municipal de la Agencia Tributaria, o SINK para no residentes; si no responde, la provisional
+/// del 30 %) y neto, con su asiento en ledger.
 /// Idempotente por (plan de cobro, mes): repetir la ejecución no paga dos veces (ALREADY_PAID). Si el plan de pensión está FROZEN, se salta.
 /// Al completar los pagos de una renta temporal, el plan de cobro pasa a FINISHED.
 /// </summary>
@@ -19,14 +20,16 @@ public sealed class PayoutExecution : INordvikService
 {
     public NordvikServiceInfo Info { get; } = new(
         "payout-execution", "L-pensions", 7111, 3, "Pensiones",
-        "Ejecución mensual de pagos de pensión: bruto, retención provisional del 30 %, neto y asiento contable; idempotente por plan y mes, salta planes congelados.",
-        DependsOn: new[] { "payout-planner", "pension-plan-service", "ledger-service", "permission-service", "clock-service" }, Emits: new[] { "payout.paid", "payout-run.completed" });
+        "Ejecución mensual de pagos de pensión: bruto, retención según tax-withholding (30 % provisional si no responde), neto y asiento; idempotente por plan y mes.",
+        DependsOn: new[] { "payout-planner", "pension-plan-service", "tax-withholding", "ledger-service", "permission-service", "clock-service" }, Emits: new[] { "payout.paid", "payout-run.completed" });
 
     public const decimal ProvisionalTaxRate = 0.30m;
 
-    public static (decimal Tax, decimal Net) Withhold(decimal gross)
+    public static (decimal Tax, decimal Net) Withhold(decimal gross) => Withhold(gross, ProvisionalTaxRate * 100);
+
+    public static (decimal Tax, decimal Net) Withhold(decimal gross, decimal ratePct)
     {
-        var tax = Math.Round(gross * ProvisionalTaxRate, 2, MidpointRounding.ToEven);
+        var tax = Math.Round(gross * ratePct / 100, 2, MidpointRounding.ToEven);
         return (tax, gross - tax);
     }
 
@@ -70,7 +73,11 @@ public sealed class PayoutExecution : INordvikService
                 var pp = await Downstream.Get(http, "pension-plan-service", $"/api/v1/internal/pension-plans/{ppId}", forwardAuth: false);
                 if (pp.Str("status") == "FROZEN") { lines.Add(new { payoutPlanId = poId, result = "SKIPPED_PLAN_FROZEN" }); skipped++; continue; }
                 var gross = decimal.Parse(po.GetProperty("monthlyGross").GetProperty("amount").GetString()!, Money.Inv);
-                var (tax, net) = Withhold(gross);
+                var customerIdW = po.GetProperty("customerId").GetString()!;
+                var wh = await Downstream.Get(http, "tax-withholding", $"/api/v1/internal/customers/{customerIdW}/withholding?incomeType=PENSION&year={period[..4]}", forwardAuth: false);
+                var ratePct = wh.Ok && Money.TryParse(wh.Str("ratePct"), out var rp) ? rp : ProvisionalTaxRate * 100;
+                var basis = wh.Ok ? wh.Str("basis") ?? "TAX_TABLE" : "PROVISIONAL_30";
+                var (tax, net) = Withhold(gross, ratePct);
                 var payId = "pay_" + Guid.NewGuid().ToString("N")[..12];
                 var entry = await Downstream.Post(http, "ledger-service", "/api/v1/journal-entries", new
                 {
@@ -86,7 +93,7 @@ public sealed class PayoutExecution : INordvikService
                     tx.Commit();
                 }
                 paid++;
-                lines.Add(new { payoutPlanId = poId, result = "PAID", paymentId = payId, gross = Money.Format(gross, 2), taxWithheld = Money.Format(tax, 2), net = Money.Format(net, 2) });
+                lines.Add(new { payoutPlanId = poId, result = "PAID", paymentId = payId, gross = Money.Format(gross, 2), taxRatePct = Money.Format(ratePct, 2), taxBasis = basis, taxWithheld = Money.Format(tax, 2), net = Money.Format(net, 2) });
                 if (po.GetProperty("type").GetString() == "TERM" && db.ExecuteScalar<long>("SELECT COUNT(*) FROM payments WHERE payout_plan_id = @poId", new { poId }) >= po.GetProperty("expectedPayments").GetInt64())
                     await Downstream.Send(http, "payout-planner", HttpMethod.Post, $"/api/v1/internal/payout-plans/{poId}/status/FINISHED", null, forwardAuth: false);
             }
@@ -97,7 +104,7 @@ public sealed class PayoutExecution : INordvikService
                 Outbox.Add(db, http, clock, "payout-run.completed", runId, new { runId, period, paid, skipped }, tx);
                 tx.Commit();
             }
-            return Results.Ok(new { id = runId, period, paid, skipped, provisionalTaxRatePct = "30.00", lines });
+            return Results.Ok(new { id = runId, period, paid, skipped, lines });
         }).WithTags("Pagos").WithSummary("Ejecutar los pagos de un mes (idempotente por plan de cobro y mes)");
 
         app.MapGet("/api/v1/payout-runs/{id}", (HttpContext http, string id) =>
@@ -108,6 +115,15 @@ public sealed class PayoutExecution : INordvikService
             return r.Id is null ? Problems.NotFound(http, "RUN_NOT_FOUND", $"No existe la ejecución {id}.", null)
                 : Results.Ok(new { id = r.Id, period = r.Period, paid = r.Paid, skipped = r.Skipped, lines = JsonDocument.Parse(r.Lines).RootElement, executedAt = r.At, executedBy = r.By });
         }).WithTags("Pagos").WithSummary("Una ejecución mensual con su resultado por plan");
+
+        app.MapGet("/api/v1/internal/payments", (string? year, string? customerId) =>
+        {
+            using var db = ctx.OpenDb();
+            var rows = db.Query<(string, string, string, string, string, string, string, string, string?, string, string)>(
+                $"SELECT {Cols} FROM payments WHERE (@year IS NULL OR period LIKE @y) AND (@customerId IS NULL OR customer_id = @customerId) ORDER BY period, id",
+                new { year, y = (year ?? "") + "-%", customerId }).ToList();
+            return Results.Ok(new { items = rows.Select(r => new { id = r.Item1, payoutPlanId = r.Item2, pensionPlanId = r.Item3, customerId = r.Item4, period = r.Item5, gross = r.Item6, taxWithheld = r.Item7, net = r.Item8 }), count = rows.Count });
+        }).WithTags("Interno").WithSummary("(interno) Pagos por año o cliente (tax-reporting)");
 
         app.MapGet("/api/v1/payout-plans/{id}/payments", async (HttpContext http, string id) =>
         {

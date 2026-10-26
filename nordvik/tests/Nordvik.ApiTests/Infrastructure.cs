@@ -148,6 +148,10 @@ public static class Ports
     public const int PensionPlans = 7100, Contributions = 7101, EmployerPortal = 7102, EmployerFiles = 7103, Agreements = 7104, SalaryExchange = 7105, Vesting = 7106, Beneficiaries = 7107;
     public const int Transfers = 7108, TransferValuations = 7109, PayoutPlanner = 7110, PayoutExecution = 7111, Annuities = 7112, DeathClaims = 7113;
     public const int PublicPensionAdapter = 7504, ClearingAdapter = 7505, ProviderAdapter = 7506, PublicPensionSim = 7707, ClearingSim = 7709, ProviderSim = 7710;
+    // Oleada 4
+    public const int InsurancePolicies = 7200, HealthDeclarations = 7201, Premiums = 7202, InsuranceClaims = 7203;
+    public const int Withholding = 7300, TaxReports = 7301, AnnualStatements = 7302, Statements = 7303, Analytics = 7304;
+    public const int TaxAgencyAdapter = 7507, InsurerAdapter = 7508, TaxAgencySim = 7708, InsurerSim = 7711;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
@@ -162,6 +166,8 @@ public static class Ports
         AdvisorDirectory, AdvisorDesk, Meetings, Messaging, Voice, Transcription, Insights, CallSummary, TelephonySim,
         PensionPlans, Contributions, EmployerPortal, EmployerFiles, Agreements, SalaryExchange, Vesting, Beneficiaries, Transfers, TransferValuations, PayoutPlanner, PayoutExecution, Annuities, DeathClaims,
         PublicPensionAdapter, ClearingAdapter, ProviderAdapter, PublicPensionSim, ClearingSim, ProviderSim,
+        InsurancePolicies, HealthDeclarations, Premiums, InsuranceClaims, Withholding, TaxReports, AnnualStatements, Statements, Analytics,
+        TaxAgencyAdapter, InsurerAdapter, TaxAgencySim, InsurerSim,
     };
 }
 

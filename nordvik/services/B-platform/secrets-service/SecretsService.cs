@@ -34,6 +34,8 @@ public sealed class SecretsService : INordvikService
         ("public-pension-hmac", "e7-pensionsmyndigheten-shared-2026", "Secreto del sobre firmado de la Autoridad de Pensiones (E7)"),
         ("employer-clearing-hmac", "e9-clearing-webhook-2026", "HMAC de los webhooks del Clearing de Empleadores (E9)"),
         ("provider-network-hmac", "e10-provider-network-2026", "Firma mutua de la red de gestoras (E10)"),
+        ("tax-agency-api-key", "e8-skatteverket-key-2026", "API key de la Agencia Tributaria (E8)"),
+        ("insurer-client-secret", "e11-insurer-client-secret-2026", "client_secret OAuth2 de la aseguradora (E11)"),
     };
 
     public void Initialize(ServiceContext ctx)

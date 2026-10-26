@@ -38,9 +38,14 @@ public static class ServiceCatalog
         new PensionPlanService(), new ContributionService(), new EmployerPortalApi(), new EmployerFileIngest(), new CollectiveAgreementRules(), new SalaryExchangeService(), new VestingService(),
         new BeneficiaryService(), new TransferService(), new TransferValuation(), new PayoutPlanner(), new PayoutExecution(), new AnnuityCalculator(), new DeathClaims(),
         new PublicPensionAdapter(), new EmployerClearingAdapter(), new ProviderNetworkAdapter(),
+        // ---------- Oleada 4 ----------
+        new PremiumCalculator(), new HealthDeclaration(), new InsurancePolicy(), new InsuranceClaims(),
+        new TaxWithholding(), new TaxReporting(), new AnnualStatement(), new StatementService(), new AnalyticsReporting(),
+        new TaxAgencyAdapter(), new InsurerAdapter(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
         new NordIdSim(), new PopulationSim(), new SanctionScreenSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(), new TelephonySim(),
         new PublicPensionSim(), new EmployerClearingSim(), new ProviderNetworkSim(),
+        new TaxAgencySim(), new InsurerSim(),
     };
 
     /// <summary>Un servicio y todo aquello de lo que depende, recursivamente.</summary>

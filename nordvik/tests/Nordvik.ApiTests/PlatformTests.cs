@@ -34,7 +34,7 @@ public class PlatformTests
         var r = await _f.Get(port, "/info");
         Assert.Equal(HttpStatusCode.OK, r.Status);
         Assert.Equal(port + NordvikFixture.Offset, r.Int("port"));
-        Assert.InRange(r.Int("wave"), 0, 3);
+        Assert.InRange(r.Int("wave"), 0, 4);
         Assert.False(string.IsNullOrWhiteSpace(r.Str("team")));
     }
 
