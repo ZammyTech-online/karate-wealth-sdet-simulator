@@ -43,6 +43,8 @@ public sealed class ServiceContext
     public required bool LearningMode { get; init; }
     public required string ClockUrl { get; init; }
     public required string ProfileName { get; init; }
+    public int PortOffset { get; init; }
+    public int ActualPort => Info.Port + PortOffset;
 
     public string DbPath => Path.Combine(DataDir, Info.Name + ".db");
     public string ConnectionString => $"Data Source={DbPath};Cache=Shared";
@@ -56,4 +58,7 @@ public sealed class ServiceContext
 }
 
 /// <summary>Ajustes del anfitrión que se pasan a cada servicio.</summary>
-public sealed record HostSettings(string Root, string DataDir, string LogDir, bool LearningMode, string ClockUrl, string ProfileName);
+/// <param name="PortOffset">Se suma al puerto de cada servicio (las pruebas usan 10000 para no chocar con tu entorno).</param>
+/// <param name="ClockCacheMs">Cada cuánto preguntan los servicios la hora a clock-service.</param>
+public sealed record HostSettings(string Root, string DataDir, string LogDir, bool LearningMode, string ClockUrl, string ProfileName,
+    int PortOffset = 0, int ClockCacheMs = 1000);

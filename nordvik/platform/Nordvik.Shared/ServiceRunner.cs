@@ -28,6 +28,7 @@ public static class ServiceRunner
             LearningMode = settings.LearningMode,
             ClockUrl = settings.ClockUrl,
             ProfileName = settings.ProfileName,
+            PortOffset = settings.PortOffset,
         };
 
         var builder = WebApplication.CreateBuilder(new WebApplicationOptions
@@ -38,12 +39,14 @@ public static class ServiceRunner
         });
         builder.Logging.ClearProviders();
         builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
-        builder.WebHost.ConfigureKestrel(k => k.ListenLocalhost(info.Port));
+        builder.WebHost.ConfigureKestrel(k => k.ListenLocalhost(ctx.ActualPort));
 
         var naming = info.Naming == JsonNaming.SnakeCase ? JsonNamingPolicy.SnakeCaseLower : JsonNamingPolicy.CamelCase;
         builder.Services.ConfigureHttpJsonOptions(o => Configure(o.SerializerOptions, naming));
         builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o => Configure(o.JsonSerializerOptions, naming));
 
+        // Que los errores de lectura de la petición lleguen al middleware y salgan como RFC 9457.
+        builder.Services.Configure<Microsoft.AspNetCore.Routing.RouteHandlerOptions>(o => o.ThrowOnBadRequest = true);
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
@@ -58,7 +61,7 @@ public static class ServiceRunner
         });
 
         builder.Services.AddSingleton(ctx);
-        builder.Services.AddSingleton<IClock>(_ => new RemoteClock(settings.ClockUrl));
+        builder.Services.AddSingleton<IClock>(_ => new RemoteClock(settings.ClockUrl, settings.ClockCacheMs));
         svc.ConfigureServices(builder.Services, ctx);
 
         var app = builder.Build();
@@ -82,12 +85,12 @@ public static class ServiceRunner
             ["description"] = info.Description,
             ["version"] = info.Version,
             ["wave"] = info.Wave,
-            ["port"] = info.Port,
+            ["port"] = ctx.ActualPort,
             ["jsonNaming"] = info.Naming.ToString(),
             ["dependsOn"] = info.DependsOn ?? Array.Empty<string>(),
             ["profile"] = settings.ProfileName,
             ["learningMode"] = settings.LearningMode,
-            ["openApi"] = $"http://localhost:{info.Port}/swagger/v1/swagger.json",
+            ["openApi"] = $"http://localhost:{ctx.ActualPort}/swagger/v1/swagger.json",
         })).WithTags("Plataforma").WithSummary("Ficha del servicio");
 
         svc.Initialize(ctx);
@@ -95,7 +98,7 @@ public static class ServiceRunner
 
         app.MapFallback((HttpContext http) => Problems.NotFound(http, "ROUTE_NOT_FOUND",
             $"La ruta {http.Request.Method} {http.Request.Path} no existe en {info.Name}.",
-            $"Revisa la ruta exacta en http://localhost:{info.Port}/swagger. ¿Falta el prefijo /api/v1? ¿Te has equivocado de servicio o de puerto?"))
+            $"Revisa la ruta exacta en http://localhost:{ctx.ActualPort}/swagger. ¿Falta el prefijo /api/v1? ¿Te has equivocado de servicio o de puerto?"))
             .ExcludeFromDescription();
 
         return app;

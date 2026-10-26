@@ -41,8 +41,11 @@ public sealed class RemoteClock : IClock
     private DateTimeOffset _fetchedAt = DateTimeOffset.MinValue;
     private bool _frozen;
 
-    public RemoteClock(string clockUrl)
+    private readonly TimeSpan _cache;
+
+    public RemoteClock(string clockUrl, int cacheMs = 1000)
     {
+        _cache = TimeSpan.FromMilliseconds(Math.Max(0, cacheMs));
         _http = new HttpClient { BaseAddress = new Uri(clockUrl), Timeout = TimeSpan.FromMilliseconds(800) };
     }
 
@@ -55,7 +58,7 @@ public sealed class RemoteClock : IClock
             var real = DateTimeOffset.UtcNow;
             lock (_gate)
             {
-                if (real - _fetchedAt > TimeSpan.FromSeconds(1))
+                if (real - _fetchedAt > _cache)
                 {
                     try
                     {
