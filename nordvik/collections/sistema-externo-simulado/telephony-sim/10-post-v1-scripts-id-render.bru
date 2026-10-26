@@ -1,0 +1,30 @@
+meta {
+  name: POST /v1/scripts/{id}/render
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{telephonySimUrl}}/v1/scripts/{id}/render
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "variables": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/telephony-sim.md
+}

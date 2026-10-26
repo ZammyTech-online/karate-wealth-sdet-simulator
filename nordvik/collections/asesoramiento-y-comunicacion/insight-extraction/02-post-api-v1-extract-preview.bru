@@ -1,0 +1,28 @@
+meta {
+  name: POST /api/v1/extract/preview
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{insightExtractionUrl}}/api/v1/extract/preview
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {}
+}
+
+docs {
+  
+  Ficha completa: docs/services/insight-extraction.md
+}

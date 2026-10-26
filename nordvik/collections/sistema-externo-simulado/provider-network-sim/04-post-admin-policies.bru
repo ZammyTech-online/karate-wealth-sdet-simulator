@@ -1,0 +1,35 @@
+meta {
+  name: POST /__admin/policies
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{providerNetworkSimUrl}}/__admin/policies
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "providerCode": "valor",
+    "policyNumber": "valor",
+    "personalNumber": "valor",
+    "value": "valor",
+    "delayDays": 1,
+    "driftPct": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/provider-network-sim.md
+}

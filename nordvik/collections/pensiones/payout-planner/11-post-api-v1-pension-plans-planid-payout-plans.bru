@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/pension-plans/{planId}/payout-plans
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{payoutPlannerUrl}}/api/v1/pension-plans/{planId}/payout-plans
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "termYears": 1,
+    "guaranteeYears": 1,
+    "startPeriod": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/payout-planner.md
+}

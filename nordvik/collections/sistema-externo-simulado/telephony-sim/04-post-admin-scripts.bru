@@ -1,0 +1,34 @@
+meta {
+  name: POST /__admin/scripts
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{telephonySimUrl}}/__admin/scripts
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "id": "valor",
+    "case": "valor",
+    "language": "valor",
+    "title": "valor",
+    "turns": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/telephony-sim.md
+}

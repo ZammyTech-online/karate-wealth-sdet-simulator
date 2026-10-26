@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/webhooks/clearing
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{employerClearingAdapterUrl}}/api/v1/webhooks/clearing
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-clearing-adapter.md
+}

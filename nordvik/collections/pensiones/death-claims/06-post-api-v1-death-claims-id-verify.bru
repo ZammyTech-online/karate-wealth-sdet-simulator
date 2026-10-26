@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/death-claims/{id}/verify
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{deathClaimsUrl}}/api/v1/death-claims/{id}/verify
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "certificateRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/death-claims.md
+}

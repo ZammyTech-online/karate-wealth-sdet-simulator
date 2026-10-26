@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/internal/valuations
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{providerNetworkAdapterUrl}}/api/v1/internal/valuations
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "providerCode": "valor",
+    "policyNumber": "valor",
+    "personalNumber": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/provider-network-adapter.md
+}

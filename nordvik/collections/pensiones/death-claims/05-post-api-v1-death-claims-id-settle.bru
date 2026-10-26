@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/death-claims/{id}/settle
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{deathClaimsUrl}}/api/v1/death-claims/{id}/settle
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/death-claims.md
+}

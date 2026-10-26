@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/internal/transfer-valuations/{id}/compare
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{transferValuationUrl}}/api/v1/internal/transfer-valuations/{id}/compare
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "amount": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/transfer-valuation.md
+}

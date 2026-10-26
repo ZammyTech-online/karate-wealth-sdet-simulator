@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/transfer-valuations
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{transferValuationUrl}}/api/v1/transfer-valuations
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "providerCode": "valor",
+    "policyNumber": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/transfer-valuation.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: GET /health
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{insightExtractionUrl}}/health
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/insight-extraction.md
+}

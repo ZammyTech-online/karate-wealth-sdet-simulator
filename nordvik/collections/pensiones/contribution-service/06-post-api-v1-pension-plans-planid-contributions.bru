@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/pension-plans/{planId}/contributions
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{contributionServiceUrl}}/api/v1/pension-plans/{planId}/contributions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "amount": "valor",
+    "source": "valor",
+    "period": "valor",
+    "reference": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/contribution-service.md
+}

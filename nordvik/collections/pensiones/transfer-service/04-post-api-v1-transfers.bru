@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/transfers
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{transferServiceUrl}}/api/v1/transfers
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "targetPlanId": "valor",
+    "providerCode": "valor",
+    "policyNumber": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/transfer-service.md
+}

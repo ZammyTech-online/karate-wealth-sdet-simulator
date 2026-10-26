@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/advisors/{id}/customers
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{advisorDirectoryUrl}}/api/v1/advisors/{id}/customers
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/advisor-directory.md
+}

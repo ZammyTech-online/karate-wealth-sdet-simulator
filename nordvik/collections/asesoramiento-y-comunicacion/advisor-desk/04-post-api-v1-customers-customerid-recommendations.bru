@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/customers/{customerId}/recommendations
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{advisorDeskUrl}}/api/v1/customers/{customerId}/recommendations
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "isin": "valor",
+    "amount": "valor",
+    "rationale": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/advisor-desk.md
+}

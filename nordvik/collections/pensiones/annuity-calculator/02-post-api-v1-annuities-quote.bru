@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v1/annuities/quote
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{annuityCalculatorUrl}}/api/v1/annuities/quote
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "capital": "valor",
+    "age": 1,
+    "gender": "valor",
+    "type": "valor",
+    "termYears": 1,
+    "technicalRatePct": 1,
+    "guaranteeYears": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/annuity-calculator.md
+}

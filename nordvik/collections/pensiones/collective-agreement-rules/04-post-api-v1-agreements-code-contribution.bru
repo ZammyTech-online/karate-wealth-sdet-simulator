@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/agreements/{code}/contribution
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{collectiveAgreementRulesUrl}}/api/v1/agreements/{code}/contribution
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "monthlySalary": "valor",
+    "age": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/collective-agreement-rules.md
+}

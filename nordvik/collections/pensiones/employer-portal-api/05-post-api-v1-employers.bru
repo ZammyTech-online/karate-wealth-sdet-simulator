@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/employers
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{employerPortalApiUrl}}/api/v1/employers
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "orgNumber": "valor",
+    "name": "valor",
+    "agreement": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-portal-api.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/pension-plans/{planId}/beneficiaries
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{beneficiaryServiceUrl}}/api/v1/internal/pension-plans/{planId}/beneficiaries
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/beneficiary-service.md
+}

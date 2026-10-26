@@ -16,14 +16,13 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 | Swagger | http://localhost:6107/swagger |
 | Colección Bruno | `collections/plataforma` |
 
-## Endpoints (17)
+## Endpoints (16)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
 | `DELETE` | `/_test/data` |  |
 | `GET` | `/api/v2/compositions/advisory-mandate/{contractId}` |  |
-| `GET` | `/api/v2/compositions/call-summary/{id}` |  |
-| `POST` | `/api/v2/compositions/call-summary/{id}` |  |
+| `GET` | `/api/v2/compositions/call-summary/{callId}` |  |
 | `GET` | `/api/v2/compositions/contract-bundle/{contractId}` |  |
 | `GET` | `/api/v2/compositions/customer-360/{customerId}` |  |
 | `GET` | `/api/v2/compositions/holdings-enriched/{portfolioId}` |  |
@@ -73,7 +72,7 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 | 200 | Success |
 | 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
 
-### GET /api/v2/compositions/call-summary/{id}
+### GET /api/v2/compositions/call-summary/{callId}
 
 
 
@@ -81,24 +80,7 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 
 | Nombre | Dónde | Tipo | Obligatorio |
 | --- | --- | --- | --- |
-| `id` | path | string | sí |
-
-**Respuestas**
-
-| Código | Contenido |
-| --- | --- |
-| 200 | Success |
-| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
-
-### POST /api/v2/compositions/call-summary/{id}
-
-
-
-**Parámetros**
-
-| Nombre | Dónde | Tipo | Obligatorio |
-| --- | --- | --- | --- |
-| `id` | path | string | sí |
+| `callId` | path | string | sí |
 
 **Respuestas**
 

@@ -1,0 +1,31 @@
+meta {
+  name: POST /v1/envelope
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{publicPensionSimUrl}}/v1/envelope
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "header": "valor",
+    "body": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/public-pension-sim.md
+}

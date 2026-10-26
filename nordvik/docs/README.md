@@ -42,7 +42,7 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-9*
 | [bff-web](services/bff-web.md) | 6104 | Canales digitales | 2 | 4 | API a medida de la web del cliente: panel en una llamada (cliente, efectivo, carteras valoradas, órdenes recientes, notificaciones). |
 | [bff-mobile](services/bff-mobile.md) | 6105 | Canales digitales | 2 | 5 | API de la app: inicio compacto, órdenes paginadas por cursor y ?fields= para pedir solo algunos campos. |
 | [bff-advisor](services/bff-advisor.md) | 6106 | Canales digitales | 2 | 6 | API del escritorio del asesor: sus clientes con carteras y valor, ficha del cliente (vía composition-service) y alertas de desviación. |
-| [composition-service](services/composition-service.md) | 6107 | Plataforma | 2 | 17 | Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco con fusión profunda (C5), mandato (C6). |
+| [composition-service](services/composition-service.md) | 6107 | Plataforma | 2 | 16 | Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco con fusión profunda (C5), mandato (C6). |
 | [correlation-tracer](services/correlation-tracer.md) | 6108 | Plataforma | 2 | 4 | Reconstruye la cadena de llamadas de un correlationId a partir de los logs (servicio, ruta, estado, duración y anidamiento). |
 | [secrets-service](services/secrets-service.md) | 6109 | Plataforma | 3 | 9 | Secretos con versiones (claves de webhooks, API keys de los simuladores), rotación con periodo de gracia y verificación sin revelar el valor. |
 
@@ -62,7 +62,7 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-9*
 
 | Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |
 | --- | --- | --- | --- | --- | --- |
-| [customer-registry](services/customer-registry.md) | 6300 | Clientes | 1 | 11 | Alta, consulta, modificación (con If-Match) y cierre de clientes. Enmascara el número nacional según el rol y publica un registro de cambios. |
+| [customer-registry](services/customer-registry.md) | 6300 | Clientes | 1 | 12 | Alta, consulta, modificación (con If-Match) y cierre de clientes. Enmascara el número nacional según el rol y publica un registro de cambios. |
 | [contact-service](services/contact-service.md) | 6301 | Clientes | 1 | 8 | Medios de contacto del cliente con verificación por código: 3 intentos, caducidad de 10 minutos y bloqueo. |
 | [customer-address-service](services/customer-address-service.md) | 6302 | Clientes | 1 | 7 | Domicilio actual e historial de domicilios del cliente; el código postal debe corresponder a la ciudad. |
 | [preferences-service](services/preferences-service.md) | 6303 | Clientes | 1 | 6 | Preferencias de comunicación del cliente. Si nunca las guardó, devuelve los valores por defecto (isDefault=true). |
@@ -102,6 +102,14 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-9*
 | --- | --- | --- | --- | --- | --- |
 | [notification-service](services/notification-service.md) | 6600 | Comunicación con clientes | 2 | 10 | Notificaciones por email, SMS y push con preferencias, consentimiento, horas de silencio y buzón de pruebas efímero (24 h). |
 | [message-template-service](services/message-template-service.md) | 6601 | Comunicación con clientes | 2 | 6 | Plantillas de email, SMS y push en sv, en y es, versionadas. Renderiza {{variables}}; si falta alguna, 422 con la lista. Idioma desconocido → en. |
+| [advisor-directory](services/advisor-directory.md) | 6602 | Asesoramiento y comunicación | 3 | 10 | Directorio de asesores y oficinas: especialidades, idiomas, horario, ausencias y clientes asignados (desde permission-service). |
+| [advisor-desk](services/advisor-desk.md) | 6603 | Asesoramiento y comunicación | 3 | 10 | Expediente de asesoramiento: datos confirmados en llamadas (con evidencia), idoneidad y recomendaciones que solo nacen si son idóneas; aceptación del cliente con orden idempotente. |
+| [meeting-scheduler](services/meeting-scheduler.md) | 6604 | Asesoramiento y comunicación | 3 | 10 | Agenda del asesor: huecos de 60 min en su horario y días hábiles, reservas sin solapes, cancelación tardía (<24 h) y recordatorios 24 h antes por notification-service. |
+| [secure-messaging](services/secure-messaging.md) | 6605 | Asesoramiento y comunicación | 3 | 9 | Mensajería cifrada cliente-asesor: clave por conversación, mensajes de lectura única que se destruyen al abrirlos, caducidad y bloqueo de PII fuera de la lectura única. |
+| [voice-service](services/voice-service.md) | 6606 | Asesoramiento y comunicación | 3 | 23 | Llamadas grabadas con consentimiento: turnos cifrados por llamada, cadena de eventos (transcripción, redacción, extracción, revisión, resumen) y destrucción verificable con recibo firmado. |
+| [transcription-service](services/transcription-service.md) | 6607 | Asesoramiento y comunicación | 3 | 9 | Transcripción con hablantes y tiempos, redactada ([NATIONAL_ID], [IBAN], [HEALTH]...) con originales en pii-vault; el original completo se lee una sola vez y muere con la clave de la llamada. |
+| [insight-extraction](services/insight-extraction.md) | 6608 | Asesoramiento y comunicación | 3 | 8 | Datos estructurados desde la transcripción redactada (aportación, horizonte, riesgo, objetivo, orden, cláusula) con evidencia y revisión humana por debajo de 0,75 de confianza. |
+| [call-summary](services/call-summary.md) | 6609 | Asesoramiento y comunicación | 3 | 6 | Resumen de 5 líneas sin PII (comprobado con redaction-service) de cada llamada, conservado 10 años; su evento dispara la destrucción del resto. |
 
 ## H-contracts
 
@@ -156,6 +164,25 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-9*
 | [refunds-returns](services/refunds-returns.md) | 7007 | Pagos y contabilidad | 2 | 9 | Pagos devueltos por el banco (AC04, AC06, AM02...) y devoluciones de cargos mediante asientos de reversión. |
 | [gl-export](services/gl-export.md) | 7008 | Pagos y contabilidad | 2 | 7 | Exporta los asientos de un día a CSV con totales y checksum SHA-256. Una sola exportación por día salvo force=true (versión nueva). |
 
+## L-pensions
+
+| Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |
+| --- | --- | --- | --- | --- | --- |
+| [pension-plan-service](services/pension-plan-service.md) | 7100 | Pensiones | 3 | 11 | Planes de pensión privados, de empresa (por convenio) y de intercambio salarial, con su cartera PENSION, elegibilidad de cobro (55 años) y congelación. |
+| [contribution-service](services/contribution-service.md) | 7101 | Pensiones | 3 | 8 | Aportaciones a planes de pensión (privadas, de empresa, intercambio salarial, traspasos): asiento en ledger e inversión inmediata según la asignación, sin duplicados. |
+| [employer-portal-api](services/employer-portal-api.md) | 7102 | Pensiones | 3 | 7 | API de empresas con API key (X-Employer-Key): alta de empleados con su plan OCCUPATIONAL por convenio, consulta enmascarada y aportaciones del mes. |
+| [employer-file-ingest](services/employer-file-ingest.md) | 7103 | Pensiones | 3 | 8 | Ficheros mensuales de empleadores: validación línea a línea (empleado, plan, importe, convenio, mes repetido), aportación de las válidas, cola de errores y acuse. |
+| [collective-agreement-rules](services/collective-agreement-rules.md) | 7104 | Pensiones | 3 | 6 | Reglas de cada convenio: edad de inicio, porcentajes por tramo (hasta 7,5 importes base y por encima), bonificación del intercambio salarial y consolidación. |
+| [salary-exchange-service](services/salary-exchange-service.md) | 7105 | Pensiones | 3 | 7 | Intercambio salarial: simulación (bonificación del convenio, coste neto aproximado) y alta, con el aviso del umbral de 8,07 importes base. |
+| [vesting-service](services/vesting-service.md) | 7106 | Pensiones | 3 | 4 | Derechos consolidados de un plan: según el convenio y los años en la empresa (employment-service); privados e intercambio salarial, 100 %. |
+| [beneficiary-service](services/beneficiary-service.md) | 7107 | Pensiones | 3 | 7 | Beneficiarios de cada plan: porcentajes que suman 100,00, solo familia cercana, números nacionales tokenizados y cambios con If-Match. |
+| [transfer-service](services/transfer-service.md) | 7108 | Pensiones | 3 | 12 | Traspasos entrantes desde otras gestoras: saga con valoración, confirmación del cliente, aprobación de Operaciones, tolerancia del 2 %, revisión manual e historial. |
+| [transfer-valuation](services/transfer-valuation.md) | 7109 | Pensiones | 3 | 8 | Valoración previa de pólizas externas para traspasos: asíncrona (1–3 días virtuales), validez de 30 días y comparación con tolerancia del 2 %. |
+| [payout-planner](services/payout-planner.md) | 7110 | Pensiones | 3 | 13 | Planes de cobro: elegibilidad, capital valorado, renta temporal o vitalicia (annuity-calculator) y ciclo DRAFT → ACTIVE ⇄ SUSPENDED → FINISHED. |
+| [payout-execution](services/payout-execution.md) | 7111 | Pensiones | 3 | 7 | Ejecución mensual de pagos de pensión: bruto, retención provisional del 30 %, neto y asiento contable; idempotente por plan y mes, salta planes congelados. |
+| [annuity-calculator](services/annuity-calculator.md) | 7112 | Pensiones | 3 | 5 | Rentas temporales y vitalicias con tabla de mortalidad sintética (Gompertz-Makeham) e interés técnico; esperanza de vida y factores, deterministas. |
+| [death-claims](services/death-claims.md) | 7113 | Pensiones | 3 | 9 | Reclamaciones por fallecimiento: congelación de planes, suspensión de cobros, verificación, reparto por beneficiarios (o ESTATE) y liquidación. |
+
 ## O-operations
 
 | Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |
@@ -175,6 +202,9 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-9*
 | [price-feed-adapter](services/price-feed-adapter.md) | 7501 | Integraciones | 2 | 7 | Adaptador del proveedor de precios E5 con caché por ETag, contadores de 304 y respuesta stale si el proveedor cae. |
 | [nordpay-adapter](services/nordpay-adapter.md) | 7502 | Integraciones | 2 | 10 | Adaptador del banco E6: transferencias ISO 20022 firmadas (JWS), estados por webhook, avisos de abono, titularidad de cuentas y extracto. |
 | [population-adapter](services/population-adapter.md) | 7503 | Integraciones | 3 | 6 | Consulta al Registro de Población (E2) con mTLS simulado: identidad protegida sin dirección, fallecidos (evento) y comparación con la ficha del cliente. |
+| [public-pension-adapter](services/public-pension-adapter.md) | 7504 | Integraciones | 3 | 4 | Consulta a la Autoridad de Pensiones Públicas (E7): sobre firmado, verificación de la firma de la respuesta y mantenimiento con Retry-After. |
+| [employer-clearing-adapter](services/employer-clearing-adapter.md) | 7505 | Integraciones | 3 | 5 | Webhooks del Clearing de Empleadores (E9) con firma HMAC sobre el cuerpo exacto, descarga del CSV, entrega a employer-file-ingest y acuse de vuelta. |
+| [provider-network-adapter](services/provider-network-adapter.md) | 7506 | Integraciones | 3 | 7 | Red de gestoras (E10) con firma HMAC mutua: valoraciones asíncronas de pólizas y liberación del dinero en traspasos; rechaza respuestas mal firmadas. |
 
 ## Q-quality
 
@@ -194,5 +224,9 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-9*
 | [custodian-sim](services/custodian-sim.md) | 7704 | Sistema externo (simulado) | 2 | 12 | E4 Custodio: lotes de órdenes, ejecución al NAV del día (con comisiones del folleto y cambio de divisa), webhooks firmados y extracto de posiciones. |
 | [pricefeed-sim](services/pricefeed-sim.md) | 7705 | Sistema externo (simulado) | 2 | 8 | E5 Proveedor de precios: NAV por fondo y fecha, descarga masiva por día, ETag/304 y API key. |
 | [nordpay-sim](services/nordpay-sim.md) | 7706 | Sistema externo (simulado) | 2 | 14 | E6 NordPay: transferencias firmadas con JWS, estados ACCP/ACSC/RJCT por webhook, verificación de titularidad, abonos entrantes y extracto camt.053. |
+| [public-pension-sim](services/public-pension-sim.md) | 7707 | Sistema externo (simulado) | 3 | 9 | E7 Autoridad de Pensiones Públicas: sobre firmado (HMAC del cuerpo canónico), edad mínima de cobro por año de nacimiento, pensión pública estimada y mantenimiento con Retry-After. |
+| [employer-clearing-sim](services/employer-clearing-sim.md) | 7709 | Sistema externo (simulado) | 3 | 10 | E9 Clearing de Empleadores: ficheros CSV mensuales de aportaciones, webhook firmado con HMAC hacia Nordvik y acuses de aceptadas y rechazadas. |
+| [provider-network-sim](services/provider-network-sim.md) | 7710 | Sistema externo (simulado) | 3 | 13 | E10 Red de gestoras: valoraciones de pólizas que tardan 1–3 días virtuales, traspaso del dinero y firma HMAC mutua en las dos direcciones. |
+| [telephony-sim](services/telephony-sim.md) | 7712 | Sistema externo (simulado) | 3 | 10 | E12 Telefonía: llamadas del proveedor y guiones de turnos ya reconocidos (V2-V9, es/sv/en) con variables {PNR} e {IBAN}; guiones propios en /__admin/scripts. |
 
-**108 servicios · 871 endpoints documentados.**
+**137 servicios · 1126 endpoints documentados.**

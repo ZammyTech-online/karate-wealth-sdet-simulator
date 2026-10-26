@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/employer/employees
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{employerPortalApiUrl}}/api/v1/employer/employees
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "personalNumber": "valor",
+    "allocation": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-portal-api.md
+}

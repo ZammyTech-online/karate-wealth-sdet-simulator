@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/payout-runs
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{payoutExecutionUrl}}/api/v1/payout-runs
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "period": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/payout-execution.md
+}

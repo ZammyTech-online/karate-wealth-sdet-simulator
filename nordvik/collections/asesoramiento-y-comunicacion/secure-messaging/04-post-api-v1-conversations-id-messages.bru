@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/conversations/{id}/messages
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{secureMessagingUrl}}/api/v1/conversations/{id}/messages
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "text": "valor",
+    "readOnce": "valor",
+    "expiresInSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/secure-messaging.md
+}

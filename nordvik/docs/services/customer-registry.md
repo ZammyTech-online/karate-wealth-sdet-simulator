@@ -16,7 +16,7 @@ Alta, consulta, modificación (con If-Match) y cierre de clientes. Enmascara el 
 | Swagger | http://localhost:6300/swagger |
 | Colección Bruno | `collections/clientes` |
 
-## Endpoints (11)
+## Endpoints (12)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -28,6 +28,7 @@ Alta, consulta, modificación (con If-Match) y cierre de clientes. Enmascara el 
 | `PATCH` | `/api/v1/customers/{id}` |  |
 | `GET` | `/api/v1/customers/by-number/{customerNumber}` |  |
 | `GET` | `/api/v1/internal/customers/{id}` |  |
+| `GET` | `/api/v1/internal/customers/by-national-id/{nationalId}` |  |
 | `GET` | `/api/v1/internal/customers/changes` |  |
 | `GET` | `/health` |  |
 | `GET` | `/info` |  |
@@ -180,6 +181,23 @@ Alta, consulta, modificación (con If-Match) y cierre de clientes. Enmascara el 
 | Nombre | Dónde | Tipo | Obligatorio |
 | --- | --- | --- | --- |
 | `id` | path | string | sí |
+
+**Respuestas**
+
+| Código | Contenido |
+| --- | --- |
+| 200 | `id`, `customerNumber`, `firstName`, `lastName`, `nationalId`, `birthDate`, `age`, `email`, `phone`, `language`, `status`, `version`, `createdAt`, `updatedAt`, `externalRef` |
+| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
+
+### GET /api/v1/internal/customers/by-national-id/{nationalId}
+
+
+
+**Parámetros**
+
+| Nombre | Dónde | Tipo | Obligatorio |
+| --- | --- | --- | --- |
+| `nationalId` | path | string | sí |
 
 **Respuestas**
 

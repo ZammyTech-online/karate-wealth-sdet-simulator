@@ -1,0 +1,28 @@
+meta {
+  name: POST /__admin/sign
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{publicPensionSimUrl}}/__admin/sign
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {}
+}
+
+docs {
+  
+  Ficha completa: docs/services/public-pension-sim.md
+}

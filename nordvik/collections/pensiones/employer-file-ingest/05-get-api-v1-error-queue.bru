@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/error-queue
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{employerFileIngestUrl}}/api/v1/error-queue
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-file-ingest.md
+}

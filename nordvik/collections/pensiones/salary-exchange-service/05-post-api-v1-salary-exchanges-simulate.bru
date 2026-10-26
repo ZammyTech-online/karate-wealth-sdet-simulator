@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/salary-exchanges/simulate
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{salaryExchangeServiceUrl}}/api/v1/salary-exchanges/simulate
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "monthlySalary": "valor",
+    "exchangeAmount": "valor",
+    "agreement": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/salary-exchange-service.md
+}

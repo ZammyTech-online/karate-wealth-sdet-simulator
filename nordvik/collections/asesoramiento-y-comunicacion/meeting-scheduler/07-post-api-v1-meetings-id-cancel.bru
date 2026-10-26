@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/meetings/{id}/cancel
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{meetingSchedulerUrl}}/api/v1/meetings/{id}/cancel
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/meeting-scheduler.md
+}

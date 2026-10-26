@@ -1,0 +1,24 @@
+meta {
+  name: GET /health
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{compositionServiceUrl}}/health
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/composition-service.md
+}

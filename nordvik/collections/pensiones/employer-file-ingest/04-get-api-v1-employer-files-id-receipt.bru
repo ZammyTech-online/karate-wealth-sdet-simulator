@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/employer-files/{id}/receipt
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{employerFileIngestUrl}}/api/v1/employer-files/{id}/receipt
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-file-ingest.md
+}

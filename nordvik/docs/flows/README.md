@@ -1,4 +1,4 @@
-# Flujos de negocio de Nordvik (oleadas 1 y 2)
+# Flujos de negocio de Nordvik (oleadas 1 a 3)
 
 Cada flujo dice **quién llama a quién**, **qué evento sale** y **dónde lo pruebas**. Los eventos viajan siempre igual:
 el productor los escribe en su *outbox* → `outbox-relay` (7401) los publica en `event-bus` (7400) → cada consumidor los
@@ -12,3 +12,6 @@ en tus tests se espera con `retry until` (academia L18).
 | [F-03 · Contrato y firma](F-03-contrato.md) | Borrador → envío → firma NordID → ACTIVE | `ContractTests` | L20 |
 | [F-04 · Composición contract-bundle](F-04-composicion.md) | Contrato + anexo en un solo JSON | `CompositionTests` | L21 |
 | [F-05 · Segundo factor y step-up](F-05-mfa-step-up.md) | Código MFA al buzón y token acr=high para operaciones sensibles | `ExternalIntegrationTests` | L16 |
+| [F-06 · Fichero mensual de un empleador](F-06-fichero-empleador.md) | Webhook firmado del clearing → validación línea a línea → aportaciones → acuse | `EmployerPensionTests` | — |
+| [F-07 · Traspaso entrante](F-07-traspaso.md) | Saga con valoración en días virtuales, firma mutua, aprobación y tolerancia del 2 % | `TransferTests` | — |
+| [F-08 · Cobro y fallecimiento](F-08-cobro-y-fallecimiento.md) | Renta mensual con retención, congelación y reparto entre beneficiarios | `PayoutTests`, `DeathClaimTests` | — |

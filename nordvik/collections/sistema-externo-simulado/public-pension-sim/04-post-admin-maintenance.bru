@@ -1,0 +1,31 @@
+meta {
+  name: POST /__admin/maintenance
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{publicPensionSimUrl}}/__admin/maintenance
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "on": "valor",
+    "retryAfterSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/public-pension-sim.md
+}

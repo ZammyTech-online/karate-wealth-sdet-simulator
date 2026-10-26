@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/employer-files
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{employerFileIngestUrl}}/api/v1/employer-files
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "fileId": "valor",
+    "employerOrgNumber": "valor",
+    "period": "valor",
+    "csv": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-file-ingest.md
+}

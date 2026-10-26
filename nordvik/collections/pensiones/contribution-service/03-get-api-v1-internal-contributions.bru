@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/contributions
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{contributionServiceUrl}}/api/v1/internal/contributions
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contribution-service.md
+}

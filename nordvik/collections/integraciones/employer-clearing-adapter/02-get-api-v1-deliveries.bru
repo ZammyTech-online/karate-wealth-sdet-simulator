@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/deliveries
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{employerClearingAdapterUrl}}/api/v1/deliveries
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-clearing-adapter.md
+}

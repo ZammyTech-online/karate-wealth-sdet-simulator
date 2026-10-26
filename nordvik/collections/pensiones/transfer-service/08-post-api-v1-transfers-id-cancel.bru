@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/transfers/{id}/cancel
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{transferServiceUrl}}/api/v1/transfers/{id}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/transfer-service.md
+}

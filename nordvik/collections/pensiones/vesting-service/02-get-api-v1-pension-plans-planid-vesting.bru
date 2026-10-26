@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/pension-plans/{planId}/vesting
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{vestingServiceUrl}}/api/v1/pension-plans/{planId}/vesting
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/vesting-service.md
+}

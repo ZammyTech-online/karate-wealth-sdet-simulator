@@ -13,6 +13,7 @@ Sobre (envelope) de todos los eventos: `eventId`, `seq`, `topic`, `key`, `produc
 | `approval.requested` | approval-service | audit-service |
 | `bank-account.rejected` | bank-account-verification | audit-service |
 | `bank-account.verified` | bank-account-verification | audit-service |
+| `beneficiaries.updated` | beneficiary-service | audit-service |
 | `case.opened` | case-management | audit-service |
 | `case.resolved` | case-management | audit-service |
 | `consent.granted` | consent-ledger | audit-service |
@@ -26,13 +27,18 @@ Sobre (envelope) de todos los eventos: `eventId`, `seq`, `topic`, `key`, `produc
 | `contract.superseded` | contract-service | audit-service |
 | `contract.terminated` | contract-service | audit-service |
 | `contract.withdrawn` | contract-service | audit-service |
+| `contribution.received` | contribution-service | audit-service |
 | `corporate-action.announced` | corporate-actions | audit-service |
 | `corporate-action.applied` | corporate-actions | audit-service, position-keeping |
 | `custody.execution.received` | custody-adapter | audit-service, execution-service |
 | `custody.order.rejected` | custody-adapter | audit-service, execution-service |
+| `death-claim.opened` | death-claims | audit-service |
+| `death-claim.settled` | death-claims | audit-service |
+| `death-claim.verified` | death-claims | audit-service |
 | `deposit.received` | payments-gateway | audit-service, notification-service, transaction-monitoring |
 | `document.destroyed` | document-vault | audit-service |
 | `document.stored` | document-vault | audit-service |
+| `employer-file.processed` | employer-file-ingest | audit-service |
 | `employment.changed` | employment-service | audit-service |
 | `fees.billed` | fee-billing | audit-service |
 | `household.updated` | household-service | audit-service |
@@ -43,6 +49,10 @@ Sobre (envelope) de todos los eventos: `eventId`, `seq`, `topic`, `key`, `produc
 | `kyc.rejected` | kyc-aml-service | audit-service |
 | `kyc.review-required` | kyc-aml-service | audit-service, case-management |
 | `ledger.entry.posted` | ledger-service | audit-service |
+| `meeting.booked` | meeting-scheduler | audit-service |
+| `meeting.cancelled` | meeting-scheduler | audit-service |
+| `message.destroyed` | secure-messaging | audit-service |
+| `message.sent` | secure-messaging | audit-service |
 | `monitoring.alert.closed` | transaction-monitoring | audit-service |
 | `monitoring.alert.raised` | transaction-monitoring | audit-service, case-management |
 | `notification.sent` | notification-service | audit-service |
@@ -62,6 +72,13 @@ Sobre (envelope) de todos los eventos: `eventId`, `seq`, `topic`, `key`, `produc
 | `payment.instruction.settled` | payment-instructions | audit-service, payments-gateway |
 | `payment.rejected` | payments-gateway | audit-service, notification-service |
 | `payment.settled` | payments-gateway | audit-service, notification-service, transaction-monitoring |
+| `payout-plan.created` | payout-planner | audit-service |
+| `payout-plan.status-changed` | payout-planner | audit-service |
+| `payout-run.completed` | payout-execution | audit-service |
+| `payout.paid` | payout-execution | audit-service |
+| `pension-plan.created` | pension-plan-service | audit-service |
+| `pension-plan.frozen` | pension-plan-service | audit-service |
+| `pension-plan.status-changed` | pension-plan-service | audit-service |
 | `pep.identified` | pep-service | audit-service |
 | `pii.detokenized` | pii-vault | audit-service, lineage-service |
 | `pii.tokenized` | pii-vault | audit-service, lineage-service |
@@ -71,10 +88,14 @@ Sobre (envelope) de todos los eventos: `eventId`, `seq`, `topic`, `key`, `produc
 | `rebalance.completed` | rebalancing-engine | audit-service |
 | `rebalance.failed` | rebalancing-engine | audit-service |
 | `rebalance.started` | rebalancing-engine | audit-service |
+| `recommendation.accepted` | advisor-desk | audit-service |
+| `recommendation.declined` | advisor-desk | audit-service |
+| `recommendation.proposed` | advisor-desk | audit-service |
 | `reconciliation.completed` | reconciliation-service | audit-service |
 | `refund.issued` | refunds-returns | audit-service |
 | `retention.expired` | retention-scheduler | audit-service |
 | `risk.scored` | risk-scoring | audit-service |
+| `salary-exchange.created` | salary-exchange-service | audit-service |
 | `screening.completed` | sanctions-adapter | audit-service |
 | `screening.decided` | sanctions-adapter | audit-service |
 | `secret.read` | secrets-service | audit-service |
@@ -89,6 +110,18 @@ Sobre (envelope) de todos los eventos: `eventId`, `seq`, `topic`, `key`, `produc
 | `token.exchanged` | token-exchange | audit-service |
 | `trade.executed` | execution-service | audit-service, order-management, position-keeping |
 | `trade.rejected` | execution-service | audit-service, order-management |
+| `transfer-valuation.ready` | transfer-valuation | audit-service |
+| `transfer.completed` | transfer-service | audit-service |
+| `transfer.requested` | transfer-service | audit-service |
+| `transfer.status-changed` | transfer-service | audit-service |
+| `voice.call.ended` | voice-service | audit-service, transcription-service |
+| `voice.call.shredded` | voice-service | audit-service, transcription-service, insight-extraction |
+| `voice.call.started` | voice-service | audit-service |
+| `voice.call.summarised` | call-summary | audit-service, voice-service |
+| `voice.insights.extracted` | insight-extraction | audit-service, voice-service |
+| `voice.recording.revoked` | voice-service | audit-service |
+| `voice.review.completed` | voice-service | audit-service, advisor-desk, call-summary |
+| `voice.transcript.redacted` | transcription-service | audit-service, voice-service, insight-extraction |
 | `withdrawal.requested` | payments-gateway | audit-service |
 
 ## appropriateness.assessed
@@ -118,6 +151,10 @@ Publica: bank-account-verification · Consumen: audit-service
 ## bank-account.verified
 
 Publica: bank-account-verification · Consumen: audit-service
+
+## beneficiaries.updated
+
+Publica: beneficiary-service · Consumen: audit-service
 
 ## case.opened
 
@@ -239,6 +276,10 @@ Publica: contract-service · Consumen: audit-service
 
 Publica: contract-service · Consumen: audit-service
 
+## contribution.received
+
+Publica: contribution-service · Consumen: audit-service
+
 ## corporate-action.announced
 
 Publica: corporate-actions · Consumen: audit-service
@@ -254,6 +295,18 @@ Publica: custody-adapter · Consumen: audit-service, execution-service
 ## custody.order.rejected
 
 Publica: custody-adapter · Consumen: audit-service, execution-service
+
+## death-claim.opened
+
+Publica: death-claims · Consumen: audit-service
+
+## death-claim.settled
+
+Publica: death-claims · Consumen: audit-service
+
+## death-claim.verified
+
+Publica: death-claims · Consumen: audit-service
 
 ## deposit.received
 
@@ -311,6 +364,10 @@ Ejemplo real (el primero que hay en el bus):
   }
 }
 ```
+
+## employer-file.processed
+
+Publica: employer-file-ingest · Consumen: audit-service
 
 ## employment.changed
 
@@ -376,6 +433,22 @@ Ejemplo real (el primero que hay en el bus):
   }
 }
 ```
+
+## meeting.booked
+
+Publica: meeting-scheduler · Consumen: audit-service
+
+## meeting.cancelled
+
+Publica: meeting-scheduler · Consumen: audit-service
+
+## message.destroyed
+
+Publica: secure-messaging · Consumen: audit-service
+
+## message.sent
+
+Publica: secure-messaging · Consumen: audit-service
 
 ## monitoring.alert.closed
 
@@ -525,6 +598,34 @@ Publica: payments-gateway · Consumen: audit-service, notification-service
 
 Publica: payments-gateway · Consumen: audit-service, notification-service, transaction-monitoring
 
+## payout-plan.created
+
+Publica: payout-planner · Consumen: audit-service
+
+## payout-plan.status-changed
+
+Publica: payout-planner · Consumen: audit-service
+
+## payout-run.completed
+
+Publica: payout-execution · Consumen: audit-service
+
+## payout.paid
+
+Publica: payout-execution · Consumen: audit-service
+
+## pension-plan.created
+
+Publica: pension-plan-service · Consumen: audit-service
+
+## pension-plan.frozen
+
+Publica: pension-plan-service · Consumen: audit-service
+
+## pension-plan.status-changed
+
+Publica: pension-plan-service · Consumen: audit-service
+
 ## pep.identified
 
 Publica: pep-service · Consumen: audit-service
@@ -561,6 +662,18 @@ Publica: rebalancing-engine · Consumen: audit-service
 
 Publica: rebalancing-engine · Consumen: audit-service
 
+## recommendation.accepted
+
+Publica: advisor-desk · Consumen: audit-service
+
+## recommendation.declined
+
+Publica: advisor-desk · Consumen: audit-service
+
+## recommendation.proposed
+
+Publica: advisor-desk · Consumen: audit-service
+
 ## reconciliation.completed
 
 Publica: reconciliation-service · Consumen: audit-service
@@ -576,6 +689,10 @@ Publica: retention-scheduler · Consumen: audit-service
 ## risk.scored
 
 Publica: risk-scoring · Consumen: audit-service
+
+## salary-exchange.created
+
+Publica: salary-exchange-service · Consumen: audit-service
 
 ## screening.completed
 
@@ -653,6 +770,54 @@ Publica: execution-service · Consumen: audit-service, order-management, positio
 ## trade.rejected
 
 Publica: execution-service · Consumen: audit-service, order-management
+
+## transfer-valuation.ready
+
+Publica: transfer-valuation · Consumen: audit-service
+
+## transfer.completed
+
+Publica: transfer-service · Consumen: audit-service
+
+## transfer.requested
+
+Publica: transfer-service · Consumen: audit-service
+
+## transfer.status-changed
+
+Publica: transfer-service · Consumen: audit-service
+
+## voice.call.ended
+
+Publica: voice-service · Consumen: audit-service, transcription-service
+
+## voice.call.shredded
+
+Publica: voice-service · Consumen: audit-service, transcription-service, insight-extraction
+
+## voice.call.started
+
+Publica: voice-service · Consumen: audit-service
+
+## voice.call.summarised
+
+Publica: call-summary · Consumen: audit-service, voice-service
+
+## voice.insights.extracted
+
+Publica: insight-extraction · Consumen: audit-service, voice-service
+
+## voice.recording.revoked
+
+Publica: voice-service · Consumen: audit-service
+
+## voice.review.completed
+
+Publica: voice-service · Consumen: audit-service, advisor-desk, call-summary
+
+## voice.transcript.redacted
+
+Publica: transcription-service · Consumen: audit-service, voice-service, insight-extraction
 
 ## withdrawal.requested
 

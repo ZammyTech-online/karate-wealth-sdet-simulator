@@ -1,0 +1,24 @@
+meta {
+  name: POST /v1/transfers
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{providerNetworkSimUrl}}/v1/transfers
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/provider-network-sim.md
+}

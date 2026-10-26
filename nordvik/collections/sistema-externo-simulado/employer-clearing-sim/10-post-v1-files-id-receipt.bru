@@ -1,0 +1,28 @@
+meta {
+  name: POST /v1/files/{id}/receipt
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{employerClearingSimUrl}}/v1/files/{id}/receipt
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {}
+}
+
+docs {
+  
+  Ficha completa: docs/services/employer-clearing-sim.md
+}

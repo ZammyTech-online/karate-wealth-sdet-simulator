@@ -1,0 +1,35 @@
+meta {
+  name: POST /api/v1/customers/{customerId}/salary-exchanges
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{salaryExchangeServiceUrl}}/api/v1/customers/{customerId}/salary-exchanges
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "planId": "valor",
+    "monthlySalary": "valor",
+    "exchangeAmount": "valor",
+    "agreement": "valor",
+    "startMonth": "valor",
+    "acknowledgeBelowThreshold": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/salary-exchange-service.md
+}

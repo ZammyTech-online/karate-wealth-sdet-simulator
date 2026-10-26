@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/customers/{customerId}/meetings
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{meetingSchedulerUrl}}/api/v1/customers/{customerId}/meetings
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/meeting-scheduler.md
+}

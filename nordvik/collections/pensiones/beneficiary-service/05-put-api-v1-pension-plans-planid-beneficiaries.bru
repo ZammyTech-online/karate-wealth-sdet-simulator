@@ -1,0 +1,30 @@
+meta {
+  name: PUT /api/v1/pension-plans/{planId}/beneficiaries
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{beneficiaryServiceUrl}}/api/v1/pension-plans/{planId}/beneficiaries
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "beneficiaries": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/beneficiary-service.md
+}

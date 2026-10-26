@@ -1,0 +1,30 @@
+meta {
+  name: POST /__admin/tamper
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{providerNetworkSimUrl}}/__admin/tamper
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "on": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/provider-network-sim.md
+}

@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/advisors/{id}/absences
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{advisorDirectoryUrl}}/api/v1/advisors/{id}/absences
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "from": "valor",
+    "to": "valor",
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/advisor-directory.md
+}

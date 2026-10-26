@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/internal/pension-plans/{id}/status/{status}
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{pensionPlanServiceUrl}}/api/v1/internal/pension-plans/{id}/status/{status}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/pension-plan-service.md
+}

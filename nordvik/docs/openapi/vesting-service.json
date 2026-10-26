@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "vesting-service",
+    "description": "Derechos consolidados de un plan: según el convenio y los años en la empresa (employment-service); privados e intercambio salarial, 100 %.\n\nDominio: L-pensions · Equipo: Pensiones · Oleada: 3 · Puerto: 7106\n\nDepende de: pension-plan-service, employment-service, collective-agreement-rules, valuation-service, clock-service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/pension-plans/{planId}/vesting": {
+      "get": {
+        "tags": [
+          "Consolidación"
+        ],
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
