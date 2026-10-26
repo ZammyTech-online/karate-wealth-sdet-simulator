@@ -1,0 +1,27 @@
+meta {
+  name: POST /api/v1/isins
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{isinServiceUrl}}/api/v1/isins
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "country": "valor",
+    "seed": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/isin-service.md
+}

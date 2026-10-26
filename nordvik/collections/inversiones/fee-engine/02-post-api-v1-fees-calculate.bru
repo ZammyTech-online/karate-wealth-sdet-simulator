@@ -1,0 +1,29 @@
+meta {
+  name: POST /api/v1/fees/calculate
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{feeEngineUrl}}/api/v1/fees/calculate
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "isin": "valor",
+    "amount": "valor",
+    "action": "valor",
+    "years": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/fee-engine.md
+}

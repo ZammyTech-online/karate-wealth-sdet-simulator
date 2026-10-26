@@ -1,0 +1,30 @@
+meta {
+  name: PUT /api/v1/customers/{customerId}/address
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{customerAddressServiceUrl}}/api/v1/customers/{customerId}/address
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "street": "valor",
+    "number": "valor",
+    "postalCode": "valor",
+    "city": "valor",
+    "country": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/customer-address-service.md
+}

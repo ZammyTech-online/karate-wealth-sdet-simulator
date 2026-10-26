@@ -1,0 +1,28 @@
+meta {
+  name: POST /api/v1/ibans
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{ibanServiceUrl}}/api/v1/ibans
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "country": "valor",
+    "bankCode": "valor",
+    "seed": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/iban-service.md
+}

@@ -1,0 +1,27 @@
+meta {
+  name: POST /api/v1/customers/{customerId}/contacts
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{contactServiceUrl}}/api/v1/customers/{customerId}/contacts
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "value": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/contact-service.md
+}

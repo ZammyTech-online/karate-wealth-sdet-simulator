@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/fixtures
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{fixtureLoaderUrl}}/api/v1/fixtures
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/fixture-loader.md
+}

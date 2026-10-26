@@ -1,0 +1,26 @@
+meta {
+  name: PUT /api/v1/config/{service}/{key}
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{configServiceUrl}}/api/v1/config/{service}/{key}
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "value": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/config-service.md
+}

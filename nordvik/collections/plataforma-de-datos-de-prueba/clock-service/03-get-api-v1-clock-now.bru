@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/clock/now
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{clockServiceUrl}}/api/v1/clock/now
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/clock-service.md
+}

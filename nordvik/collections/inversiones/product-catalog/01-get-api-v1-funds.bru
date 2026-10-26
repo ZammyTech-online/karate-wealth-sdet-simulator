@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/funds
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{productCatalogUrl}}/api/v1/funds
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/product-catalog.md
+}

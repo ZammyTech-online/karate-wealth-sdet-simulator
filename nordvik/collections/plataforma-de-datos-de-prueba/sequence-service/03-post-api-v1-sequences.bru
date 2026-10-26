@@ -1,0 +1,28 @@
+meta {
+  name: POST /api/v1/sequences
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{sequenceServiceUrl}}/api/v1/sequences
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "name": "valor",
+    "prefix": "valor",
+    "padding": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/sequence-service.md
+}

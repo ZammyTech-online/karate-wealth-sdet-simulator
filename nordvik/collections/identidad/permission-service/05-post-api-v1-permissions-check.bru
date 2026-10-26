@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/permissions/check
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{permissionServiceUrl}}/api/v1/permissions/check
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "role": "valor",
+    "customerId": "valor",
+    "advisorId": "valor",
+    "action": "valor",
+    "resourceCustomerId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/permission-service.md
+}

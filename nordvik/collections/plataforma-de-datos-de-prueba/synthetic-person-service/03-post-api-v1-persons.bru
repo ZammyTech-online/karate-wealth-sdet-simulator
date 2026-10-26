@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/persons
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{syntheticPersonServiceUrl}}/api/v1/persons
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "country": "valor",
+    "age": 1,
+    "minAge": 1,
+    "maxAge": 1,
+    "gender": "valor",
+    "count": 1,
+    "seed": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/synthetic-person-service.md
+}

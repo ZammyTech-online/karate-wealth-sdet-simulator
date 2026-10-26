@@ -32,6 +32,9 @@ public interface INordvikService
 
     /// <summary>Declara los endpoints HTTP del servicio.</summary>
     void MapEndpoints(WebApplication app, ServiceContext ctx);
+
+    /// <summary>Borra los datos de prueba cuyo identificador o nombre empieza por el prefijo. Devuelve cuántos borró.</summary>
+    int ResetByPrefix(ServiceContext ctx, string prefix) => 0;
 }
 
 /// <summary>Todo lo que un servicio necesita saber de su entorno.</summary>
@@ -47,6 +50,9 @@ public sealed class ServiceContext
     public int ActualPort => Info.Port + PortOffset;
 
     public string DbPath => Path.Combine(DataDir, Info.Name + ".db");
+
+    /// <summary>URL de otro servicio (con el desplazamiento de puertos de las pruebas).</summary>
+    public string UrlOf(string service) => ServiceDirectory.UrlOf(service);
     public string ConnectionString => $"Data Source={DbPath};Cache=Shared";
 
     public SqliteConnection OpenDb()

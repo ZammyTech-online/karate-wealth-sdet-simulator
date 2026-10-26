@@ -1,0 +1,27 @@
+meta {
+  name: POST /api/v1/fixtures/{name}
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{fixtureLoaderUrl}}/api/v1/fixtures/demo
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "externalRef": "valor",
+    "seed": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/fixture-loader.md
+}

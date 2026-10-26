@@ -25,7 +25,11 @@ public sealed class NordvikFixture : IAsyncLifetime
         Directory.CreateDirectory(logs);
         var settings = new HostSettings(Root, data, logs, LearningMode: true, ClockUrl: $"http://localhost:{6003 + Offset}",
             ProfileName: "tests", PortOffset: Offset, ClockCacheMs: 0);
-        foreach (var svc in ServiceCatalog.Create().OrderBy(s => s.Info.Name == "clock-service" ? 0 : 1))
+        var all = ServiceCatalog.Create();
+        ServiceDirectory.Offset = Offset;
+        ServiceDirectory.Register(all.Select(s => s.Info));
+        Nordvik.Services.ApiGateway.UseCatalog(all.Select(s => s.Info));
+        foreach (var svc in all.OrderBy(s => s.Info.Name == "clock-service" ? 0 : 1))
         {
             var app = ServiceRunner.Build(svc, settings);
             await app.StartAsync();
@@ -59,6 +63,54 @@ public sealed class NordvikFixture : IAsyncLifetime
     public Task<Reply> Post(int port, string path, string? json = null) => Send(HttpMethod.Post, port, path, json);
     public Task<Reply> Delete(int port, string path) => Send(HttpMethod.Delete, port, path);
 
+    /// <summary>Pide un token con el flujo password de OAuth2 (form-urlencoded, como haría Karate).</summary>
+    public async Task<string> Token(string user, string password)
+    {
+        var res = await Http.PostAsync(Url(Ports.Iam, "/api/v1/oauth/token"), new FormUrlEncodedContent(new Dictionary<string, string>
+        {
+            ["grant_type"] = "password", ["username"] = user, ["password"] = password,
+        }));
+        var r = await Reply.From(res);
+        Assert.True(r.Code == 200, "login de " + user + " falló: " + r.Body);
+        return r.Str("access_token");
+    }
+
+    public Task<string> Ana() => Token("cliente.ana", "Ana2026!");
+    public Task<string> Lars() => Token("cliente.lars", "Lars2026!");
+    public Task<string> Erik() => Token("asesor.erik", "Erik2026!");
+    public Task<string> Maja() => Token("asesora.maja", "Maja2026!");
+    public Task<string> Olof() => Token("operaciones.olof", "Olof2026!");
+    public Task<string> Karin() => Token("compliance.karin", "Karin2026!");
+    public Task<string> Admin() => Token("admin", "Admin2026!");
+
+    public static Action<HttpRequestMessage> Bearer(string token, string? ifMatch = null) => req =>
+    {
+        req.Headers.TryAddWithoutValidation("Authorization", "Bearer " + token);
+        if (ifMatch is not null) req.Headers.TryAddWithoutValidation("If-Match", ifMatch);
+    };
+
+    /// <summary>Una persona sintética nueva con número nacional válido.</summary>
+    public async Task<JsonElement> NewPerson(int? age = null)
+    {
+        var r = await Post(Ports.Person, "/api/v1/persons", age is null ? "{\"minAge\":25,\"maxAge\":60}" : $"{{\"age\":{age}}}");
+        Assert.Equal(200, r.Code);
+        return r.Json.GetProperty("persons")[0];
+    }
+
+    /// <summary>Crea un cliente nuevo como asesor.erik y devuelve su JSON.</summary>
+    public async Task<JsonElement> NewCustomer(string? token = null, string? externalRef = null)
+    {
+        var p = await NewPerson();
+        var body = JsonSerializer.Serialize(new
+        {
+            firstName = p.GetProperty("firstName").GetString(), lastName = p.GetProperty("lastName").GetString(),
+            nationalId = p.GetProperty("nationalId").GetString(), email = p.GetProperty("email").GetString(), externalRef,
+        });
+        var r = await Send(HttpMethod.Post, Ports.Customer, "/api/v1/customers", body, Bearer(token ?? await Erik()));
+        Assert.True(r.Code == 201, r.Body);
+        return r.Json;
+    }
+
     /// <summary>Congela el reloj virtual en una hora de Estocolmo concreta.</summary>
     public Task<Reply> Freeze(string isoLocal) => Post(Ports.Clock, "/api/v1/clock/freeze", $"{{\"at\":\"{isoLocal}\"}}");
     public Task<Reply> ResetClock() => Post(Ports.Clock, "/api/v1/clock/reset");
@@ -70,8 +122,17 @@ public sealed class NordvikCollection : ICollectionFixture<NordvikFixture> { }
 public static class Ports
 {
     public const int Uuid = 6001, Sequence = 6002, Clock = 6003, Random = 6004;
-    public const int Catalog = 6801, Market = 6802, Fx = 6803, Calendar = 6804;
-    public static readonly int[] All = { Uuid, Sequence, Clock, Random, Catalog, Market, Fx, Calendar };
+    public const int Person = 6005, Address = 6006, Iban = 6007, Isin = 6008, Reset = 6009, Fixture = 6010;
+    public const int Gateway = 6100, RateLimiter = 6101, Config = 6102;
+    public const int Iam = 6200, Session = 6201, Permission = 6202;
+    public const int Customer = 6300, Contact = 6301, CustomerAddress = 6302, Preferences = 6303, Search = 6304;
+    public const int Catalog = 6801, Market = 6802, Fx = 6803, Calendar = 6804, Factsheet = 6805, Fee = 6806, Benchmark = 6807;
+    public const int Portfolio = 6900, Allocation = 6901;
+    public static readonly int[] All =
+    {
+        Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
+        Customer, Contact, CustomerAddress, Preferences, Search, Catalog, Market, Fx, Calendar, Factsheet, Fee, Benchmark, Portfolio, Allocation,
+    };
 }
 
 /// <summary>Respuesta HTTP ya leída, con el JSON parseado.</summary>

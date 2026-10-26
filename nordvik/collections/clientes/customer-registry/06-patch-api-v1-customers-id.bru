@@ -1,0 +1,31 @@
+meta {
+  name: PATCH /api/v1/customers/{id}
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{customerRegistryUrl}}/api/v1/customers/{id}
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "firstName": "valor",
+    "lastName": "valor",
+    "email": "valor",
+    "phone": "valor",
+    "language": "valor",
+    "nationalId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/customer-registry.md
+}

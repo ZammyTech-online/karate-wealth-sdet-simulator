@@ -1,0 +1,20 @@
+meta {
+  name: GET /info
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{allocationEngineUrl}}/info
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/allocation-engine.md
+}

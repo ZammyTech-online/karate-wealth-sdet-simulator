@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/benchmarks/{code}/return
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{benchmarkServiceUrl}}/api/v1/benchmarks/{code}/return
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/benchmark-service.md
+}

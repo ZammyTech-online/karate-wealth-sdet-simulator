@@ -1,0 +1,26 @@
+meta {
+  name: POST /api/v1/clock/freeze
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{clockServiceUrl}}/api/v1/clock/freeze
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "at": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/clock-service.md
+}

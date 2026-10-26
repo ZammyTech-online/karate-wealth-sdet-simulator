@@ -1,0 +1,281 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "clock-service",
+    "description": "Reloj virtual del sistema. Todos los servicios preguntan aquí la hora; tus tests pueden viajar en el tiempo.\n\nDominio: A-utilities · Equipo: Plataforma de datos de prueba · Oleada: 0 · Puerto: 6003",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/clock/now": {
+      "get": {
+        "tags": [
+          "Reloj"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClockNow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clock/travel": {
+      "post": {
+        "tags": [
+          "Reloj"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TravelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClockNow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clock/advance": {
+      "post": {
+        "tags": [
+          "Reloj"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdvanceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClockNow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clock/freeze": {
+      "post": {
+        "tags": [
+          "Reloj"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FreezeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClockNow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clock/reset": {
+      "post": {
+        "tags": [
+          "Reloj"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClockNow"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdvanceRequest": {
+        "type": "object",
+        "properties": {
+          "seconds": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "minutes": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "hours": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "days": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ClockMode": {
+        "enum": [
+          "REAL",
+          "OFFSET",
+          "FROZEN"
+        ],
+        "type": "string"
+      },
+      "ClockNow": {
+        "type": "object",
+        "properties": {
+          "now": {
+            "type": "string",
+            "nullable": true
+          },
+          "utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "epochMillis": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "timezone": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "time": {
+            "type": "string",
+            "nullable": true
+          },
+          "mode": {
+            "$ref": "#/components/schemas/ClockMode"
+          },
+          "offsetSeconds": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FreezeRequest": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TravelRequest": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "offsetSeconds": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

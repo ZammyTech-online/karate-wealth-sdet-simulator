@@ -12,13 +12,35 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../Nordvik.Shared/Nordvik.Shared.csproj" />
-    <ProjectReference Include="../../services/A-utilities/uuid-service/UuidService.csproj" />
-    <ProjectReference Include="../../services/A-utilities/sequence-service/SequenceService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/address-service/AddressService.csproj" />
     <ProjectReference Include="../../services/A-utilities/clock-service/ClockService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/data-reset-service/DataResetService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/fixture-loader/FixtureLoader.csproj" />
+    <ProjectReference Include="../../services/A-utilities/iban-service/IbanService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/isin-service/IsinService.csproj" />
     <ProjectReference Include="../../services/A-utilities/random-seed-service/RandomSeedService.csproj" />
-    <ProjectReference Include="../../services/I-market/product-catalog/ProductCatalog.csproj" />
-    <ProjectReference Include="../../services/I-market/market-data/MarketData.csproj" />
-    <ProjectReference Include="../../services/I-market/fx-rates/FxRates.csproj" />
+    <ProjectReference Include="../../services/A-utilities/sequence-service/SequenceService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/synthetic-person-service/SyntheticPersonService.csproj" />
+    <ProjectReference Include="../../services/A-utilities/uuid-service/UuidService.csproj" />
+    <ProjectReference Include="../../services/B-platform/api-gateway/ApiGateway.csproj" />
+    <ProjectReference Include="../../services/B-platform/config-service/ConfigService.csproj" />
+    <ProjectReference Include="../../services/B-platform/rate-limiter/RateLimiter.csproj" />
+    <ProjectReference Include="../../services/C-identity/iam-service/IamService.csproj" />
+    <ProjectReference Include="../../services/C-identity/permission-service/PermissionService.csproj" />
+    <ProjectReference Include="../../services/C-identity/session-service/SessionService.csproj" />
+    <ProjectReference Include="../../services/D-customer/contact-service/ContactService.csproj" />
+    <ProjectReference Include="../../services/D-customer/customer-address-service/CustomerAddressService.csproj" />
+    <ProjectReference Include="../../services/D-customer/customer-registry/CustomerRegistry.csproj" />
+    <ProjectReference Include="../../services/D-customer/customer-search/CustomerSearch.csproj" />
+    <ProjectReference Include="../../services/D-customer/preferences-service/PreferencesService.csproj" />
+    <ProjectReference Include="../../services/I-market/benchmark-service/BenchmarkService.csproj" />
     <ProjectReference Include="../../services/I-market/calendar-service/CalendarService.csproj" />
+    <ProjectReference Include="../../services/I-market/fee-engine/FeeEngine.csproj" />
+    <ProjectReference Include="../../services/I-market/fund-factsheet/FundFactsheet.csproj" />
+    <ProjectReference Include="../../services/I-market/fx-rates/FxRates.csproj" />
+    <ProjectReference Include="../../services/I-market/market-data/MarketData.csproj" />
+    <ProjectReference Include="../../services/I-market/product-catalog/ProductCatalog.csproj" />
+    <ProjectReference Include="../../services/J-investment/allocation-engine/AllocationEngine.csproj" />
+    <ProjectReference Include="../../services/J-investment/portfolio-service/PortfolioService.csproj" />
   </ItemGroup>
 </Project>

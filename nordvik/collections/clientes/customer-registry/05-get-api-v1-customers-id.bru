@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/customers/{id}
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{customerRegistryUrl}}/api/v1/customers/{id}
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/customer-registry.md
+}

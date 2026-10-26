@@ -1,0 +1,20 @@
+meta {
+  name: DELETE /api/v1/customers/{id}
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{customerRegistryUrl}}/api/v1/customers/{id}
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/customer-registry.md
+}

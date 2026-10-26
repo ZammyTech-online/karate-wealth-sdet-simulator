@@ -1,0 +1,27 @@
+meta {
+  name: POST /api/v1/clock/travel
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{clockServiceUrl}}/api/v1/clock/travel
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "to": "valor",
+    "offsetSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/clock-service.md
+}

@@ -1,0 +1,29 @@
+meta {
+  name: PUT /api/v1/customers/{customerId}/preferences
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{preferencesServiceUrl}}/api/v1/customers/{customerId}/preferences
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "language": "valor",
+    "channel": "valor",
+    "marketingConsent": "valor",
+    "quietHours": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/preferences-service.md
+}

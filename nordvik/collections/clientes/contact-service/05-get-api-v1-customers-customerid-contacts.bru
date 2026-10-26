@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/customers/{customerId}/contacts
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{contactServiceUrl}}/api/v1/customers/{customerId}/contacts
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/contact-service.md
+}

@@ -1,0 +1,32 @@
+meta {
+  name: POST /api/v1/customers
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{customerRegistryUrl}}/api/v1/customers
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "firstName": "valor",
+    "lastName": "valor",
+    "nationalId": "valor",
+    "email": "valor",
+    "phone": "valor",
+    "language": "valor",
+    "externalRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/customer-registry.md
+}

@@ -1,0 +1,29 @@
+meta {
+  name: POST /api/v1/clock/advance
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{clockServiceUrl}}/api/v1/clock/advance
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "seconds": 1,
+    "minutes": 1,
+    "hours": 1,
+    "days": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/clock-service.md
+}

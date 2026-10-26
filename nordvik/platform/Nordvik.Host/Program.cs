@@ -24,7 +24,12 @@ if (!File.Exists(profilePath))
 
 var profile = JsonSerializer.Deserialize<Profile>(File.ReadAllText(profilePath), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 var catalog = ServiceCatalog.Create().ToDictionary(s => s.Info.Name);
-var wanted = Arg("--only") is { Length: > 0 } only ? only.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) : profile.Services;
+ServiceDirectory.Register(catalog.Values.Select(s => s.Info));
+Nordvik.Services.ApiGateway.UseCatalog(catalog.Values.Select(s => s.Info));
+// --only a,b enciende esos servicios y todas sus dependencias (para gastar la mínima RAM)
+var wanted = Arg("--only") is { Length: > 0 } only
+    ? ServiceCatalog.WithDependencies(only.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries), catalog).ToArray()
+    : profile.Services;
 var unknown = wanted.Where(w => !catalog.ContainsKey(w)).ToList();
 if (unknown.Count > 0)
 {

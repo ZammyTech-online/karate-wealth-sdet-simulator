@@ -56,6 +56,11 @@ public sealed class NordvikMiddleware
                 "El cuerpo de la petición no se pudo leer. ¿Es JSON válido? ¿Enviaste la cabecera Content-Type: application/json? ¿Los tipos coinciden con el esquema de /swagger?")
                 .ExecuteAsync(http);
         }
+        catch (DependencyUnavailableException dep)
+        {
+            await Problems.Of(http, 503, "DEPENDENCY_UNAVAILABLE", "Dependencia no disponible", dep.Message,
+                $"Este servicio necesita {dep.Service}. ¿Está encendido en tu perfil? Compruébalo con: nordvik status").ExecuteAsync(http);
+        }
         catch (Exception ex)
         {
             await Problems.Of(http, 500, "INTERNAL_ERROR", "Error interno", "Error inesperado en " + _ctx.Info.Name + ": " + ex.GetType().Name,

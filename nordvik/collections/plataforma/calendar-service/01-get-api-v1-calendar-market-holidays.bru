@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/calendar/{market}/holidays
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{calendarServiceUrl}}/api/v1/calendar/XSTO/holidays
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/calendar-service.md
+}

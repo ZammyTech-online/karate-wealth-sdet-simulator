@@ -1,0 +1,165 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "allocation-engine",
+    "description": "Reglas de asignación: porcentaje en renta variable según riesgo, tope por horizonte corto y sustitución ESG. Siempre suma 100.\n\nDominio: J-investment · Equipo: Inversiones · Oleada: 1 · Puerto: 6901\n\nDepende de: product-catalog",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/allocations/propose": {
+      "post": {
+        "tags": [
+          "Asignación"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProposalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Plataforma"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/_test/data": {
+      "delete": {
+        "tags": [
+          "Plataforma"
+        ],
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Proposal": {
+        "type": "object",
+        "properties": {
+          "riskProfile": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "horizonYears": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "esg": {
+            "type": "boolean"
+          },
+          "equityPercent": {
+            "type": "number",
+            "format": "double"
+          },
+          "allocation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProposedLine"
+            },
+            "nullable": true
+          },
+          "rationale": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProposalRequest": {
+        "type": "object",
+        "properties": {
+          "riskProfile": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "horizonYears": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "esg": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProposedLine": {
+        "type": "object",
+        "properties": {
+          "isin": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "percent": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

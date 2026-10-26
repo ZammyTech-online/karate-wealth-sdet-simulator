@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/calendar/{market}/today
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{calendarServiceUrl}}/api/v1/calendar/XSTO/today
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/calendar-service.md
+}

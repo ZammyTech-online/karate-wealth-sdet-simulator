@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/prices/{isin}
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{marketDataUrl}}/api/v1/prices/SE0000000001
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/market-data.md
+}

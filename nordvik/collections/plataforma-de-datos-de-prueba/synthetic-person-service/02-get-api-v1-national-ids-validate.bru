@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/national-ids/validate
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{syntheticPersonServiceUrl}}/api/v1/national-ids/validate
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/synthetic-person-service.md
+}

@@ -1,0 +1,27 @@
+meta {
+  name: POST /api/v1/assignments
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{permissionServiceUrl}}/api/v1/assignments
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "advisorId": "valor",
+    "customerId": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/permission-service.md
+}

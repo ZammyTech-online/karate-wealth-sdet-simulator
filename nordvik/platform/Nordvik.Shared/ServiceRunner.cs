@@ -93,6 +93,13 @@ public static class ServiceRunner
             ["openApi"] = $"http://localhost:{ctx.ActualPort}/swagger/v1/swagger.json",
         })).WithTags("Plataforma").WithSummary("Ficha del servicio");
 
+        app.MapDelete("/_test/data", (HttpContext http, string? prefix) =>
+        {
+            if (string.IsNullOrWhiteSpace(prefix) || prefix.Length < 3)
+                return Problems.BadRequest(http, "PREFIX_REQUIRED", "Indica un prefijo de al menos 3 caracteres.", "Ejemplo: DELETE /_test/data?prefix=RUN-20261026");
+            return Results.Ok(new Dictionary<string, object?> { ["service"] = info.Name, ["prefix"] = prefix, ["deleted"] = svc.ResetByPrefix(ctx, prefix) });
+        }).WithTags("Plataforma").WithSummary("Solo pruebas: borra los datos creados con un prefijo");
+
         svc.Initialize(ctx);
         svc.MapEndpoints(app, ctx);
 

@@ -1,0 +1,26 @@
+meta {
+  name: PUT /api/v1/portfolios/{id}/allocation
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{portfolioServiceUrl}}/api/v1/portfolios/{id}/allocation
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "targetAllocation": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/portfolio-service.md
+}

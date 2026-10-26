@@ -1,0 +1,26 @@
+meta {
+  name: POST /api/v1/uuids/validate
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{uuidServiceUrl}}/api/v1/uuids/validate
+  body: json
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "value": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/uuid-service.md
+}

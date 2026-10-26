@@ -1,0 +1,20 @@
+meta {
+  name: GET /api/v1/random/decimals
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{randomSeedServiceUrl}}/api/v1/random/decimals
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/random-seed-service.md
+}

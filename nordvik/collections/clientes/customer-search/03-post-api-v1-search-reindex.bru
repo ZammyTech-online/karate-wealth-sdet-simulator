@@ -1,0 +1,20 @@
+meta {
+  name: POST /api/v1/search/reindex
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{customerSearchUrl}}/api/v1/search/reindex
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/customer-search.md
+}

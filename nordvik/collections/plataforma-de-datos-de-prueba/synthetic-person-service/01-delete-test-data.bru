@@ -1,0 +1,20 @@
+meta {
+  name: DELETE /_test/data
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{syntheticPersonServiceUrl}}/_test/data
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/synthetic-person-service.md
+}

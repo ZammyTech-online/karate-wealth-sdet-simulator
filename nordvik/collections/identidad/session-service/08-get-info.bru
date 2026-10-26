@@ -1,0 +1,20 @@
+meta {
+  name: GET /info
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{sessionServiceUrl}}/info
+  body: none
+  auth: none
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/session-service.md
+}
