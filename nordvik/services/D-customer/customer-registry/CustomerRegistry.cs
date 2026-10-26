@@ -245,6 +245,15 @@ public sealed class CustomerRegistry : INordvikService
             return Results.Ok(new ChangeFeed(items, items.Count > 0 ? items[^1].Seq : since ?? 0));
         }).WithTags("Interno").WithSummary("Registro de cambios (red interna, sin autenticación)").Produces<ChangeFeed>();
 
+        app.MapGet("/api/v1/internal/customers/by-national-id/{nationalId}", (HttpContext http, IClock clock, string nationalId) =>
+        {
+            var n = NationalId.Check(nationalId);
+            if (!n.Valid) return Problems.BadRequest(http, "INVALID_NATIONAL_ID", "Número nacional no válido: " + n.Reason, null);
+            using var db = ctx.OpenDb();
+            var c = db.QuerySingleOrDefault<Customer>(Sel + " WHERE national_id = @nid", new { nid = n.Normalized });
+            return c is null ? Problems.NotFound(http, "CUSTOMER_NOT_FOUND", "Ningún cliente tiene ese número nacional.", null) : Results.Ok(WithAge(c, clock));
+        }).WithTags("Interno").WithSummary("(interno) Cliente por número nacional (lo usan los ficheros de empleadores)").Produces<Customer>();
+
         app.MapGet("/api/v1/internal/customers/{id}", (HttpContext http, IClock clock, string id) =>
         {
             var c = Find(ctx, id);

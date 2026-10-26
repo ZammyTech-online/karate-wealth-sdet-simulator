@@ -35,8 +35,12 @@ public static class ServiceCatalog
         new KycAmlService(), new SanctionsAdapter(), new PepService(), new RiskScoring(), new TransactionMonitoring(), new SuitabilityService(), new AppropriatenessService(),
         new HouseholdService(), new EmploymentService(), new TaxResidencyService(), new CaseManagement(), new TaskQueue(), new ApprovalService(), new PopulationAdapter(),
         new AdvisorDirectory(), new AdvisorDesk(), new MeetingScheduler(), new SecureMessaging(), new VoiceService(), new TranscriptionService(), new InsightExtraction(), new CallSummary(),
+        new PensionPlanService(), new ContributionService(), new EmployerPortalApi(), new EmployerFileIngest(), new CollectiveAgreementRules(), new SalaryExchangeService(), new VestingService(),
+        new BeneficiaryService(), new TransferService(), new TransferValuation(), new PayoutPlanner(), new PayoutExecution(), new AnnuityCalculator(), new DeathClaims(),
+        new PublicPensionAdapter(), new EmployerClearingAdapter(), new ProviderNetworkAdapter(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
         new NordIdSim(), new PopulationSim(), new SanctionScreenSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(), new TelephonySim(),
+        new PublicPensionSim(), new EmployerClearingSim(), new ProviderNetworkSim(),
     };
 
     /// <summary>Un servicio y todo aquello de lo que depende, recursivamente.</summary>

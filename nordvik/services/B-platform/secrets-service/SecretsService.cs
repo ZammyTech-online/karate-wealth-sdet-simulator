@@ -31,6 +31,9 @@ public sealed class SecretsService : INordvikService
         ("nordid-client-cert", "nordid-cert-fingerprint-2026", "Huella del certificado de cliente de NordID"),
         ("sanctionscreen-api-key", "ss-key-2026-b", "API key de SanctionScreen (E3)"),
         ("population-client-cert", "SHA256:nordvik-client-cert-2026", "Certificado de cliente (mTLS) del Registro de Población (E2)"),
+        ("public-pension-hmac", "e7-pensionsmyndigheten-shared-2026", "Secreto del sobre firmado de la Autoridad de Pensiones (E7)"),
+        ("employer-clearing-hmac", "e9-clearing-webhook-2026", "HMAC de los webhooks del Clearing de Empleadores (E9)"),
+        ("provider-network-hmac", "e10-provider-network-2026", "Firma mutua de la red de gestoras (E10)"),
     };
 
     public void Initialize(ServiceContext ctx)

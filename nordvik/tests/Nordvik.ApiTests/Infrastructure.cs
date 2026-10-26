@@ -145,6 +145,9 @@ public static class Ports
     public const int Household = 6306, Employment = 6307, TaxResidency = 6308, Cases = 7403, Tasks = 7404, Approvals = 7405, PopulationAdapter = 7503;
     public const int PopulationSim = 7702, SanctionScreenSim = 7703;
     public const int AdvisorDirectory = 6602, AdvisorDesk = 6603, Meetings = 6604, Messaging = 6605, Voice = 6606, Transcription = 6607, Insights = 6608, CallSummary = 6609, TelephonySim = 7712;
+    public const int PensionPlans = 7100, Contributions = 7101, EmployerPortal = 7102, EmployerFiles = 7103, Agreements = 7104, SalaryExchange = 7105, Vesting = 7106, Beneficiaries = 7107;
+    public const int Transfers = 7108, TransferValuations = 7109, PayoutPlanner = 7110, PayoutExecution = 7111, Annuities = 7112, DeathClaims = 7113;
+    public const int PublicPensionAdapter = 7504, ClearingAdapter = 7505, ProviderAdapter = 7506, PublicPensionSim = 7707, ClearingSim = 7709, ProviderSim = 7710;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
@@ -157,6 +160,8 @@ public static class Ports
         PiiVault, Keys, Consents, Passports, Lineage, Redaction, Retention, Chaos, MockControl, EventSpy, JwtForge, Secrets, TokenExchange,
         Kyc, Sanctions, Pep, Risk, Monitoring, Suitability, Appropriateness, Household, Employment, TaxResidency, Cases, Tasks, Approvals, PopulationAdapter, PopulationSim, SanctionScreenSim,
         AdvisorDirectory, AdvisorDesk, Meetings, Messaging, Voice, Transcription, Insights, CallSummary, TelephonySim,
+        PensionPlans, Contributions, EmployerPortal, EmployerFiles, Agreements, SalaryExchange, Vesting, Beneficiaries, Transfers, TransferValuations, PayoutPlanner, PayoutExecution, Annuities, DeathClaims,
+        PublicPensionAdapter, ClearingAdapter, ProviderAdapter, PublicPensionSim, ClearingSim, ProviderSim,
     };
 }
 

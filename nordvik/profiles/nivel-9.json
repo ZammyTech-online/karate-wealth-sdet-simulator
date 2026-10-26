@@ -121,6 +121,26 @@
     "transcription-service",
     "insight-extraction",
     "call-summary",
-    "telephony-sim"
+    "telephony-sim",
+    "pension-plan-service",
+    "contribution-service",
+    "employer-portal-api",
+    "employer-file-ingest",
+    "collective-agreement-rules",
+    "salary-exchange-service",
+    "vesting-service",
+    "beneficiary-service",
+    "transfer-service",
+    "transfer-valuation",
+    "payout-planner",
+    "payout-execution",
+    "annuity-calculator",
+    "death-claims",
+    "public-pension-adapter",
+    "employer-clearing-adapter",
+    "provider-network-adapter",
+    "public-pension-sim",
+    "employer-clearing-sim",
+    "provider-network-sim"
   ]
 }

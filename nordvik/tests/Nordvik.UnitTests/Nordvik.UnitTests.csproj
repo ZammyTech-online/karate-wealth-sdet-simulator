@@ -12,5 +12,14 @@
     <ProjectReference Include="../../platform/Nordvik.Shared/Nordvik.Shared.csproj" />
     <ProjectReference Include="../../services/A-utilities/uuid-service/UuidService.csproj" />
     <ProjectReference Include="../../services/I-market/market-data/MarketData.csproj" />
+    <ProjectReference Include="../../services/L-pensions/transfer-valuation/TransferValuation.csproj" />
+    <ProjectReference Include="../../services/L-pensions/transfer-service/TransferService.csproj" />
+    <ProjectReference Include="../../services/L-pensions/payout-execution/PayoutExecution.csproj" />
+    <ProjectReference Include="../../services/L-pensions/death-claims/DeathClaims.csproj" />
+    <ProjectReference Include="../../services/L-pensions/employer-portal-api/EmployerPortalApi.csproj" />
+    <ProjectReference Include="../../services/L-pensions/annuity-calculator/AnnuityCalculator.csproj" />
+    <ProjectReference Include="../../services/L-pensions/contribution-service/ContributionService.csproj" />
+    <ProjectReference Include="../../services/L-pensions/collective-agreement-rules/CollectiveAgreementRules.csproj" />
+    <ProjectReference Include="../../services/L-pensions/vesting-service/VestingService.csproj" />
   </ItemGroup>
 </Project>
