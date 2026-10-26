@@ -82,7 +82,7 @@ def build(lesson):
 if __name__ == "__main__":
     # Los ficheros se sobrescriben; no se borra nada (si se renombra una lección, borra a mano la carpeta antigua).
     total = 0
-    for modname in ["lecciones_a", "lecciones_b", "lecciones_c", "lecciones_d"]:
+    for modname in ["lecciones_a", "lecciones_b", "lecciones_c", "lecciones_d", "lecciones_e"]:
         try:
             mod = importlib.import_module(modname)
         except ModuleNotFoundError:

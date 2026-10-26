@@ -66,6 +66,21 @@ Necesita el perfil grande. La academia lo arranca sola si no está encendido, o 
 
 Los ayudantes `_login.feature`, `_iban.feature` y `_cliente-con-dinero.feature` están en la carpeta `ejercicios` de cada lección: léelos, son la mejor documentación de cada flujo.
 
+## Tramo 3 · La oleada 3: privacidad, caos, cumplimiento, voz y pensiones (L22-L27)
+
+Necesita el perfil completo: `nordvik up -Profile nivel-9` (la academia lo arranca sola si hace falta).
+
+| Lección | Qué aprendes |
+| --- | --- |
+| L22 | Privacidad: tokens, máscaras, finalidad y pasaportes de un solo uso; probar lo que NO sale |
+| L23 | Caos y resiliencia: `X-Chaos-Scenario`, reglas de fallo, `responseTime` y reintentos |
+| L24 | Cumplimiento: listas de sanciones, coincidencia difusa, decisiones y respuestas parciales |
+| L25 | Voz asíncrona: 202 Accepted, esperar un pipeline, destrucción y recibos firmados |
+| L26 | Webhooks firmados con HMAC desde Karate y ficheros de empresas con acuse |
+| L27 | Sagas largas con reloj virtual: el traspaso de una pensión, estados e historial |
+
+Ayudantes nuevos: `_cliente.feature`, `_cliente-con-grabacion.feature`, `_hmac.js`, `_org.js` y `_traspaso-listo.feature`.
+
 ## Todos los comandos
 
 | Comando | Qué hace |

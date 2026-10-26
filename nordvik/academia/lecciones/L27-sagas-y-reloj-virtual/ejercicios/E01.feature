@@ -1,0 +1,23 @@
+# ──────────────────────────────────────────────────────────────────────
+# L27 · E01 · Empieza esperando
+#
+# Solicita el traspaso. Completa el estado HTTP y el estado de la saga.
+#
+# Rellena cada ___ y comprueba con:  academia corregir L27
+# Pista: Se crea la solicitud, pero la gestora aún no ha valorado la póliza.
+# ──────────────────────────────────────────────────────────────────────
+@L27 @E01
+Feature: L27 E01 · Empieza esperando
+
+  Background:
+    * configure afterScenario = function(){ karate.http(clockUrl + '/api/v1/clock/reset').post({}) }
+
+  Scenario: Solicitud
+    * def t = call read('_traspaso-listo.feature') { gestora: 'FJORDLIV', valor: '80000.00', dias: 2, desviacion: 0 }
+    Given url transfersUrl
+    And path '/api/v1/transfers'
+    And headers t.erik.auth
+    And request { customerId: '#(t.customerId)', targetPlanId: '#(t.planId)', providerCode: 'FJORDLIV', policyNumber: '#(t.poliza)' }
+    When method post
+    Then status ___
+    And match response.status == ___
