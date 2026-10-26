@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/approvals/{id}/decisions
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{approvalServiceUrl}}/api/v1/approvals/{id}/decisions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "decision": "valor",
+    "comment": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/approval-service.md
+}

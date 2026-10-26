@@ -1,0 +1,33 @@
+meta {
+  name: POST /v2/screen
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{sanctionscreenSimUrl}}/v2/screen
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "name": "valor",
+    "birthDate": "valor",
+    "country": "valor",
+    "lists": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/sanctionscreen-sim.md
+}

@@ -1,0 +1,32 @@
+meta {
+  name: PUT /api/v1/mocks/{name}/behaviour
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{mockControlUrl}}/api/v1/mocks/demo/behaviour
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "mode": "valor",
+    "delayMs": 1,
+    "failNext": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/mock-control.md
+}

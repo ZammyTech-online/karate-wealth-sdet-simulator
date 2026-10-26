@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/screenings
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{sanctionsAdapterUrl}}/api/v1/screenings
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/sanctions-adapter.md
+}

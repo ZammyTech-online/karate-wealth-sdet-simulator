@@ -1,0 +1,30 @@
+meta {
+  name: PUT /api/v1/customers/{customerId}/household
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{householdServiceUrl}}/api/v1/customers/{customerId}/household
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "members": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/household-service.md
+}

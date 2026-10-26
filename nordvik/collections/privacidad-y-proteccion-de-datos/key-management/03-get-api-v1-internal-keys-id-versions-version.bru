@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/keys/{id}/versions/{version}
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{keyManagementUrl}}/api/v1/internal/keys/{id}/versions/{version}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/key-management.md
+}

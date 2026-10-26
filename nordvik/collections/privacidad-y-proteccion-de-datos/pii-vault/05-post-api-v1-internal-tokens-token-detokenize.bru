@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/internal/tokens/{token}/detokenize
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{piiVaultUrl}}/api/v1/internal/tokens/{token}/detokenize
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "purpose": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/pii-vault.md
+}

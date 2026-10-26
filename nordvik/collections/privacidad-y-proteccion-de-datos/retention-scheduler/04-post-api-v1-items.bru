@@ -1,0 +1,34 @@
+meta {
+  name: POST /api/v1/items
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{retentionSchedulerUrl}}/api/v1/items
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "dataClass": "valor",
+    "ownerService": "valor",
+    "ref": "valor",
+    "subject": "valor",
+    "createdAt": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/retention-scheduler.md
+}

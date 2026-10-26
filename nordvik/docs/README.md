@@ -1,6 +1,6 @@
 # Portal de desarrolladores de Nordvik
 
-Generado automáticamente a partir de los servicios en marcha (perfil **nivel-6**). No lo edites a mano: ejecuta `node tools/docs-gen.mjs`.
+Generado automáticamente a partir de los servicios en marcha (perfil **nivel-9**). No lo edites a mano: ejecuta `node tools/docs-gen.mjs`.
 
 | Sección | Dónde |
 | --- | --- |
@@ -29,6 +29,7 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-6*
 | [hash-service](services/hash-service.md) | 6011 | Plataforma de datos de prueba | 2 | 7 | Calcula el JSON canónico y su SHA-256 (como contentHash), SHA-256 de texto y HMAC-SHA256 de webhooks. |
 | [text-factory](services/text-factory.md) | 6012 | Plataforma de datos de prueba | 2 | 6 | Mensajes de cliente con PII opcional (personnummer, IBAN, teléfono) y guiones de llamada V1-V5 con marcas de tiempo. |
 | [file-factory](services/file-factory.md) | 6013 | Plataforma de datos de prueba | 2 | 10 | Genera ficheros de prueba: PDF, EICAR, tipo falso, ficheros grandes, anexos JSON y CSV de empleador con errores controlados (reproducibles con seed). |
+| [jwt-forge](services/jwt-forge.md) | 6014 | Plataforma de datos de prueba | 3 | 6 | Tokens de prueba firmados con claims a medida: caducados, sin scope, de otro emisor, con firma rota o payload manipulado. Y un decodificador. |
 
 ## B-platform
 
@@ -43,6 +44,7 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-6*
 | [bff-advisor](services/bff-advisor.md) | 6106 | Canales digitales | 2 | 6 | API del escritorio del asesor: sus clientes con carteras y valor, ficha del cliente (vía composition-service) y alertas de desviación. |
 | [composition-service](services/composition-service.md) | 6107 | Plataforma | 2 | 17 | Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco con fusión profunda (C5), mandato (C6). |
 | [correlation-tracer](services/correlation-tracer.md) | 6108 | Plataforma | 2 | 4 | Reconstruye la cadena de llamadas de un correlationId a partir de los logs (servicio, ruta, estado, duración y anidamiento). |
+| [secrets-service](services/secrets-service.md) | 6109 | Plataforma | 3 | 9 | Secretos con versiones (claves de webhooks, API keys de los simuladores), rotación con periodo de gracia y verificación sin revelar el valor. |
 
 ## C-identity
 
@@ -54,6 +56,7 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-6*
 | [eid-broker](services/eid-broker.md) | 6203 | Identidad | 2 | 7 | Autenticación y firma con NordID (E1): orderRef, sondeo, caducidad a 3 min y borrado del resultado a los 10 min (dato efímero). |
 | [mfa-service](services/mfa-service.md) | 6204 | Identidad | 2 | 6 | Segundo factor: código de 6 dígitos por SMS o email (vía notification-service), 5 min, 3 intentos. Solo se guarda el hash del código. |
 | [step-up-service](services/step-up-service.md) | 6205 | Identidad | 2 | 6 | Re-autenticación (acr=high) con NordID o MFA. El token resultante dura 5 minutos y lo exigen payments-gateway y bank-account-verification. |
+| [token-exchange](services/token-exchange.md) | 6206 | Identidad | 3 | 5 | Intercambio de tokens (RFC 8693): token del usuario → token de menos permisos para un servicio concreto, más corto y sin poder ampliar scopes. |
 
 ## D-customer
 
@@ -65,6 +68,33 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-6*
 | [preferences-service](services/preferences-service.md) | 6303 | Clientes | 1 | 6 | Preferencias de comunicación del cliente. Si nunca las guardó, devuelve los valores por defecto (isDefault=true). |
 | [customer-search](services/customer-search.md) | 6304 | Clientes | 1 | 6 | Búsqueda rápida de clientes por nombre, número o email. Se actualiza cada segundo desde el registro de cambios (consistencia eventual). |
 | [onboarding-orchestrator](services/onboarding-orchestrator.md) | 6305 | Clientes | 2 | 7 | Saga de alta F1 en 8 pasos con compensación; queda AWAITING_SIGNATURE hasta que el cliente firma el contrato marco (COMPLETED). |
+| [household-service](services/household-service.md) | 6306 | Cliente | 3 | 6 | Unidad familiar: cónyuge o pareja, hijos y dependientes, con reglas de coherencia (una sola pareja, hijos nacidos después que el cliente) y números nacionales tokenizados. |
+| [employment-service](services/employment-service.md) | 6307 | Cliente | 3 | 7 | Empleador actual e historial laboral: sin solapes, número de organización con Luhn, convenio colectivo y sueldo visible solo para quien debe (al asesor, el tramo). |
+| [tax-residency-service](services/tax-residency-service.md) | 6308 | Cliente | 3 | 8 | Residencias fiscales y números fiscales (TIN) con validación por país, una principal obligatoria, y banderas FATCA y CRS. |
+
+## E-compliance
+
+| Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |
+| --- | --- | --- | --- | --- | --- |
+| [kyc-aml-service](services/kyc-aml-service.md) | 6400 | Cumplimiento normativo | 3 | 9 | Casos KYC: cribado + PEP + riesgo en orden, aprobación automática según riesgo, revisión de Cumplimiento con cuatro ojos y fecha de próxima revisión. |
+| [sanctions-adapter](services/sanctions-adapter.md) | 6401 | Cumplimiento normativo | 3 | 8 | Cribado de sanciones y PEP contra SanctionScreen (E3): umbral configurable, respuestas parciales = INCOMPLETE, decisión de Cumplimiento sobre posibles coincidencias. |
+| [pep-service](services/pep-service.md) | 6402 | Cumplimiento normativo | 3 | 7 | Estado PEP/RCA del cliente: autodeclaración + cribado de la lista PEP, con detección de declaraciones que no cuadran. |
+| [risk-scoring](services/risk-scoring.md) | 6403 | Cumplimiento normativo | 3 | 7 | Riesgo de blanqueo 0-100 por reglas explicables (PEP, sanciones, residencia fiscal, alertas, edad); LOW, MEDIUM, HIGH o PROHIBITED. |
+| [transaction-monitoring](services/transaction-monitoring.md) | 6404 | Cumplimiento normativo | 3 | 11 | Alertas por patrones: estructuración, transferencias grandes, entrada y salida rápida, países de riesgo. Ventanas sobre el reloj virtual. |
+| [suitability-service](services/suitability-service.md) | 6405 | Cumplimiento normativo | 3 | 8 | Test de idoneidad MiFID II: cuestionario → perfil de riesgo 1-7, y comprobación fondo a fondo (SRI, horizonte, sostenibilidad). Caduca a los 2 años. |
+| [appropriateness-service](services/appropriateness-service.md) | 6406 | Cumplimiento normativo | 3 | 8 | Test de conveniencia para productos complejos (SRI 6-7) sin asesoramiento: NOT_REQUIRED, APPROPRIATE o NOT_APPROPRIATE con advertencia y reconocimiento. |
+
+## F-privacy
+
+| Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |
+| --- | --- | --- | --- | --- | --- |
+| [pii-vault](services/pii-vault.md) | 6500 | Privacidad y protección de datos | 3 | 11 | Tokenización de datos personales: cifrados con la clave del cliente, detokenización con propósito y rastro, y borrado por crypto-shredding. |
+| [key-management](services/key-management.md) | 6501 | Privacidad y protección de datos | 3 | 14 | Claves AES-256 por sujeto con versiones, rotación, cifrado/descifrado y crypto-shredding (triturar la clave hace ilegible el dato en todas partes). |
+| [consent-ledger](services/consent-ledger.md) | 6502 | Privacidad y protección de datos | 3 | 11 | Consentimientos por propósito en un libro encadenado por hash: estado actual, historial completo y verificación de integridad. Denegado por defecto. |
+| [data-passport](services/data-passport.md) | 6503 | Privacidad y protección de datos | 3 | 9 | Pasaportes del dato: lectura de un dato personal limitada por propósito, destinatario, número de lecturas y caducidad (reloj virtual). |
+| [lineage-service](services/lineage-service.md) | 6504 | Privacidad y protección de datos | 3 | 7 | Linaje de datos personales: cada tokenización, lectura y pasaporte queda como un salto con servicio, propósito, actor y correlationId. |
+| [redaction-service](services/redaction-service.md) | 6505 | Privacidad y protección de datos | 3 | 6 | Redacta PII de texto libre: número nacional, IBAN, email, teléfono y tarjeta, solo si validan. Modos MASK, REMOVE y TOKENIZE (vía pii-vault). |
+| [retention-scheduler](services/retention-scheduler.md) | 6506 | Privacidad y protección de datos | 3 | 12 | Políticas de retención por clase de dato, registro de datos con vencimiento, ejecuciones de purga con el reloj virtual y retención legal (legal hold). |
 
 ## G-advice
 
@@ -133,6 +163,9 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-6*
 | [event-bus](services/event-bus.md) | 7400 | Plataforma de eventos | 2 | 13 | Bus de eventos: temas, lectura por cursor, suscripciones por webhook con reintentos y cola de mensajes muertos. Sin RabbitMQ hasta el nivel 12. |
 | [outbox-relay](services/outbox-relay.md) | 7401 | Plataforma de eventos | 2 | 7 | Publica en event-bus los eventos guardados en el outbox de cada servicio. Pausable para practicar consistencia eventual. |
 | [audit-service](services/audit-service.md) | 7402 | Cumplimiento técnico | 2 | 13 | Registro de auditoría inmutable (cadena SHA-256). Recibe registros directos y copia cada evento del bus. No admite PUT ni DELETE. |
+| [case-management](services/case-management.md) | 7403 | Operaciones y back office | 3 | 12 | Casos con SLA por tipo y prioridad (reloj virtual), notas, asignación y resolución; se abren solos desde alertas AML y KYC en revisión. |
+| [task-queue](services/task-queue.md) | 7404 | Operaciones y back office | 3 | 11 | Tareas humanas por rol: crear, reclamar, completar o soltar; vencimiento con el reloj virtual y quién hizo cada cosa. |
+| [approval-service](services/approval-service.md) | 7405 | Operaciones y back office | 3 | 8 | Aprobaciones con cuatro ojos: quien pide no aprueba, 1 o 2 aprobadores distintos del rol, un rechazo cierra, caducidad con el reloj virtual y tarea en task-queue. |
 
 ## P-integrations
 
@@ -141,14 +174,25 @@ Generado automáticamente a partir de los servicios en marcha (perfil **nivel-6*
 | [custody-adapter](services/custody-adapter.md) | 7500 | Integraciones | 2 | 9 | Adaptador del custodio E4: envía lotes, recibe webhooks firmados (HMAC), deduplica y publica ejecuciones y rechazos como eventos. |
 | [price-feed-adapter](services/price-feed-adapter.md) | 7501 | Integraciones | 2 | 7 | Adaptador del proveedor de precios E5 con caché por ETag, contadores de 304 y respuesta stale si el proveedor cae. |
 | [nordpay-adapter](services/nordpay-adapter.md) | 7502 | Integraciones | 2 | 10 | Adaptador del banco E6: transferencias ISO 20022 firmadas (JWS), estados por webhook, avisos de abono, titularidad de cuentas y extracto. |
+| [population-adapter](services/population-adapter.md) | 7503 | Integraciones | 3 | 6 | Consulta al Registro de Población (E2) con mTLS simulado: identidad protegida sin dirección, fallecidos (evento) y comparación con la ficha del cliente. |
+
+## Q-quality
+
+| Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |
+| --- | --- | --- | --- | --- | --- |
+| [chaos-control](services/chaos-control.md) | 7600 | Calidad y test | 3 | 12 | Inyecta latencia y errores en cualquier servicio (faults con probabilidad, veces y caducidad) y gestiona el catálogo de trampas T1-T20. |
+| [mock-control](services/mock-control.md) | 7601 | Calidad y test | 3 | 7 | Panel único de los sistemas externos simulados: estado, comportamiento (normal, down, error, slow, failNext) y reinicio de todos a la vez. |
+| [event-spy](services/event-spy.md) | 7602 | Calidad y test | 3 | 8 | Espía de eventos para tests: buscar, marcar un punto de partida, esperar a que llegue un evento (long-poll) y detectar duplicados. |
 
 ## X-external
 
 | Servicio | Puerto | Equipo | Oleada | Endpoints | Qué hace |
 | --- | --- | --- | --- | --- | --- |
 | [nordid-sim](services/nordid-sim.md) | 7701 | Sistema externo (simulado) | 2 | 12 | E1 NordID: autenticación y firma electrónica con orderRef y sondeo de collect. Escenarios por personalNumber en /__admin/scenarios. |
+| [population-sim](services/population-sim.md) | 7702 | Sistema externo (simulado) | 3 | 10 | E2 Registro de Población: persona por número nacional con mTLS simulado, identidad protegida, fallecidos y 404; precarga en /__admin/persons. |
+| [sanctionscreen-sim](services/sanctionscreen-sim.md) | 7703 | Sistema externo (simulado) | 3 | 12 | E3 SanctionScreen: cribado de sanciones y PEP con coincidencia difusa, API key rotatoria, respuestas parciales y registro de peticiones recibidas. |
 | [custodian-sim](services/custodian-sim.md) | 7704 | Sistema externo (simulado) | 2 | 12 | E4 Custodio: lotes de órdenes, ejecución al NAV del día (con comisiones del folleto y cambio de divisa), webhooks firmados y extracto de posiciones. |
 | [pricefeed-sim](services/pricefeed-sim.md) | 7705 | Sistema externo (simulado) | 2 | 8 | E5 Proveedor de precios: NAV por fondo y fecha, descarga masiva por día, ETag/304 y API key. |
 | [nordpay-sim](services/nordpay-sim.md) | 7706 | Sistema externo (simulado) | 2 | 14 | E6 NordPay: transferencias firmadas con JWS, estados ACCP/ACSC/RJCT por webhook, verificación de titularidad, abonos entrantes y extracto camt.053. |
 
-**79 servicios · 616 endpoints documentados.**
+**108 servicios · 871 endpoints documentados.**

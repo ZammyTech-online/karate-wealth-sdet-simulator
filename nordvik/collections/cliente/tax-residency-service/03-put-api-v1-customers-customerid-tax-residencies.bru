@@ -1,0 +1,30 @@
+meta {
+  name: PUT /api/v1/customers/{customerId}/tax-residencies
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{taxResidencyServiceUrl}}/api/v1/customers/{customerId}/tax-residencies
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "residencies": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-residency-service.md
+}

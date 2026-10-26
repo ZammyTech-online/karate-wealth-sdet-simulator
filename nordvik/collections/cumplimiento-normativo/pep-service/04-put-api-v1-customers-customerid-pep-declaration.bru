@@ -1,0 +1,33 @@
+meta {
+  name: PUT /api/v1/customers/{customerId}/pep-declaration
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{pepServiceUrl}}/api/v1/customers/{customerId}/pep-declaration
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "isPep": "valor",
+    "isRelative": "valor",
+    "role": "valor",
+    "relation": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/pep-service.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/customers/{customerId}/employments
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{employmentServiceUrl}}/api/v1/customers/{customerId}/employments
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/employment-service.md
+}

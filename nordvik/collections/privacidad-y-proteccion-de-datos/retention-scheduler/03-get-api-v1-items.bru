@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/items
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{retentionSchedulerUrl}}/api/v1/items
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/retention-scheduler.md
+}

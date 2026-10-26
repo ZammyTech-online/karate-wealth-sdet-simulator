@@ -1,0 +1,37 @@
+meta {
+  name: POST /__admin/entries
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{sanctionscreenSimUrl}}/__admin/entries
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "entryId": "valor",
+    "list": "valor",
+    "type": "valor",
+    "name": "valor",
+    "birthDate": "valor",
+    "country": "valor",
+    "role": "valor",
+    "relatedTo": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/sanctionscreen-sim.md
+}

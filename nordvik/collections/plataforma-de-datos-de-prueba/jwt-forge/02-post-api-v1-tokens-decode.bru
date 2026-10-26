@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/tokens/decode
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{jwtForgeUrl}}/api/v1/tokens/decode
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "token": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/jwt-forge.md
+}

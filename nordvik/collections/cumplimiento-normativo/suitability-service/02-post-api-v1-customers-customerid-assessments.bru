@@ -1,0 +1,30 @@
+meta {
+  name: POST /api/v1/customers/{customerId}/assessments
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{suitabilityServiceUrl}}/api/v1/customers/{customerId}/assessments
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "answers": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/suitability-service.md
+}

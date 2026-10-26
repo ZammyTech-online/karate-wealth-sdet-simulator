@@ -1,0 +1,38 @@
+meta {
+  name: POST /api/v1/tokens/forge
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{jwtForgeUrl}}/api/v1/tokens/forge
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "sub": "valor",
+    "role": "valor",
+    "scope": "valor",
+    "customerId": "valor",
+    "advisorId": "valor",
+    "expiresInSeconds": 1,
+    "issuer": "valor",
+    "acr": "valor",
+    "tamper": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/jwt-forge.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/mocks/{name}
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{mockControlUrl}}/api/v1/mocks/demo
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/mock-control.md
+}

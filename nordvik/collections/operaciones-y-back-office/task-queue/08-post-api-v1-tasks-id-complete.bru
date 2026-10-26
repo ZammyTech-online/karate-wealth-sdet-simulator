@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/tasks/{id}/complete
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{taskQueueUrl}}/api/v1/tasks/{id}/complete
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "outcome": "valor",
+    "comment": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/task-queue.md
+}

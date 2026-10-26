@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/tasks/{id}/cancel
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{taskQueueUrl}}/api/v1/tasks/{id}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/task-queue.md
+}

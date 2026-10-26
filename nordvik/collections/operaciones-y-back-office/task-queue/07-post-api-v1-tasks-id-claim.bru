@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/tasks/{id}/claim
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{taskQueueUrl}}/api/v1/tasks/{id}/claim
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/task-queue.md
+}

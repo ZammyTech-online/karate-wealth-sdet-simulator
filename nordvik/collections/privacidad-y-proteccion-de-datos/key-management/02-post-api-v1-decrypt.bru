@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/decrypt
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{keyManagementUrl}}/api/v1/decrypt
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "plaintext": "valor",
+    "ciphertext": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/key-management.md
+}

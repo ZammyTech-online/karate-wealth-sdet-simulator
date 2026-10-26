@@ -1,0 +1,34 @@
+meta {
+  name: POST /api/v1/screenings
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{sanctionsAdapterUrl}}/api/v1/screenings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "customerId": "valor",
+    "name": "valor",
+    "birthDate": "valor",
+    "country": "valor",
+    "lists": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/sanctions-adapter.md
+}

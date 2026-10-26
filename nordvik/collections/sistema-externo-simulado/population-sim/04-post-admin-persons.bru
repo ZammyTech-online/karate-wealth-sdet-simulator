@@ -1,0 +1,38 @@
+meta {
+  name: POST /__admin/persons
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{populationSimUrl}}/__admin/persons
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "personalNumber": "valor",
+    "givenName": "valor",
+    "surname": "valor",
+    "street": "valor",
+    "postalCode": "valor",
+    "city": "valor",
+    "protectedIdentity": "valor",
+    "deceasedDate": "valor",
+    "citizenship": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/population-sim.md
+}

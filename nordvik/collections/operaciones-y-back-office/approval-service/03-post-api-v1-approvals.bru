@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v1/approvals
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{approvalServiceUrl}}/api/v1/approvals
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "action": "valor",
+    "subjectRef": "valor",
+    "summary": "valor",
+    "payload": "valor",
+    "approverRole": "valor",
+    "approvalsNeeded": 1,
+    "expiresInHours": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/approval-service.md
+}

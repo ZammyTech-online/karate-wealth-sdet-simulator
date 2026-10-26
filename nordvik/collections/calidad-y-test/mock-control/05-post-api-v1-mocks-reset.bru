@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/mocks/reset
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{mockControlUrl}}/api/v1/mocks/reset
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/mock-control.md
+}

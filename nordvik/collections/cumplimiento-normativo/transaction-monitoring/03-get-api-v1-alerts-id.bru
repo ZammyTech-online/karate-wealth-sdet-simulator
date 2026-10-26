@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/alerts/{id}
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{transactionMonitoringUrl}}/api/v1/alerts/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/transaction-monitoring.md
+}

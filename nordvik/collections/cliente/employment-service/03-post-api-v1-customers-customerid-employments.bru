@@ -1,0 +1,35 @@
+meta {
+  name: POST /api/v1/customers/{customerId}/employments
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{employmentServiceUrl}}/api/v1/customers/{customerId}/employments
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "employerName": "valor",
+    "orgNumber": "valor",
+    "startDate": "valor",
+    "endDate": "valor",
+    "monthlySalary": "valor",
+    "collectiveAgreement": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/employment-service.md
+}

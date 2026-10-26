@@ -1,0 +1,32 @@
+meta {
+  name: PUT /api/v1/policies/{dataClass}
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{retentionSchedulerUrl}}/api/v1/policies/{dataClass}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "retentionSeconds": 1,
+    "action": "valor",
+    "legal": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/retention-scheduler.md
+}

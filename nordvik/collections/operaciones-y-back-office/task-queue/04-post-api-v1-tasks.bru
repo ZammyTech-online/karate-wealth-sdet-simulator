@@ -1,0 +1,36 @@
+meta {
+  name: POST /api/v1/tasks
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{taskQueueUrl}}/api/v1/tasks
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "title": "valor",
+    "assigneeRole": "valor",
+    "dueInHours": 1,
+    "payload": "valor",
+    "sourceService": "valor",
+    "sourceRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/task-queue.md
+}

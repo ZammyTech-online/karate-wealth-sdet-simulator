@@ -1,0 +1,37 @@
+meta {
+  name: POST /api/v1/faults
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{chaosControlUrl}}/api/v1/faults
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "service": "valor",
+    "method": "valor",
+    "pathPrefix": "valor",
+    "delayMs": 1,
+    "status": 1,
+    "probability": 1,
+    "times": 1,
+    "ttlSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/chaos-control.md
+}

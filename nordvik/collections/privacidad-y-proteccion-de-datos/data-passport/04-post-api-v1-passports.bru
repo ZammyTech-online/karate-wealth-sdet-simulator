@@ -1,0 +1,34 @@
+meta {
+  name: POST /api/v1/passports
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{dataPassportUrl}}/api/v1/passports
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "token": "valor",
+    "purpose": "valor",
+    "audience": "valor",
+    "maxReads": 1,
+    "ttlSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/data-passport.md
+}

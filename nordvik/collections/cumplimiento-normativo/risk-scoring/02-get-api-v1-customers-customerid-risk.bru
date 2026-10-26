@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/customers/{customerId}/risk
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{riskScoringUrl}}/api/v1/customers/{customerId}/risk
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/risk-scoring.md
+}

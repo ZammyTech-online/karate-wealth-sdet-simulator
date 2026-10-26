@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/kyc-cases/{id}/decision
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{kycAmlServiceUrl}}/api/v1/kyc-cases/{id}/decision
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "decision": "valor",
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/kyc-aml-service.md
+}

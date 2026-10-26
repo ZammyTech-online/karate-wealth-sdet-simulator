@@ -1,0 +1,24 @@
+meta {
+  name: GET /info
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{populationSimUrl}}/info
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/population-sim.md
+}

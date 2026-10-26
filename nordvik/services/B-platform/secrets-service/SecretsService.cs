@@ -29,6 +29,8 @@ public sealed class SecretsService : INordvikService
         ("custodian-webhook-hmac", "custodian-webhook-secret-2026", "HMAC de las ejecuciones del custodio"),
         ("pricefeed-api-key", "pf-live-key-2026", "API key del proveedor de precios"),
         ("nordid-client-cert", "nordid-cert-fingerprint-2026", "Huella del certificado de cliente de NordID"),
+        ("sanctionscreen-api-key", "ss-key-2026-b", "API key de SanctionScreen (E3)"),
+        ("population-client-cert", "SHA256:nordvik-client-cert-2026", "Certificado de cliente (mTLS) del Registro de Población (E2)"),
     };
 
     public void Initialize(ServiceContext ctx)

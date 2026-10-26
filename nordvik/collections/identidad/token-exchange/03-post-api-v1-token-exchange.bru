@@ -1,0 +1,33 @@
+meta {
+  name: POST /api/v1/token-exchange
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{tokenExchangeUrl}}/api/v1/token-exchange
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "subjectToken": "valor",
+    "audience": "valor",
+    "scope": "valor",
+    "expiresInSeconds": 1
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/token-exchange.md
+}

@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/keys/{id}/shred
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{keyManagementUrl}}/api/v1/keys/{id}/shred
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/key-management.md
+}

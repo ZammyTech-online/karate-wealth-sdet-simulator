@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/audiences
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{tokenExchangeUrl}}/api/v1/audiences
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/token-exchange.md
+}

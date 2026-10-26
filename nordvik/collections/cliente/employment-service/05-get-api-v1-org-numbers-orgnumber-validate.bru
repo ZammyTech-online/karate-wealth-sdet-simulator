@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/org-numbers/{orgNumber}/validate
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{employmentServiceUrl}}/api/v1/org-numbers/{orgNumber}/validate
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/employment-service.md
+}

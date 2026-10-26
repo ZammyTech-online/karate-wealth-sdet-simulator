@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/quiz
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{appropriatenessServiceUrl}}/api/v1/quiz
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/appropriateness-service.md
+}

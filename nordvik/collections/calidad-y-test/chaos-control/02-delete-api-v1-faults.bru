@@ -1,0 +1,24 @@
+meta {
+  name: DELETE /api/v1/faults
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{chaosControlUrl}}/api/v1/faults
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/chaos-control.md
+}

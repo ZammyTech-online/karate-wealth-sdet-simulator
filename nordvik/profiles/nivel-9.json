@@ -1,7 +1,7 @@
 {
   "name": "nivel-9",
   "wave": 3,
-  "description": "Oleadas 0 a 3 · niveles 9 y 10: datos sensibles. Todo lo de nivel-6 más privacidad (pii-vault, claves y crypto-shredding, consentimientos, pasaportes del dato, linaje, redacción, retención), los servicios de calidad (caos, control de simuladores, espía de eventos) y jwt-forge, secretos e intercambio de tokens. Crece con cada lote de la oleada 3.",
+  "description": "Oleadas 0 a 3 · niveles 9 y 10: datos sensibles. Todo lo de nivel-6 más privacidad (pii-vault, claves y crypto-shredding, consentimientos, pasaportes del dato, linaje, redacción, retención), los servicios de calidad (caos, control de simuladores, espía de eventos) jwt-forge, secretos e intercambio de tokens, cumplimiento (KYC, sanciones, PEP, riesgo, vigilancia, idoneidad y conveniencia), datos del cliente (familia, empleo, residencia fiscal), casos, tareas y aprobaciones, y los simuladores del Registro de Población (E2) y SanctionScreen (E3). Crece con cada lote de la oleada 3.",
   "learningMode": true,
   "ramBudgetMb": 1400,
   "services": [
@@ -96,6 +96,22 @@
     "event-spy",
     "jwt-forge",
     "secrets-service",
-    "token-exchange"
+    "token-exchange",
+    "kyc-aml-service",
+    "sanctions-adapter",
+    "pep-service",
+    "risk-scoring",
+    "transaction-monitoring",
+    "suitability-service",
+    "appropriateness-service",
+    "household-service",
+    "employment-service",
+    "tax-residency-service",
+    "case-management",
+    "task-queue",
+    "approval-service",
+    "population-adapter",
+    "population-sim",
+    "sanctionscreen-sim"
   ]
 }

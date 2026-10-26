@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/internal/consumer
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{lineageServiceUrl}}/api/v1/internal/consumer
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/lineage-service.md
+}

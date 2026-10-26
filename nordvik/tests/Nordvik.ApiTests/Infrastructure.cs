@@ -141,6 +141,9 @@ public static class Ports
     // Oleada 3
     public const int PiiVault = 6500, Keys = 6501, Consents = 6502, Passports = 6503, Lineage = 6504, Redaction = 6505, Retention = 6506;
     public const int Chaos = 7600, MockControl = 7601, EventSpy = 7602, JwtForge = 6014, Secrets = 6109, TokenExchange = 6206;
+    public const int Kyc = 6400, Sanctions = 6401, Pep = 6402, Risk = 6403, Monitoring = 6404, Suitability = 6405, Appropriateness = 6406;
+    public const int Household = 6306, Employment = 6307, TaxResidency = 6308, Cases = 7403, Tasks = 7404, Approvals = 7405, PopulationAdapter = 7503;
+    public const int PopulationSim = 7702, SanctionScreenSim = 7703;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
@@ -151,6 +154,7 @@ public static class Ports
         Orders, Router, Executions, Positions, Valuation, Performance, Rebalancing, CorporateActions,
         Contracts, ContractTemplates, Clauses, Signing, Vault, Render, Antivirus, TextFactory, FileFactory, Composition, BffWeb, BffMobile, BffAdvisor, Onboarding,
         PiiVault, Keys, Consents, Passports, Lineage, Redaction, Retention, Chaos, MockControl, EventSpy, JwtForge, Secrets, TokenExchange,
+        Kyc, Sanctions, Pep, Risk, Monitoring, Suitability, Appropriateness, Household, Employment, TaxResidency, Cases, Tasks, Approvals, PopulationAdapter, PopulationSim, SanctionScreenSim,
     };
 }
 

@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/items/{id}/legal-hold
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{retentionSchedulerUrl}}/api/v1/items/{id}/legal-hold
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "hold": "valor",
+    "reason": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/retention-scheduler.md
+}

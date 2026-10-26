@@ -36,6 +36,7 @@ public sealed class ConfigService : INordvikService
         ("order-router", "autoRun", "true"),
         ("rebalancing-engine", "driftThresholdPp", "5.00"),
         ("rebalancing-engine", "minTradeSek", "100.00"),
+        ("sanctions-adapter", "matchThreshold", "85"),
     };
 
     public void Initialize(ServiceContext ctx)

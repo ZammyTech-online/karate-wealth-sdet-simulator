@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/tin-formats
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{taxResidencyServiceUrl}}/api/v1/tin-formats
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/tax-residency-service.md
+}

@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/keys
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{keyManagementUrl}}/api/v1/keys
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "subject": "valor",
+    "purpose": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/key-management.md
+}

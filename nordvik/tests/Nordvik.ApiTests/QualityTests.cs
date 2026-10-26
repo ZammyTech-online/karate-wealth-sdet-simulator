@@ -95,7 +95,7 @@ public class MockControlTests
     {
         var list = await _f.Get(Ports.MockControl, "/api/v1/mocks");
         var names = list.Json.GetProperty("items").EnumerateArray().Select(m => m.GetProperty("name").GetString()).ToList();
-        Assert.Equal(new[] { "nordid-sim", "custodian-sim", "pricefeed-sim", "nordpay-sim" }, names);
+        Assert.Equal(new[] { "nordid-sim", "population-sim", "sanctionscreen-sim", "custodian-sim", "pricefeed-sim", "nordpay-sim" }, names);
         Assert.All(list.Json.GetProperty("items").EnumerateArray(), m => Assert.True(m.GetProperty("up").GetBoolean()));
         try
         {
@@ -108,7 +108,7 @@ public class MockControlTests
         finally
         {
             var reset = await _f.Post(Ports.MockControl, "/api/v1/mocks/reset");
-            Assert.Equal(4, reset.Json.GetProperty("reset").GetArrayLength());
+            Assert.Equal(names.Count, reset.Json.GetProperty("reset").GetArrayLength());
         }
         Assert.Equal("normal", (await _f.Get(Ports.NordPaySim, "/__admin/behaviour")).Str("mode"));
     }

@@ -90,12 +90,20 @@ public static class Downstream
         if (headers is not null) foreach (var (k, v) in headers) req.Headers.TryAddWithoutValidation(k, v);
         if (body is FormBody form) req.Content = new StringContent(form.Encoded, Encoding.UTF8, "application/x-www-form-urlencoded");
         else if (body is not null) req.Content = new StringContent(body as string ?? JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
-        using var cts = new CancellationTokenSource(timeout ?? TimeSpan.FromSeconds(10));
-        using var res = await Http.SendAsync(req, cts.Token);
-        var raw = await res.Content.ReadAsStringAsync(cts.Token);
-        JsonElement? json = null;
-        if (!string.IsNullOrWhiteSpace(raw)) { try { json = JsonDocument.Parse(raw).RootElement.Clone(); } catch { } }
-        return new DownstreamReply((int)res.StatusCode, json, raw);
+        try
+        {
+            using var cts = new CancellationTokenSource(timeout ?? TimeSpan.FromSeconds(10));
+            using var res = await Http.SendAsync(req, cts.Token);
+            var raw = await res.Content.ReadAsStringAsync(cts.Token);
+            JsonElement? json = null;
+            if (!string.IsNullOrWhiteSpace(raw)) { try { json = JsonDocument.Parse(raw).RootElement.Clone(); } catch { } }
+            return new DownstreamReply((int)res.StatusCode, json, raw);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or OperationCanceledException)
+        {
+            // Mismo contrato que Send: un fallo de red o un timeout es "la dependencia no responde"
+            throw new DependencyUnavailableException(new Uri(url).Authority, $"{url} no responde ({ex.GetType().Name}).");
+        }
     }
 
     public static Task<DownstreamReply> Post(HttpContext? caller, string service, string path, object? body, bool forwardAuth = true) =>

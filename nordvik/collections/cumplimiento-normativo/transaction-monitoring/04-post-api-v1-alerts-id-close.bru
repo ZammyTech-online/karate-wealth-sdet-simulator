@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/alerts/{id}/close
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{transactionMonitoringUrl}}/api/v1/alerts/{id}/close
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "resolution": "valor",
+    "comment": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/transaction-monitoring.md
+}

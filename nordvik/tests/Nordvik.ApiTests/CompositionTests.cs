@@ -82,9 +82,15 @@ public class CompositionTests : IAsyncLifetime
     [Fact]
     public async Task C4_customer_360_is_partial_until_wave_3_and_masks_for_advisors()
     {
+        var fresh = (await _f.NewCustomer()).GetProperty("id").GetString()!;
+        var p = await _f.Get(Ports.Composition, $"/api/v2/compositions/customer-360/{fresh}", NordvikFixture.Bearer(await _f.Erik()));
+        Assert.Equal("PARTIAL", p.Str("status"));
+        Assert.Equal(new[] { "kyc" }, p.Json.GetProperty("missing").EnumerateArray().Select(x => x.GetString()));
+        await _f.Send(HttpMethod.Post, Ports.Kyc, $"/api/v1/customers/{fresh}/kyc-cases", null, NordvikFixture.Bearer(await _f.Erik()));
+        var complete = await _f.Get(Ports.Composition, $"/api/v2/compositions/customer-360/{fresh}", NordvikFixture.Bearer(await _f.Erik()));
+        Assert.Equal("COMPLETE", complete.Str("status"));
+        Assert.Equal("APPROVED", complete.Json.GetProperty("bundle").GetProperty("kyc").GetProperty("status").GetString());
         var r = await _f.Get(Ports.Composition, $"/api/v2/compositions/customer-360/{SeedIds.CustomerAna}", NordvikFixture.Bearer(await _f.Erik()));
-        Assert.Equal("PARTIAL", r.Str("status"));
-        Assert.Equal(new[] { "kyc" }, r.Json.GetProperty("missing").EnumerateArray().Select(x => x.GetString()));
         Assert.Equal(6, r.Json.GetProperty("bundle").GetProperty("consents").GetArrayLength());
         Assert.Contains("consent-ledger", r.Json.GetProperty("sources").EnumerateArray().Select(s => s.GetProperty("service").GetString()));
         Assert.Contains("**-****", r.Json.GetProperty("bundle").GetProperty("customer").GetProperty("nationalId").GetString());

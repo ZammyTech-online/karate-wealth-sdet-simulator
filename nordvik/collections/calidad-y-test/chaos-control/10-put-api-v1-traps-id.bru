@@ -1,0 +1,30 @@
+meta {
+  name: PUT /api/v1/traps/{id}
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{chaosControlUrl}}/api/v1/traps/{id}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "enabled": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/chaos-control.md
+}

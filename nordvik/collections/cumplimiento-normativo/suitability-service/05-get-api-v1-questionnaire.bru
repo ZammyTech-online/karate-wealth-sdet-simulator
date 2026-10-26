@@ -1,0 +1,24 @@
+meta {
+  name: GET /api/v1/questionnaire
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{suitabilityServiceUrl}}/api/v1/questionnaire
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/suitability-service.md
+}

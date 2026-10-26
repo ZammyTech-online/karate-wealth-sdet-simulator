@@ -1,0 +1,24 @@
+meta {
+  name: POST /api/v1/appropriateness-tests/{id}/acknowledge
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{appropriatenessServiceUrl}}/api/v1/appropriateness-tests/{id}/acknowledge
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+docs {
+  
+  Ficha completa: docs/services/appropriateness-service.md
+}

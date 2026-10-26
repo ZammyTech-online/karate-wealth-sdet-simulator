@@ -1,0 +1,35 @@
+meta {
+  name: POST /api/v1/cases
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{caseManagementUrl}}/api/v1/cases
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "type": "valor",
+    "customerId": "valor",
+    "priority": "valor",
+    "summary": "valor",
+    "sourceService": "valor",
+    "sourceRef": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/case-management.md
+}

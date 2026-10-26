@@ -32,8 +32,10 @@ public static class ServiceCatalog
         // ---------- Oleada 3 ----------
         new KeyManagement(), new PiiVault(), new ConsentLedger(), new DataPassport(), new LineageService(), new RedactionService(), new RetentionScheduler(),
         new ChaosControl(), new MockControl(), new EventSpy(), new JwtForge(), new SecretsService(), new TokenExchange(),
+        new KycAmlService(), new SanctionsAdapter(), new PepService(), new RiskScoring(), new TransactionMonitoring(), new SuitabilityService(), new AppropriatenessService(),
+        new HouseholdService(), new EmploymentService(), new TaxResidencyService(), new CaseManagement(), new TaskQueue(), new ApprovalService(), new PopulationAdapter(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
-        new NordIdSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(),
+        new NordIdSim(), new PopulationSim(), new SanctionScreenSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(),
     };
 
     /// <summary>Un servicio y todo aquello de lo que depende, recursivamente.</summary>

@@ -1,0 +1,31 @@
+meta {
+  name: POST /api/v1/population/lookups
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{populationAdapterUrl}}/api/v1/population/lookups
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  X-Correlation-Id: bruno-{{$timestamp}}
+}
+
+body:json {
+  {
+    "nationalId": "valor",
+    "token": "valor"
+  }
+}
+
+docs {
+  
+  Ficha completa: docs/services/population-adapter.md
+}
