@@ -1,4 +1,4 @@
-// Torre de control de Nordvik: la web habla solo con la torre (/api/v1) y, para llamar a los servicios, con su pasarela /api/v1/proxy.
+﻿// Torre de control de Nordvik: la web habla solo con la torre (/api/v1) y, para llamar a los servicios, con su pasarela /api/v1/proxy.
 'use strict';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -22,7 +22,7 @@ function toast(text, bad = false) {
   $('#toasts').append(el);
   setTimeout(() => el.remove(), bad ? 7000 : 3800);
 }
-function fail(e) { toast((e.body?.detail || e.message) + (e.body?.hint ? ' · ' + e.body.hint : ''), true); }
+function fail(e) { toast((e.body?.detail || e.message) + (e.body?.hint ? ' Â· ' + e.body.hint : ''), true); }
 
 async function busy(btn, fn) {
   if (btn) btn.disabled = true;
@@ -53,7 +53,7 @@ async function refreshStatus() {
   try {
     const st = await api('/estado');
     const lvl = $('#st-level');
-    lvl.textContent = st.currentLevel >= 0 ? `Nivel ${st.currentLevel} completo` : 'Ningún nivel completo';
+    lvl.textContent = st.currentLevel >= 0 ? `Nivel ${st.currentLevel} completo` : 'NingÃºn nivel completo';
     lvl.className = 'pill ' + (st.currentLevel >= 0 ? 'ok' : 'warn');
     $('#st-services').innerHTML = `<span class="dot"></span>${st.running}/${st.total} servicios`;
     $('#st-services').className = 'pill ' + (st.running === st.total ? 'ok' : 'warn');
@@ -66,9 +66,9 @@ async function refreshStatus() {
   try {
     const now = await api('/proxy/clock-service/api/v1/clock/now');
     const t = now.now.replace('T', ' ').slice(0, 19);
-    $('#st-clock').textContent = `${t}${now.mode === 'FROZEN' ? ' · congelado' : ''}`;
+    $('#st-clock').textContent = `${t}${now.mode === 'FROZEN' ? ' Â· congelado' : ''}`;
     $('#st-clock').className = 'pill' + (now.mode === 'REAL' ? '' : ' warn');
-    $('#clock-now').textContent = `${t} · ${now.timezone} · ${now.mode === 'REAL' ? 'hora real' : now.mode === 'FROZEN' ? 'congelado' : 'desplazado'}`;
+    $('#clock-now').textContent = `${t} Â· ${now.timezone} Â· ${now.mode === 'REAL' ? 'hora real' : now.mode === 'FROZEN' ? 'congelado' : 'desplazado'}`;
   } catch { $('#st-clock').textContent = 'reloj apagado'; }
 }
 
@@ -83,12 +83,12 @@ async function loadLevels() {
 function renderLadder() {
   $('#ladder').innerHTML = state.levels.map((l) => {
     const pct = l.exercises ? Math.round((l.solved / l.exercises) * 100) : 0;
-    const lessons = l.lessons.length > 1 ? `${l.lessons[0].id}–${l.lessons[l.lessons.length - 1].id}` : l.lessons[0]?.id ?? '—';
+    const lessons = l.lessons.length > 1 ? `${l.lessons[0].id}â€“${l.lessons[l.lessons.length - 1].id}` : l.lessons[0]?.id ?? 'â€”';
     return `<li class="step lv${l.id} ${l.id === state.current ? 'current' : ''}">
       <div class="step-num"><b>${l.id}</b><span>${esc(l.name)}</span></div>
       <div class="step-body">
         <div class="step-head">
-          <div class="step-title"><h2>${esc(l.title)}</h2><small>Perfil ${esc(l.profile)} · niveles ${esc(l.route)} del plan · lecciones ${lessons}</small></div>
+          <div class="step-title"><h2>${esc(l.title)}</h2><small>Perfil ${esc(l.profile)} Â· niveles ${esc(l.route)} del plan Â· lecciones ${lessons}</small></div>
           <span class="state ${l.state}">${l.state === 'ON' ? 'Encendido' : l.state === 'PARTIAL' ? `${l.running}/${l.services} encendidos` : 'Apagado'}</span>
         </div>
         <p>${esc(l.summary)}</p>
@@ -102,13 +102,13 @@ function renderLadder() {
         <div class="cols">
           <div class="col"><h4>Karate</h4><ul>${l.karate.map((k) => `<li>${esc(k)}</li>`).join('')}</ul></div>
           <div class="col"><h4>Negocio</h4><ul>${l.business.map((k) => `<li>${esc(k)}</li>`).join('')}</ul></div>
-          <div class="col"><h4>Se enciende</h4><div class="chips">${l.newDomains.map((d) => `<span class="chip lv">${esc(d.name)} · ${d.services}</span>`).join('')}${l.externals.map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div></div>
+          <div class="col"><h4>Se enciende</h4><div class="chips">${l.newDomains.map((d) => `<span class="chip lv">${esc(d.name)} Â· ${d.services}</span>`).join('')}${l.externals.map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div></div>
         </div>
-        <div class="chips">${l.lessons.map((x) => `<span class="chip" title="${esc(x.title)}">${x.id}${x.exercises ? ` · ${x.solved}/${x.exercises}` : ''}</span>`).join('')}</div>
+        <div class="chips">${l.lessons.map((x) => `<span class="chip" title="${esc(x.title)}">${x.id}${x.exercises ? ` Â· ${x.solved}/${x.exercises}` : ''}</span>`).join('')}</div>
         <div class="checkpoint"><b>Checkpoint:</b> ${esc(l.checkpoint)}</div>
         <div class="step-actions">
           <button class="btn" data-level="${l.id}" data-mode="exacto">Encender solo este nivel</button>
-          <button class="btn ghost" data-level="${l.id}" data-mode="sumar">Añadir a lo encendido</button>
+          <button class="btn ghost" data-level="${l.id}" data-mode="sumar">AÃ±adir a lo encendido</button>
           <button class="btn quiet" data-goto-missions="${l.id}">Ver sus ${l.missions.length} misiones</button>
         </div>
       </div>
@@ -125,16 +125,16 @@ $('#ladder').addEventListener('click', (e) => {
   if (b.dataset.mode === 'sumar') return busy(b, () => activateLevel(id, 'sumar'));
   const running = state.runningSet?.size ?? 0;
   const off = Math.max(0, running - level.services);
-  modal(`Encender solo el nivel ${id} · ${level.name}`,
-    `<p>Quedarán encendidos <b>${level.services}</b> servicios.${off ? ` Se apagarán unos <b>${off}</b> que no son de este nivel (sus datos se conservan).` : ''}</p>`,
+  modal(`Encender solo el nivel ${id} Â· ${level.name}`,
+    `<p>QuedarÃ¡n encendidos <b>${level.services}</b> servicios.${off ? ` Se apagarÃ¡n unos <b>${off}</b> que no son de este nivel (sus datos se conservan).` : ''}</p>`,
     [{ label: 'Cancelar', kind: 'quiet' }, { label: `Encender el nivel ${id}`, run: () => activateLevel(id, 'exacto') }]);
 });
 
 async function activateLevel(id, mode) {
-  toast(`Preparando el nivel ${id}…`);
+  toast(`Preparando el nivel ${id}â€¦`);
   const r = await post(`/niveles/${id}/encender?modo=${mode}`);
   const failed = Object.keys(r.failed || {});
-  toast(`Nivel ${id}: ${r.started.length} encendidos, ${r.stopped.length} apagados · ${r.running} en marcha`);
+  toast(`Nivel ${id}: ${r.started.length} encendidos, ${r.stopped.length} apagados Â· ${r.running} en marcha`);
   if (failed.length) toast('No arrancaron: ' + failed.join(', '), true);
   await refreshAll();
 }
@@ -143,20 +143,20 @@ async function activateLevel(id, mode) {
 async function loadMissions() { state.missions = await api('/misiones'); renderMissions(); }
 
 function renderMissions() {
-  const levels = [{ id: 'all', label: 'Todas' }, ...state.levels.map((l) => ({ id: String(l.id), label: `Nivel ${l.id} · ${l.name}` }))];
+  const levels = [{ id: 'all', label: 'Todas' }, ...state.levels.map((l) => ({ id: String(l.id), label: `Nivel ${l.id} Â· ${l.name}` }))];
   $('#mission-filters').innerHTML = levels.map((l) => `<button data-filter="${l.id}" aria-pressed="${state.filter === l.id}">${esc(l.label)}</button>`).join('');
   const list = state.missions.filter((m) => state.filter === 'all' || String(m.level) === state.filter);
   $('#missions').innerHTML = list.map((m) => `<article class="mission lv${m.level}">
       <div class="mission-head"><h3>${esc(m.title)}</h3><span class="mission-id">${m.id} <span class="lvbadge">N${m.level}</span></span></div>
       <p>${esc(m.story)}</p>
       <div class="chips">
-        ${m.lessons.map((l) => `<span class="chip">Lección ${l}</span>`).join('')}
+        ${m.lessons.map((l) => `<span class="chip">LecciÃ³n ${l}</span>`).join('')}
         ${m.flow ? `<button class="chip" data-flow="${esc(m.flow)}">Flujo ${esc(m.flow.slice(0, 4))}</button>` : ''}
         ${m.traps.map((t) => `<span class="chip">Trampa ${t}</span>`).join('')}
       </div>
-      <details class="steps"><summary>${m.steps.length} pasos · ${m.keyServices.length} servicios clave</summary>
+      <details class="steps"><summary>${m.steps.length} pasos Â· ${m.keyServices.length} servicios clave</summary>
         <ol class="steplist">${m.steps.map((s, i) => `<li>
-          <div class="endpoint"><code><span class="method ${s.method}">${s.method}</span>${esc(s.path)}</code><small>${esc(s.service)} · puerto ${s.port} — ${esc(s.what)}</small></div>
+          <div class="endpoint"><code><span class="method ${s.method}">${s.method}</span>${esc(s.path)}</code><small>${esc(s.service)} Â· puerto ${s.port} â€” ${esc(s.what)}</small></div>
           ${s.method === 'GET' && !s.path.includes('{') ? `<button class="btn small ghost" data-try="${m.id}:${i}">Probar</button>` : `<a class="btn small quiet" href="http://localhost:${s.port}/swagger" target="_blank" rel="noopener">Swagger</a>`}
         </li>`).join('')}</ol>
       </details>
@@ -177,7 +177,7 @@ $('#missions').addEventListener('click', (e) => {
   if (!b) return;
   if (b.dataset.prepare) return busy(b, async () => {
     const r = await post(`/misiones/${b.dataset.prepare}/preparar`);
-    toast(r.started.length ? `${r.mission}: encendidos ${r.started.length} servicios (${r.started.slice(0, 4).join(', ')}${r.started.length > 4 ? '…' : ''})` : `${r.mission}: ya estaba todo encendido`);
+    toast(r.started.length ? `${r.mission}: encendidos ${r.started.length} servicios (${r.started.slice(0, 4).join(', ')}${r.started.length > 4 ? 'â€¦' : ''})` : `${r.mission}: ya estaba todo encendido`);
     await refreshAll();
   });
   if (b.dataset.flow) return busy(b, () => openFlow(b.dataset.flow));
@@ -193,7 +193,7 @@ async function tryCall(service, path) {
   const text = await res.text();
   let pretty = text;
   try { pretty = JSON.stringify(JSON.parse(text), null, 2); } catch { /* no es JSON */ }
-  modal(`GET ${path}`, `<p class="muted">${esc(service)} respondió <b>${res.status}</b> · ${esc(res.headers.get('content-type') || '')}</p><pre class="response">${esc(pretty.slice(0, 12000))}</pre>`, [{ label: 'Cerrar', kind: 'quiet' }]);
+  modal(`GET ${path}`, `<p class="muted">${esc(service)} respondiÃ³ <b>${res.status}</b> Â· ${esc(res.headers.get('content-type') || '')}</p><pre class="response">${esc(pretty.slice(0, 12000))}</pre>`, [{ label: 'Cerrar', kind: 'quiet' }]);
 }
 
 async function openFlow(file) {
@@ -201,7 +201,7 @@ async function openFlow(file) {
   modal(file.replace('.md', ''), `<div class="md">${markdown(md)}</div>`, [{ label: 'Cerrar', kind: 'quiet' }]);
 }
 
-// Markdown mínimo para los flujos: títulos, listas, tablas, bloques de código y negrita/código en línea.
+// Markdown mÃ­nimo para los flujos: tÃ­tulos, listas, tablas, bloques de cÃ³digo y negrita/cÃ³digo en lÃ­nea.
 function markdown(src) {
   const inline = (s) => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
   const out = []; const lines = src.split('\n'); let i = 0;
@@ -258,7 +258,7 @@ function renderMap() {
         <label class="switch"><input type="checkbox" data-service="${esc(s.name)}" ${s.running ? 'checked' : ''} ${s.core ? 'disabled title="El reloj no se apaga"' : ''} aria-label="${esc(s.name)}"><span></span></label>
       </div>`).join('')}
     </section>`;
-  }).join('') || '<p class="muted">Ningún servicio coincide.</p>';
+  }).join('') || '<p class="muted">NingÃºn servicio coincide.</p>';
 }
 ['#map-search', '#map-level', '#map-on'].forEach((s) => $(s).addEventListener('input', renderMap));
 
@@ -277,7 +277,7 @@ async function toggleService(name, on, input) {
     if (e.body?.code === 'HAS_RUNNING_DEPENDENTS') {
       if (input) input.checked = true;
       return modal(`Otros servicios necesitan ${name}`,
-        `<p>Si lo apagas, estos ${e.body.dependents.length} servicios encendidos se quedarían sin él:</p><div class="chips">${e.body.dependents.map((d) => `<span class="chip">${esc(d)}</span>`).join('')}</div>`,
+        `<p>Si lo apagas, estos ${e.body.dependents.length} servicios encendidos se quedarÃ­an sin Ã©l:</p><div class="chips">${e.body.dependents.map((d) => `<span class="chip">${esc(d)}</span>`).join('')}</div>`,
         [{ label: 'Dejarlo encendido', kind: 'quiet' }, { label: `Apagar los ${e.body.dependents.length + 1}`, kind: 'danger', run: async () => { const r = await post(`/servicios/${name}/apagar?cascada=true`); toast(`Apagados ${r.stopped.length} servicios`); await refreshAll(); } }]);
     }
     fail(e);
@@ -294,7 +294,7 @@ async function toggleDomain(code, on, input) {
       if (input) input.checked = true;
       return modal('Otros dominios dependen de este',
         `<p>Estos servicios encendidos de otros dominios lo necesitan:</p><div class="chips">${e.body.dependents.map((d) => `<span class="chip">${esc(d)}</span>`).join('')}</div>`,
-        [{ label: 'Cancelar', kind: 'quiet' }, { label: 'Apagar también esos', kind: 'danger', run: async () => { await post(`/dominios/${code}/apagar?cascada=true`); await refreshAll(); } }]);
+        [{ label: 'Cancelar', kind: 'quiet' }, { label: 'Apagar tambiÃ©n esos', kind: 'danger', run: async () => { await post(`/dominios/${code}/apagar?cascada=true`); await refreshAll(); } }]);
     }
     fail(e);
   }
@@ -305,7 +305,7 @@ async function toggleDomain(code, on, input) {
 async function openService(name) {
   const d = await api('/servicios/' + encodeURIComponent(name));
   const s = d.service;
-  $('#d-domain').textContent = `${s.domainName} · nivel ${s.level}${s.external ? ' · sistema externo' : ''}`;
+  $('#d-domain').textContent = `${s.domainName} Â· nivel ${s.level}${s.external ? ' Â· sistema externo' : ''}`;
   $('#d-name').textContent = s.name;
   const chipList = (arr, empty) => arr.length ? `<div class="chips">${arr.map((x) => `<button class="chip" data-open="${esc(x.name)}"><span class="dot ${x.running ? 'on' : ''}" style="width:8px;height:8px;border-radius:50%;background:${x.running ? 'var(--ok)' : 'var(--off)'}"></span>${esc(x.name)}</button>`).join('')}</div>` : `<p class="muted">${empty}</p>`;
   $('#d-body').innerHTML = `
@@ -324,11 +324,11 @@ async function openService(name) {
       ${d.info.emits.length ? `<dt>Publica</dt><dd class="mono">${d.info.emits.map(esc).join(', ')}</dd>` : ''}
       ${d.info.consumes.length ? `<dt>Escucha</dt><dd class="mono">${d.info.consumes.map(esc).join(', ')}</dd>` : ''}
     </dl>
-    <div class="section"><h4>Depende de</h4>${chipList(d.dependsOn, 'No depende de nadie más que del reloj.')}</div>
-    ${d.optionalDependencies.length ? `<div class="section"><h4>Usa si están encendidos</h4>${chipList(d.optionalDependencies, '')}<p class="muted">Si están apagados, tiene un plan B (por ejemplo, una retención provisional).</p></div>` : ''}
-    <div class="section"><h4>Lo necesitan</h4>${chipList(d.dependents, 'Ningún servicio depende de este: puedes apagarlo sin miedo.')}</div>
-    <div class="section"><h4>Lecciones que lo usan</h4>${d.lessons.length ? `<div class="chips">${d.lessons.map((l) => `<span class="chip" title="${esc(l.title)}">${l.id}</span>`).join('')}</div>` : '<p class="muted">Ninguna lección todavía: practícalo con una misión o desde Swagger.</p>'}</div>
-    <div class="section"><h4>Misiones</h4>${d.missions.length ? `<div class="chips">${d.missions.map((m) => `<span class="chip">${m.id} · ${esc(m.title)}</span>`).join('')}</div>` : '<p class="muted">No sale en ninguna misión.</p>'}</div>
+    <div class="section"><h4>Depende de</h4>${chipList(d.dependsOn, 'No depende de nadie mÃ¡s que del reloj.')}</div>
+    ${d.optionalDependencies.length ? `<div class="section"><h4>Usa si estÃ¡n encendidos</h4>${chipList(d.optionalDependencies, '')}<p class="muted">Si estÃ¡n apagados, tiene un plan B (por ejemplo, una retenciÃ³n provisional).</p></div>` : ''}
+    <div class="section"><h4>Lo necesitan</h4>${chipList(d.dependents, 'NingÃºn servicio depende de este: puedes apagarlo sin miedo.')}</div>
+    <div class="section"><h4>Lecciones que lo usan</h4>${d.lessons.length ? `<div class="chips">${d.lessons.map((l) => `<span class="chip" title="${esc(l.title)}">${l.id}</span>`).join('')}</div>` : '<p class="muted">Ninguna lecciÃ³n todavÃ­a: practÃ­calo con una misiÃ³n o desde Swagger.</p>'}</div>
+    <div class="section"><h4>Misiones</h4>${d.missions.length ? `<div class="chips">${d.missions.map((m) => `<span class="chip">${m.id} Â· ${esc(m.title)}</span>`).join('')}</div>` : '<p class="muted">No sale en ninguna misiÃ³n.</p>'}</div>
     <div class="section"><h4>${d.endpoints.filter((e) => !e.path.startsWith('/_test')).length} endpoints</h4><ul class="eplist">${d.endpoints.filter((e) => !e.path.startsWith('/_test')).map((e) => `<li><span class="method ${e.method}">${e.method}</span><span><code>${esc(e.path)}</code>${e.summary ? `<br><small class="muted">${esc(e.summary)}</small>` : ''}</span></li>`).join('')}</ul></div>`;
   $('#drawer').hidden = false; $('#scrim').hidden = false;
 }
@@ -376,8 +376,8 @@ async function loadFaults() {
   try {
     const r = await api('/proxy/chaos-control/api/v1/faults');
     const items = r.items ?? r;
-    $('#faults').innerHTML = items.length ? items.map((f) => `<li><span><b>${esc(f.service)}</b> <code>${esc(f.pathPrefix || '/')}</code> → ${f.status || 'latencia'}${f.delayMs ? ` · ${f.delayMs} ms` : ''}${f.remaining != null ? ` · quedan ${f.remaining}` : ''}</span><button class="btn small quiet" data-fault="${esc(f.id)}">Quitar</button></li>`).join('') : '<li class="muted">Ningún fallo activo.</li>';
-  } catch { $('#faults').innerHTML = '<li class="muted">chaos-control está apagado: enciende el nivel 3.</li>'; }
+    $('#faults').innerHTML = items.length ? items.map((f) => `<li><span><b>${esc(f.service)}</b> <code>${esc(f.pathPrefix || '/')}</code> â†’ ${f.status || 'latencia'}${f.delayMs ? ` Â· ${f.delayMs} ms` : ''}${f.remaining != null ? ` Â· quedan ${f.remaining}` : ''}</span><button class="btn small quiet" data-fault="${esc(f.id)}">Quitar</button></li>`).join('') : '<li class="muted">NingÃºn fallo activo.</li>';
+  } catch { $('#faults').innerHTML = '<li class="muted">chaos-control estÃ¡ apagado: enciende el nivel 3.</li>'; }
 }
 $('#faults').addEventListener('click', (e) => { const b = e.target.closest('button[data-fault]'); if (b) busy(b, async () => { await api(`/proxy/chaos-control/api/v1/faults/${b.dataset.fault}`, { method: 'DELETE' }); loadFaults(); }); });
 $('#fault-form').addEventListener('submit', (e) => {
@@ -385,21 +385,22 @@ $('#fault-form').addEventListener('submit', (e) => {
   const num = (id) => ($(id).value === '' ? undefined : Number($(id).value));
   const body = { service: $('#fault-service').value, pathPrefix: $('#fault-path').value || undefined, status: num('#fault-status'), delayMs: num('#fault-delay'), times: num('#fault-times'), probability: num('#fault-prob') };
   if (!body.status && !body.delayMs) body.status = 503;
-  busy(e.submitter, async () => { await post('/proxy/chaos-control/api/v1/faults', body); toast(`Fallo añadido a ${body.service}`); loadFaults(); });
+  busy(e.submitter, async () => { await post('/proxy/chaos-control/api/v1/faults', body); toast(`Fallo aÃ±adido a ${body.service}`); loadFaults(); });
 });
 
-// ---------- navegación ----------
-const views = ['escalera', 'misiones', 'mapa', 'laboratorio', 'guia'];
+// ---------- navegaciÃ³n ----------
+const views = ['escalera', 'academia', 'misiones', 'mapa', 'laboratorio', 'guia'];
 function show(view) {
   if (!views.includes(view)) view = 'escalera';
   views.forEach((v) => { $('#view-' + v).hidden = v !== view; });
   document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === view)));
   if (!location.hash.includes(':') && location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
   if (view === 'misiones') renderMissions();
+  if (view === 'academia') loadAcademia();
   if (view === 'laboratorio') { loadTraps(); loadFaults(); }
 }
 document.querySelector('.tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-view]'); if (b) show(b.dataset.view); });
-// Enlaces directos: #ficha:product-catalog abre la ficha de un servicio y #flujo:F-07-traspaso.md un flujo (útil para la guía y para compartir)
+// Enlaces directos: #ficha:product-catalog abre la ficha de un servicio y #flujo:F-07-traspaso.md un flujo (Ãºtil para la guÃ­a y para compartir)
 function route() {
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('ficha:')) { show('mapa'); openService(h.slice(6)).catch(fail); return; }
@@ -415,3 +416,142 @@ async function refreshAll() {
 
 refreshAll().then(route);
 setInterval(refreshStatus, 5000);
+
+// ============================================================================
+// VISTA: ACADEMIA KARATE (0 A 100)
+// ============================================================================
+let acadLessons = [];
+let activeLesson = null;
+let activeLessonData = null;
+
+async function loadAcademia() {
+  try {
+    acadLessons = await api('/lecciones');
+    renderAcadLessonList();
+    if (!activeLesson && acadLessons.length > 0) {
+      openAcadLesson(acadLessons[0].id);
+    }
+  } catch (err) {
+    fail(err);
+  }
+}
+
+function renderAcadLessonList() {
+  const ul = $('#academia-lesson-list');
+  if (!ul) return;
+  ul.innerHTML = acadLessons.map(l => `
+    <li class="chip ${activeLesson === l.id ? 'lv' : ''}" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:8px 12px; margin:0;" onclick="openAcadLesson('${l.id}')">
+      <div>
+        <b>${l.id}</b> · ${esc(l.title.replace(/L\d+\s*·\s*/, ''))}
+      </div>
+      <span class="badge ${l.solved === l.exercises && l.exercises > 0 ? 'good' : ''}">${l.solved}/${l.exercises}</span>
+    </li>
+  `).join('');
+}
+
+async function openAcadLesson(id) {
+  activeLesson = id;
+  renderAcadLessonList();
+  $('#academia-empty').hidden = true;
+  $('#academia-detail').hidden = false;
+
+  const summary = acadLessons.find(l => l.id === id);
+  $('#acad-level').innerText = `Nivel ${summary ? summary.level : 0}`;
+  $('#acad-title').innerText = summary ? summary.title : id;
+
+  $('#acad-pane-theory').innerHTML = '<span class="muted">Cargando teoría...</span>';
+  $('#acad-example-code').innerText = '// Cargando ejemplo...';
+  $('#acad-exercises-container').innerHTML = '<span class="muted">Cargando ejercicios...</span>';
+
+  try {
+    activeLessonData = await api(`/lecciones/${id}`);
+    renderLessonTheory(activeLessonData.theory);
+    $('#acad-example-code').innerText = activeLessonData.example || '// Sin ejemplo';
+    renderLessonExercises(activeLessonData.exercises, activeLessonData.hints);
+    switchAcadSubTab('theory');
+  } catch (err) {
+    fail(err);
+  }
+}
+
+function renderLessonTheory(md) {
+  // Conversión rápida de markdown básico a HTML seguro
+  let html = esc(md)
+    .replace(/^# (.*$)/gim, '<h2 style="color:var(--accent); margin:12px 0 6px 0;">$1</h2>')
+    .replace(/^## (.*$)/gim, '<h3 style="color:var(--text); margin:10px 0 4px 0;">$1</h3>')
+    .replace(/^### (.*$)/gim, '<h4>$1</h4>')
+    .replace(/\*\*(.*?)\*\*/gim, '<b>$1</b>')
+    .replace(/\*(.*?)\*/gim, '<i>$1</i>')
+    .replace(/`(.*?)`/gim, '<code style="background:rgba(255,255,255,0.08); padding:2px 6px; border-radius:4px;">$1</code>')
+    .replace(/\n\n/gim, '<br/><br/>');
+  $('#acad-pane-theory').innerHTML = html;
+}
+
+function renderLessonExercises(exercises, hints) {
+  const container = $('#acad-exercises-container');
+  if (!exercises || exercises.length === 0) {
+    container.innerHTML = '<span class="muted">Esta lección no tiene ejercicios con huecos.</span>';
+    return;
+  }
+
+  container.innerHTML = exercises.map((ex, idx) => `
+    <article class="panel" style="margin-bottom:16px; border:1px solid var(--border); padding:14px; border-radius:8px; background:rgba(0,0,0,0.2);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <h4 style="margin:0;">Ejercicio ${idx + 1}: <code>${esc(ex.file)}</code></h4>
+        <span class="muted" style="font-size:0.8rem;">Rellena los huecos <code>___</code></span>
+      </div>
+      <textarea id="acad-code-${idx}" data-file="${esc(ex.file)}" style="width:100%; height:180px; font-family:var(--font-mono, monospace); font-size:0.85rem; background:#090d16; color:#38bdf8; border:1px solid var(--border); border-radius:6px; padding:10px; resize:vertical;">${esc(ex.code)}</textarea>
+    </article>
+  `).join('') + `
+    <div style="margin-top:16px;">
+      <details style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <summary style="cursor:pointer; font-weight:600; color:var(--accent);">💡 Pistas disponibles para esta lección</summary>
+        <div style="margin-top:10px; font-size:0.9rem; line-height:1.5;">${esc(hints).replace(/\n/g, '<br/>')}</div>
+      </details>
+    </div>
+  `;
+}
+
+function switchAcadSubTab(tab) {
+  $('#acad-pane-theory').hidden = tab !== 'theory';
+  $('#acad-pane-example').hidden = tab !== 'example';
+  $('#acad-pane-exercises').hidden = tab !== 'exercises';
+
+  $('#acad-tab-theory').className = 'btn small ' + (tab === 'theory' ? 'active' : 'ghost');
+  $('#acad-tab-example').className = 'btn small ' + (tab === 'example' ? 'active' : 'ghost');
+  $('#acad-tab-exercises').className = 'btn small ' + (tab === 'exercises' ? 'active' : 'ghost');
+}
+
+$('#acad-btn-services').onclick = async () => {
+  if (!activeLesson) return;
+  busy($('#acad-btn-services'), async () => {
+    const res = await post(`/lecciones/${activeLesson}/preparar`);
+    toast(`Servicios de ${activeLesson} listos (${res.running} activos)`);
+    refreshStatus();
+  });
+};
+
+$('#acad-btn-correct').onclick = async () => {
+  if (!activeLesson) return;
+  const btn = $('#acad-btn-correct');
+  busy(btn, async () => {
+    // 1. Guardar cambios en los ejercicios
+    const textareas = document.querySelectorAll('#acad-exercises-container textarea');
+    const payload = {};
+    textareas.forEach(t => { payload[t.dataset.file] = t.value; });
+    await post(`/lecciones/${activeLesson}/guardar`, payload);
+
+    // 2. Corregir ejecutando academia.ps1
+    toast('Ejecutando corrector de Karate...');
+    const result = await post(`/lecciones/${activeLesson}/corregir`);
+    
+    // 3. Mostrar modal con la salida
+    openModal(`Resultado de Corrección · ${activeLesson}`, `
+      <pre style="background:#090d16; color:#cbd5e1; padding:14px; border-radius:6px; max-height:50vh; overflow-y:auto; font-family:monospace; font-size:0.85rem;">${esc(result.output || result.error || 'Sin salida')}</pre>
+    `);
+    
+    // Recargar estado de lecciones
+    acadLessons = await api('/lecciones');
+    renderAcadLessonList();
+  });
+};

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Builder;
@@ -15,7 +15,7 @@ namespace Nordvik.Host;
 /// <summary>
 /// La Torre de control (ADR-014): una web en el puerto 3000 para encender y apagar niveles, dominios y servicios,
 /// preparar misiones, ver la ficha de cada servicio y manejar el laboratorio (reloj, trampas, caos).
-/// Vive dentro del anfitrión porque es quien sabe qué está encendido.
+/// Vive dentro del anfitriÃ³n porque es quien sabe quÃ© estÃ¡ encendido.
 /// </summary>
 public static class ControlTower
 {
@@ -97,7 +97,7 @@ public static class ControlTower
                 return Results.Ok(new { level = id, mode = "exacto", started = start.Started, stopped = stop.Stopped, failed = start.Failed, running = sup.Running.Count });
             }
             if (modo != "sumar")
-                return Problem(http, 400, "INVALID_MODE", "modo debe ser 'exacto' o 'sumar'.", "exacto deja encendido solo ese nivel; sumar lo añade a lo que ya hay.");
+                return Problem(http, 400, "INVALID_MODE", "modo debe ser 'exacto' o 'sumar'.", "exacto deja encendido solo ese nivel; sumar lo aÃ±ade a lo que ya hay.");
             var s = await sup.Start(services);
             return Results.Ok(new { level = id, mode = "sumar", started = s.Started, stopped = Array.Empty<string>(), failed = s.Failed, running = sup.Running.Count });
         });
@@ -141,7 +141,7 @@ public static class ControlTower
             if (!sup.Knows(name)) return UnknownService(http, name);
             var r = await sup.Start(new[] { name }, dependencias ?? true);
             return r.Failed.Count > 0
-                ? Problem(http, 500, "START_FAILED", $"No arrancaron: {string.Join(", ", r.Failed.Keys)}.", "Mira el log del anfitrión (logs/host.err.log): suele ser un puerto ocupado por otro programa.", new() { ["failed"] = r.Failed })
+                ? Problem(http, 500, "START_FAILED", $"No arrancaron: {string.Join(", ", r.Failed.Keys)}.", "Mira el log del anfitriÃ³n (logs/host.err.log): suele ser un puerto ocupado por otro programa.", new() { ["failed"] = r.Failed })
                 : Results.Ok(new { started = r.Started, alreadyRunning = r.AlreadyRunning, running = sup.Running.Count });
         });
 
@@ -149,11 +149,11 @@ public static class ControlTower
         {
             if (!sup.Knows(name)) return UnknownService(http, name);
             if (Supervisor.Core.Contains(name))
-                return Problem(http, 409, "CORE_SERVICE", $"{name} no se puede apagar.", "Todos los servicios le preguntan la hora al reloj virtual; sin él no funciona nada.");
+                return Problem(http, 409, "CORE_SERVICE", $"{name} no se puede apagar.", "Todos los servicios le preguntan la hora al reloj virtual; sin Ã©l no funciona nada.");
             var dependents = sup.RunningDependentsOf(new[] { name });
             if (dependents.Count > 0 && cascada != true)
                 return Problem(http, 409, "HAS_RUNNING_DEPENDENTS", $"{dependents.Count} servicios encendidos dependen de {name}.",
-                    "Apágalos también con ?cascada=true, o deja este encendido.", new() { ["dependents"] = dependents });
+                    "ApÃ¡galos tambiÃ©n con ?cascada=true, o deja este encendido.", new() { ["dependents"] = dependents });
             var r = await sup.Stop(new[] { name }, cascada == true);
             return Results.Ok(new { stopped = r.Stopped, notRunning = r.NotRunning, running = sup.Running.Count });
         });
@@ -183,7 +183,7 @@ public static class ControlTower
             var dependents = sup.RunningDependentsOf(names);
             if (dependents.Count > 0 && cascada != true)
                 return Problem(http, 409, "HAS_RUNNING_DEPENDENTS", $"{dependents.Count} servicios encendidos de otros dominios dependen de este.",
-                    "Apágalos también con ?cascada=true, o deja el dominio encendido.", new() { ["dependents"] = dependents });
+                    "ApÃ¡galos tambiÃ©n con ?cascada=true, o deja el dominio encendido.", new() { ["dependents"] = dependents });
             var r = await sup.Stop(names, cascada == true);
             return Results.Ok(new { stopped = r.Stopped, notRunning = r.NotRunning, running = sup.Running.Count });
         });
@@ -195,12 +195,12 @@ public static class ControlTower
         api.MapGet("/misiones/{id}", (HttpContext http, string id) =>
             escalera.File.Missions.FirstOrDefault(m => m.Id.Equals(id, StringComparison.OrdinalIgnoreCase)) is { } m
                 ? Results.Ok(MissionView(m, sup))
-                : Problem(http, 404, "MISSION_NOT_FOUND", $"No existe la misión {id}.", "Mira GET /api/v1/misiones."));
+                : Problem(http, 404, "MISSION_NOT_FOUND", $"No existe la misiÃ³n {id}.", "Mira GET /api/v1/misiones."));
 
         api.MapPost("/misiones/{id}/preparar", async (HttpContext http, string id) =>
         {
             var m = escalera.File.Missions.FirstOrDefault(x => x.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
-            if (m is null) return Problem(http, 404, "MISSION_NOT_FOUND", $"No existe la misión {id}.", "Mira GET /api/v1/misiones.");
+            if (m is null) return Problem(http, 404, "MISSION_NOT_FOUND", $"No existe la misiÃ³n {id}.", "Mira GET /api/v1/misiones.");
             var r = await sup.Start(MissionServices(m));
             return Results.Ok(new { mission = m.Id, started = r.Started, alreadyRunning = r.AlreadyRunning, failed = r.Failed, running = sup.Running.Count, ready = r.Failed.Count == 0 });
         });
@@ -216,9 +216,81 @@ public static class ControlTower
         api.MapPost("/lecciones/{id}/preparar", async (HttpContext http, string id) =>
         {
             var lesson = escalera.Lessons().FirstOrDefault(l => l.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
-            if (lesson is null) return Problem(http, 404, "LESSON_NOT_FOUND", $"No existe la lección {id}.", "Las lecciones van de L00 a L33.");
+            if (lesson is null) return Problem(http, 404, "LESSON_NOT_FOUND", $"No existe la lecciÃ³n {id}.", "Las lecciones van de L00 a L33.");
             var r = await sup.Start(lesson.Services);
             return Results.Ok(new { lesson = lesson.Id, started = r.Started, alreadyRunning = r.AlreadyRunning, failed = r.Failed, running = sup.Running.Count });
+        });
+
+                api.MapGet("/lecciones/{id}", (HttpContext http, string id) =>
+        {
+            var dir = Directory.GetDirectories(Path.Combine(repoRoot, "academia", "lecciones"), id + "*").FirstOrDefault();
+            if (dir is null || !Directory.Exists(dir)) return Problem(http, 404, "LESSON_NOT_FOUND", $"No existe la lección {id}.", "Las lecciones van de L00 a L33.");
+            
+            var readmePath = Path.Combine(dir, "README.md");
+            var ejemploPath = Path.Combine(dir, "ejemplo.feature");
+            var pistasPath = Path.Combine(dir, "pistas.md");
+            var ejerciciosDir = Path.Combine(dir, "ejercicios");
+
+            var theory = File.Exists(readmePath) ? File.ReadAllText(readmePath) : "";
+            var example = File.Exists(ejemploPath) ? File.ReadAllText(ejemploPath) : "";
+            var hints = File.Exists(pistasPath) ? File.ReadAllText(pistasPath) : "";
+            
+            var exercises = new List<object>();
+            if (Directory.Exists(ejerciciosDir))
+            {
+                foreach (var f in Directory.GetFiles(ejerciciosDir, "*.feature").OrderBy(x => x))
+                {
+                    exercises.Add(new
+                    {
+                        file = Path.GetFileName(f),
+                        code = File.ReadAllText(f)
+                    });
+                }
+            }
+
+            return Results.Ok(new { id = id.ToUpperInvariant(), theory, example, hints, exercises });
+        });
+
+        api.MapPost("/lecciones/{id}/guardar", async (HttpContext http, string id) =>
+        {
+            var body = await http.Request.ReadFromJsonAsync<Dictionary<string, string>>();
+            if (body is null) return Problem(http, 400, "BAD_BODY", "Cuerpo no válido", "Envía un objeto con los nombres de archivo y su código.");
+            
+            var dir = Directory.GetDirectories(Path.Combine(repoRoot, "academia", "lecciones"), id + "*").FirstOrDefault();
+            if (dir is null || !Directory.Exists(dir)) return Problem(http, 404, "LESSON_NOT_FOUND", $"No existe la lección {id}.", "");
+            
+            var ejerciciosDir = Path.Combine(dir, "ejercicios");
+            if (Directory.Exists(ejerciciosDir))
+            {
+                foreach (var (file, code) in body)
+                {
+                    var target = Path.Combine(ejerciciosDir, Path.GetFileName(file));
+                    File.WriteAllText(target, code, System.Text.Encoding.UTF8);
+                }
+            }
+            return Results.Ok(new { status = "SAVED", id });
+        });
+
+        api.MapPost("/lecciones/{id}/corregir", async (HttpContext http, string id) =>
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"cd '{Path.Combine(repoRoot, "academia")}'; .\\academia.ps1 corregir {id}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using var p = System.Diagnostics.Process.Start(psi);
+            var stdout = await p.StandardOutput.ReadToEndAsync();
+            var stderr = await p.StandardError.ReadToEndAsync();
+            await p.WaitForExitAsync();
+
+            var progFile = Path.Combine(repoRoot, "academia", "progreso.json");
+            var progJson = File.Exists(progFile) ? File.ReadAllText(progFile) : "{}";
+
+            return Results.Ok(new { output = stdout, error = stderr, exitCode = p.ExitCode, progress = progJson });
         });
 
         api.MapGet("/flujos/{file}", (HttpContext http, string file) =>
@@ -226,7 +298,7 @@ public static class ControlTower
             var path = Path.Combine(repoRoot, "docs", "flows", Path.GetFileName(file));
             return System.IO.File.Exists(path) && path.EndsWith(".md")
                 ? Results.Text(System.IO.File.ReadAllText(path), "text/markdown; charset=utf-8")
-                : Problem(http, 404, "FLOW_NOT_FOUND", $"No existe el flujo {file}.", "Los flujos están en docs/flows (F-01 a F-12).");
+                : Problem(http, 404, "FLOW_NOT_FOUND", $"No existe el flujo {file}.", "Los flujos estÃ¡n en docs/flows (F-01 a F-12).");
         });
 
         api.MapGet("/trampas", () => Results.Ok(ChaosControl.Catalog.Select(t => new
@@ -235,12 +307,12 @@ public static class ControlTower
             enabled = t.Nature == "SIEMPRE" || Chaos.TrapOn(t.Id),
         }).ToList()));
 
-        // ---------- Pasarela: la web llama a cualquier servicio encendido a través de la torre ----------
+        // ---------- Pasarela: la web llama a cualquier servicio encendido a travÃ©s de la torre ----------
         api.Map("/proxy/{service}/{**rest}", async (HttpContext http, string service, string? rest) =>
         {
             if (!sup.Knows(service)) return UnknownService(http, service);
             if (!sup.IsRunning(service))
-                return Problem(http, 503, "SERVICE_OFF", $"{service} está apagado.", $"Enciéndelo en la torre o con POST /api/v1/servicios/{service}/encender.");
+                return Problem(http, 503, "SERVICE_OFF", $"{service} estÃ¡ apagado.", $"EnciÃ©ndelo en la torre o con POST /api/v1/servicios/{service}/encender.");
             var url = $"http://localhost:{sup.Catalog[service].Info.Port + sup.Settings.PortOffset}/{rest}{http.Request.QueryString}";
             using var req = new HttpRequestMessage(new HttpMethod(http.Request.Method), url);
             foreach (var h in http.Request.Headers.Where(h => !SkipRequestHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase)))
@@ -254,7 +326,7 @@ public static class ControlTower
             }
             HttpResponseMessage res;
             try { res = await Http.SendAsync(req); }
-            catch (Exception ex) { return Problem(http, 502, "SERVICE_UNREACHABLE", $"{service} no respondió: {ex.Message}", "Puede que se esté apagando; vuelve a intentarlo."); }
+            catch (Exception ex) { return Problem(http, 502, "SERVICE_UNREACHABLE", $"{service} no respondiÃ³: {ex.Message}", "Puede que se estÃ© apagando; vuelve a intentarlo."); }
             using (res)
             {
                 var body = await res.Content.ReadAsByteArrayAsync();
@@ -316,7 +388,7 @@ public static class ControlTower
         };
     }
 
-    /// <summary>El nivel más alto que está entero encendido (-1 si ni el 0).</summary>
+    /// <summary>El nivel mÃ¡s alto que estÃ¡ entero encendido (-1 si ni el 0).</summary>
     public static int CurrentLevel(Supervisor sup, Escalera e) =>
         e.File.Levels.OrderBy(l => l.Id).TakeWhile(l => e.ServicesOfLevel(l.Id).All(sup.IsRunning)).Select(l => l.Id).DefaultIfEmpty(-1).Last();
 
@@ -347,7 +419,7 @@ public static class ControlTower
         var body = new Dictionary<string, object?>
         {
             ["type"] = Problems.BaseType + code.ToLowerInvariant().Replace('_', '-'),
-            ["title"] = status switch { 400 => "Petición no válida", 404 => "No encontrado", 409 => "Conflicto", 503 => "Servicio apagado", _ => "Error" },
+            ["title"] = status switch { 400 => "PeticiÃ³n no vÃ¡lida", 404 => "No encontrado", 409 => "Conflicto", 503 => "Servicio apagado", _ => "Error" },
             ["status"] = status,
             ["detail"] = detail,
             ["instance"] = http.Request.Path.Value,
