@@ -138,6 +138,9 @@ public static class Ports
     public const int Contracts = 6700, ContractTemplates = 6701, Clauses = 6702, Signing = 6703, Vault = 6704, Render = 6705, Antivirus = 6706;
     public const int TextFactory = 6012, FileFactory = 6013, Composition = 6107, BffWeb = 6104, BffMobile = 6105, BffAdvisor = 6106, Onboarding = 6305;
     public const int Orders = 6902, Router = 6903, Executions = 6904, Positions = 6905, Valuation = 6906, Performance = 6907, Rebalancing = 6908, CorporateActions = 6909;
+    // Oleada 3
+    public const int PiiVault = 6500, Keys = 6501, Consents = 6502, Passports = 6503, Lineage = 6504, Redaction = 6505, Retention = 6506;
+    public const int Chaos = 7600, MockControl = 7601, EventSpy = 7602, JwtForge = 6014, Secrets = 6109, TokenExchange = 6206;
     public static readonly int[] All =
     {
         Uuid, Sequence, Clock, Random, Person, Address, Iban, Isin, Reset, Fixture, Gateway, RateLimiter, Config, Iam, Session, Permission,
@@ -147,6 +150,7 @@ public static class Ports
         Payments, Instructions, BankAccounts, Ledger, Cash, Reconciliation, FeeBilling, Refunds, GlExport,
         Orders, Router, Executions, Positions, Valuation, Performance, Rebalancing, CorporateActions,
         Contracts, ContractTemplates, Clauses, Signing, Vault, Render, Antivirus, TextFactory, FileFactory, Composition, BffWeb, BffMobile, BffAdvisor, Onboarding,
+        PiiVault, Keys, Consents, Passports, Lineage, Redaction, Retention, Chaos, MockControl, EventSpy, JwtForge, Secrets, TokenExchange,
     };
 }
 

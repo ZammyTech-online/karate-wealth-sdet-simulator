@@ -1,14 +1,14 @@
 # ADR-013 · Los sistemas externos se simulan como servicios propios
 
 - **Estado:** aceptada (oleada 2, 2026-10-26)
-- **Ámbito:** `externals/` (dominio X-external, puertos 7701-7712)
+- **Ámbito:** `externals/` (dominio X-external, puertos 7701-7712: 7700 + número de sistema externo)
 - **Sustituye a:** nada. Las ADR-001 a ADR-012 están en el documento "Plan del sistema y plan de Karate", pestaña 1.
 
 ## Contexto
 
 Nordvik depende de sistemas que no son suyos: el eID de firma (NordID, tipo BankID), el custodio que ejecuta las órdenes,
 el proveedor de precios, el banco (NordPay), y en la oleada 3 la Agencia de Pensiones, la agencia tributaria, el registro
-de población, el proveedor de voz y el empleador.
+de población, la telefonía y el clearing de empleadores.
 
 Para que alguien aprenda a probar una plataforma así necesita **los mismos problemas que en la vida real**: latencia, caídas,
 webhooks que llegan tarde o dos veces, firmas que tardan, ficheros con errores. Y tiene que poder **provocarlos a voluntad**.
@@ -51,4 +51,12 @@ Opciones consideradas:
 | 7704 | custodian-sim | E4 · custodio que ejecuta órdenes en lote | 2 |
 | 7705 | pricefeed-sim | E5 · proveedor de NAV y precios | 2 |
 | 7706 | nordpay-sim | E6 · banco: abonos entrantes, pagos salientes, extractos | 2 |
-| 7702, 7703, 7707, 7709, 7710, 7712 | registro de población, agencia tributaria, pensiones, voz, empleador, sanciones | E2, E3, E7, E9, E10, E12 | 3 |
+| 7702 | population-sim | E2 · Registro de Población (identidad protegida, fallecidos) | 3 |
+| 7703 | sanctionscreen-sim | E3 · listas PEP y de sanciones, coincidencia difusa | 3 |
+| 7707 | public-pension-sim | E7 · Autoridad de Pensiones Públicas (sobre firmado, mantenimiento con Retry-After) | 3 |
+| 7709 | employer-clearing-sim | E9 · Clearing de Empleadores (fichero mensual + webhook) | 3 |
+| 7710 | provider-network-sim | E10 · otras gestoras: traspasos en 3 pasos con firma mutua | 3 |
+| 7712 | telephony-sim | E12 · telefonía: llamadas y audio para voice-service | 3 |
+| 7708, 7711 | tax-agency-sim, insurer-sim | E8 · Agencia Tributaria, E11 · Aseguradora | 4 |
+
+El puerto de cada simulador es 7700 + su número de sistema externo (E1 → 7701 ... E12 → 7712).

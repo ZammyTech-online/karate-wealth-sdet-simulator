@@ -181,14 +181,18 @@ public sealed class CompositionService : INordvikService
             var prefs = await c.Fetch("preferences", "preferences-service", $"/api/v1/customers/{customerId}/preferences");
             var portfolios = await c.Fetch("portfolios", "portfolio-service", $"/api/v1/customers/{customerId}/portfolios");
             var contracts = await c.Fetch("contracts", "contract-service", $"/api/v2/contracts?customerId={customerId}&limit=50");
-            // Oleada 3: kyc-aml y consent-ledger todavía no existen
-            if (!ServiceDirectory.Knows("kyc-aml")) c.Missing.Add("kyc");
-            if (!ServiceDirectory.Knows("consent-ledger")) c.Missing.Add("consents");
+            // Oleada 3: si el servicio no está en el catálogo, la parte sale en missing (la composición nunca falla por eso)
+            JsonElement? consents = null, kyc = null;
+            if (ServiceDirectory.Knows("consent-ledger")) consents = await c.Fetch("consents", "consent-ledger", $"/api/v1/customers/{customerId}/consents");
+            else c.Missing.Add("consents");
+            if (ServiceDirectory.Knows("kyc-aml-service")) kyc = await c.Fetch("kyc", "kyc-aml-service", $"/api/v1/customers/{customerId}/kyc");
+            else c.Missing.Add("kyc");
             return c.Result(new
             {
                 customer, preferences = prefs, portfolios,
                 contracts = contracts?.GetProperty("items").EnumerateArray().Select(x => new { id = x.GetProperty("id").GetString(), type = x.GetProperty("type").GetString(), status = x.GetProperty("status").GetString() }).ToList(),
-            }, "kyc y consents llegan con la oleada 3 (privacidad y cumplimiento).");
+                consents = consents?.GetProperty("consents"), kyc,
+            }, c.Missing.Count == 0 ? null : "Las partes de missing llegan con la oleada 3 o su servicio no respondió.");
         }).WithSummary("C4 · Ficha 360: cliente + preferencias + carteras + contratos (cada origen aplica sus propios permisos)");
 
         // C5 · contrato marco completo: fusión profunda contrato + plantilla v3 + preferencias del cliente

@@ -29,6 +29,9 @@ public static class ServiceCatalog
         new ContractService(), new ContractTemplateService(), new ClauseEngine(), new SigningService(), new DocumentVault(), new RenderService(), new AntivirusScan(),
         new TextFactory(), new FileFactory(),
         new CompositionService(), new BffWeb(), new BffMobile(), new BffAdvisor(), new OnboardingOrchestrator(),
+        // ---------- Oleada 3 ----------
+        new KeyManagement(), new PiiVault(), new ConsentLedger(), new DataPassport(), new LineageService(), new RedactionService(), new RetentionScheduler(),
+        new ChaosControl(), new MockControl(), new EventSpy(), new JwtForge(), new SecretsService(), new TokenExchange(),
         // ---------- Sistemas externos simulados (no cuentan entre los 156: son "el mundo exterior") ----------
         new NordIdSim(), new CustodianSim(), new PriceFeedSim(), new NordPaySim(),
     };

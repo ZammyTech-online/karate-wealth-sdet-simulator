@@ -84,7 +84,9 @@ public class CompositionTests : IAsyncLifetime
     {
         var r = await _f.Get(Ports.Composition, $"/api/v2/compositions/customer-360/{SeedIds.CustomerAna}", NordvikFixture.Bearer(await _f.Erik()));
         Assert.Equal("PARTIAL", r.Str("status"));
-        Assert.Equal(new[] { "kyc", "consents" }, r.Json.GetProperty("missing").EnumerateArray().Select(x => x.GetString()));
+        Assert.Equal(new[] { "kyc" }, r.Json.GetProperty("missing").EnumerateArray().Select(x => x.GetString()));
+        Assert.Equal(6, r.Json.GetProperty("bundle").GetProperty("consents").GetArrayLength());
+        Assert.Contains("consent-ledger", r.Json.GetProperty("sources").EnumerateArray().Select(s => s.GetProperty("service").GetString()));
         Assert.Contains("**-****", r.Json.GetProperty("bundle").GetProperty("customer").GetProperty("nationalId").GetString());
         var own = await _f.Get(Ports.Composition, $"/api/v2/compositions/customer-360/{SeedIds.CustomerAna}", NordvikFixture.Bearer(await _f.Ana()));
         Assert.DoesNotContain("*", own.Json.GetProperty("bundle").GetProperty("customer").GetProperty("nationalId").GetString());

@@ -49,6 +49,7 @@ public sealed class NordvikMiddleware
 
         try
         {
+            if (await InjectChaos(http)) return;
             await _next(http);
         }
         catch (BadHttpRequestException ex)
@@ -72,6 +73,35 @@ public sealed class NordvikMiddleware
             sw.Stop();
             Log(http, correlation, sw.ElapsedMilliseconds);
         }
+    }
+
+    /// <summary>Caos deliberado (chaos-control o cabecera X-Chaos-Scenario). true si la petición ya se ha respondido con el fallo.</summary>
+    private async Task<bool> InjectChaos(HttpContext http)
+    {
+        var path = http.Request.Path.Value ?? "/";
+        if (path.StartsWith("/swagger", StringComparison.OrdinalIgnoreCase)) return false;
+        int delay = 0, status = 0; string? source = null;
+        if (http.Request.Headers.TryGetValue(Chaos.ScenarioHeader, out var sc))
+        {
+            var parsed = Chaos.Parse(sc.ToString());
+            if (parsed is null)
+            {
+                await Problems.BadRequest(http, "INVALID_CHAOS_SCENARIO", $"X-Chaos-Scenario no válido: '{sc}'.", "Formato: latency=1500 · status=503 · latency=800;status=500").ExecuteAsync(http);
+                return true;
+            }
+            (delay, status) = parsed.Value; source = "header";
+        }
+        else if (Chaos.Match(_ctx.Info.Name, http.Request.Method, path, DateTimeOffset.UtcNow.UtcTicks) is { } rule)
+        {
+            delay = rule.DelayMs; status = rule.Status; source = rule.Id;
+        }
+        if (source is null) return false;
+        http.Response.OnStarting(() => { http.Response.Headers["X-Chaos-Injected"] = source; return Task.CompletedTask; });
+        if (delay > 0) await Task.Delay(delay, http.RequestAborted);
+        if (status == 0) return false;
+        await Problems.Of(http, status, "CHAOS_INJECTED", "Fallo inyectado", $"Fallo provocado a propósito en {_ctx.Info.Name} ({source}).",
+            "Lo ha puesto chaos-control (puerto 7600) o tu cabecera X-Chaos-Scenario. Quítalo con DELETE /api/v1/faults en chaos-control.").ExecuteAsync(http);
+        return true;
     }
 
     private void Log(HttpContext http, string correlation, long ms)

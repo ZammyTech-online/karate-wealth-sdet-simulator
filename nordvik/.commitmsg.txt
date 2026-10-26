@@ -1,0 +1,26 @@
+feat(nordvik): wave 3 batch A - privacy, quality and token tooling (13 services)
+
+Privacy (F, 6500-6506):
+- pii-vault: tokenization encrypted with the customer key, purpose-bound detokenize, 410 after shredding.
+- key-management: per-subject AES-256 keys, rotation, encrypt/decrypt, crypto-shredding.
+- consent-ledger: hash-chained, append-only consents, deny by default, /verify detects tampering.
+- data-passport: reads limited by audience, count and TTL on the virtual clock.
+- lineage-service: every hop of a personal datum, built from events.
+- redaction-service: national id, IBAN, email, phone and card detection (only valid ones).
+- retention-scheduler: policies, purge runs on the virtual clock, legal hold, SHRED via key-management.
+
+Quality and identity:
+- chaos-control: faults applied by the shared middleware (latency, status, probability, times, TTL),
+  X-Chaos-Scenario header for one request, and the T1-T20 trap catalogue.
+- mock-control: one panel for every simulated external system.
+- event-spy: marks, long-poll wait for an event, duplicates detection.
+- jwt-forge: expired, tampered, alg-none, foreign-issuer tokens and a decoder.
+- secrets-service: versioned secrets with grace-period rotation.
+- token-exchange: RFC 8693 down-scoping, never escalation.
+
+Also: composition C4 now includes consents; profile nivel-9 (92 services);
+ADR-013 port table follows 7700 + external system number.
+Tests: 30 new API tests; full suite 857/857 after the C4 update, unit tests 63/63.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01VFEhWCtpGEwV7CFZ6CJMET
