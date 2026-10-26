@@ -25,7 +25,7 @@ public sealed class ChaosControl : INordvikService
     {
         new("T1", "Redondeo bancario frente a half-up", "Diferencia de 0,0001 participaciones en una de cada 50 órdenes", "Recalcula las participaciones con tu propia función JS", "ACTIVABLE", 4, false),
         new("T2", "UTC frente a hora de Estocolmo", "Órdenes de las 14:30 que se van al día siguiente", "Revisa Z frente a +01:00 en el payload", "ACTIVABLE", 4, false),
-        new("T3", "Cambio de horario de verano", "El plan de ahorro se ejecuta dos veces el último domingo de octubre", "Adelanta el reloj virtual a esa fecha", "ACTIVABLE", 4, false),
+        new("T3", "Cambio de horario de verano", "En verano las horas de negocio salen con +01:00: una orden de las 14:30 aparece a las 13:30", "Compara el desplazamiento de las horas con el calendario (CEST +02:00 hasta el último domingo de octubre)", "ACTIVABLE", 4, false),
         new("T4", "Webhook del custodio duplicado", "Posiciones dobles", "Busca dos eventos iguales en event-spy (/duplicates)", "ACTIVABLE", 3, false),
         new("T5", "Eventos fuera de orden", "La orden pasa a SETTLED antes que a EXECUTED", "Lee la secuencia en event-spy", "ACTIVABLE", 4, false),
         new("T6", "Consistencia eventual", "El GET justo después del POST no ve el cambio durante unos cientos de ms", "retry until, no un fallo", "SIEMPRE", 2, true),

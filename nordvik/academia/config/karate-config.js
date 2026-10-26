@@ -1,6 +1,6 @@
 // Configuración global de la Academia: una URL por microservicio y los usuarios de prueba.
 // Karate ejecuta esta función antes de cada escenario y todas sus claves quedan como variables.
-// Tramo 1 (L00-L15) usa la oleada 0. Tramo 2 (L16-L21) necesita el perfil nivel-6. Tramo 3 (L22-L27), nivel-9.
+// Tramo 1 (L00-L15) usa la oleada 0. Tramo 2 (L16-L21) necesita el perfil nivel-6. Tramo 3 (L22-L27), nivel-9. Tramo 4 (L28-L33), completo.
 function fn() {
   var env = karate.env || 'local';
   var host = 'http://localhost';
@@ -46,6 +46,15 @@ function fn() {
     clearingAdapterUrl: host + ':7505',
     clearingSimUrl: host + ':7709',
     providerSimUrl: host + ':7710',
+    // Oleada 4 · sistemas heredados, aseguradora, contratos, calidad y RGPD
+    soapUrl: host + ':7510',
+    mainframeUrl: host + ':7509',
+    insurerSimUrl: host + ':7711',
+    insurerAdapterUrl: host + ':7508',
+    schemaRegistryUrl: host + ':6111',
+    contractCheckUrl: host + ':7603',
+    testInsightsUrl: host + ':7604',
+    erasureUrl: host + ':6507',
     // Ids de los datos semilla (siempre los mismos)
     ids: {
       ana: 'c0000000-0000-4000-8000-000000000001',

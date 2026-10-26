@@ -79,7 +79,8 @@ public sealed class CustomerSearch : INordvikService
                 var ids = mine.Json.EnumerateArray().Select(a => a.GetProperty("customerId").GetString()).ToHashSet();
                 hits = hits.Where(h => ids.Contains(h.Id));
             }
-            var list = hits.OrderBy(h => h.CustomerNumber).ToList();
+            // Trampa T8: el orden cambia en cada petición, así que las páginas se solapan o se saltan clientes
+            var list = Chaos.TrapOn("T8") ? hits.OrderBy(_ => Random.Shared.Next()).ToList() : hits.OrderBy(h => h.CustomerNumber).ToList();
             return Results.Ok(new SearchPage(list.Skip((pg - 1) * size).Take(size).ToList(), list.Count, pg, size, _lastSeq));
         }).WithTags("Búsqueda").WithSummary("Buscar clientes (puede tardar ~1 s en ver los cambios)").Produces<SearchPage>();
 

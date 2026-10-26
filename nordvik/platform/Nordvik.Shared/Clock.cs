@@ -26,7 +26,9 @@ public static class Nordic
         return TimeZoneInfo.Utc;
     }
 
-    public static DateTimeOffset ToStockholm(DateTimeOffset utc) => TimeZoneInfo.ConvertTime(utc, Stockholm);
+    public static DateTimeOffset ToStockholm(DateTimeOffset utc) =>
+        Chaos.TrapOn("T3") ? utc.ToOffset(TimeSpan.FromHours(1)) // Trampa T3: se ignora el horario de verano (siempre +01:00)
+                           : TimeZoneInfo.ConvertTime(utc, Stockholm);
 
     /// <summary>ISO-8601 con desplazamiento, por ejemplo 2026-10-26T14:59:00+01:00.</summary>
     public static string Iso(DateTimeOffset value) => value.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");

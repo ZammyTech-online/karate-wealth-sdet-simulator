@@ -46,7 +46,7 @@ public sealed class ValuationService : INordvikService
             if (ccy != "SEK")
             {
                 var r = await Downstream.Get(http, "fx-rates", $"/api/v1/rates/{ccy}/SEK?date={Money.Date(priceDate)}", forwardAuth: false);
-                fx = D(r.Str("rate")!);
+                fx = Chaos.TrapOn("T20") ? 1m : D(r.Str("rate")!); // Trampa T20: se suma en la moneda del fondo como si fuera SEK
             }
             var value = Math.Round(units * D(nav.Str("nav")!) * fx, 2, MidpointRounding.ToEven);
             lines.Add((isin, fund.Ok ? fund.Str("name")! : isin, units, nav.Str("nav")!, ccy, fx, value, D(p.GetProperty("costBasisSek").GetString()!)));

@@ -59,6 +59,7 @@ public sealed class CustodianSim : INordvikService
         g.MapPost("/batches", async (HttpContext http, CustodyBatchRequest b) =>
         {
             if (await _behaviour.Apply() is { } fail) return fail;
+            if (Chaos.TrapOn("T19")) await Task.Delay(8000); // Trampa T19: el custodio tarda 8 s en aceptar un lote
             if (http.Request.Headers["X-Api-Key"] != ApiKey) return Error(401, "UNAUTHORIZED", "Missing or invalid X-Api-Key");
             if (string.IsNullOrWhiteSpace(b.BatchId)) return Error(400, "INVALID_BATCH", "batchId is required");
             if (!Money.TryParseDate(b.TradeDate, out var td) || !NordicCalendar.IsTradingDay("XSTO", td)) return Error(400, "INVALID_TRADE_DATE", "tradeDate must be an XSTO trading day (yyyy-MM-dd)");
@@ -163,7 +164,8 @@ public sealed class CustodianSim : INordvikService
                     {
                         if (!Money.TryParse(o.Amount, out var amount) || amount <= 0) { rejections.Add(new(o.ClientOrderId!, "INVALID_AMOUNT")); continue; }
                         var fee = Math.Round(amount * decimal.Parse(fund.EntryFee, CultureInfo.InvariantCulture) / 100, 2, MidpointRounding.ToEven);
-                        var units = Floor4((amount - fee) / rate / nav);
+                        // Trampa T1: redondeo half-up en lugar de truncar → de vez en cuando 0,0001 participaciones de más
+                        var units = Chaos.TrapOn("T1") ? Math.Round((amount - fee) / rate / nav, 4, MidpointRounding.AwayFromZero) : Floor4((amount - fee) / rate / nav);
                         if (units <= 0) { rejections.Add(new(o.ClientOrderId!, "AMOUNT_TOO_SMALL")); continue; }
                         AddUnits(db, o.AccountId!, fund.Isin, units);
                         executions.Add(new(execId, o.ClientOrderId!, o.AccountId!, fund.Isin, "BUY", Money.Format(units, 4), Money.Format(nav, 4), fund.Currency, Money.Format(rate, 6),
@@ -196,6 +198,9 @@ public sealed class CustodianSim : INordvikService
                 {
                     var r = await Downstream.SendUrl(HttpMethod.Post, w.Url, body, new Dictionary<string, string> { ["X-Custodian-Signature"] = "sha256=" + Canonical.HmacHex(WebhookSecret, body) }, TimeSpan.FromSeconds(3));
                     status = r.Status;
+                    // Trampa T4: el custodio manda el mismo webhook dos veces
+                    if (Chaos.TrapOn("T4") && r.Ok)
+                        await Downstream.SendUrl(HttpMethod.Post, w.Url, body, new Dictionary<string, string> { ["X-Custodian-Signature"] = "sha256=" + Canonical.HmacHex(WebhookSecret, body) }, TimeSpan.FromSeconds(3));
                 }
                 catch { status = 599; }
                 db.Execute("UPDATE batches SET webhook_attempts = webhook_attempts + 1, webhook_status = @status, next_webhook_ticks = @next WHERE batch_id = @id",

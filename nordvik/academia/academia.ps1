@@ -37,7 +37,8 @@ function Test-Port([int]$port) {
 
 # El tramo 1 (L00-L15) cabe en nivel-0; el tramo 2 (L16 en adelante) necesita nivel-6.
 function Get-PerfilNecesario([string]$leccion) {
-  if ($leccion -eq 'todas' -or $leccion -match '^L(2[2-9]|[3-9]\d)') { return @{ Perfil = 'nivel-9'; Puerto = 7108 } }
+  if ($leccion -eq 'todas' -or $leccion -match '^L(2[89]|[3-9]\d)') { return @{ Perfil = 'completo'; Puerto = 7604 } }
+  if ($leccion -match '^L2[2-7]') { return @{ Perfil = 'nivel-9'; Puerto = 7108 } }
   if ($leccion -match '^L(1[6-9]|2[01])') { return @{ Perfil = 'nivel-6'; Puerto = 6700 } }
   return @{ Perfil = 'nivel-0'; Puerto = 6801 }
 }

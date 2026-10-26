@@ -15,13 +15,13 @@ public sealed record MasterAgreementRequest(string? CustomerId);
 /// composition-service: une varias APIs en un solo JSON (casos C1-C10 del documento de contratos).
 /// Reglas comunes: sources[] con servicio, versión y hora de cada origen; si un origen tarda más de 2 s o falla, la respuesta llega igual
 /// con status PARTIAL y su nombre en missing (nunca un 500); X-Composition-Trace: true añade las respuestas crudas de cada origen.
-/// Los casos de las oleadas 3 y 4 responden 501 hasta que existan sus servicios.
+/// C7 (plan de pensión), C8 (expediente de traspaso), C9 (resumen de llamada) y C10 (portabilidad) usan los servicios de las oleadas 3 y 4.
 /// </summary>
 public sealed class CompositionService : INordvikService
 {
     public NordvikServiceInfo Info { get; } = new(
         "composition-service", "B-platform", 6107, 2, "Plataforma",
-        "Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco con fusión profunda (C5), mandato (C6).",
+        "Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco (C5), mandato (C6), plan de pensión (C7), traspaso (C8), llamada (C9) y portabilidad (C10).",
         "2.0.0",
         DependsOn: new[] { "contract-service", "document-vault", "position-keeping", "product-catalog", "valuation-service", "ledger-service", "customer-registry",
             "preferences-service", "portfolio-service", "contract-template-service", "clock-service" });
@@ -265,9 +265,79 @@ public sealed class CompositionService : INordvikService
             return c.Result(new { call, summary, insights = insights?.GetProperty("items"), citedClause = clause });
         }).WithSummary("C9 · Resumen de llamada + datos confirmados + la cláusula del mandato que citó el cliente");
 
-        foreach (var (path, wave, name) in new[] { ("/pension-plan/{id}", 3, "C7"), ("/transfer-dossier/{id}", 3, "C8"), ("/portability-export/{id}", 4, "C10") })
-            g.MapMethods(path, new[] { "GET", "POST" }, (HttpContext http, string id) =>
-                Problems.Of(http, 501, "COMPOSITION_NOT_AVAILABLE_YET", "Aún no disponible", $"La composición {name} llega con la oleada {wave}.", "Mira el plan de oleadas en el documento del sistema."))
-                .WithSummary($"{name} · llega con la oleada {wave}");
+        // C7 · plan de pensión completo: plan valorado + aportaciones + beneficiarios + consolidación + cobro + seguros
+        g.MapGet("/pension-plan/{id}", async (HttpContext http, string id) =>
+        {
+            if (NeedAuth(http) is { } d) return d;
+            var c = new Ctx { Http = http, Clock = clock };
+            var plan = await c.Fetch("plan", "pension-plan-service", $"/api/v1/pension-plans/{id}");
+            if (plan is null) return Results.Content(c.Raw["plan"]!.ToJsonString(), "application/problem+json; charset=utf-8", System.Text.Encoding.UTF8, c.Sources[0].Status);
+            var customerId = plan.Value.GetProperty("plan").GetProperty("customerId").GetString();
+            var contributions = await c.Fetch("contributions", "contribution-service", $"/api/v1/pension-plans/{id}/contributions");
+            var beneficiaries = await c.Fetch("beneficiaries", "beneficiary-service", $"/api/v1/pension-plans/{id}/beneficiaries");
+            var vesting = await c.Fetch("vesting", "vesting-service", $"/api/v1/pension-plans/{id}/vesting");
+            var payout = await c.Fetch("payout", "payout-planner", $"/api/v1/internal/payout-plans?pensionPlanId={id}", forwardAuth: false);
+            var insurance = await c.Fetch("insurance", "insurance-policy", $"/api/v1/internal/insurance-policies?customerId={customerId}", forwardAuth: false);
+            var items = contributions is { } ct && ct.TryGetProperty("items", out var it) ? it.EnumerateArray().ToList() : new List<JsonElement>();
+            return c.Result(new
+            {
+                plan = plan.Value.GetProperty("plan"), value = plan.Value.GetProperty("value"),
+                contributions = new
+                {
+                    count = items.Count,
+                    total = items.Sum(x => D(x.GetProperty("amount").GetProperty("amount").GetString()!)).ToString("F2", CultureInfo.InvariantCulture),
+                    bySource = items.GroupBy(x => x.GetProperty("source").GetString()).OrderBy(gr => gr.Key)
+                        .Select(gr => new { source = gr.Key, count = gr.Count(), total = gr.Sum(x => D(x.GetProperty("amount").GetProperty("amount").GetString()!)).ToString("F2", CultureInfo.InvariantCulture) }),
+                },
+                beneficiaries = beneficiaries?.GetProperty("beneficiaries"), vesting,
+                payoutPlans = payout?.GetProperty("items"),
+                insurance = insurance?.GetProperty("items").EnumerateArray().Where(x => x.GetProperty("pensionPlanId").GetString() == id).ToList(),
+            });
+        }).WithSummary("C7 · Plan de pensión completo: valor, aportaciones por origen, beneficiarios, consolidación, plan de cobro y seguros");
+
+        // C8 · expediente de traspaso: traspaso + valoración + plan destino + aportación resultante
+        g.MapGet("/transfer-dossier/{id}", async (HttpContext http, string id) =>
+        {
+            if (NeedAuth(http) is { } d) return d;
+            var c = new Ctx { Http = http, Clock = clock };
+            var transfer = await c.Fetch("transfer", "transfer-service", $"/api/v1/transfers/{id}");
+            if (transfer is null) return Results.Content(c.Raw["transfer"]!.ToJsonString(), "application/problem+json; charset=utf-8", System.Text.Encoding.UTF8, c.Sources[0].Status);
+            var t = transfer.Value;
+            var valuation = await c.Fetch("valuation", "transfer-valuation", $"/api/v1/transfer-valuations/{t.GetProperty("valuationId").GetString()}");
+            var plan = await c.Fetch("targetPlan", "pension-plan-service", $"/api/v1/pension-plans/{t.GetProperty("targetPlanId").GetString()}");
+            JsonElement? contribution = null;
+            if (t.GetProperty("contributionId").ValueKind == JsonValueKind.String)
+                contribution = await c.Fetch("contribution", "contribution-service", $"/api/v1/contributions/{t.GetProperty("contributionId").GetString()}");
+            var steps = t.GetProperty("history").EnumerateArray().Select(h => new { to = h.GetProperty("to").GetString(), at = h.GetProperty("at").GetString(), by = h.GetProperty("by").GetString() }).ToList();
+            return c.Result(new
+            {
+                transfer = new { id, status = t.GetProperty("status").GetString(), providerCode = t.GetProperty("providerCode").GetString(), policyNumber = t.GetProperty("policyNumber").GetString(),
+                                 valuedAmount = t.GetProperty("valuedAmount"), receivedAmount = t.GetProperty("receivedAmount"), deviationPct = t.GetProperty("deviationPct") },
+                timeline = steps, valuation, targetPlan = plan?.GetProperty("plan"), targetPlanValue = plan?.GetProperty("value"), contribution,
+            });
+        }).WithSummary("C8 · Expediente de traspaso: estado, línea de tiempo, valoración, plan destino y aportación");
+
+        // C10 · exportación de portabilidad: lo que el cliente aportó, en un formato estable, reunido de varios servicios
+        g.MapGet("/portability-export/{customerId}", async (HttpContext http, string customerId) =>
+        {
+            if (NeedAuth(http) is { } d) return d;
+            var c = new Ctx { Http = http, Clock = clock };
+            var customer = await c.Fetch("customer", "customer-registry", $"/api/v1/customers/{customerId}");
+            if (customer is null) return Results.Content(c.Raw["customer"]!.ToJsonString(), "application/problem+json; charset=utf-8", System.Text.Encoding.UTF8, c.Sources[0].Status);
+            var prefs = await c.Fetch("preferences", "preferences-service", $"/api/v1/customers/{customerId}/preferences");
+            var consents = await c.Fetch("consents", "consent-ledger", $"/api/v1/customers/{customerId}/consents");
+            var portfolios = await c.Fetch("portfolios", "portfolio-service", $"/api/v1/customers/{customerId}/portfolios");
+            var plans = await c.Fetch("pensionPlans", "pension-plan-service", $"/api/v1/customers/{customerId}/pension-plans");
+            var cu = customer.Value;
+            string? S(string n) => cu.TryGetProperty(n, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
+            return c.Result(new
+            {
+                format = "nordvik-portability-v1", exportedAt = Nordic.Iso(clock.LocalNow),
+                subject = new { firstName = S("firstName"), lastName = S("lastName"), nationalId = S("nationalId"), email = S("email"), phone = S("phone"), language = S("language") },
+                preferences = prefs, consents = consents?.GetProperty("consents"),
+                portfolios = portfolios?.EnumerateArray().Select(x => new { id = x.GetProperty("id").GetString(), type = x.GetProperty("type").GetString(), targetAllocation = x.GetProperty("targetAllocation") }).ToList(),
+                pensionPlans = plans?.GetProperty("items").EnumerateArray().Select(x => new { id = x.GetProperty("id").GetString(), type = x.GetProperty("type").GetString(), status = x.GetProperty("status").GetString() }).ToList(),
+            }, "Cada origen aplica sus permisos: un asesor ve el número nacional enmascarado.");
+        }).WithSummary("C10 · Exportación de portabilidad (art. 20) reunida de cinco servicios");
     }
 }

@@ -118,7 +118,9 @@ public sealed class CustomerRegistry : INordvikService
 
             using (var db = ctx.OpenDb())
                 if (db.ExecuteScalar<long>("SELECT COUNT(*) FROM customers WHERE national_id = @n", new { n = nid.Normalized }) > 0)
-                    return Problems.Conflict(http, "CUSTOMER_ALREADY_EXISTS", "Ya existe un cliente con ese número nacional.", "Genera una persona nueva para cada test.");
+                    return Problems.Conflict(http, "CUSTOMER_ALREADY_EXISTS",
+                        Chaos.TrapOn("T15") ? $"Ya existe un cliente con el número nacional {nid.Normalized}." : "Ya existe un cliente con ese número nacional.", // Trampa T15
+                        "Genera una persona nueva para cada test.");
 
             await Downstream.Post(http, "sequence-service", "/api/v1/sequences", new { name = "customer-number", prefix = "CUS", padding = 6 }, forwardAuth: false);
             var next = await Downstream.Post(http, "sequence-service", "/api/v1/sequences/customer-number/next", null, forwardAuth: false);

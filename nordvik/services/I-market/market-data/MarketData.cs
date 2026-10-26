@@ -109,6 +109,9 @@ public sealed class MarketData : INordvikService
             if (fund is null) return problem!;
             var d = LastPublishedDate(clock);
             var etag = $"\"{isin}-{Money.Date(d)}\"";
+            // Trampa T7: la caché sigue respondiendo 304 al ETag del día anterior aunque ya haya NAV nuevo
+            var stale = $"\"{isin}-{Money.Date(NordicCalendar.AddTradingDays("XSTO", d, -1))}\"";
+            if (Chaos.TrapOn("T7") && http.Request.Headers.IfNoneMatch.ToString() == stale) { http.Response.Headers.ETag = stale; return Results.StatusCode(304); }
             if (http.Request.Headers.IfNoneMatch.ToString() == etag)
             {
                 http.Response.Headers.ETag = etag;

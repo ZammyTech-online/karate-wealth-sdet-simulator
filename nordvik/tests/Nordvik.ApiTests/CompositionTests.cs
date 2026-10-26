@@ -115,7 +115,7 @@ public class CompositionTests : IAsyncLifetime
         Assert.Equal("ISK-01", mine.GetProperty("code").GetString());
         Assert.True(mine.TryGetProperty("condition", out _)); // viene de la plantilla
         await _f.Send(HttpMethod.Put, Ports.Preferences, $"/api/v1/customers/{SeedIds.CustomerLars}/preferences", "{\"language\":\"sv\",\"channel\":\"EMAIL\",\"marketingConsent\":false}", NordvikFixture.Bearer(lars));
-        Assert.Equal(501, (await _f.Get(Ports.Composition, "/api/v2/compositions/transfer-dossier/x", NordvikFixture.Bearer(lars))).Code);
+        (await _f.Get(Ports.Composition, "/api/v2/compositions/transfer-dossier/x", NordvikFixture.Bearer(lars))).ShouldBeProblem(404, "TRANSFER_NOT_FOUND");
     }
 }
 

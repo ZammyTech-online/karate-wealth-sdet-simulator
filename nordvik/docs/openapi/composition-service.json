@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "composition-service",
-    "description": "Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco con fusión profunda (C5), mandato (C6).\n\nDominio: B-platform · Equipo: Plataforma · Oleada: 2 · Puerto: 6107\n\nDepende de: contract-service, document-vault, position-keeping, product-catalog, valuation-service, ledger-service, customer-registry, preferences-service, portfolio-service, contract-template-service, clock-service",
+    "description": "Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco (C5), mandato (C6), plan de pensión (C7), traspaso (C8), llamada (C9) y portabilidad (C10).\n\nDominio: B-platform · Equipo: Plataforma · Oleada: 2 · Puerto: 6107\n\nDepende de: contract-service, document-vault, position-keeping, product-catalog, valuation-service, ledger-service, customer-registry, preferences-service, portfolio-service, contract-template-service, clock-service",
     "version": "2.0.0"
   },
   "paths": {
@@ -194,26 +194,6 @@
             "description": "Success"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "Composiciones"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
       }
     },
     "/api/v2/compositions/transfer-dossier/{id}": {
@@ -236,56 +216,16 @@
             "description": "Success"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "Composiciones"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
       }
     },
-    "/api/v2/compositions/portability-export/{id}": {
+    "/api/v2/compositions/portability-export/{customerId}": {
       "get": {
         "tags": [
           "Composiciones"
         ],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Composiciones"
-        ],
-        "parameters": [
-          {
-            "name": "id",
+            "name": "customerId",
             "in": "path",
             "required": true,
             "schema": {

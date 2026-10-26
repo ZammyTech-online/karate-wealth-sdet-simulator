@@ -165,6 +165,32 @@ public class PensionRulesTests
     }
 
     [Fact]
+    public async Task C7_and_C10_compose_the_whole_plan_and_the_portability_export()
+    {
+        var c = await People.Clean(_f);
+        var nid = await TestData.NationalIdOf(_f, c);
+        var plan = await Pensions.PlanId(_f, c);
+        Assert.Equal(201, (await Pensions.Contribute(_f, plan, "1000.00")).Code);
+        Assert.Equal(201, (await Pensions.Contribute(_f, plan, "500.00")).Code);
+        var erik = NordvikFixture.Bearer(await _f.Erik());
+        var r = await _f.Get(Ports.Composition, $"/api/v2/compositions/pension-plan/{plan}", erik);
+        Assert.True(r.Code == 200, r.Body);
+        Assert.Equal("COMPLETE", r.Str("status"));
+        var b = r.Json.GetProperty("bundle");
+        Assert.Equal(2, b.GetProperty("contributions").GetProperty("count").GetInt32());
+        Assert.Equal("1500.00", b.GetProperty("contributions").GetProperty("total").GetString());
+        Assert.Equal("PRIVATE", b.GetProperty("contributions").GetProperty("bySource")[0].GetProperty("source").GetString());
+        Assert.Equal(100m, b.GetProperty("vesting").GetProperty("vestedPct").GetDecimal());
+        Assert.Equal(0, b.GetProperty("payoutPlans").GetArrayLength());
+        Assert.Equal(6, r.Json.GetProperty("sources").GetArrayLength());
+        (await _f.Get(Ports.Composition, $"/api/v2/compositions/pension-plan/{plan}", NordvikFixture.Bearer(await _f.Ana()))).ShouldBeProblem(404, "PLAN_NOT_FOUND");
+        var x = await _f.Get(Ports.Composition, $"/api/v2/compositions/portability-export/{c}", erik);
+        Assert.Equal("nordvik-portability-v1", x.Json.GetProperty("bundle").GetProperty("format").GetString());
+        Assert.DoesNotContain(nid, x.Body); // el asesor ve el número enmascarado: cada origen aplica sus permisos
+        Assert.Equal(1, x.Json.GetProperty("bundle").GetProperty("pensionPlans").GetArrayLength());
+    }
+
+    [Fact]
     public async Task Beneficiaries_need_if_match_close_family_and_exactly_100_percent()
     {
         var customer = await People.Clean(_f);
@@ -399,6 +425,18 @@ public class TransferTests : IAsyncLifetime
         Assert.Equal("120600.00", contrib.Json.GetProperty("amount").GetProperty("amount").GetString());
         await TestData.Events(_f, "transfer.completed", id);
         Assert.Equal(1, (await _f.Get(Ports.Transfers, $"/api/v1/customers/{customer}/transfers", NordvikFixture.Bearer(await _f.Erik()))).Int("count"));
+
+        // C8 · el expediente completo en una sola llamada
+        var dossier = await _f.Get(Ports.Composition, $"/api/v2/compositions/transfer-dossier/{id}", NordvikFixture.Bearer(await _f.Erik()));
+        Assert.True(dossier.Code == 200, dossier.Body);
+        Assert.Equal("COMPLETE", dossier.Str("status"));
+        var bundle = dossier.Json.GetProperty("bundle");
+        Assert.Equal(4, bundle.GetProperty("timeline").GetArrayLength());
+        Assert.Equal("TRANSFER", bundle.GetProperty("contribution").GetProperty("source").GetString());
+        Assert.Equal("READY", bundle.GetProperty("valuation").GetProperty("status").GetString());
+        Assert.Equal(plan, bundle.GetProperty("targetPlan").GetProperty("id").GetString());
+        Assert.Equal(4, dossier.Json.GetProperty("sources").GetArrayLength());
+        (await _f.Get(Ports.Composition, $"/api/v2/compositions/transfer-dossier/{id}", NordvikFixture.Bearer(await _f.Ana()))).ShouldBeProblem(404, "CUSTOMER_NOT_FOUND");
     }
 
     [Fact]

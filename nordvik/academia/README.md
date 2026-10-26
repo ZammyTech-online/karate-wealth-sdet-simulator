@@ -81,6 +81,21 @@ Necesita el perfil completo: `nordvik up -Profile nivel-9` (la academia lo arran
 
 Ayudantes nuevos: `_cliente.feature`, `_cliente-con-grabacion.feature`, `_hmac.js`, `_org.js` y `_traspaso-listo.feature`.
 
+## Tramo 4 · La empresa completa: heredados, máquinas, contratos y calidad (L28-L33)
+
+Necesita el perfil completo: `nordvik up -Profile completo` (168 procesos, unos 300 MB; la academia lo arranca sola).
+
+| Lección | Qué aprendes |
+| --- | --- |
+| L28 | XML y SOAP: `soap action`, XPath, SOAP Faults con HTTP 500 y WSDL |
+| L29 | Ficheros de ancho fijo: construir y leer líneas de 80 columnas, códigos de retorno y ventana de lote |
+| L30 | OAuth2 entre máquinas: client credentials, tokens caducados y renovación |
+| L31 | Contratos y esquemas: esquemas en Karate, registro de esquemas compatible y deriva de OpenAPI (trampa T9) |
+| L32 | Tests inestables: medir tu suite con test-insights (flaky, tendencia, lentos) |
+| L33 | Proyecto final: el derecho al olvido de punta a punta en cinco servicios |
+
+Ayudantes nuevos: `_persona.feature` y `_plan.feature`.
+
 ## Todos los comandos
 
 | Comando | Qué hace |

@@ -548,9 +548,47 @@ Publica: employment-service · Consumen: audit-service
 
 Publica: erasure-orchestrator · Consumen: audit-service
 
+Ejemplo real (el primero que hay en el bus):
+
+```json
+{
+  "eventId": "evt_0df05813a8e7401f961c64217107a420",
+  "seq": 946,
+  "topic": "erasure.blocked",
+  "key": "era_f199f9394938",
+  "producer": "erasure-orchestrator",
+  "occurredAt": "2026-10-26T08:05:15.854+01:00",
+  "correlationId": "corr-8cb30331fd6b4ac4",
+  "schemaVersion": 1,
+  "payload": {
+    "requestId": "era_f199f9394938",
+    "blockers": 1
+  }
+}
+```
+
 ## erasure.completed
 
 Publica: erasure-orchestrator · Consumen: audit-service
+
+Ejemplo real (el primero que hay en el bus):
+
+```json
+{
+  "eventId": "evt_6e043a8de304463589ab506e07cd67df",
+  "seq": 937,
+  "topic": "erasure.completed",
+  "key": "era_4b6c47d6c71b",
+  "producer": "erasure-orchestrator",
+  "occurredAt": "2026-10-26T08:05:07.652+01:00",
+  "correlationId": "corr-03ee0ec370ac4c1d",
+  "schemaVersion": 1,
+  "payload": {
+    "requestId": "era_4b6c47d6c71b",
+    "blockers": 0
+  }
+}
+```
 
 ## fees.billed
 

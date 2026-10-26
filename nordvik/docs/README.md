@@ -42,7 +42,7 @@ Generado automáticamente a partir de los servicios en marcha (perfil **completo
 | [bff-web](services/bff-web.md) | 6104 | Canales digitales | 2 | 4 | API a medida de la web del cliente: panel en una llamada (cliente, efectivo, carteras valoradas, órdenes recientes, notificaciones). |
 | [bff-mobile](services/bff-mobile.md) | 6105 | Canales digitales | 2 | 5 | API de la app: inicio compacto, órdenes paginadas por cursor y ?fields= para pedir solo algunos campos. |
 | [bff-advisor](services/bff-advisor.md) | 6106 | Canales digitales | 2 | 6 | API del escritorio del asesor: sus clientes con carteras y valor, ficha del cliente (vía composition-service) y alertas de desviación. |
-| [composition-service](services/composition-service.md) | 6107 | Plataforma | 2 | 16 | Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco con fusión profunda (C5), mandato (C6). |
+| [composition-service](services/composition-service.md) | 6107 | Plataforma | 2 | 13 | Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco (C5), mandato (C6), plan de pensión (C7), traspaso (C8), llamada (C9) y portabilidad (C10). |
 | [correlation-tracer](services/correlation-tracer.md) | 6108 | Plataforma | 2 | 4 | Reconstruye la cadena de llamadas de un correlationId a partir de los logs (servicio, ruta, estado, duración y anidamiento). |
 | [secrets-service](services/secrets-service.md) | 6109 | Plataforma | 3 | 9 | Secretos con versiones (claves de webhooks, API keys de los simuladores), rotación con periodo de gracia y verificación sin revelar el valor. |
 | [service-registry](services/service-registry.md) | 6110 | Plataforma | 4 | 8 | Registro de servicios: puerto, versión, dominio y oleada de cada uno, dependencias directas y transitivas, dependientes y sondeo de salud. |
@@ -270,4 +270,4 @@ Generado automáticamente a partir de los servicios en marcha (perfil **completo
 | [insurer-sim](services/insurer-sim.md) | 7711 | Sistema externo (simulado) | 4 | 16 | E11 Aseguradora: OAuth2 client credentials con caducidad, suscripción médica sin guardar respuestas, pólizas y siniestros con decisión manual. |
 | [telephony-sim](services/telephony-sim.md) | 7712 | Sistema externo (simulado) | 3 | 10 | E12 Telefonía: llamadas del proveedor y guiones de turnos ya reconocidos (V2-V9, es/sv/en) con variables {PNR} e {IBAN}; guiones propios en /__admin/scripts. |
 
-**168 servicios · 1407 endpoints documentados.**
+**168 servicios · 1404 endpoints documentados.**

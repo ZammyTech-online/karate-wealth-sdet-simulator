@@ -90,6 +90,7 @@ public sealed class OutboxRelay : INordvikService
                         correlationId = e.GetProperty("correlationId").ValueKind == JsonValueKind.String ? e.GetProperty("correlationId").GetString() : null,
                         schemaVersion = e.GetProperty("schemaVersion").GetInt32(), payload = e.GetProperty("payload"),
                     }).ToList();
+                    if (Chaos.TrapOn("T5")) events.Reverse(); // Trampa T5: el lote se publica al revés
                     var pub = await Downstream.Post(null, "event-bus", "/api/v1/events", events);
                     if (!pub.Ok) { _state[producer] = ("BUS_ERROR", "event-bus respondió " + pub.Status, DateTimeOffset.UtcNow.AddSeconds(1)); continue; }
                     var last = page.Json.GetProperty("lastSeq").GetInt64();

@@ -121,7 +121,8 @@ public sealed class OrderManagement : INordvikService
                     holdId = hold.Str("id");
                 }
                 var cut = TimeSpan.Parse(await Config.Get(http, "order-management", "cutOffTime", "15:00"), CultureInfo.InvariantCulture);
-                var (tradeDate, moved) = TradeDateFor(clock.LocalNow, cut);
+                // Trampa T2: se suma otra vez el desfase de Estocolmo a una hora que ya era local (14:30 → 16:30, pasada la hora de corte)
+                var (tradeDate, moved) = TradeDateFor(Chaos.TrapOn("T2") ? clock.LocalNow.Add(Nordic.Stockholm.GetUtcOffset(clock.UtcNow)) : clock.LocalNow, cut);
                 var now = Nordic.Iso(clock.LocalNow);
                 var seq = (db.ExecuteScalar<long?>("SELECT MAX(seq) FROM orders") ?? 0) + 1;
                 using var tx = db.BeginTransaction();

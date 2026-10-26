@@ -1,0 +1,73 @@
+Test run for D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\bin\Debug\net8.0\Nordvik.ApiTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+dotnet : [xUnit.net 00:00:50.62]     Nordvik.ApiTests.TrapTests.T3_summer_time_is_ignored [FAIL]
+At line:1 char:33
++ ... TE\nordvik; dotnet test tests/Nordvik.ApiTests --no-build -nodeReuse: ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([xUnit.net 00:0..._ignored [FAIL]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Failed Nordvik.ApiTests.TrapTests.T3_summer_time_is_ignored [23 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 11
+Actual:   13
+  Stack Trace:
+     at Nordvik.ApiTests.TrapTests.T3_summer_time_is_ignored() in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\TrapTests.cs:line 74
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:01.71]     Nordvik.ApiTests.TrapTests.T20_valuation_skips_the_fx_conversion [FAIL]
+  Failed Nordvik.ApiTests.TrapTests.T20_valuation_skips_the_fx_conversion [10 s]
+  Error Message:
+   No se cumpli├│ a tiempo: orden ord_79637da4b2d541cc en EXECUTED. ├Ültimo valor: Nordvik.ApiTests.Reply
+  Stack Trace:
+     at Nordvik.ApiTests.Eventually.Until[T](Func`1 get, Func`2 ok, Int32 timeoutMs, String what) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\EventInfrastructureTests.cs:line 56
+   at Nordvik.ApiTests.Flows.WaitOrder(NordvikFixture f, String orderId, String status, Int32 timeoutMs) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Flows.cs:line 54
+   at Nordvik.ApiTests.Flows.ExecuteAt1805(NordvikFixture f, String orderId, String tradeDate) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Flows.cs:line 63
+   at Nordvik.ApiTests.TrapTests.T20_valuation_skips_the_fx_conversion() in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\TrapTests.cs:line 187
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:02.61]     Nordvik.ApiTests.TrapTests.T2_cut_off_applies_the_stockholm_offset_twice [FAIL]
+  Failed Nordvik.ApiTests.TrapTests.T2_cut_off_applies_the_stockholm_offset_twice [866 ms]
+  Error Message:
+   System.Collections.Generic.KeyNotFoundException : The given key was not present in the dictionary.
+  Stack Trace:
+     at System.Text.Json.JsonElement.GetProperty(String propertyName)
+   at Nordvik.ApiTests.Reply.Str(String prop) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Infrastructure.cs:line 197
+   at Nordvik.ApiTests.TrapTests.T2_cut_off_applies_the_stockholm_offset_twice() in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\TrapTests.cs:line 55
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:13.35]     Nordvik.ApiTests.TrapTests.T1_custodian_rounds_half_up_instead_of_truncating [FAIL]
+  Failed Nordvik.ApiTests.TrapTests.T1_custodian_rounds_half_up_instead_of_truncating [10 s]
+  Error Message:
+   No se cumpli├│ a tiempo: orden ord_453aa3a2b798407e en EXECUTED. ├Ültimo valor: Nordvik.ApiTests.Reply
+  Stack Trace:
+     at Nordvik.ApiTests.Eventually.Until[T](Func`1 get, Func`2 ok, Int32 timeoutMs, String what) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\EventInfrastructureTests.cs:line 56
+   at Nordvik.ApiTests.Flows.WaitOrder(NordvikFixture f, String orderId, String status, Int32 timeoutMs) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Flows.cs:line 54
+   at Nordvik.ApiTests.Flows.ExecuteAt1805(NordvikFixture f, String orderId, String tradeDate) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Flows.cs:line 63
+   at Nordvik.ApiTests.TrapTests.T1_custodian_rounds_half_up_instead_of_truncating() in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\TrapTests.cs:line 43
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:24.32]     Nordvik.ApiTests.TrapTests.T4_custodian_sends_every_webhook_twice [FAIL]
+  Failed Nordvik.ApiTests.TrapTests.T4_custodian_sends_every_webhook_twice [10 s]
+  Error Message:
+   No se cumpli├│ a tiempo: orden ord_b305030e219b4f3c en EXECUTED. ├Ültimo valor: Nordvik.ApiTests.Reply
+  Stack Trace:
+     at Nordvik.ApiTests.Eventually.Until[T](Func`1 get, Func`2 ok, Int32 timeoutMs, String what) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\EventInfrastructureTests.cs:line 56
+   at Nordvik.ApiTests.Flows.WaitOrder(NordvikFixture f, String orderId, String status, Int32 timeoutMs) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Flows.cs:line 54
+   at Nordvik.ApiTests.Flows.ExecuteAt1805(NordvikFixture f, String orderId, String tradeDate) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Flows.cs:line 63
+   at Nordvik.ApiTests.TrapTests.T4_custodian_sends_every_webhook_twice() in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\TrapTests.cs:line 88
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:25.35]     Nordvik.ApiTests.TrapTests.T19_custodian_takes_eight_seconds_to_accept_a_batch [FAIL]
+  Failed Nordvik.ApiTests.TrapTests.T19_custodian_takes_eight_seconds_to_accept_a_batch [22 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+                       Γåô (pos 12)
+Expected: "application/problem+json"
+Actual:   "application/json"
+                       Γåæ (pos 12)
+  Stack Trace:
+     at Nordvik.ApiTests.Reply.ShouldBeProblem(Int32 status, String code) in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\Infrastructure.cs:line 205
+   at Nordvik.ApiTests.TrapTests.T19_custodian_takes_eight_seconds_to_accept_a_batch() in D:\WORKSPACE_KARATE\nordvik\tests\Nordvik.ApiTests\TrapTests.cs:line 173
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:     6, Passed:    20, Skipped:     0, Total:    26, Duration: 47 s - Nordvik.ApiTests.dll (net8.0)

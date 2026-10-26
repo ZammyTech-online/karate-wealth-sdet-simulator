@@ -1,6 +1,6 @@
 # composition-service
 
-Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco con fusión profunda (C5), mandato (C6).
+Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto mensual (C3), ficha 360 (C4), contrato marco (C5), mandato (C6), plan de pensión (C7), traspaso (C8), llamada (C9) y portabilidad (C10).
 
 | Dato | Valor |
 | --- | --- |
@@ -16,7 +16,7 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 | Swagger | http://localhost:6107/swagger |
 | Colección Bruno | `collections/plataforma` |
 
-## Endpoints (16)
+## Endpoints (13)
 
 | Método | Ruta | Para qué |
 | --- | --- | --- |
@@ -29,11 +29,8 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 | `POST` | `/api/v2/compositions/master-agreement` |  |
 | `GET` | `/api/v2/compositions/monthly-statement/{portfolioId}` |  |
 | `GET` | `/api/v2/compositions/pension-plan/{id}` |  |
-| `POST` | `/api/v2/compositions/pension-plan/{id}` |  |
-| `GET` | `/api/v2/compositions/portability-export/{id}` |  |
-| `POST` | `/api/v2/compositions/portability-export/{id}` |  |
+| `GET` | `/api/v2/compositions/portability-export/{customerId}` |  |
 | `GET` | `/api/v2/compositions/transfer-dossier/{id}` |  |
-| `POST` | `/api/v2/compositions/transfer-dossier/{id}` |  |
 | `GET` | `/health` |  |
 | `GET` | `/info` |  |
 
@@ -192,7 +189,7 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 | 200 | Success |
 | 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
 
-### POST /api/v2/compositions/pension-plan/{id}
+### GET /api/v2/compositions/portability-export/{customerId}
 
 
 
@@ -200,41 +197,7 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 
 | Nombre | Dónde | Tipo | Obligatorio |
 | --- | --- | --- | --- |
-| `id` | path | string | sí |
-
-**Respuestas**
-
-| Código | Contenido |
-| --- | --- |
-| 200 | Success |
-| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
-
-### GET /api/v2/compositions/portability-export/{id}
-
-
-
-**Parámetros**
-
-| Nombre | Dónde | Tipo | Obligatorio |
-| --- | --- | --- | --- |
-| `id` | path | string | sí |
-
-**Respuestas**
-
-| Código | Contenido |
-| --- | --- |
-| 200 | Success |
-| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
-
-### POST /api/v2/compositions/portability-export/{id}
-
-
-
-**Parámetros**
-
-| Nombre | Dónde | Tipo | Obligatorio |
-| --- | --- | --- | --- |
-| `id` | path | string | sí |
+| `customerId` | path | string | sí |
 
 **Respuestas**
 
@@ -244,23 +207,6 @@ Composición de APIs: contrato + anexo (C1), posiciones con fondo (C2), extracto
 | 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
 
 ### GET /api/v2/compositions/transfer-dossier/{id}
-
-
-
-**Parámetros**
-
-| Nombre | Dónde | Tipo | Obligatorio |
-| --- | --- | --- | --- |
-| `id` | path | string | sí |
-
-**Respuestas**
-
-| Código | Contenido |
-| --- | --- |
-| 200 | Success |
-| 4xx | Error RFC 9457: `type`, `title`, `status`, `detail`, `instance`, `code`, `correlationId`, `service`, `hint` (modo didáctico), `errors[]` (validación) |
-
-### POST /api/v2/compositions/transfer-dossier/{id}
 
 
 
