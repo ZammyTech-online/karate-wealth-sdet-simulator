@@ -49,6 +49,10 @@ var settings = new HostSettings(root, dataDir, logDir, learning, clockUrl, profi
 
 // El Supervisor enciende y apaga servicios en caliente (ADR-014); la Torre de control (puerto 3000) lo maneja desde el navegador.
 var supervisor = new Supervisor(catalog.Values, settings);
+Escalera? escalera = null;
+try { escalera = new Escalera(root, catalog); } catch { /* sin escalera la torre no arranca, pero los servicios sí */ }
+var hotChanges = 0;
+IReadOnlyDictionary<string, string> failedAtStart = new Dictionary<string, string>();
 void WriteHostJson(Supervisor s) =>
     File.WriteAllText(Path.Combine(dataDir, "host.json"), JsonSerializer.Serialize(new
     {
@@ -57,11 +61,16 @@ void WriteHostJson(Supervisor s) =>
         only = Arg("--only") is { Length: > 0 },
         startedAt = DateTimeOffset.Now.ToString("O"),
         tower = args.Contains("--no-tower") ? null : $"http://localhost:{ControlTower.Port}",
+        // Nivel de la escalera entero encendido ahora mismo y cuántos cambios en caliente ha habido desde el arranque
+        level = escalera is null ? (int?)null : ControlTower.CurrentLevel(s, escalera),
+        hotChanges,
+        failed = failedAtStart.Keys.ToList(),
         services = s.Running.Select(n => new { name = n, port = catalog[n].Info.Port }).OrderBy(x => x.port).ToList(),
     }, new JsonSerializerOptions { WriteIndented = true }));
 
 var sw = Stopwatch.StartNew();
 var result = await supervisor.Start(wanted, withDependencies: false);
+failedAtStart = result.Failed;
 foreach (var (name, error) in result.Failed)
     Console.Error.WriteLine($"[ERROR] {name} no arrancó en el puerto {catalog[name].Info.Port}: {error}");
 
@@ -82,7 +91,7 @@ if (tower is not null) Console.WriteLine($"  Torre de control: http://localhost:
 Console.WriteLine($"  PID {Environment.ProcessId} · Ctrl+C para parar · logs en {logDir}");
 
 WriteHostJson(supervisor);
-supervisor.Changed += WriteHostJson;
+supervisor.Changed += s => { hotChanges++; WriteHostJson(s); };
 
 var stop = new TaskCompletionSource();
 Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.TrySetResult(); };

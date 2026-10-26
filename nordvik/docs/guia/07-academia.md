@@ -128,7 +128,7 @@ Feature: L00 E01 · El método para leer
 
 Tu avance se guarda en `academia\progreso.json`. La forma más cómoda de verlo es la **Escalera** de la torre: cada nivel muestra `resueltos/total` y cada lección un chip como `L00 · 1/5`.
 
-También existe `.\academia.cmd progreso`, pero en Windows PowerShell 5.1 falla con el error `Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'` (ver [Problemas frecuentes](11-problemas-frecuentes.md)).
+También puedes verlo en la consola con `.\academia.cmd progreso` (una línea por lección, por ejemplo `L00  5/5  #####`).
 
 ## Las 34 lecciones
 

@@ -10,7 +10,7 @@ Nordvik se aprende por niveles. Cada nivel enciende solo los servicios que neces
 | 1 | Básico | Clientes y permisos | `nivel-3` | 30 | L16-L17 | M04-M06 | — |
 | 2 | Intermedio | El dinero se mueve | `nivel-6` | 79 | L18-L21 | M07-M11 | E1 NordID, E4 Custodio, E5 Precios, E6 NordPay |
 | 3 | Avanzado | Datos sensibles y sagas | `nivel-9` | 137 | L22-L27 | M12-M18 | E2, E3, E7, E9, E10, E12 |
-| 4 | Senior | La empresa completa | `completo` | 168 | L28-L33 | M19-M23 | E8 Agencia Tributaria, E11 Aseguradora |
+| 4 | Senior | La empresa completa | `completo` | 168 | L28-L33 | M19-M24 | E8 Agencia Tributaria, E11 Aseguradora |
 
 **La regla.** Un servicio pertenece al nivel de su **oleada** (la tanda en que se construyó). El nivel N enciende todos los servicios con oleada menor o igual que N. Los perfiles `profiles/*.json` contienen exactamente esa lista.
 

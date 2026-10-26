@@ -7,3 +7,4 @@ Las nuevas se escriben aquí, una por fichero.
 | ADR | Título | Estado |
 |---|---|---|
 | [ADR-013](ADR-013-sistemas-externos-simulados.md) | Los sistemas externos se simulan como servicios propios | aceptada |
+| [ADR-014](ADR-014-torre-de-control-y-escalera.md) | Torre de control y escalera de niveles: encender y apagar en caliente | aceptada |

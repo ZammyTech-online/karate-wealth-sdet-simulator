@@ -40,7 +40,7 @@ parar el anfitrión y volver a arrancarlo, y nada relacionaba un perfil con las 
    pasarela `/api/v1/proxy/{servicio}/...` para que la web llame a cualquier servicio sin problemas de CORS.
    El puerto 3000 es el que el plan reservaba para la Academy (el 6000 lo bloquean los navegadores).
 
-4. **Misiones** (M01-M23): un objetivo de negocio de punta a punta con sus servicios clave, pasos (método y ruta reales),
+4. **Misiones** (M01-M24): un objetivo de negocio de punta a punta con sus servicios clave, pasos (método y ruta reales),
    lecciones, flujo y trampas. "Preparar" enciende exactamente lo que hace falta. Cada flujo F-01..F-12 tiene su misión.
 
 5. **La academia pregunta a la torre.** `academia ejemplo L20` lee la escalera para saber el nivel de la lección y, si

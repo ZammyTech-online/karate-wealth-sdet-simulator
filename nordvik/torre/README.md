@@ -15,7 +15,7 @@ solo lo que ese nivel necesita y te da sus lecciones de Karate, sus **misiones**
 | 1 | Básico · Clientes y permisos | identidad, clientes, carteras, generadores | 30 | L16-L17 | M04-M06 |
 | 2 | Intermedio · El dinero se mueve | pagos, órdenes, contratos, composición, E1, E4, E5, E6 | 79 | L18-L21 | M07-M11 |
 | 3 | Avanzado · Datos sensibles y sagas | privacidad, cumplimiento, voz, pensiones, caos, E2, E3, E7, E9, E10, E12 | 137 | L22-L27 | M12-M18 |
-| 4 | Senior · La empresa completa | seguros, fiscalidad, RGPD, heredados, calidad, E8, E11 | 168 | L28-L33 | M19-M23 |
+| 4 | Senior · La empresa completa | seguros, fiscalidad, RGPD, heredados, calidad, E8, E11 | 168 | L28-L33 | M19-M24 |
 
 ## Qué hay aquí
 

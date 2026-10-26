@@ -297,7 +297,6 @@ public static class ControlTower
             solved = ls.Sum(x => x.Solved),
             missions = e.File.Missions.Where(m => m.Level == l.Id).Select(m => new { m.Id, m.Title }).ToList(),
             traps = ChaosControl.Catalog.Where(t => Math.Min(t.Wave, 4) == l.Id).Select(t => new { t.Id, t.Name, t.Nature }).ToList(),
-            learningMode = l.Id < 3,
         };
     }
 

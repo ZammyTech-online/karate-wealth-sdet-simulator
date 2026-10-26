@@ -52,6 +52,10 @@ public static class Pensions
         var orderId = c.Json.GetProperty("orders")[0].GetProperty("orderId").GetString()!;
         var exec = await Flows.ExecuteAt1805(f, orderId, TestData.Tuesday);
         Assert.Equal("EXECUTED", exec.Str("status"));
+        // Las posiciones llegan por eventos justo después de EXECUTED: esperamos a que la cartera del plan ya valga algo
+        var portfolio = (await PlanStatus(f, plan)).Str("portfolioId");
+        await Eventually.Until(() => f.Get(Ports.Valuation, $"/api/v1/internal/portfolios/{portfolio}/valuation"),
+            r => r.Code == 200 && decimal.Parse(r.Str("totalValueSek"), System.Globalization.CultureInfo.InvariantCulture) > 0, 10000, "plan con dinero invertido");
         return (customer, plan);
     }
 

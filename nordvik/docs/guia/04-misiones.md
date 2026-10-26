@@ -1,6 +1,6 @@
 # 4 · Misiones
 
-Una **misión** es algo de negocio que vas a probar de principio a fin: "dar de alta un cliente", "comprar un fondo hasta que se ejecute", "traspasar una pensión". Hay 23 (M01-M23), repartidas por niveles. Cada una dice qué servicios necesita, qué pasos seguir, qué lecciones la cubren, qué flujo de negocio la explica y qué trampas tiene.
+Una **misión** es algo de negocio que vas a probar de principio a fin: "dar de alta un cliente", "comprar un fondo hasta que se ejecute", "traspasar una pensión". Hay 24 (M01-M24), repartidas por niveles. Cada una dice qué servicios necesita, qué pasos seguir, qué lecciones la cubren, qué flujo de negocio la explica y qué trampas tiene.
 
 ## Paso 1 · Abre la pestaña Misiones
 
@@ -65,18 +65,18 @@ Las misiones de los niveles 2 a 4 tienen un chip **Flujo F-0X**. Púlsalo y se a
 | Id | Nivel | Misión | Servicios clave | Lecciones | Flujo | Trampas |
 | --- | --- | --- | --- | --- | --- | --- |
 | M01 | 0 | Explorar el catálogo de fondos | `product-catalog` | L00, L01, L02, L03, L04 | — | — |
-| M02 | 0 | Precio de un fondo en un día hábil | `market-data`, `calendar-service`, `fx-rates` | L05, L06, L11 | — | T7, T20 |
-| M03 | 0 | Viajar en el tiempo | `clock-service`, `calendar-service`, `market-data` | L12, L15 | — | T3 |
-| M04 | 1 | Alta de un cliente | `iam-service`, `synthetic-person-service`, `customer-registry`, `customer-search` | L16 | — | T8, T15 |
+| M02 | 0 | Precio de un fondo en un día hábil | `market-data`, `calendar-service`, `fx-rates` | L05, L06, L11 | — | — |
+| M03 | 0 | Viajar en el tiempo | `clock-service`, `calendar-service`, `market-data` | L12, L15 | — | — |
+| M04 | 1 | Alta de un cliente | `iam-service`, `synthetic-person-service`, `customer-registry`, `customer-search` | L16 | — | — |
 | M05 | 1 | Quién ve qué | `iam-service`, `customer-registry` | L16, L17 | — | — |
 | M06 | 1 | Primera cartera | `iam-service`, `customer-registry`, `portfolio-service`, `allocation-engine` | L17 | — | — |
 | M07 | 2 | Ingreso de dinero | `payments-gateway`, `nordpay-sim`, `nordpay-adapter`, `cash-management`, `ledger-service` | L18 | F-01-ingreso | T6 |
-| M08 | 2 | Orden de compra hasta su ejecución | `order-management`, `order-router`, `custody-adapter`, `custodian-sim`, `execution-service`, `position-keeping`, `valuation-service` | L19 | F-02-orden | T1, T2, T4, T19, T20 |
+| M08 | 2 | Orden de compra hasta su ejecución | `order-management`, `order-router`, `custody-adapter`, `custodian-sim`, `execution-service`, `position-keeping`, `valuation-service` | L19 | F-02-orden | — |
 | M09 | 2 | Contrato y firma electrónica | `contract-service`, `signing-service`, `eid-broker`, `nordid-sim`, `document-vault` | L20 | F-03-contrato | T18 |
 | M10 | 2 | Dos APIs, un JSON | `composition-service`, `contract-service`, `document-vault` | L21 | F-04-composicion | T10 |
 | M11 | 2 | Segundo factor y step-up | `mfa-service`, `step-up-service`, `notification-service`, `payments-gateway` | — | F-05-mfa-step-up | — |
 | M12 | 3 | Tokenizar y triturar | `pii-vault`, `key-management`, `consent-ledger`, `data-passport` | L22 | — | T15, T16 |
-| M13 | 3 | Caos y resiliencia | `chaos-control`, `mock-control`, `sanctions-adapter` | L23 | — | — |
+| M13 | 3 | Caos y resiliencia | `chaos-control`, `mock-control`, `sanctions-adapter` | L23 | — | T4, T15, T19 |
 | M14 | 3 | KYC y sanciones | `kyc-aml-service`, `sanctions-adapter`, `sanctionscreen-sim`, `pep-service`, `risk-scoring` | L24 | — | — |
 | M15 | 3 | Una llamada de voz | `voice-service`, `transcription-service`, `insight-extraction`, `call-summary`, `telephony-sim`, `consent-ledger` | L25 | — | — |
 | M16 | 3 | Fichero mensual de un empleador | `employer-portal-api`, `employer-clearing-sim`, `employer-clearing-adapter`, `employer-file-ingest`, `contribution-service`, `pension-plan-service` | L26 | F-06-fichero-empleador | — |
@@ -87,7 +87,8 @@ Las misiones de los niveles 2 a 4 tienen un chip **Flujo F-0X**. Púlsalo y se a
 | M21 | 4 | Derecho al olvido | `erasure-orchestrator`, `dsar-service`, `breach-service`, `pii-vault`, `key-management`, `consent-ledger`, `customer-registry` | L33 | F-11-derechos-rgpd | T28 |
 | M22 | 4 | Sistemas heredados | `legacy-mainframe-bridge`, `legacy-pensions-soap`, `pension-plan-service` | L28, L29 | F-12-sistemas-heredados | T21, T22 |
 | M23 | 4 | Contratos de API y tests inestables | `schema-registry`, `contract-check`, `test-insights`, `product-catalog` | L31, L32 | — | T9, T26, T29, T30 |
+| M24 | 4 | Cazar las trampas activables | `chaos-control`, `order-management`, `custodian-sim`, `valuation-service`, `customer-search`, `customer-registry`, `market-data`, `outbox-relay`, `product-catalog` | L23, L31, L32 | — | T1, T2, T3, T4, T5, T7, T8, T9, T15, T19, T20 |
 
-> Algunas misiones citan trampas de un nivel superior (por ejemplo M02 cita T7 y T20, que son del nivel 4). Al hacer la misión en su nivel, esas trampas aún no se pueden encender: léelas como aviso de lo que vendrá. Las trampas activables se encienden con `chaos-control`, que llega en el nivel 3.
+> Cada misión solo cita trampas de su nivel o de niveles anteriores. Las once trampas activables se practican juntas en la misión M24 (nivel 4); se encienden con `chaos-control`, que llega en el nivel 3.
 
 Siguiente: [5 · Mapa y fichas](05-mapa-y-fichas.md)

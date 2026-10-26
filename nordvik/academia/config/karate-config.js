@@ -7,18 +7,18 @@ function fn() {
   var host = 'http://localhost';
   var config = {
     env: env,
-    // Oleada 0 · utilidades y mercado
+    // Oleada 0 · utilidades y mercado (nivel 0)
     uuidUrl: host + ':6001',
     sequenceUrl: host + ':6002',
     clockUrl: host + ':6003',
     randomUrl: host + ':6004',
-    personUrl: host + ':6005',
-    ibanUrl: host + ':6007',
     catalogUrl: host + ':6801',
     marketUrl: host + ':6802',
     fxUrl: host + ':6803',
     calendarUrl: host + ':6804',
-    // Oleadas 1 y 2 · identidad, clientes, contratos, inversión y pagos
+    // Oleadas 1 y 2 · datos de prueba, identidad, clientes, contratos, inversión y pagos
+    personUrl: host + ':6005',
+    ibanUrl: host + ':6007',
     iamUrl: host + ':6200',
     customerUrl: host + ':6300',
     notificationUrl: host + ':6600',

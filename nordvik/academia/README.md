@@ -20,7 +20,7 @@ Pistas en tres niveles: la **pista 1** está en el ejercicio, la **pista 2** con
 
 ```text
 1.  cd D:\WORKSPACE_KARATE\nordvik
-    nordvik up -Nivel 0           (arranca los 8 servicios del nivel 0, unos 70 MB de RAM)
+    nordvik up -Nivel 0           (arranca los 8 servicios del nivel 0, unos 100 MB de RAM)
     nordvik torre                 (opcional: la Torre de control en http://localhost:3000)
 
 2.  cd academia

@@ -17,7 +17,7 @@ Cada paso tiene tres partes: la **acción** (un comando o un clic), **lo que ves
 | 1 | [Arrancar Nordvik](01-arrancar.md) | `nordvik niveles`, `up -Nivel 0`, `status`, `torre`, `down`, `reset` |
 | 2 | [La Torre de control](02-torre-de-control.md) | La web de `http://localhost:3000`: barra de estado, pestañas, enlaces directos y su API |
 | 3 | [Los niveles](03-niveles.md) | Los 5 niveles, sus checkpoints y cómo cambiar de nivel en caliente |
-| 4 | [Misiones](04-misiones.md) | Las 23 misiones de negocio: preparar, seguir pasos, probar |
+| 4 | [Misiones](04-misiones.md) | Las 24 misiones de negocio: preparar, seguir pasos, probar |
 | 5 | [Mapa y fichas](05-mapa-y-fichas.md) | Los 168 servicios por dominio, encender y apagar, dependencias, la ficha de un servicio |
 | 6 | [Laboratorio](06-laboratorio.md) | Reloj virtual, fallos a propósito y las 30 trampas |
 | 7 | [La academia](07-academia.md) | Las 34 lecciones y 187 ejercicios, y el comando `academia` |
@@ -36,7 +36,7 @@ Cada paso tiene tres partes: la **acción** (un comando o un clic), **lo que ves
 | Torre de control | `http://localhost:3000` |
 | Niveles | 0 Principiante, 1 Básico, 2 Intermedio, 3 Avanzado, 4 Senior (`torre/escalera.json`) |
 | Academia | `academia/`: 34 lecciones (L00-L33), 187 ejercicios |
-| Misiones | M01-M23 |
+| Misiones | M01-M24 |
 | Flujos | F-01 a F-12 (`docs/flows`) |
 | Trampas | T1-T30 (11 activables) |
 

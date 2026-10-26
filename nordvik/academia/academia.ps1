@@ -31,6 +31,11 @@ function Find-Lesson([string]$code) {
   return $dir
 }
 
+# La torre se reconoce por su /health (el puerto 3000 también lo puede usar otro programa, como karate-debug-bot)
+function Test-Torre {
+  try { return (Invoke-RestMethod "http://localhost:3000/health" -TimeoutSec 2).service -eq 'torre-de-control' } catch { return $false }
+}
+
 function Test-Port([int]$port) {
   try { $null = Invoke-RestMethod "http://localhost:$port/health" -TimeoutSec 2; return $true } catch { return $false }
 }
@@ -48,7 +53,7 @@ function Get-PerfilNecesario([string]$leccion) {
 
 function Invoke-Maven([string]$modo, [string]$leccion) {
   $need = Get-PerfilNecesario $leccion
-  if (Test-Port 3000) {
+  if (Test-Torre) {
     # Nordvik ya está en marcha: la Torre de control enciende en caliente solo lo que falta para esta lección.
     try {
       $ruta = if ($leccion -eq 'todas' -or -not $leccion) { "niveles/$($need.Nivel)/encender?modo=sumar" } else { "lecciones/$($leccion.Substring(0, 3).ToUpper())/preparar" }
@@ -90,9 +95,10 @@ switch ($Command) {
     if (-not (Test-Path $file)) { Write-Host 'Todavía no has corregido nada. Empieza con: academia leer L00'; return }
     $p = Get-Content $file -Raw -Encoding UTF8 | ConvertFrom-Json
     foreach ($l in $p.PSObject.Properties) {
-      $ex = $l.Value.PSObject.Properties
-      $ok = ($ex | Where-Object { $_.Value -eq 'OK' }).Count
-      Write-Host ("{0}  {1}/{2}  {3}" -f $l.Name, $ok, $ex.Count, ('#' * $ok + '.' * ($ex.Count - $ok)))
+      $ex = @($l.Value.PSObject.Properties)
+      $total = [int]$ex.Length
+      $ok = [int]@($ex | Where-Object { $_.Value -eq 'OK' }).Length
+      Write-Host ("{0}  {1}/{2}  {3}" -f $l.Name, $ok, $total, ('#' * $ok + '.' * ($total - $ok)))
     }
   }
   'verificar' { Invoke-Maven 'revision' $Leccion; Invoke-Maven 'huecos' $Leccion }

@@ -27,7 +27,7 @@ Arriba a la derecha hay cinco indicadores. Se refrescan solos cada 5 segundos.
 | Pestaña | Para qué | Capítulo |
 | --- | --- | --- |
 | **Escalera** | Ver los 5 niveles y encender uno | [3 · Niveles](03-niveles.md) |
-| **Misiones** | Objetivos de negocio M01-M23 con sus pasos | [4 · Misiones](04-misiones.md) |
+| **Misiones** | Objetivos de negocio M01-M24 con sus pasos | [4 · Misiones](04-misiones.md) |
 | **Mapa** | Los 168 servicios por dominio, interruptores y fichas | [5 · Mapa y fichas](05-mapa-y-fichas.md) |
 | **Laboratorio** | Reloj virtual, fallos a propósito y 30 trampas | [6 · Laboratorio](06-laboratorio.md) |
 | **Cómo trabajar** | La rutina de cada sesión, en 6 pasos | abajo |

@@ -78,6 +78,8 @@ public class TowerTests : IAsyncLifetime
     {
         var e = Escalera(_f);
         Assert.True(e.File.Missions.Count >= 20);
+        // Cada trampa activable sale en alguna misión
+        Assert.All(Nordvik.Services.ChaosControl.Catalog.Where(t => t.Nature == "ACTIVABLE"), t => Assert.Contains(e.File.Missions, m => m.Traps.Contains(t.Id)));
         Assert.Equal(e.File.Missions.Count, e.File.Missions.Select(m => m.Id).Distinct().Count());
         var lessons = e.Lessons().Select(l => l.Id).ToHashSet();
         var traps = Nordvik.Services.ChaosControl.Catalog.Select(t => t.Id).ToHashSet();
@@ -95,6 +97,8 @@ public class TowerTests : IAsyncLifetime
             }
             Assert.All(m.Lessons, l => Assert.Contains(l, lessons));
             Assert.All(m.Traps, t => Assert.Contains(t, traps));
+            foreach (var t in m.Traps)
+                Assert.True(Math.Min(Nordvik.Services.ChaosControl.Catalog.Single(x => x.Id == t).Wave, 4) <= m.Level, $"{m.Id} (nivel {m.Level}) cita la trampa {t}, que es de un nivel superior");
             if (m.Flow is not null) Assert.True(File.Exists(Path.Combine(NordvikFixture.RepoRoot, "docs", "flows", m.Flow)), $"{m.Id}: falta el flujo {m.Flow}");
             Assert.NotEmpty(m.Steps);
             foreach (var step in m.Steps)
@@ -325,8 +329,9 @@ public class TowerTests : IAsyncLifetime
             // Sin tax-withholding, la pensión se paga igual con la retención provisional del 30 %
             var (_, plan) = await Pensions.FundedPlan(_f, new DateOnly(1959, 3, 15), "120000.00");
             var erik = NordvikFixture.Bearer(await _f.Erik());
-            var po = await _f.Send(HttpMethod.Post, Ports.PayoutPlanner, $"/api/v1/pension-plans/{plan}/payout-plans", "{\"type\":\"TERM\",\"termYears\":5,\"startPeriod\":\"2027-02\"}", erik);
-            Assert.True(po.Code == 201, po.Body);
+            // Las posiciones llegan por eventos un instante después de EXECUTED (consistencia eventual, T6)
+            var po = await Eventually.Until(() => _f.Send(HttpMethod.Post, Ports.PayoutPlanner, $"/api/v1/pension-plans/{plan}/payout-plans", "{\"type\":\"TERM\",\"termYears\":5,\"startPeriod\":\"2027-02\"}", erik),
+                r => r.Code == 201, 10000, "plan de cobro con dinero invertido");
             await _f.Send(HttpMethod.Post, Ports.PayoutPlanner, $"/api/v1/payout-plans/{po.Str("id")}/activate", null, erik);
             await _f.Freeze("2027-02-05T10:00:00");
             var run = await _f.Send(HttpMethod.Post, Ports.PayoutExecution, "/api/v1/payout-runs", "{\"period\":\"2027-02\"}", NordvikFixture.Bearer(await _f.Olof()));

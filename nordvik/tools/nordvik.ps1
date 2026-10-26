@@ -117,6 +117,7 @@ function Invoke-Status {
   $hostInfo = Get-Content (Join-Path $Data 'host.json') -Raw -Encoding UTF8 | ConvertFrom-Json
   Write-Host ""
   Write-Host "  Perfil $($hostInfo.profile) · PID $($p.Id) · RAM $ram MB (privada $priv MB) · $($hostInfo.services.Count) servicios encendidos" -ForegroundColor Cyan
+  if ($null -ne $hostInfo.level) { Write-Host "  Nivel de la escalera encendido entero: $($hostInfo.level)$(if ($hostInfo.hotChanges -gt 0) { " · $($hostInfo.hotChanges) cambios en caliente desde el arranque" })" -ForegroundColor Cyan }
   if ($hostInfo.tower) { Write-Host "  Torre de control: $($hostInfo.tower)  (enciende y apaga niveles, dominios y servicios)" -ForegroundColor Cyan }
   $rows = foreach ($s in $hostInfo.services) {
     [pscustomobject]@{ Puerto = $s.port; Servicio = $s.name; Salud = $(if (Test-Health $s.port) { 'UP' } else { 'CAÍDO' }); Swagger = "http://localhost:$($s.port)/swagger" }
@@ -130,11 +131,18 @@ function Invoke-Smoke {
   else { Write-Host 'Usando el Nordvik que ya está en marcha.' }
   $hostInfo = Get-Content (Join-Path $Data 'host.json') -Raw -Encoding UTF8 | ConvertFrom-Json
   $profileData = Get-ProfileData $hostInfo.profile
+  # Si se subió de nivel en caliente, el presupuesto de RAM es el del perfil más alto que haya (el del nivel actual o el de arranque)
+  if ($hostInfo.hotChanges -gt 0 -and $null -ne $hostInfo.level -and $hostInfo.level -ge 0) {
+    $current = Get-ProfileData (((Get-Escalera).levels | Where-Object { $_.id -eq $hostInfo.level }).profile)
+    if ($current.ramBudgetMb -gt $profileData.ramBudgetMb) { $profileData = $current }
+  }
   $ok = Invoke-Status 6>$null
   $p = Get-HostProcess; $p.Refresh()
   $ram = [math]::Round($p.WorkingSet64 / 1MB, 0)
   $budget = $profileData.ramBudgetMb
-  $expected = if ($hostInfo.only) { $hostInfo.services.Count } else { $profileData.services.Count }
+  # Tras cambios en caliente (Torre de control) lo esperado es lo que está encendido ahora, no el perfil de arranque
+  $expected = if ($hostInfo.only -or $hostInfo.hotChanges -gt 0) { $hostInfo.services.Count } else { $profileData.services.Count }
+  if ($hostInfo.failed -and $hostInfo.failed.Count -gt 0) { Write-Host "  No arrancaron: $($hostInfo.failed -join ', ')" -ForegroundColor Red; $ok = $false }
   $running = $hostInfo.services.Count
   Write-Host "  Servicios: $running/$expected · RAM: $ram MB de $budget MB de presupuesto"
   if ($ok -and $running -eq $expected -and $ram -le $budget) { Write-Host '  PRUEBA DE HUMO SUPERADA' -ForegroundColor Green; exit 0 }

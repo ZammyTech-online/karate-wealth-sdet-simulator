@@ -44,7 +44,7 @@ Es normal que tarde de 10 a 40 segundos. Si hay que compilar (primera vez o `-Bu
 **Qué pasa.** Mientras Nordvik está en marcha, la torre escucha en `127.0.0.1:3000` y `[::1]:3000`, que son más concretas, y gana: `localhost:3000` es la torre. Si Nordvik está **parado**, `localhost:3000` muestra la otra aplicación.
 **Qué hacer.** Comprueba que Nordvik está en marcha (`.\nordvik.cmd status`). Si la torre no arrancó, el log dice `[AVISO] La torre de control no arrancó en el puerto 3000: ...`. Cierra el otro programa y reinicia Nordvik.
 
-> Lo mismo afecta a la academia: si algo responde en el puerto 3000, `academia.ps1` cree que es la torre y le pide que prepare la lección. Si no es la torre, verás "La Torre de control no pudo preparar la lección: ...". Arranca Nordvik antes de usar la academia.
+> La academia no se confunde: `academia.ps1` solo habla con el puerto 3000 si su `/health` dice `"service": "torre-de-control"`. Si es otro programa, arranca Nordvik con el perfil del nivel de la lección.
 
 ### La barra dice `torre sin respuesta`
 
@@ -68,24 +68,17 @@ Los fallos y las trampas activables necesitan `chaos-control` (7600), que es del
 
 ### `nordvik status` dice "Perfil nivel-0" pero hay 30 servicios encendidos
 
-**Causa.** `status` enseña el perfil con el que **arrancó** el anfitrión. Si después cambias de nivel en la torre, el perfil no cambia, pero la lista de servicios sí.
-**Qué hacer.** Para saber el nivel real, mira la barra de la torre (`Nivel 1 completo`) o `GET http://localhost:3000/api/v1/estado` (`currentLevel`).
+`status` enseña el perfil con el que **arrancó** el anfitrión y, debajo, la línea `Nivel de la escalera encendido entero: 1 · N cambios en caliente desde el arranque`. Esa línea es el nivel real.
 
-### `nordvik smoke` falla después de cambiar de nivel en la torre
+### `nordvik smoke` después de cambiar de nivel en la torre
 
-**Causa.** `smoke` compara los servicios encendidos con los del perfil de arranque. Si subiste de nivel en caliente, no cuadran.
-**Qué hacer.** Usa `smoke` justo después de `up`, o reinicia en el nivel que quieras (`down` y `up -Nivel N`).
+Tras cambios en caliente, `smoke` comprueba lo que está encendido **ahora** (no el perfil de arranque) y usa el presupuesto de RAM del nivel más alto. Falla solo si algún servicio encendido no responde o si alguno no arrancó.
 
 ## Academia
 
 ### "No hay ningún servicio escuchando"
 
 Nordvik no está arrancado, o el servicio de la lección está apagado. Arranca Nordvik. Con la torre en marcha, la academia enciende sola lo que falte.
-
-### `academia progreso` da `Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'`
-
-**Causa.** Un fallo de `academia.ps1` con Windows PowerShell 5.1 (el que trae Windows) al contar los ejercicios de `progreso.json`.
-**Qué hacer.** Mira tu avance en la **Escalera** de la torre (chips `L00 · 5/5`) o vuelve a ejecutar `.\academia.cmd corregir`, que imprime el resultado de cada lección.
 
 ### El corrector tarda
 
