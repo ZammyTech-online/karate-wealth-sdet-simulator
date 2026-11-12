@@ -391,8 +391,8 @@ $('#fault-form').addEventListener('submit', (e) => {
   busy(e.submitter, async () => { await post('/proxy/chaos-control/api/v1/faults', body); toast(`Fallo aÃ±adido a ${body.service}`); loadFaults(); });
 });
 
-// ---------- navegaciÃ³n ----------
-const views = ['escalera', 'academia', 'misiones', 'mapa', 'laboratorio', 'guia'];
+// ---------- navegación ----------
+const views = ['escalera', 'academia', 'gym', 'misiones', 'mapa', 'laboratorio', 'guia'];
 function show(view) {
   if (!views.includes(view)) view = 'escalera';
   views.forEach((v) => { $('#view-' + v).hidden = v !== view; });
@@ -400,6 +400,7 @@ function show(view) {
   if (!location.hash.includes(':') && location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
   if (view === 'misiones') renderMissions();
   if (view === 'academia') loadAcademia();
+  if (view === 'gym') { if (typeof BrunoGym !== 'undefined') BrunoGym.init(); }
   if (view === 'laboratorio') { loadTraps(); loadFaults(); }
 }
 document.querySelector('.tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-view]'); if (b) show(b.dataset.view); });

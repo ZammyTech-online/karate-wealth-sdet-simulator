@@ -72,6 +72,68 @@ const BrunoLinter = {
           solution: "Escribe: request { campo: '#(miVariable)' } para asegurar la sustitución de valores."
         });
       }
+
+      // 6. Aserción colocada incorrectamente dentro de la fase Given
+      if (/^Given\s+(match|assert)\s+/i.test(trimmed)) {
+        issues.push({
+          line: lineNum,
+          level: 'CRITICAL',
+          rule: 'GHERKIN_ASSERTION_IN_GIVEN',
+          title: "Aserción en fase 'Given'",
+          message: "'Given' es exclusivo para preparar la petición (Arrange). Las aserciones pertenecen a 'Then' o 'And'.",
+          solution: "Mueve la validación después del 'When method' usando 'Then status ...' y 'And match ...'."
+        });
+      }
+
+      // 7. Uso de '*' en aserciones de contrato en lugar de 'Then' o 'And'
+      if (/^\*\s+status\s+\d+/i.test(trimmed)) {
+        issues.push({
+          line: lineNum,
+          level: 'INFO',
+          rule: 'GHERKIN_STAR_IN_STATUS',
+          title: "Uso de '*' para validar status HTTP",
+          message: "En metodología BDD, el código de respuesta es la aserción principal de la fase 'Act'.",
+          solution: "Usa 'Then status <código>' para que la prueba documente claramente el contrato."
+        });
+      }
+    });
+
+    // Análisis semántico a nivel de bloques de escenario
+    const scenarios = featureCode.split(/Scenario(?: Outline)?:\s*/i).slice(1);
+    scenarios.forEach((sc, sIdx) => {
+      const whenMatches = sc.match(/^\s*When\s+method\s+\w+/gim) || [];
+      if (whenMatches.length > 1) {
+        issues.push({
+          line: 1,
+          level: 'WARNING',
+          rule: 'GHERKIN_MULTIPLE_WHEN_METHODS',
+          title: `Múltiples métodos 'When' en escenario ${sIdx + 1}`,
+          message: `El escenario contiene ${whenMatches.length} disparos HTTP ('When method'). Viola el principio de prueba atómica.`,
+          solution: "Divide el flujo en dos escenarios o encapsula la preparación previa con '* call read(...) '."
+        });
+      }
+
+      if (/^\s*When\s+method/im.test(sc) && !/Then\s+status\s+\d+/im.test(sc) && !/\*\s+status\s+\d+/im.test(sc)) {
+        issues.push({
+          line: 1,
+          level: 'WARNING',
+          rule: 'GHERKIN_MISSING_THEN_STATUS',
+          title: `Falta aserción de status en escenario ${sIdx + 1}`,
+          message: "Tras disparar un 'When method', siempre se debe validar el código HTTP esperado.",
+          solution: "Añade 'Then status 200' (o el código que corresponda al caso de prueba)."
+        });
+      }
+
+      if (/Scenario Outline:/i.test(featureCode) && !/Examples:\s*\|/i.test(featureCode)) {
+        issues.push({
+          line: 1,
+          level: 'CRITICAL',
+          rule: 'GHERKIN_SCENARIO_OUTLINE_NO_EXAMPLES',
+          title: "Scenario Outline sin tabla 'Examples:'",
+          message: "Un 'Scenario Outline' exige una tabla con cabecera y filas delimitadas por barras verticales '|'.",
+          solution: "Añade el bloque 'Examples:' con los parámetros del caso de prueba."
+        });
+      }
     });
 
     return issues;

@@ -1,0 +1,10 @@
+{
+  "total": 4000,
+  "levels": {
+    "junior": 1000,
+    "mid": 1000,
+    "senior": 1000,
+    "staff": 1000
+  },
+  "generatedAt": "2026-11-12T22:21:15.128Z"
+}

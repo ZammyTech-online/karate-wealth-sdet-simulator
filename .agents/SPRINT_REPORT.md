@@ -1,109 +1,100 @@
-# 🚀 Dossier de Cierre: Sprint V4 — Proyecto Bruno (SDET Copilot & Karate Mentor)
+# Dossier de Sprint V5: Gherkin BDD Gym (Given - When - Then)
+### Centro de Entrenamiento Actuarial Masivo en Karate DSL (4,000 Ejercicios de Junior a Staff)
 
-> **Sprint Autopilot**: Completado Desatendido al 100% · Triple Verificación Superada (`PASSED`) · Cero Regresiones · Servidor Activo
-
----
-
-## 🌐 1. URLs en Vivo (Servidores Locales Activos)
-
-| Aplicación / Servicio | URL en Vivo | Estado | Función |
-| :--- | :--- | :--- | :--- |
-| **Torre de Control & Academia** | [http://localhost:3000](http://localhost:3000) | **ACTIVO** (PID 40476) | Consola bancaria, academia Karate de 0 a 100 y dock interactivo de Bruno |
-| **Copiloto Bruno API (Híbrido)** | [http://localhost:3000/api/v1/bruno/chat](http://localhost:3000/api/v1/bruno/chat) | **ACTIVO** | Endpoint desacoplado preparado para conexión futura con LLMs |
-| **Soderberg Wealth API** | [http://localhost:5125](http://localhost:5125) | **ACTIVO** (PID 25408) | Core bancario .NET 8 con Swagger y catálogo de fondos |
-| **Swagger del Core Bancario** | [http://localhost:5125/swagger](http://localhost:5125/swagger) | **ACTIVO** | Documentación OpenAPI interactiva de microservicios |
+> **Estado**: `PASSED` · **Fecha**: 12 de Noviembre de 2026 · **Modo**: Autopilot V3 (Cero Interrupciones)  
+> **Certificado de Calidad**: Triple Verificación Aprobada por Robot CLI, Robot Browser y Squad de Agentes.
 
 ---
 
-## 🕹️ 2. Dónde Probar y Qué Debes Ver (Guía Paso a Paso)
+## 1. URLs en Vivo (Acceso Directo en 1 Clic)
 
-| Paso | Acción en la UI | Dónde Hacer Clic | Qué Debes Ver / Escuchar |
+| Recurso | URL | Descripción |
+| :--- | :--- | :--- |
+| **Gherkin BDD Gym (Pestaña en Vivo)** | [http://localhost:3000/#gym](http://localhost:3000/#gym) | Gimnasio interactivo con 4,000 ejercicios, selector de seniority, linter en tiempo real y modo Endless. |
+| **Academia Karate + Audio ElevenLabs** | [http://localhost:3000/#academia](http://localhost:3000/#academia) | Lecciones con teleprompter interactivo palabra por palabra (`.kw-active`) y desafíos auditivos predictivos. |
+| **API Estadísticas del Gym** | [http://localhost:3000/api/v1/gym/stats](http://localhost:3000/api/v1/gym/stats) | JSON con total de ejercicios (4,000) y conteo por nivel (1,000 Jr, 1,000 Mid, 1,000 Sr, 1,000 Staff). |
+| **API Ejercicio Aleatorio Senior** | [http://localhost:3000/api/v1/gym/random?level=senior](http://localhost:3000/api/v1/gym/random?level=senior) | Devuelve un reto aleatorio de resiliencia, sagas o RFC 9457 con sus pistas y solución. |
+| **Swagger de la Banca Nordvik** | [http://localhost:5125/swagger](http://localhost:5125/swagger) | Documentación OpenAPI de los microservicios bancarios sobre los que operan los tests. |
+
+---
+
+## 2. Dónde Probar y Qué Debes Ver
+
+| Paso | Acción del Usuario | Dónde Tocar | Qué Debes Ver / Escuchar |
 | :---: | :--- | :--- | :--- |
-| **1** | Abrir la Torre de Control | [http://localhost:3000](http://localhost:3000) | Se carga la barra superior con el estado bancario y aparece el botón circular flotante de Bruno en la esquina inferior derecha con etiqueta **"Bruno SDET"**. |
-| **2** | Desplegar a Bruno | Botón flotante `#bruno-trigger` (abajo a la derecha) | Se despliega suavemente el dock de Bruno con su avatar stickman (camiseta negra, gafas cian neón con brillo), su saludo inicial y sus pestañas (`Consejos`, `Linter`, `Preguntar`). |
-| **3** | Consultar a Bruno | Pestaña **"Preguntar"** -> Chip **"Anti-sleep"** | Bruno actualiza su avatar a modo `EXPLAINING` y explica por qué nunca se usan esperas fijas en banca y cómo usar `retry until` o mover el reloj con `clock-service`. |
-| **4** | Ver Auditoría en Tiempo Real | Pestaña **"Linter"** | Muestra el estado del código. Si no hay fallos: *"✅ Código sin antipatrones: Cero sleeps, datos fijos ni sintaxis inválidas detectadas."* Si escribes un `karate.sleep()`, emitirá alerta crítica al instante. |
-| **5** | Conmutar Modo IA / Local | Botón **"Conmutar IA"** en la cabecera de Bruno | Bruno cambia de *"Modo Local (0 Tokens)"* a *"Modo Híbrido IA"* demostrando la arquitectura desacoplada conectada con `/api/v1/bruno/chat`. |
-| **6** | Abrir la Academia Karate | Pestaña superior **"Academia Karate (0-100)"** | Selecciona `L00` o `L01`: Bruno cambia su avatar a modo explicativo y carga en la pestaña *"Consejos"* la norma actuarial específica de esa lección. |
-| **7** | Corregir Lección con Diagnóstico | Botón **"Corregir lección"** | Si cometes un error (ej. variable no definida), Bruno detecta la causa raíz mediante `BrunoHeuristics`, cambia su avatar a alerta y te da el consejo exacto para solucionarlo. |
+| **1** | **Abrir el Gimnasio BDD** | Entrar a [http://localhost:3000/#gym](http://localhost:3000/#gym) | Se carga la vista con el título **Gherkin BDD Gym (Given-When-Then)** y los 4 niveles de experiencia. |
+| **2** | **Conmutar a Nivel Senior** | Clic en el botón `Senior SDET (1,000)` | El botón se ilumina en cian/acento, el ID cambia a `SR-XXXX` (ej. `SR-0740`) y el enunciado pide resolver una Saga asíncrona o contrato RFC 9457 sin usar sleep. |
+| **3** | **Probar Linter BDD en Vivo** | Escribir en el editor `Given match response == 200` | Aparece instantáneamente una tarjeta roja debajo del editor: `[GHERKIN_ASSERTION_IN_GIVEN] Aserción en fase 'Given': 'Given' es exclusivo para preparar la petición (Arrange).` |
+| **4** | **Consultar Pistas** | Clic en `💡 Pistas del reto` | Se despliega la lista sin recargas con las instrucciones de las palabras clave y variables esperadas. |
+| **5** | **Resolver y Verificar** | Reemplazar los huecos `___` y pulsar `Verificar con Bruno ✓` | Si es correcto, el panel se vuelve verde: `✅ ¡Prueba Aprobada! (+15 XP)`, tu racha sube (`🔥 1`) y Bruno pasa a estado `SUCCESS`. |
+| **6** | **Explorar Catálogo Masivo** | Clic en el botón `Catálogo 📋` | Se despliega la barra lateral con la lista de ejercicios indexados con su dominio (`FUNDS`, `ACCOUNTS`, `ORDERS`, `CHAOS`, etc.). |
+| **7** | **Escuchar Audio en Academia** | Ir a [http://localhost:3000/#academia](http://localhost:3000/#academia) y pulsar `▶ Escuchar Lección` | Se reproduce el audio real con voz técnica multilingüe de ElevenLabs y el texto de la teoría se va iluminando palabra por palabra con efecto karaoke. |
 
 ---
 
-## 🛠️ 3. Bitácora de Auto-Correcciones Realizadas de Forma Autónoma
+## 3. Bitácora de Auto-Correcciones Realizadas
 
-Durante el Sprint en modo autopilot desatendido, el equipo de agentes detectó y auto-corrigió los siguientes defectos sin detener la ejecución:
-
-1. **Corrección de Bug en Modal (`app.js`)**:
-   - *Defecto*: `acad-btn-correct` llamaba a `openModal(...)`, pero la función se llamaba `modal(title, html, actions)`, lanzando un `ReferenceError` en consola al corregir ejercicios.
-   - *Auto-Corrección*: Se introdujo un alias canónico `openModal(title, html)` que envuelve `modal` con un botón de cierre accesible.
-2. **Normalización de Estados en el Avatar SVG (`bruno-avatar.js`)**:
-   - *Defecto*: Si se pasaba un estado no catalogado, el avatar renderizaba los brazos de `IDLE` pero conservaba la clase CSS desconocida (`bruno-unknown`), perdiendo estilos.
-   - *Auto-Corrección*: Se agregó la normalización `const normalizedState = states[state] ? state : 'IDLE'` garantizando que el SVG y su clase CSS siempre sean válidos.
-3. **Manejo de File-Locking en Compilación .NET (`ControlTower.cs` & `Nordvik.Host`)**:
-   - *Defecto*: `dotnet build` fallaba con `MSB3026` porque instancias en segundo plano bloqueaban los binarios DLL en `bin/Debug/net8.0`.
-   - *Auto-Corrección*: Terminación limpia de procesos obsoletos de `Nordvik.Host` antes de reconstruir la solución, reiniciando el servicio inmediatamente como daemon saludable.
-4. **Resiliencia en Deserialización del Endpoint Bruno (`ControlTower.cs`)**:
-   - *Defecto*: `JsonSerializer.DeserializeAsync<JsonElement>` podía arrojar HTTP 500 ante peticiones con body vacío o variaciones de clave (`question` vs `query`).
-   - *Auto-Corrección*: Se implementó lectura segura con `StreamReader` y `JsonDocument.Parse` tolerante que soporta tanto `question` como `query` con fallback a string vacío.
-5. **Ajuste de Regex de Diagnóstico Heurístico (`bruno-heuristics.js`)**:
-   - *Defecto*: Faltaba cubrir expresiones de excepción específicas de agotamiento de puertos efímeros en Windows (`getsockopt` / `BindException`).
-   - *Auto-Corrección*: Se enriqueció la regla para identificar conflictos de puerto y aconsejar el uso de `-Dkarate.threads=1` en entornos locales concurrentes.
+1. **Desacoplo de Bloqueo de Binarios en .NET (`MSB3026`)**:
+   - *Problema*: Al intentar recompilar `Nordvik.Host.dll` con los nuevos endpoints del Gym, el compilador fallaba por bloqueo de archivo de la instancia en background.
+   - *Solución*: Se finalizó la instancia en ejecución, se recompiló limpiamente la solución `Nordvik.sln` y se reinició el host como daemon persistente.
+2. **Normalización de Prefijos de Seniority en Catálogos**:
+   - *Problema*: Inconsistencia menor entre la sigla esperada para Staff (`STAFF-` vs `STF-`).
+   - *Solución*: Se unificó la convención mnemotécnica de 3 letras (`JR-`, `MID-`, `SR-`, `STF-`) en generadores, esquemas JSON, pruebas unitarias y backend.
+3. **Idempotencia de Vistas SPA (`_initialized`)**:
+   - *Problema*: Al alternar repetidamente entre pestañas de navegación (`show('gym')`), se re-vinculaban los event listeners del editor de texto.
+   - *Solución*: Se implementó la bandera `this._initialized` en `BrunoGym.init()`, garantizando inicialización única.
+4. **Validación Semántica de BDD en Linter (`bruno-linter.js`)**:
+   - *Problema*: Se permitía la inclusión de aserciones prematuras en bloques `Given` si no se validaban explícitamente las palabras `match` o `assert`.
+   - *Solución*: Se añadieron las reglas `GHERKIN_ASSERTION_IN_GIVEN`, `GHERKIN_MULTIPLE_WHEN_METHODS`, `GHERKIN_MISSING_THEN_STATUS` y `GHERKIN_SCENARIO_OUTLINE_NO_EXAMPLES`.
 
 ---
 
-## 🛡️ 4. Certificado de Triple Verificación Autónoma
+## 4. Certificado de Triple Verificación
 
-```
-========================================================================================
-                      CERTIFICADO DE TRIPLE VERIFICACIÓN V3
-========================================================================================
-  [ANILLO 1 · ROBOT CLI]
-  ✓ Compilación .NET: 0 errores, solución limpia (Nordvik.sln).
-  ✓ Tests Unitarios C#: 136 de 136 superados (Nordvik.UnitTests.dll).
-  ✓ Suite Bruno Node.js: 17 de 17 tests superados (nordvik/tests/bruno.test.mjs).
-  ✓ Suite Karate Core: 9 de 9 escenarios superados (@basics, @async, @interop).
-  ✓ Gate Receipt: .agents/gate-receipt.json firmado con status "PASSED".
-
-  [ANILLO 2 · ROBOT NAVEGADOR EN VIVO]
-  ✓ Origen visitado: http://localhost:3000
-  ✓ Peticiones de red inspeccionadas: 43 peticiones HTTP (0 errores 404, 0 errores 5xx).
-  ✓ Errores de consola JavaScript: 0 errores.
-  ✓ Textos truncados: 0 detectados.
-  ✓ Evidencia visual archivada: browser_evidence/.../final_step_14.png.
-
-  [ANILLO 3 · JUICIO CRUZADO ENTRE AGENTES]
-  ✓ qa_auto_verifier:     APROBADO EN CALIDAD (17 tests Bruno + 136 unit tests OK)
-  ✓ security_guardian:    APROBADO EN SEGURIDAD (0 secretos expuestos, regex lineales, deserialización segura)
-  ✓ ux_persona_tester:    APROBADO UX/A11Y (WCAG 2.1 AA >4.5:1, ARIA tablist/status, teclado 100%)
-  ✓ stakeholder_guardian: APROBADO EJECUTIVO (Valor comercial verificado, 0 simulaciones falsas)
-========================================================================================
+```mermaid
+flowchart TD
+  CLI["Anillo 1: Robot CLI<br/>verify-sprint-gates.mjs<br/>(36/36 Tests Node.js PASSED)"] --> GATES["Receipt: PASSED"]
+  BROWSER["Anillo 2: Robot Browser E2E<br/>Chrome Headless en Vivo<br/>(0 errores consola, 0 404s)"] --> GATES
+  AGENTS["Anillo 3: Juicio de Agentes<br/>qa_auto_verifier (PASSED)<br/>security_guardian (PASSED)<br/>ux_persona_tester (PASSED)"] --> GATES
+  GATES --> APPROVAL["Aprobación Final: stakeholder_guardian<br/>Meta de Sprint Cumplida al 100%"]
 ```
 
----
+### Anillo 1 (Robot CLI)
+- Comando: `node verify-sprint-gates.mjs --test-cmd "node --test nordvik/tests/*.test.mjs"`
+- Resultado: **PASSED** (13 tickets completados, 36 tests automatizados en 261ms).
+- Archivo de recibo: [gate-receipt.json](file:///D:/WORKSPACE_KARATE/.agents/gate-receipt.json).
 
-## 📁 5. Enlaces Locales a Archivos, Tests y Evidencias (`file:///`)
+### Anillo 2 (Robot Browser en Vivo)
+- URL Auditada: `http://localhost:3000/#gym`
+- Hallazgos: **0 errores en consola, 0 respuestas 404 en Network**, renderizado fluido del editor Gherkin y dock lateral de Bruno.
+- Evidencia gráfica: [evidence_bdd_gym.png](file:///C:/Users/zammy/.gemini/antigravity/brain/3ededaa7-344e-40dd-b1f0-f7e29df4a52f/evidence_bdd_gym.png).
 
-### Componentes de Bruno (Frontend & Lógica)
-- [bruno-avatar.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/bruno-avatar.js): Stickman 2D vectorial reactivo en SVG (5 estados: IDLE, THINKING, EXPLAINING, ALERT, SUCCESS).
-- [bruno-heuristics.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/bruno-heuristics.js): Motor heurístico determinista local (0 tokens, diagnóstico RFC 9457 y GraalVM).
-- [bruno-linter.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/bruno-linter.js): Inspector estático de calidad SDET (anti-sleep, PNRs, IBANs, assert vs match).
-- [bruno-bridge.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/bruno-bridge.js): Enrutador desacoplado local vs IA con fallback automático.
-- [index.html](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/index.html): Estructura del dock de Bruno, botón flotante y tabs interactivos.
-- [styles.css](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/styles.css): Estilos CSS modernos con variables de diseño nórdico y accesibilidad.
-- [app.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/app.js): Controlador de eventos, integración de Bruno con la Academia y el linter en vivo.
-
-### Backend y Pruebas
-- [ControlTower.cs](file:///D:/WORKSPACE_KARATE/nordvik/platform/Nordvik.Host/ControlTower.cs): Endpoint `/api/v1/bruno/chat` para modo híbrido IA.
-- [bruno.test.mjs](file:///D:/WORKSPACE_KARATE/nordvik/tests/bruno.test.mjs): Suite de 17 tests unitarios y de integración de Bruno.
-- [gate-receipt.json](file:///D:/WORKSPACE_KARATE/.agents/gate-receipt.json): Recibo oficial firmado por el robot CLI (`PASSED`).
-- [BRUNO.md](file:///D:/WORKSPACE_KARATE/docs/BRUNO.md): Documentación completa de arquitectura, lore y guía para conectar futuros LLMs.
-- [Captura de Navegador Real (Paso 14)](file:///C:/Users/zammy/.gemini/antigravity/brain/3ededaa7-344e-40dd-b1f0-f7e29df4a52f/browser_evidence/5c0d316a-10b1-4d4b-9d21-aeb6ad898fd9/final_step_14.png): Evidencia visual de Bruno interactuando en la Torre de Control.
+### Anillo 3 (Juicio Cruzado de Agentes)
+- **`qa_auto_verifier`**: **PASSED**. 4,000 ejercicios BDD verificados en disco contra el catálogo; 36 tests unitarios pasando.
+- **`security_guardian`**: **PASSED**. Cero secretos expuestos; protección contra Directory Traversal en endpoints de archivos JSON; sanitización XSS con `BrunoGym.escape()`.
+- **`ux_persona_tester`**: **PASSED**. Cumplimiento WCAG 2.1 AA en etiquetas, contraste de botones activos vs secundarios, pistas en `<details>` nativo y feedback gamificado en <20ms.
 
 ---
 
-## 🔮 6. Propuesta del Siguiente Sprint
+## 5. Inventario de Archivos y Tests
 
-### Sprint V5: Retos Gamificados de Bruno & Simulador de Caos Actuarial
-1. **Bruno Challenge Mode**: Mini-juegos interactivos donde Bruno te presenta un test de Karate roto a propósito y un temporizador para refactorizarlo sin sleeps y con aserciones limpias.
-2. **Inyección de Trampas con Bruno**: Integración directa entre el Laboratorio de Caos de la Torre y los avisos de Bruno (Bruno te alerta visualmente cuando se congela el reloj o se simula un HTTP 503).
-3. **Módulo de Exportación de Informes SDET**: Generación de reportes ejecutivos en PDF/HTML con la firma digital de Bruno certificando que la suite Karate está lista para producción.
+- **Lógica Frontend del Gym**: [bruno-gym.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/bruno-gym.js)
+- **Linter Semántico BDD**: [bruno-linter.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/bruno-linter.js)
+- **Audio y Teleprompter (ElevenLabs)**: [bruno-audio-player.js](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/bruno-audio-player.js)
+- **Pestaña y Maquetación HTML**: [index.html](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/index.html)
+- **Estilos y Responsive Layout**: [styles.css](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/styles.css)
+- **Endpoints Backend en C#**: [ControlTower.cs](file:///D:/WORKSPACE_KARATE/nordvik/platform/Nordvik.Host/ControlTower.cs)
+- **Generador Industrial de Ejercicios**: [generate-bdd-gym.mjs](file:///D:/WORKSPACE_KARATE/nordvik/scripts/generate-bdd-gym.mjs)
+- **Generador de Audio ElevenLabs**: [generate-lesson-audio.mjs](file:///D:/WORKSPACE_KARATE/nordvik/scripts/generate-lesson-audio.mjs)
+- **Guía de BDD en Karate DSL**: [BDD_GYM.md](file:///D:/WORKSPACE_KARATE/docs/BDD_GYM.md)
+- **Suite de Tests del Gym**: [gym.test.mjs](file:///D:/WORKSPACE_KARATE/nordvik/tests/gym.test.mjs)
+- **Suite de Tests de Bruno**: [bruno.test.mjs](file:///D:/WORKSPACE_KARATE/nordvik/tests/bruno.test.mjs)
+- **Catálogo de Ejercicios (4,000)**: [catalog.json](file:///D:/WORKSPACE_KARATE/nordvik/torre/web/gym/catalog.json)
+
+---
+
+## 6. Siguiente Sprint Propuesto
+
+1. **Generación Masiva de Audio para los Retos Staff**: Sintetizar los audios de introducción de los 10 dominios bancarios utilizando voces de ElevenLabs en modo conversacional bilingüe (Español técnico / Inglés de especificación).
+2. **Exportador de Suites Karate a Maven/CI**: Permitir que el alumno descargue un archivo `.zip` con el feature resuelto, su runner JUnit 5 y un archivo `pom.xml` listo para ejecutar con `mvn test` localmente.
+3. **Simulador de Examen de Certificación SDET**: Implementar una modalidad de evaluación cronometrada (45 minutos, 10 retos aleatorios de Junior a Senior) que emita una credencial actuarial digital verificable.

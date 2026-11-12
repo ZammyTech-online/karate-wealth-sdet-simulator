@@ -35,3 +35,16 @@
 ## Causa Raíz 9: Fallback de Clases CSS en Componentes SVG Dinámicos
 - **Hallazgo**: Al pasar un estado no registrado a `BrunoAvatar.render('UNKNOWN')`, el avatar renderizaba los trazos de `IDLE` pero conservaba la clase CSS no parametrizada `bruno-unknown`, rompiendo estilizaciones dependientes.
 - **Regla**: Normalizar el estado antes de inyectar clases CSS: `const normalizedState = states[state] ? state : 'IDLE'`.
+
+## Causa Raíz 10: Separación BDD Estricta en Karate DSL (Arrange-Act-Assert)
+- **Hallazgo**: Aunque el motor de Karate ejecuta indistintamente `Given/When/Then`, colocar aserciones (`match`, `assert`) en la fase `Given` rompe el principio BDD de preparación pura (Arrange) y confunde la semántica del contrato.
+- **Regla**: `Given` se reserva exclusivamente para configurar URLs, cabeceras, rutas y cuerpos de petición. Las aserciones pertenecen estrictamente a `Then status` y `And match` tras el disparo `When method`.
+
+## Causa Raíz 11: Inicialización Idempotente en Vistas de SPA (`_initialized`)
+- **Hallazgo**: Alternar repetidamente entre pestañas de navegación (`show('gym')`) sin flag de guarda provocaba que `init()` registrara múltiples event listeners redundantes sobre el editor y recargara peticiones de ejercicios innecesarias.
+- **Regla**: Toda vista interactiva debe proteger su ciclo de arranque con `if (this._initialized) return; this._initialized = true;`.
+
+## Causa Raíz 12: Convención de Códigos Mnemotécnicos en Catálogos Masivos
+- **Hallazgo**: Discrepancias entre identificadores de catálogo (`STAFF-` vs `STF-`) generaban desalineación en búsquedas directas por prefijo de archivo.
+- **Regla**: Mantener códigos mnemotécnicos de 3 letras unificados (`JR-`, `MID-`, `SR-`, `STF-`) tanto en generadores, esquemas, APIs como en suites de prueba.
+

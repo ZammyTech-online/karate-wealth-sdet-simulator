@@ -366,6 +366,177 @@ public static class ControlTower
             });
         });
 
+        // ---------- Gherkin BDD Gym (Given - When - Then) ----------
+        var gymDir = Path.Combine(repoRoot, "torre", "web", "gym");
+
+        api.MapGet("/gym/stats", () =>
+        {
+            var statsFile = Path.Combine(gymDir, "stats.json");
+            if (!File.Exists(statsFile)) return Results.NotFound();
+            var json = File.ReadAllText(statsFile);
+            return Results.Content(json, "application/json");
+        });
+
+        api.MapGet("/gym/exercise", (HttpContext http, string? id, string? level) =>
+        {
+            if (string.IsNullOrWhiteSpace(id) && string.IsNullOrWhiteSpace(level))
+            {
+                return Results.BadRequest(new { error = "Debes proporcionar 'id' (ej. JR-0001) o 'level' (junior, mid, senior, staff)." });
+            }
+
+            string targetFile;
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                var upper = id.ToUpperInvariant();
+                var prefix = upper.Split('-')[0];
+                targetFile = prefix switch
+                {
+                    "JR" => "junior.json",
+                    "MID" => "mid.json",
+                    "SR" => "senior.json",
+                    "STF" => "staff.json",
+                    _ => "junior.json"
+                };
+            }
+            else
+            {
+                targetFile = $"{level!.ToLowerInvariant()}.json";
+            }
+
+            var path = Path.Combine(gymDir, targetFile);
+            if (!File.Exists(path)) return Results.NotFound(new { error = $"Nivel o ejercicio no encontrado: {targetFile}" });
+
+            using var doc = JsonDocument.Parse(File.ReadAllText(path));
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                var upper = id.ToUpperInvariant();
+                foreach (var el in doc.RootElement.EnumerateArray())
+                {
+                    if (el.TryGetProperty("id", out var idProp) && idProp.GetString()?.Equals(upper, StringComparison.OrdinalIgnoreCase) == true)
+                    {
+                        return Results.Content(el.GetRawText(), "application/json");
+                    }
+                }
+                return Results.NotFound(new { error = $"Ejercicio {id} no encontrado en {targetFile}" });
+            }
+
+            var first = doc.RootElement[0];
+            return Results.Content(first.GetRawText(), "application/json");
+        });
+
+        api.MapGet("/gym/random", (string? level) =>
+        {
+            var lvl = (level ?? "junior").ToLowerInvariant();
+            var targetFile = lvl switch
+            {
+                "mid" => "mid.json",
+                "senior" => "senior.json",
+                "staff" => "staff.json",
+                _ => "junior.json"
+            };
+
+            var path = Path.Combine(gymDir, targetFile);
+            if (!File.Exists(path)) return Results.NotFound();
+
+            using var doc = JsonDocument.Parse(File.ReadAllText(path));
+            var arr = doc.RootElement;
+            var len = arr.GetArrayLength();
+            var idx = Random.Shared.Next(0, len);
+            return Results.Content(arr[idx].GetRawText(), "application/json");
+        });
+
+        api.MapPost("/gym/verify", async (HttpContext http) =>
+        {
+            string id = "";
+            string code = "";
+            try
+            {
+                using var reader = new StreamReader(http.Request.Body);
+                var raw = await reader.ReadToEndAsync();
+                if (!string.IsNullOrWhiteSpace(raw))
+                {
+                    using var doc = JsonDocument.Parse(raw);
+                    if (doc.RootElement.TryGetProperty("id", out var idProp)) id = idProp.GetString() ?? "";
+                    if (doc.RootElement.TryGetProperty("code", out var codeProp)) code = codeProp.GetString() ?? "";
+                }
+            }
+            catch { }
+
+            if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(code))
+            {
+                return Results.BadRequest(new { valid = false, reason = "Debes enviar 'id' y 'code'." });
+            }
+
+            if (code.Contains("___"))
+            {
+                return Results.Ok(new
+                {
+                    valid = false,
+                    reason = "Aún quedan huecos triple guion bajo (___) sin rellenar en el escenario.",
+                    feedback = "Sustituye cada '___' por la instrucción Gherkin o valor esperado."
+                });
+            }
+
+            var upper = id.ToUpperInvariant();
+            var prefix = upper.Split('-')[0];
+            var targetFile = prefix switch
+            {
+                "JR" => "junior.json",
+                "MID" => "mid.json",
+                "SR" => "senior.json",
+                "STF" => "staff.json",
+                _ => "junior.json"
+            };
+            var path = Path.Combine(gymDir, targetFile);
+            if (!File.Exists(path)) return Results.NotFound(new { valid = false, reason = "Ejercicio no existe." });
+
+            using var docFile = JsonDocument.Parse(File.ReadAllText(path));
+            JsonElement matched = default;
+            foreach (var el in docFile.RootElement.EnumerateArray())
+            {
+                if (el.TryGetProperty("id", out var idProp) && idProp.GetString()?.Equals(upper, StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    matched = el.Clone();
+                    break;
+                }
+            }
+
+            if (matched.ValueKind == JsonValueKind.Undefined)
+            {
+                return Results.NotFound(new { valid = false, reason = "Ejercicio no encontrado." });
+            }
+
+            var gaps = matched.GetProperty("gaps");
+            var missingGaps = new List<string>();
+            foreach (var g in gaps.EnumerateArray())
+            {
+                var val = g.GetString() ?? "";
+                if (!string.IsNullOrWhiteSpace(val) && !code.Contains(val, StringComparison.OrdinalIgnoreCase))
+                {
+                    missingGaps.Add(val);
+                }
+            }
+
+            if (missingGaps.Count > 0)
+            {
+                return Results.Ok(new
+                {
+                    valid = false,
+                    reason = $"Faltan elementos esperados en el escenario: {string.Join(", ", missingGaps)}",
+                    feedback = "Revisa las pistas del ejercicio o la sintaxis Gherkin de este nivel."
+                });
+            }
+
+            return Results.Ok(new
+            {
+                valid = true,
+                message = $"¡Excelente trabajo actuarial! Ejercicio {upper} verificado sin errores.",
+                xp = 15,
+                title = matched.GetProperty("title").GetString(),
+                level = matched.GetProperty("level").GetString()
+            });
+        });
+
         api.MapFallback((HttpContext http) => Problem(http, 404, "ROUTE_NOT_FOUND", $"La ruta {http.Request.Method} {http.Request.Path} no existe en la torre.", "Las rutas de la torre empiezan por /api/v1 (estado, niveles, servicios, dominios, misiones, lecciones, trampas, proxy)."));
         return app;
     }

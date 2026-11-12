@@ -29,6 +29,7 @@
 <nav class="tabs" role="tablist">
   <button role="tab" data-view="escalera" aria-selected="true">Escalera</button>
   <button role="tab" data-view="academia">Academia Karate (0-100)</button>
+  <button role="tab" data-view="gym">Gherkin BDD Gym (Given-When-Then)</button>
   <button role="tab" data-view="misiones">Misiones</button>
   <button role="tab" data-view="mapa">Mapa</button>
   <button role="tab" data-view="laboratorio">Laboratorio</button>
@@ -214,6 +215,95 @@ academia corregir L00</code></pre></li>
       </section>
     </div>
   </section>
+
+  <section id="view-gym" class="view" hidden>
+    <div class="intro">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h1>Gherkin BDD Gym · Given - When - Then</h1>
+          <p>Entrena con <b>4,000 ejercicios BDD</b> de Junior a Staff SDET. Domina el patrón AAA (Arrange-Act-Assert), rellena los huecos <code>___</code> y recibe corrección en tiempo real de Bruno.</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="pill ok" style="font-size:0.85rem;">Puntos SDET: <b id="gym-score-xp" style="margin-left:4px;">0 XP</b></span>
+          <span class="pill warn" style="font-size:0.85rem;">Racha: <b id="gym-score-streak" style="margin-left:4px;">🔥 0</b></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de Seniority & Filtros -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 14px;">
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <button class="btn small gym-level-btn active" data-level="junior">Junior SDET (1,000)</button>
+        <button class="btn small gym-level-btn ghost" data-level="mid">Mid SDET (1,000)</button>
+        <button class="btn small gym-level-btn ghost" data-level="senior">Senior SDET (1,000)</button>
+        <button class="btn small gym-level-btn ghost" data-level="staff">Staff / Lead (1,000)</button>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button id="gym-mode-endless" class="btn small active" title="Práctica continua e infinita">Modo Endless 🎯</button>
+        <button id="gym-mode-catalog" class="btn small ghost" title="Ver lista de ejercicios">Catálogo 📋</button>
+        <select id="gym-domain-filter" class="btn small quiet" style="padding:4px 8px; font-size:0.8rem;" aria-label="Filtrar por dominio">
+          <option value="all">Todos los dominios</option>
+          <option value="funds">Fondos</option>
+          <option value="accounts">Cuentas</option>
+          <option value="orders">Órdenes</option>
+          <option value="fx">Divisas FX</option>
+          <option value="pensions">Pensiones</option>
+          <option value="kyc">KYC</option>
+          <option value="chaos">Caos</option>
+          <option value="market">Mercado</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Workspace del Gym (Split View) -->
+    <div class="gym-layout" style="display:grid; grid-template-columns: minmax(320px, 1fr) 1.3fr; gap: 20px; margin-top: 10px;">
+      <!-- Columna Izquierda: Enunciado y Catálogo -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <aside id="gym-catalog-sidebar" class="panel" hidden style="max-height: 250px; overflow-y: auto;">
+          <h4 style="margin:0 0 8px 0;">Catálogo de Ejercicios</h4>
+          <ul id="gym-catalog-items" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px;"></ul>
+        </aside>
+
+        <article class="panel" style="padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="chip lv" id="gym-ex-id">JR-0001</span>
+            <div style="display:flex; gap:6px;">
+              <span class="chip" id="gym-ex-level">Junior SDET</span>
+              <span class="chip" id="gym-ex-domain">FUNDS</span>
+            </div>
+          </div>
+          <h3 id="gym-ex-title" style="margin:0 0 10px 0; font-size:1.1rem;">Cargando ejercicio...</h3>
+          <p id="gym-ex-enunciado" style="line-height:1.5; color:var(--fg); font-size:0.9rem; margin-bottom:14px;"></p>
+
+          <details style="background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:10px;">
+            <summary style="cursor:pointer; font-weight:600; color:var(--accent);">💡 Pistas del reto</summary>
+            <ul id="gym-hints-list" style="margin:10px 0 0 0; padding-left:18px; font-size:0.85rem; line-height:1.5;"></ul>
+          </details>
+        </article>
+      </div>
+
+      <!-- Columna Derecha: Editor Gherkin BDD y Validador -->
+      <article class="panel" style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <label for="gym-code-editor" style="font-weight:700; font-size:0.95rem;">Editor de Escenario Gherkin (Karate DSL)</label>
+          <span class="muted" style="font-size:0.8rem;">Rellena cada hueco <code>___</code></span>
+        </div>
+
+        <textarea id="gym-code-editor" aria-label="Editor de código para el ejercicio BDD" style="width:100%; height:260px; font-family:var(--mono, monospace); font-size:0.88rem; background:var(--surface); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:12px; resize:vertical; line-height:1.45;"></textarea>
+
+        <!-- Feedback de Bruno Linter en tiempo real -->
+        <div id="gym-linter-feedback" hidden></div>
+
+        <!-- Feedback de Aprobación / Discrepancia -->
+        <div id="gym-feedback-box" hidden style="border-radius:8px; padding:12px; border:1px solid transparent;"></div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+          <button class="btn quiet small" id="gym-next-btn">Saltar / Otro reto ↻</button>
+          <button class="btn" id="gym-verify-btn">Verificar con Bruno ✓</button>
+        </div>
+      </article>
+    </div>
+  </section>
 </main>
 
 <aside class="drawer" id="drawer" hidden aria-label="Ficha del servicio">
@@ -310,6 +400,7 @@ academia corregir L00</code></pre></li>
 <script src="bruno-linter.js"></script>
 <script src="bruno-bridge.js"></script>
 <script src="bruno-audio-player.js"></script>
+<script src="bruno-gym.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

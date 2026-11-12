@@ -183,6 +183,51 @@ test('BrunoLinter: aprueba código limpio sin advertencias', () => {
   assert.equal(issues.length, 0, 'No debe emitir advertencias en código idiomático');
 });
 
+test('BrunoLinter: detecta aserción colocada en fase Given', () => {
+  const code = `
+    Scenario: Test erróneo
+      Given match response == { id: 1 }
+      When method get
+  `;
+  const issues = BrunoLinter.audit(code);
+  assert.ok(issues.some(i => i.rule === 'GHERKIN_ASSERTION_IN_GIVEN'));
+});
+
+test('BrunoLinter: detecta múltiples When methods en un solo escenario', () => {
+  const code = `
+    Scenario: Flujo doble
+      Given path '/api/v1/orders'
+      When method post
+      Then status 201
+      When method get
+      Then status 200
+  `;
+  const issues = BrunoLinter.audit(code);
+  assert.ok(issues.some(i => i.rule === 'GHERKIN_MULTIPLE_WHEN_METHODS'));
+});
+
+test('BrunoLinter: detecta omisión de Then status tras When method', () => {
+  const code = `
+    Scenario: Petición sin validación de código
+      Given path '/api/v1/funds'
+      When method get
+      And match response.total == 5
+  `;
+  const issues = BrunoLinter.audit(code);
+  assert.ok(issues.some(i => i.rule === 'GHERKIN_MISSING_THEN_STATUS'));
+});
+
+test('BrunoLinter: detecta Scenario Outline sin tabla Examples', () => {
+  const code = `
+    Scenario Outline: Pruebas con matriz
+      Given path '/api/v1/funds/' + '<id>'
+      When method get
+      Then status 200
+  `;
+  const issues = BrunoLinter.audit(code);
+  assert.ok(issues.some(i => i.rule === 'GHERKIN_SCENARIO_OUTLINE_NO_EXAMPLES'));
+});
+
 // ============================================================================
 // 4. Tests de BrunoBridge (Conmutación Local vs IA Desacoplada)
 // ============================================================================

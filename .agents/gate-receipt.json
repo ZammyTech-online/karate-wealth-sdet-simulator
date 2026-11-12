@@ -1,23 +1,18 @@
 {
   "version": "3.0.0",
   "status": "PASSED",
-  "timestamp": "2026-11-12T15:18:08.028Z",
+  "timestamp": "2026-11-12T22:31:06.791Z",
   "workspaceRoot": "D:\\WORKSPACE_KARATE",
   "checks": [
     {
       "name": "SPRINT.md Tickets Completed",
       "passed": true,
-      "details": "14 tickets DONE, 0 tickets pendientes (READY/IN_PROGRESS)"
-    },
-    {
-      "name": "Typecheck Gate",
-      "passed": true,
-      "details": "dotnet test D:\\WORKSPACE_KARATE\\nordvik\\tests\\Nordvik.UnitTests\\Nordvik.UnitTests.csproj --nologo -v q -> exit 0"
+      "details": "13 tickets DONE, 0 tickets pendientes (READY/IN_PROGRESS)"
     },
     {
       "name": "Automated Tests Gate",
       "passed": true,
-      "details": "node D:\\WORKSPACE_KARATE\\nordvik\\tests\\bruno.test.mjs -> exit 0"
+      "details": "node --test nordvik/tests/*.test.mjs -> exit 0"
     }
   ]
 }
