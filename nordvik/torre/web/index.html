@@ -197,6 +197,81 @@ academia corregir L00</code></pre></li>
 </div>
 
 <div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- Bruno SDET Doll & Copiloto Dock -->
+<div id="bruno-container">
+  <button id="bruno-trigger" class="bruno-floating-btn" aria-expanded="false" aria-controls="bruno-dock" aria-label="Abrir copiloto SDET Bruno">
+    <div id="bruno-trigger-avatar"></div>
+    <span class="bruno-badge">Bruno SDET</span>
+  </button>
+
+  <aside id="bruno-dock" class="bruno-dock" hidden aria-label="Copiloto Bruno">
+    <div class="bruno-header">
+      <div class="bruno-title-box">
+        <div id="bruno-header-avatar" class="bruno-avatar-mini"></div>
+        <div>
+          <h3 class="bruno-name">Bruno · SDET Actuarial</h3>
+          <span class="bruno-sub" id="bruno-mode-indicator">Modo Local (0 Tokens)</span>
+        </div>
+      </div>
+      <div class="bruno-header-actions">
+        <button id="bruno-mode-toggle" class="btn small quiet" title="Alternar entre modo local y modo IA">Conmutar IA</button>
+        <button id="bruno-close-btn" class="icon-btn" aria-label="Minimizar a Bruno">&times;</button>
+      </div>
+    </div>
+
+    <div class="bruno-stage">
+      <div id="bruno-main-avatar" class="bruno-avatar-wrap"></div>
+      <div class="bruno-bubble" id="bruno-speech-bubble" role="status" aria-live="polite">
+        <h4 id="bruno-bubble-title">¡Hola! Soy Bruno</h4>
+        <p id="bruno-bubble-text">Te guiaré con rigor actuarial en tus pruebas con Karate DSL. Cero tests flakies y cero sleeps innecesarios.</p>
+        <small id="bruno-bubble-hint" class="muted">Abre cualquier lección en la Academia para recibir consejos contextuales.</small>
+      </div>
+    </div>
+
+    <nav class="bruno-tabs" role="tablist">
+      <button role="tab" id="bruno-tab-tips" class="bruno-tab active" aria-selected="true" data-tab="tips">Consejos</button>
+      <button role="tab" id="bruno-tab-linter" class="bruno-tab" aria-selected="false" data-tab="linter">Linter <span id="bruno-linter-count" class="pill-count" hidden>0</span></button>
+      <button role="tab" id="bruno-tab-chat" class="bruno-tab" aria-selected="false" data-tab="chat">Preguntar</button>
+    </nav>
+
+    <div class="bruno-tab-content">
+      <!-- Tab Consejos -->
+      <div id="bruno-pane-tips" class="bruno-pane active">
+        <div id="bruno-tips-content">
+          <p class="muted">Selecciona una lección para ver las reglas de calidad y heurísticas clave de este nivel.</p>
+        </div>
+      </div>
+
+      <!-- Tab Linter -->
+      <div id="bruno-pane-linter" class="bruno-pane" hidden>
+        <div id="bruno-linter-content">
+          <p class="muted">Escribe o edita código en los ejercicios para recibir auditoría estática en tiempo real.</p>
+        </div>
+      </div>
+
+      <!-- Tab Chat / Preguntas -->
+      <div id="bruno-pane-chat" class="bruno-pane" hidden>
+        <div class="bruno-chat-history" id="bruno-chat-history"></div>
+        <div class="bruno-quick-queries">
+          <button class="chip bruno-quick" data-query="¿Por qué no usar sleep?">Anti-sleep</button>
+          <button class="chip bruno-quick" data-query="¿Cómo funciona retry until?">Retry until</button>
+          <button class="chip bruno-quick" data-query="¿Cómo autenticar peticiones?">Auth token</button>
+          <button class="chip bruno-quick" data-query="¿Cómo usar mocks dinámicos?">Mocks</button>
+        </div>
+        <form id="bruno-chat-form" class="bruno-chat-form">
+          <input type="text" id="bruno-chat-input" placeholder="Pregunta algo sobre Karate a Bruno..." autocomplete="off">
+          <button type="submit" class="btn small" id="bruno-chat-send">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script src="bruno-avatar.js"></script>
+<script src="bruno-heuristics.js"></script>
+<script src="bruno-linter.js"></script>
+<script src="bruno-bridge.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -46,6 +46,9 @@ function modal(title, html, actions) {
   box.lastElementChild?.focus();
 }
 function closeModal() { $('#modal').hidden = true; }
+function openModal(title, html) {
+  modal(title, html, [{ label: 'Cerrar', kind: 'quiet' }]);
+}
 $('#modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
 
 // ---------- estado (barra superior) ----------
@@ -414,7 +417,10 @@ async function refreshAll() {
   await Promise.all([loadLevels(), loadMissions(), loadMap()]).catch(fail);
 }
 
-refreshAll().then(route);
+refreshAll().then(() => {
+  route();
+  initBruno();
+});
 setInterval(refreshStatus, 5000);
 
 // ============================================================================
@@ -463,19 +469,22 @@ async function openAcadLesson(id) {
   $('#acad-example-code').innerText = '// Cargando ejemplo...';
   $('#acad-exercises-container').innerHTML = '<span class="muted">Cargando ejercicios...</span>';
 
+  // Actualizar contexto y consejos de Bruno para esta lección
+  setBrunoLessonAdvice(id, summary ? summary.title : '');
+
   try {
     activeLessonData = await api(`/lecciones/${id}`);
     renderLessonTheory(activeLessonData.theory);
     $('#acad-example-code').innerText = activeLessonData.example || '// Sin ejemplo';
     renderLessonExercises(activeLessonData.exercises, activeLessonData.hints);
     switchAcadSubTab('theory');
+    auditActiveLessonExercises();
   } catch (err) {
     fail(err);
   }
 }
 
 function renderLessonTheory(md) {
-  // Conversión rápida de markdown básico a HTML seguro
   let html = esc(md)
     .replace(/^# (.*$)/gim, '<h2 style="color:var(--accent); margin:12px 0 6px 0;">$1</h2>')
     .replace(/^## (.*$)/gim, '<h3 style="color:var(--text); margin:10px 0 4px 0;">$1</h3>')
@@ -500,7 +509,7 @@ function renderLessonExercises(exercises, hints) {
         <h4 style="margin:0;"><label for="acad-code-${idx}">Ejercicio ${idx + 1}: <code>${esc(ex.file)}</code></label></h4>
         <span class="muted" style="font-size:0.8rem;">Rellena los huecos <code>___</code></span>
       </div>
-      <textarea id="acad-code-${idx}" data-file="${esc(ex.file)}" aria-label="Código para ${esc(ex.file)}" style="width:100%; height:180px; font-family:var(--mono, monospace); font-size:0.85rem; background:var(--surface); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:10px; resize:vertical;">${esc(ex.code)}</textarea>
+      <textarea id="acad-code-${idx}" data-file="${esc(ex.file)}" oninput="auditActiveLessonExercises()" aria-label="Código para ${esc(ex.file)}" style="width:100%; height:180px; font-family:var(--mono, monospace); font-size:0.85rem; background:var(--surface); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:10px; resize:vertical;">${esc(ex.code)}</textarea>
     </article>
   `).join('') + `
     <div style="margin-top:16px;">
@@ -550,17 +559,228 @@ $('#acad-btn-correct').onclick = async () => {
     textareas.forEach(t => { payload[t.dataset.file] = t.value; });
     await post(`/lecciones/${activeLesson}/guardar`, payload);
 
-    // 2. Corregir ejecutando academia.ps1
+    // 2. Bruno pasa a estado de análisis
+    updateBrunoStage('THINKING', 'Evaluando ejecución...', 'Karate DSL está corriendo en tu PC contra los microservicios bancarios.');
+
+    // 3. Corregir ejecutando academia.ps1
     toast('Ejecutando corrector de Karate...');
     const result = await post(`/lecciones/${activeLesson}/corregir`);
     
-    // 3. Mostrar modal con la salida
+    // 4. Diagnóstico inteligente de Bruno (Local Heurístico)
+    const rawOutput = (result.output || '') + '\n' + (result.error || '');
+    const isPassed = !result.error && (rawOutput.includes('BUILD SUCCESS') || rawOutput.includes('PASSED') || rawOutput.includes('0 failures'));
+    
+    let diagnosis;
+    if (isPassed) {
+      diagnosis = {
+        status: 'OK',
+        title: `¡${activeLesson} Completada con Éxito!`,
+        message: 'Todos los tests han pasado sin regresiones ni fallos.',
+        avatarState: 'SUCCESS',
+        hint: '¡Gran trabajo actuarial! Puedes avanzar al siguiente reto o lección en la Escalera.'
+      };
+    } else {
+      diagnosis = BrunoHeuristics.diagnose(rawOutput, { lessonId: activeLesson });
+    }
+
+    updateBrunoStage(diagnosis.avatarState, diagnosis.title, diagnosis.message, diagnosis.hint);
+
+    // 5. Mostrar modal enriquecido con el diagnóstico de Bruno
     openModal(`Resultado de Corrección · ${activeLesson}`, `
-      <pre style="background:#090d16; color:#cbd5e1; padding:14px; border-radius:6px; max-height:50vh; overflow-y:auto; font-family:monospace; font-size:0.85rem;">${esc(result.output || result.error || 'Sin salida')}</pre>
+      <div style="display:flex; gap:12px; align-items:center; background:${isPassed ? 'var(--ok-soft)' : 'var(--bad-soft)'}; color:${isPassed ? 'var(--ok)' : 'var(--bad)'}; padding:12px 14px; border-radius:8px; margin-bottom:12px; border:1px solid ${isPassed ? 'var(--ok)' : 'var(--bad)'};">
+        <div style="flex-shrink:0;">${BrunoAvatar.render(diagnosis.avatarState, 48)}</div>
+        <div style="flex:1; min-width:0;">
+          <h3 style="margin:0 0 3px 0; font-size:1rem; color:inherit;">${esc(diagnosis.title)}</h3>
+          <p style="margin:0; font-size:0.86rem; line-height:1.4;">${esc(diagnosis.message)}</p>
+          ${diagnosis.hint ? `<small style="display:block; margin-top:5px; font-weight:700; color:var(--accent);">💡 Consejo de Bruno: ${esc(diagnosis.hint)}</small>` : ''}
+        </div>
+      </div>
+      <pre style="background:#090d16; color:#cbd5e1; padding:14px; border-radius:6px; max-height:45vh; overflow-y:auto; font-family:var(--mono, monospace); font-size:0.84rem;">${esc(result.output || result.error || 'Sin salida')}</pre>
     `);
     
-    // Recargar estado de lecciones
+    // 6. Recargar estado de lecciones
     acadLessons = await api('/lecciones');
     renderAcadLessonList();
   });
 };
+
+// ============================================================================
+// COPILOTO SDET BRUNO (CONTROLADOR UI & EVENTOS)
+// ============================================================================
+const brunoState = {
+  open: false,
+  mode: 'LOCAL',
+  activeTab: 'tips',
+  avatarState: 'IDLE'
+};
+
+function initBruno() {
+  if (typeof BrunoAvatar === 'undefined') return;
+
+  $('#bruno-trigger-avatar').innerHTML = BrunoAvatar.render('IDLE', 34);
+  $('#bruno-header-avatar').innerHTML = BrunoAvatar.render('IDLE', 24);
+  $('#bruno-main-avatar').innerHTML = BrunoAvatar.render('IDLE', 75);
+
+  $('#bruno-trigger').onclick = () => toggleBruno(true);
+  $('#bruno-close-btn').onclick = () => toggleBruno(false);
+
+  $('#bruno-mode-toggle').onclick = () => {
+    const nextMode = brunoState.mode === 'LOCAL' ? 'AI' : 'LOCAL';
+    brunoState.mode = nextMode;
+    BrunoBridge.setMode(nextMode);
+    $('#bruno-mode-indicator').textContent = nextMode === 'LOCAL' ? 'Modo Local (0 Tokens)' : 'Modo Híbrido IA';
+    $('#bruno-mode-toggle').textContent = nextMode === 'LOCAL' ? 'Conmutar IA' : 'Modo Local';
+    toast(`Bruno: ${nextMode === 'LOCAL' ? 'Modo Local Offline activo (0 tokens)' : 'Modo Híbrido IA activo'}`);
+    updateBrunoStage(
+      'THINKING',
+      nextMode === 'LOCAL' ? 'Modo Local Offline' : 'Modo Híbrido IA',
+      nextMode === 'LOCAL' ? 'Operando con reglas actuariales locales al 100% sin coste ni red.' : 'Conectado al endpoint /api/v1/bruno/chat para futuras consultas generativas.'
+    );
+  };
+
+  const tabs = document.querySelectorAll('.bruno-tab');
+  tabs.forEach(t => {
+    t.onclick = () => switchBrunoTab(t.dataset.tab);
+  });
+
+  document.querySelectorAll('.bruno-quick').forEach(chip => {
+    chip.onclick = () => {
+      $('#bruno-chat-input').value = chip.dataset.query;
+      handleBrunoChatSubmit();
+    };
+  });
+
+  $('#bruno-chat-form').onsubmit = (e) => {
+    e.preventDefault();
+    handleBrunoChatSubmit();
+  };
+}
+
+function toggleBruno(open) {
+  brunoState.open = open;
+  const dock = $('#bruno-dock');
+  dock.hidden = !open;
+  $('#bruno-trigger').setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) {
+    auditActiveLessonExercises();
+  }
+}
+
+function updateBrunoStage(avatarState, title, text, hint) {
+  brunoState.avatarState = avatarState;
+  $('#bruno-trigger-avatar').innerHTML = BrunoAvatar.render(avatarState, 34);
+  $('#bruno-header-avatar').innerHTML = BrunoAvatar.render(avatarState, 24);
+  $('#bruno-main-avatar').innerHTML = BrunoAvatar.render(avatarState, 75);
+  if (title) $('#bruno-bubble-title').textContent = title;
+  if (text) $('#bruno-bubble-text').textContent = text;
+  if (hint !== undefined) $('#bruno-bubble-hint').textContent = hint;
+}
+
+function switchBrunoTab(tabName) {
+  brunoState.activeTab = tabName;
+  document.querySelectorAll('.bruno-tab').forEach(b => {
+    const isAct = b.dataset.tab === tabName;
+    b.classList.toggle('active', isAct);
+    b.setAttribute('aria-selected', isAct ? 'true' : 'false');
+  });
+  $('#bruno-pane-tips').hidden = tabName !== 'tips';
+  $('#bruno-pane-linter').hidden = tabName !== 'linter';
+  $('#bruno-pane-chat').hidden = tabName !== 'chat';
+}
+
+function setBrunoLessonAdvice(lessonId, lessonTitle) {
+  const tipsMap = {
+    L00: { tip: 'L00 es tu primer contacto con Karate DSL. Valida HTTP 200 y comprueba la estructura JSON sin añadir aserciones redundantes.', state: 'EXPLAINING' },
+    L01: { tip: 'En L01 trabajamos con listas bancarias y arrays. Usa "match response.items == \'#[]\'" para verificar que devuelve una colección.', state: 'EXPLAINING' },
+    L02: { tip: 'L02 exige tipado estricto con Fuzzy Matchers: "#string", "#number", "#regex". Nunca dejes tipos sin validar.', state: 'EXPLAINING' },
+    L03: { tip: 'En L03 reutilizamos autenticación. Llama a "_login.feature" con karate.call() y reutiliza el token OAuth2.', state: 'EXPLAINING' },
+    L04: { tip: 'L04 aborda peticiones asíncronas. ¡Cero sleeps! Emplea "retry until" para consultar el estado del fondo.', state: 'ALERT' },
+    L34: { tip: 'L34 inicia Mocks dinámicos con karate.start({ mock: ..., port: 0 }). Detén siempre el mock al finalizar.', state: 'EXPLAINING' },
+    L35: { tip: 'L35 optimiza llamadas con karate.callSingle(). Cachea tokens para no saturar el servidor de identidad.', state: 'EXPLAINING' },
+    L36: { tip: 'L36 ejecuta tests en paralelo con tags @basics, @async. Cuida el aislamiento de datos actuariales.', state: 'EXPLAINING' },
+    L37: { tip: 'L37 extiende Karate con RuntimeHook en Java para auditoría actuarial antes y después de cada escenario.', state: 'EXPLAINING' },
+    L38: { tip: 'L38 define SLAs con Gatling. Asegúrate de que el 95% de las peticiones respondan en menos de 250ms.', state: 'ALERT' },
+    L39: { tip: 'L39 automatiza CI/CD con GitHub Actions. Los tests deben ejecutarse sin dependencias locales no mockeadas.', state: 'SUCCESS' }
+  };
+
+  const advice = tipsMap[lessonId] || {
+    tip: `Estás explorando ${lessonId} (${lessonTitle || 'Lección Actuarial'}). Sigue el ciclo Red -> Green -> Refactor.`,
+    state: 'IDLE'
+  };
+
+  updateBrunoStage(advice.state, `Bruno en ${lessonId}`, advice.tip, 'Completa los huecos y pulsa Corregir.');
+  
+  const tipsBox = $('#bruno-tips-content');
+  if (tipsBox) {
+    tipsBox.innerHTML = `
+      <div style="background:var(--surface-2); padding:10px 12px; border-radius:8px; border:1px solid var(--line);">
+        <h4 style="margin:0 0 6px 0; color:var(--accent); font-size:0.88rem;">Norma Actuarial para ${lessonId}</h4>
+        <p style="font-size:0.84rem; margin-bottom:8px; line-height:1.4;">${esc(advice.tip)}</p>
+        <ul style="font-size:0.8rem; padding-left:16px; margin:0; color:var(--muted); line-height:1.4;">
+          <li>Cero esperas pasivas (sleep).</li>
+          <li>Usa "assert" para comparaciones booleanas relativas.</li>
+          <li>Respeta el estándar RFC 9457 en errores HTTP.</li>
+        </ul>
+      </div>
+    `;
+  }
+}
+
+function auditActiveLessonExercises() {
+  if (typeof BrunoLinter === 'undefined') return;
+  const textareas = document.querySelectorAll('#acad-exercises-container textarea');
+  let combinedCode = '';
+  textareas.forEach(t => { combinedCode += t.value + '\n'; });
+  
+  const issues = BrunoLinter.audit(combinedCode);
+  const countBadge = $('#bruno-linter-count');
+  const linterBox = $('#bruno-linter-content');
+  if (!linterBox) return;
+
+  if (issues.length > 0) {
+    if (countBadge) {
+      countBadge.textContent = issues.length;
+      countBadge.hidden = false;
+    }
+    linterBox.innerHTML = issues.map(iss => `
+      <div class="bruno-linter-card ${iss.level}" style="margin-bottom:8px;">
+        <div style="margin-bottom:2px;">
+          <strong style="color:${iss.level === 'CRITICAL' ? 'var(--bad)' : 'var(--warn)'}">[${iss.level}] Línea ${iss.line}: ${esc(iss.title)}</strong>
+        </div>
+        <p style="margin:2px 0; font-size:0.82rem;">${esc(iss.message)}</p>
+        <small style="color:var(--accent); font-weight:600;">💡 Solución: ${esc(iss.solution)}</small>
+      </div>
+    `).join('');
+  } else {
+    if (countBadge) countBadge.hidden = true;
+    linterBox.innerHTML = `
+      <div style="padding:10px 12px; border-radius:6px; background:var(--ok-soft); color:var(--ok); font-size:0.84rem; border:1px solid var(--ok);">
+        ✅ <strong>Código sin antipatrones:</strong> Cero sleeps, datos fijos ni sintaxis inválidas detectadas.
+      </div>
+    `;
+  }
+}
+
+async function handleBrunoChatSubmit() {
+  const input = $('#bruno-chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+
+  addBrunoChatMsg('user', q);
+  updateBrunoStage('THINKING', 'Consultando base SDET...', 'Evaluando reglas heurísticas...');
+
+  const response = await BrunoBridge.ask(q, { lessonId: activeLesson });
+  updateBrunoStage(response.avatarState || 'EXPLAINING', response.title || 'Respuesta de Bruno', response.answer);
+  addBrunoChatMsg('bruno', response.answer);
+}
+
+function addBrunoChatMsg(sender, text) {
+  const box = $('#bruno-chat-history');
+  if (!box) return;
+  const msg = document.createElement('div');
+  msg.className = `bruno-chat-msg ${sender}`;
+  msg.textContent = text;
+  box.appendChild(msg);
+  box.scrollTop = box.scrollHeight;
+}

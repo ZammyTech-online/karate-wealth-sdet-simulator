@@ -339,6 +339,33 @@ public static class ControlTower
             }
         });
 
+        // ---------- Copiloto Bruno (Híbrido: Local + Preparado para IA) ----------
+        api.MapPost("/bruno/chat", async (HttpContext http) =>
+        {
+            string question = "";
+            try
+            {
+                using var reader = new StreamReader(http.Request.Body);
+                var raw = await reader.ReadToEndAsync();
+                if (!string.IsNullOrWhiteSpace(raw))
+                {
+                    using var doc = JsonDocument.Parse(raw);
+                    if (doc.RootElement.TryGetProperty("question", out var q)) question = q.GetString() ?? "";
+                    else if (doc.RootElement.TryGetProperty("query", out var q2)) question = q2.GetString() ?? "";
+                }
+            }
+            catch { }
+
+            var reply = $"Bruno (Modo IA Desacoplado): Has preguntado '{question}'. En el futuro este endpoint conectará con tu proveedor LLM preferido (Gemini/Claude/Ollama). Mientras tanto, el motor heurístico local resuelve todas las dudas sin coste.";
+            return Results.Ok(new
+            {
+                source = "AI_STUB",
+                reply,
+                status = "READY_FOR_INTEGRATION",
+                timestamp = DateTime.UtcNow
+            });
+        });
+
         api.MapFallback((HttpContext http) => Problem(http, 404, "ROUTE_NOT_FOUND", $"La ruta {http.Request.Method} {http.Request.Path} no existe en la torre.", "Las rutas de la torre empiezan por /api/v1 (estado, niveles, servicios, dominios, misiones, lecciones, trampas, proxy)."));
         return app;
     }

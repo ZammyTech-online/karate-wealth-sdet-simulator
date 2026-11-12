@@ -243,3 +243,217 @@ pre { margin: 0; padding: 10px 12px; background: var(--surface-2); border-radius
   .search input { min-width: 0; width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------- Copiloto SDET Bruno (Dock & Avatar) ---------- */
+.bruno-floating-btn {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  right: max(18px, env(safe-area-inset-right));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: 30px;
+  padding: 4px 14px 4px 4px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgb(0 0 0 / .14);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.bruno-floating-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / .18);
+}
+.bruno-floating-btn .bruno-badge {
+  font-weight: 700;
+  font-size: .84rem;
+  color: var(--accent);
+  letter-spacing: -.01em;
+}
+.bruno-avatar-mini {
+  width: 28px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bruno-dock {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  right: max(18px, env(safe-area-inset-right));
+  width: min(390px, calc(100vw - 32px));
+  max-height: min(620px, calc(100vh - 80px));
+  z-index: 55;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgb(0 0 0 / .22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bruno-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bruno-title-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bruno-name {
+  font-size: .92rem;
+  font-weight: 800;
+  margin: 0;
+}
+.bruno-sub {
+  font-size: .7rem;
+  color: var(--muted);
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+}
+.bruno-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bruno-stage {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+}
+.bruno-avatar-wrap {
+  flex-shrink: 0;
+  width: 75px;
+  display: flex;
+  justify-content: center;
+}
+.bruno-bubble {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: .84rem;
+  box-shadow: 0 2px 6px rgb(0 0 0 / .04);
+}
+.bruno-bubble h4 {
+  font-size: .86rem;
+  margin: 0 0 4px 0;
+  color: var(--accent);
+}
+.bruno-bubble p {
+  margin: 0 0 4px 0;
+  line-height: 1.35;
+}
+.bruno-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.bruno-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px 6px;
+  font-size: .82rem;
+  font-weight: 600;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.bruno-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.bruno-tab-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  min-height: 180px;
+  max-height: 280px;
+}
+.bruno-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pill-count {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 700;
+  background: var(--bad);
+  color: #fff;
+  margin-left: 4px;
+}
+.bruno-chat-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.bruno-chat-msg {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: .82rem;
+  line-height: 1.35;
+}
+.bruno-chat-msg.user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.bruno-chat-msg.bruno {
+  align-self: flex-start;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.bruno-quick-queries {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.bruno-chat-form {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.bruno-chat-form input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: .82rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--fg);
+}
+.bruno-linter-card {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: .82rem;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.bruno-linter-card.CRITICAL {
+  border-left: 3px solid var(--bad);
+}
+.bruno-linter-card.WARNING {
+  border-left: 3px solid var(--warn);
+}

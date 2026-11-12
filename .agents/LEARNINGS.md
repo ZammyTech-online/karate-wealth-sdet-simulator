@@ -23,3 +23,15 @@
 ## Causa Raíz 6: Ephemeral Port Exhaustion en Windows (BindException)
 - **Hallazgo**: La ejecución paralela rápida de múltiples hilos en Karate con sockets TCP efímeros reciclados contra `localhost:5125` causa `java.net.BindException: Address already in use: getsockopt` en Windows por el estado `TIME_WAIT`.
 - **Regla**: Configurar el runner JUnit con soporte para parametrizar hilos concurrentes (`karate.threads`, por defecto 1 en suites locales intensivas de loopback) o inyectar flags de reutilización de socket.
+
+## Causa Raíz 7: Bloqueo de Binarios .NET durante Recompilación
+- **Hallazgo**: Ejecutar `dotnet build Nordvik.sln` mientras instancias previas de `Nordvik.Host` están en ejecución produce `MSB3026: Could not copy ... because it is being used by another process`.
+- **Regla**: Siempre terminar limpiamente los procesos de `Nordvik.Host` antes de reconstruir la solución, y reiniciar el host como daemon tras la compilación.
+
+## Causa Raíz 8: Invocación de `openModal` no definida en `app.js`
+- **Hallazgo**: `acad-btn-correct` invocaba `openModal(...)`, pero la función base de modal se llamaba `modal(title, html, actions)`, provocando un fallo de JavaScript en consola al corregir lecciones.
+- **Regla**: Proveer un alias canónico `openModal(title, html)` que invoque `modal(title, html, [{ label: 'Cerrar', kind: 'quiet' }])` asegurando robustez total en la interfaz.
+
+## Causa Raíz 9: Fallback de Clases CSS en Componentes SVG Dinámicos
+- **Hallazgo**: Al pasar un estado no registrado a `BrunoAvatar.render('UNKNOWN')`, el avatar renderizaba los trazos de `IDLE` pero conservaba la clase CSS no parametrizada `bruno-unknown`, rompiendo estilizaciones dependientes.
+- **Regla**: Normalizar el estado antes de inyectar clases CSS: `const normalizedState = states[state] ? state : 'IDLE'`.
