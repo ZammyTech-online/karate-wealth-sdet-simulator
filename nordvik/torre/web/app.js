@@ -440,7 +440,7 @@ function renderAcadLessonList() {
   const ul = $('#academia-lesson-list');
   if (!ul) return;
   ul.innerHTML = acadLessons.map(l => `
-    <li class="chip ${activeLesson === l.id ? 'lv' : ''}" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:8px 12px; margin:0;" onclick="openAcadLesson('${l.id}')">
+    <li class="chip ${activeLesson === l.id ? 'lv' : ''}" role="button" tabindex="0" aria-selected="${activeLesson === l.id}" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:8px 12px; margin:0;" onclick="openAcadLesson('${l.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAcadLesson('${l.id}');}">
       <div>
         <b>${l.id}</b> · ${esc(l.title.replace(/L\d+\s*·\s*/, ''))}
       </div>
@@ -495,16 +495,16 @@ function renderLessonExercises(exercises, hints) {
   }
 
   container.innerHTML = exercises.map((ex, idx) => `
-    <article class="panel" style="margin-bottom:16px; border:1px solid var(--border); padding:14px; border-radius:8px; background:rgba(0,0,0,0.2);">
+    <article class="panel" style="margin-bottom:16px; border:1px solid var(--line); padding:14px; border-radius:8px; background:var(--surface-2);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h4 style="margin:0;">Ejercicio ${idx + 1}: <code>${esc(ex.file)}</code></h4>
+        <h4 style="margin:0;"><label for="acad-code-${idx}">Ejercicio ${idx + 1}: <code>${esc(ex.file)}</code></label></h4>
         <span class="muted" style="font-size:0.8rem;">Rellena los huecos <code>___</code></span>
       </div>
-      <textarea id="acad-code-${idx}" data-file="${esc(ex.file)}" style="width:100%; height:180px; font-family:var(--font-mono, monospace); font-size:0.85rem; background:#090d16; color:#38bdf8; border:1px solid var(--border); border-radius:6px; padding:10px; resize:vertical;">${esc(ex.code)}</textarea>
+      <textarea id="acad-code-${idx}" data-file="${esc(ex.file)}" aria-label="Código para ${esc(ex.file)}" style="width:100%; height:180px; font-family:var(--mono, monospace); font-size:0.85rem; background:var(--surface); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:10px; resize:vertical;">${esc(ex.code)}</textarea>
     </article>
   `).join('') + `
     <div style="margin-top:16px;">
-      <details style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:6px; padding:10px;">
+      <details style="background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:10px;">
         <summary style="cursor:pointer; font-weight:600; color:var(--accent);">💡 Pistas disponibles para esta lección</summary>
         <div style="margin-top:10px; font-size:0.9rem; line-height:1.5;">${esc(hints).replace(/\n/g, '<br/>')}</div>
       </details>
@@ -517,9 +517,18 @@ function switchAcadSubTab(tab) {
   $('#acad-pane-example').hidden = tab !== 'example';
   $('#acad-pane-exercises').hidden = tab !== 'exercises';
 
-  $('#acad-tab-theory').className = 'btn small ' + (tab === 'theory' ? 'active' : 'ghost');
-  $('#acad-tab-example').className = 'btn small ' + (tab === 'example' ? 'active' : 'ghost');
-  $('#acad-tab-exercises').className = 'btn small ' + (tab === 'exercises' ? 'active' : 'ghost');
+  const tBtn = $('#acad-tab-theory');
+  const eBtn = $('#acad-tab-example');
+  const xBtn = $('#acad-tab-exercises');
+
+  tBtn.className = 'btn small ' + (tab === 'theory' ? 'active' : 'ghost');
+  tBtn.setAttribute('aria-selected', tab === 'theory' ? 'true' : 'false');
+
+  eBtn.className = 'btn small ' + (tab === 'example' ? 'active' : 'ghost');
+  eBtn.setAttribute('aria-selected', tab === 'example' ? 'true' : 'false');
+
+  xBtn.className = 'btn small ' + (tab === 'exercises' ? 'active' : 'ghost');
+  xBtn.setAttribute('aria-selected', tab === 'exercises' ? 'true' : 'false');
 }
 
 $('#acad-btn-services').onclick = async () => {

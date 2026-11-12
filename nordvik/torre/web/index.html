@@ -160,17 +160,17 @@ academia corregir L00</code></pre></li>
             </div>
           </div>
           
-          <div class="tabs" style="margin-bottom:14px;">
-            <button class="btn small active" id="acad-tab-theory" onclick="switchAcadSubTab('theory')">Teoría & Norma</button>
-            <button class="btn small ghost" id="acad-tab-example" onclick="switchAcadSubTab('example')">Ejemplo resuelto</button>
-            <button class="btn small ghost" id="acad-tab-exercises" onclick="switchAcadSubTab('exercises')">Ejercicios & Corrector</button>
+          <div class="tabs" role="tablist" aria-label="Secciones de la lección" style="margin-bottom:14px;">
+            <button role="tab" aria-selected="true" aria-controls="acad-pane-theory" class="btn small active" id="acad-tab-theory" onclick="switchAcadSubTab('theory')">Teoría &amp; Norma</button>
+            <button role="tab" aria-selected="false" aria-controls="acad-pane-example" class="btn small ghost" id="acad-tab-example" onclick="switchAcadSubTab('example')">Ejemplo resuelto</button>
+            <button role="tab" aria-selected="false" aria-controls="acad-pane-exercises" class="btn small ghost" id="acad-tab-exercises" onclick="switchAcadSubTab('exercises')">Ejercicios &amp; Corrector</button>
           </div>
 
-          <div id="acad-pane-theory" style="line-height:1.6; font-size:0.95rem;"></div>
-          <div id="acad-pane-example" hidden>
+          <div id="acad-pane-theory" role="tabpanel" aria-labelledby="acad-tab-theory" style="line-height:1.6; font-size:0.95rem;"></div>
+          <div id="acad-pane-example" role="tabpanel" aria-labelledby="acad-tab-example" hidden>
             <pre><code id="acad-example-code" class="language-gherkin"></code></pre>
           </div>
-          <div id="acad-pane-exercises" hidden>
+          <div id="acad-pane-exercises" role="tabpanel" aria-labelledby="acad-tab-exercises" hidden>
             <div id="acad-exercises-container"></div>
           </div>
         </div>
