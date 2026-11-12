@@ -110,6 +110,19 @@ Necesita el perfil completo: `nordvik up -Profile completo` (168 procesos, unos 
 
 Ayudantes nuevos: `_persona.feature` y `_plan.feature`.
 
+## Tramo 5 · Maestría Senior SDET & Enterprise Automation (L34-L39)
+
+Técnicas avanzadas de infraestructura de pruebas automatizadas bancarias.
+
+| Lección | Qué aprendes |
+| --- | --- |
+| L34 | Servidores Mock Dinámicos: aislamiento hermético con `karate.start()` |
+| L35 | `karate.callSingle`: cache global de tokens y configuración multi-tenant |
+| L36 | Paralelismo y Tags: Runners JUnit 5, hilos concurrentes y selector de etiquetas |
+| L37 | Interceptores y Hooks: `RuntimeHook` en Java, afterScenario y auditoría criptográfica |
+| L38 | Rendimiento y Carga: Karate Gatling, percentil 95 (p95) y SLAs de respuesta |
+| L39 | CI/CD Enterprise: GitHub Actions, políticas de bloqueo y reportes HTML interactivos |
+
 ## Todos los comandos
 
 | Comando | Qué hace |

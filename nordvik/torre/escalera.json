@@ -167,7 +167,13 @@
         "L30",
         "L31",
         "L32",
-        "L33"
+        "L33",
+        "L34",
+        "L35",
+        "L36",
+        "L37",
+        "L38",
+        "L39"
       ],
       "summary": "Los 156 servicios y los 12 sistemas externos. Sistemas heredados, seguros, fiscalidad, RGPD, contratos de API y calidad de la propia suite.",
       "karate": [
@@ -176,7 +182,13 @@
         "OAuth2 client credentials",
         "Esquemas y deriva de OpenAPI",
         "Medir tests inestables",
-        "Proyecto final en cinco servicios"
+        "Proyecto final en cinco servicios",
+        "Mocks dinámicos (karate.start)",
+        "callSingle y Auth Cache",
+        "Paralelismo y Tags",
+        "Java RuntimeHook",
+        "Gatling Load Testing",
+        "GitHub Actions CI/CD"
       ],
       "business": [
         "Mainframe y pensiones SOAP",

@@ -75,6 +75,7 @@ def build(lesson):
         write(os.path.join(ldir, "ejercicios", name), feature(lesson["code"], ex, "ejercicio"))
         write(os.path.join(sdir, name), feature(lesson["code"], ex, "solucion"))
     for fname, content in lesson.get("apoyo", {}).items():
+        write(os.path.join(ldir, fname), content)
         write(os.path.join(ldir, "ejercicios", fname), content)
         write(os.path.join(sdir, fname), content)
     return folder, len(lesson["ejercicios"])
@@ -82,7 +83,7 @@ def build(lesson):
 if __name__ == "__main__":
     # Los ficheros se sobrescriben; no se borra nada (si se renombra una lección, borra a mano la carpeta antigua).
     total = 0
-    for modname in ["lecciones_a", "lecciones_b", "lecciones_c", "lecciones_d", "lecciones_e", "lecciones_f"]:
+    for modname in ["lecciones_a", "lecciones_b", "lecciones_c", "lecciones_d", "lecciones_e", "lecciones_f", "lecciones_g"]:
         try:
             mod = importlib.import_module(modname)
         except ModuleNotFoundError:

@@ -1,0 +1,24 @@
+{
+  "autonomous-sprint-v3": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "ask_question|run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./scripts/sprint-pretool-hook.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node ./scripts/sprint-stop-hook.mjs",
+        "timeout": 10
+      }
+    ]
+  }
+}

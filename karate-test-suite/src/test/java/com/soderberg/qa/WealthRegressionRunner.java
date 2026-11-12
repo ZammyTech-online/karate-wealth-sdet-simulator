@@ -9,9 +9,10 @@ public class WealthRegressionRunner {
 
     @Test
     void testAllFeaturesParallel() {
+        int threads = Integer.getInteger("karate.threads", 1);
         Results results = Runner.path("classpath:com/soderberg/qa/features")
                 .outputCucumberJson(true)
-                .parallel(3);
+                .parallel(threads);
 
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }
