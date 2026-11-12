@@ -1,0 +1,427 @@
+{
+  "lessonId": "L02",
+  "title": "Fuzzy Matchers and Strict Schemas",
+  "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+  "language": "en",
+  "duration": 33.76,
+  "wordsCount": 67,
+  "words": [
+    {
+      "word": "Welcome",
+      "raw": "Welcome",
+      "start": 0,
+      "end": 0.441
+    },
+    {
+      "word": "to",
+      "raw": "to",
+      "start": 0.476,
+      "end": 0.557
+    },
+    {
+      "word": "Lesson",
+      "raw": "Lesson",
+      "start": 0.65,
+      "end": 0.998
+    },
+    {
+      "word": "L02",
+      "raw": "L02:",
+      "start": 1.115,
+      "end": 2.043
+    },
+    {
+      "word": "Fuzzy",
+      "raw": "Fuzzy",
+      "start": 2.368,
+      "end": 2.682
+    },
+    {
+      "word": "Matchers",
+      "raw": "Matchers",
+      "start": 2.752,
+      "end": 3.158
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 3.204,
+      "end": 3.297
+    },
+    {
+      "word": "Schema",
+      "raw": "Schema",
+      "start": 3.367,
+      "end": 3.692
+    },
+    {
+      "word": "Validation",
+      "raw": "Validation.",
+      "start": 3.738,
+      "end": 4.481
+    },
+    {
+      "word": "In",
+      "raw": "In",
+      "start": 5.085,
+      "end": 5.236
+    },
+    {
+      "word": "financial",
+      "raw": "financial",
+      "start": 5.317,
+      "end": 5.805
+    },
+    {
+      "word": "testing",
+      "raw": "testing,",
+      "start": 5.851,
+      "end": 6.432
+    },
+    {
+      "word": "values",
+      "raw": "values",
+      "start": 6.711,
+      "end": 7.117
+    },
+    {
+      "word": "like",
+      "raw": "like",
+      "start": 7.163,
+      "end": 7.338
+    },
+    {
+      "word": "timestamps",
+      "raw": "timestamps,",
+      "start": 7.372,
+      "end": 8.429
+    },
+    {
+      "word": "transaction",
+      "raw": "transaction",
+      "start": 8.58,
+      "end": 9.288
+    },
+    {
+      "word": "IDs",
+      "raw": "IDs,",
+      "start": 9.358,
+      "end": 9.996
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 10.205,
+      "end": 10.437
+    },
+    {
+      "word": "balances",
+      "raw": "balances",
+      "start": 10.519,
+      "end": 11.029
+    },
+    {
+      "word": "change",
+      "raw": "change",
+      "start": 11.099,
+      "end": 11.413
+    },
+    {
+      "word": "dynamically",
+      "raw": "dynamically",
+      "start": 11.459,
+      "end": 12.074
+    },
+    {
+      "word": "on",
+      "raw": "on",
+      "start": 12.144,
+      "end": 12.272
+    },
+    {
+      "word": "every",
+      "raw": "every",
+      "start": 12.365,
+      "end": 12.643
+    },
+    {
+      "word": "run",
+      "raw": "run.",
+      "start": 12.713,
+      "end": 13.096
+    },
+    {
+      "word": "Hardcoding",
+      "raw": "Hardcoding",
+      "start": 13.793,
+      "end": 14.443
+    },
+    {
+      "word": "exact",
+      "raw": "exact",
+      "start": 14.512,
+      "end": 14.942
+    },
+    {
+      "word": "values",
+      "raw": "values",
+      "start": 15.023,
+      "end": 15.418
+    },
+    {
+      "word": "leads",
+      "raw": "leads",
+      "start": 15.488,
+      "end": 15.732
+    },
+    {
+      "word": "to",
+      "raw": "to",
+      "start": 15.766,
+      "end": 15.836
+    },
+    {
+      "word": "flaky",
+      "raw": "flaky",
+      "start": 15.952,
+      "end": 16.347
+    },
+    {
+      "word": "tests",
+      "raw": "tests.",
+      "start": 16.405,
+      "end": 17.02
+    },
+    {
+      "word": "Karate",
+      "raw": "Karate",
+      "start": 17.717,
+      "end": 18.123
+    },
+    {
+      "word": "solves",
+      "raw": "solves",
+      "start": 18.205,
+      "end": 18.53
+    },
+    {
+      "word": "this",
+      "raw": "this",
+      "start": 18.565,
+      "end": 18.704
+    },
+    {
+      "word": "with",
+      "raw": "with",
+      "start": 18.762,
+      "end": 18.901
+    },
+    {
+      "word": "fuzzy",
+      "raw": "fuzzy",
+      "start": 18.959,
+      "end": 19.261
+    },
+    {
+      "word": "matchers",
+      "raw": "matchers",
+      "start": 19.331,
+      "end": 19.714
+    },
+    {
+      "word": "like",
+      "raw": "like",
+      "start": 19.76,
+      "end": 20.027
+    },
+    {
+      "word": "hash",
+      "raw": "hash",
+      "start": 20.178,
+      "end": 20.48
+    },
+    {
+      "word": "string",
+      "raw": "string,",
+      "start": 20.515,
+      "end": 20.945
+    },
+    {
+      "word": "hash",
+      "raw": "hash",
+      "start": 21.119,
+      "end": 21.386
+    },
+    {
+      "word": "number",
+      "raw": "number,",
+      "start": 21.444,
+      "end": 21.885
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 22.036,
+      "end": 22.187
+    },
+    {
+      "word": "hash",
+      "raw": "hash",
+      "start": 22.257,
+      "end": 22.512
+    },
+    {
+      "word": "regex",
+      "raw": "regex.",
+      "start": 22.582,
+      "end": 23.267
+    },
+    {
+      "word": "By",
+      "raw": "By",
+      "start": 23.963,
+      "end": 24.126
+    },
+    {
+      "word": "defining",
+      "raw": "defining",
+      "start": 24.184,
+      "end": 24.66
+    },
+    {
+      "word": "an",
+      "raw": "an",
+      "start": 24.718,
+      "end": 24.788
+    },
+    {
+      "word": "exact",
+      "raw": "exact",
+      "start": 24.846,
+      "end": 25.31
+    },
+    {
+      "word": "schema",
+      "raw": "schema",
+      "start": 25.38,
+      "end": 25.716
+    },
+    {
+      "word": "contract",
+      "raw": "contract,",
+      "start": 25.786,
+      "end": 26.552
+    },
+    {
+      "word": "our",
+      "raw": "our",
+      "start": 26.935,
+      "end": 27.086
+    },
+    {
+      "word": "suite",
+      "raw": "suite",
+      "start": 27.156,
+      "end": 27.411
+    },
+    {
+      "word": "validates",
+      "raw": "validates",
+      "start": 27.458,
+      "end": 27.934
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 27.969,
+      "end": 28.038
+    },
+    {
+      "word": "structure",
+      "raw": "structure",
+      "start": 28.085,
+      "end": 28.491
+    },
+    {
+      "word": "without",
+      "raw": "without",
+      "start": 28.526,
+      "end": 28.897
+    },
+    {
+      "word": "becoming",
+      "raw": "becoming",
+      "start": 28.944,
+      "end": 29.281
+    },
+    {
+      "word": "brittle",
+      "raw": "brittle.",
+      "start": 29.327,
+      "end": 29.757
+    },
+    {
+      "word": "Always",
+      "raw": "Always",
+      "start": 30.36,
+      "end": 30.767
+    },
+    {
+      "word": "enforce",
+      "raw": "enforce",
+      "start": 30.836,
+      "end": 31.231
+    },
+    {
+      "word": "type",
+      "raw": "type",
+      "start": 31.278,
+      "end": 31.568
+    },
+    {
+      "word": "safety",
+      "raw": "safety",
+      "start": 31.603,
+      "end": 31.928
+    },
+    {
+      "word": "on",
+      "raw": "on",
+      "start": 31.997,
+      "end": 32.102
+    },
+    {
+      "word": "every",
+      "raw": "every",
+      "start": 32.218,
+      "end": 32.508
+    },
+    {
+      "word": "monetary",
+      "raw": "monetary",
+      "start": 32.578,
+      "end": 33.054
+    },
+    {
+      "word": "field",
+      "raw": "field.",
+      "start": 33.112,
+      "end": 33.762
+    }
+  ],
+  "challenges": [
+    {
+      "id": "c1",
+      "timeRatio": 0.5,
+      "prompt": "Why do we avoid hardcoding dynamic identifiers in Karate assertions?",
+      "options": [
+        "It causes test flakiness across runs",
+        "Karate does not support strings",
+        "It slows down HTTP requests"
+      ],
+      "answerIndex": 0,
+      "explanation": "Exact! Dynamic IDs change across test runs and must be asserted using schemas.",
+      "time": 16.88
+    }
+  ]
+}

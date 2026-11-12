@@ -1,7 +1,7 @@
 // tests/bruno.test.mjs: Suite de pruebas unitarias y de integración para el copiloto SDET Bruno.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import fs, { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -20,6 +20,7 @@ const { BrunoAvatar } = loadScript('bruno-avatar.js');
 const { BrunoHeuristics } = loadScript('bruno-heuristics.js');
 const { BrunoLinter } = loadScript('bruno-linter.js');
 const { BrunoBridge } = loadScript('bruno-bridge.js');
+const { BrunoAudioPlayer } = loadScript('bruno-audio-player.js');
 
 // ============================================================================
 // 1. Tests de BrunoAvatar (Stickman SVG Vectorial & Estados Reactivos)
@@ -207,4 +208,50 @@ test('BrunoBridge: modo IA desacoplado con endpoint en vivo o fallback elegante'
   // Debe haber respondido con IA o fallback local sin lanzar excepción no capturada
   assert.ok(answer.answer.length > 0);
   assert.ok(answer.source === 'AI' || answer.source === 'LOCAL');
+});
+
+// ============================================================================
+// 5. Tests de BrunoAudioPlayer y Metadatos de ElevenLabs
+// ============================================================================
+test('BrunoAudioPlayer: formateo de tiempo y escape HTML', () => {
+  assert.equal(BrunoAudioPlayer.formatTime(0), '00:00');
+  assert.equal(BrunoAudioPlayer.formatTime(65), '01:05');
+  assert.equal(BrunoAudioPlayer.formatTime(103.5), '01:43');
+  assert.equal(BrunoAudioPlayer.escape('<script>alert("xss")</script>'), '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
+});
+
+test('Archivos de Audio ElevenLabs: L00, L01 y L02 presentes y conformes', () => {
+  const audioDir = resolve(__dirname, '../torre/web/audio');
+  const requiredLessons = ['L00', 'L01', 'L02'];
+
+  for (const lid of requiredLessons) {
+    const mp3 = resolve(audioDir, `${lid}.mp3`);
+    const json = resolve(audioDir, `${lid}.json`);
+
+    assert.ok(fs.existsSync(mp3), `El archivo ${lid}.mp3 debe existir en disco`);
+    assert.ok(fs.existsSync(json), `El archivo ${lid}.json debe existir en disco`);
+
+    const stats = fs.statSync(mp3);
+    assert.ok(stats.size > 100 * 1024, `${lid}.mp3 debe superar 100 KB (tamaño real: ${stats.size} bytes)`);
+
+    const meta = JSON.parse(fs.readFileSync(json, 'utf8'));
+    assert.equal(meta.lessonId, lid);
+    assert.equal(meta.language, 'en');
+    assert.ok(meta.duration > 20, `Duración debe ser mayor a 20s (obtenida: ${meta.duration}s)`);
+    assert.ok(Array.isArray(meta.words), 'Debe contener arreglo de palabras');
+    assert.ok(meta.words.length > 50, `Debe contener más de 50 palabras (obtenidas: ${meta.words.length})`);
+    
+    // Verificar estructura de timestamps por palabra
+    const firstWord = meta.words[0];
+    assert.ok('word' in firstWord);
+    assert.ok('start' in firstWord);
+    assert.ok('end' in firstWord);
+    assert.ok(firstWord.end >= firstWord.start);
+
+    // Verificar presencia de retos predictivos
+    assert.ok(Array.isArray(meta.challenges), 'Debe incluir retos predictivos');
+    assert.ok(meta.challenges.length >= 1, 'Debe incluir al menos 1 reto predictivo');
+    assert.ok(meta.challenges[0].time > 0);
+    assert.ok(meta.challenges[0].options.length >= 2);
+  }
 });

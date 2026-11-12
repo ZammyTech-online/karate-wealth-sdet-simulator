@@ -479,6 +479,9 @@ async function openAcadLesson(id) {
     renderLessonExercises(activeLessonData.exercises, activeLessonData.hints);
     switchAcadSubTab('theory');
     auditActiveLessonExercises();
+    if (typeof BrunoAudioPlayer !== 'undefined') {
+      BrunoAudioPlayer.loadLesson(id, activeLessonData.theory);
+    }
   } catch (err) {
     fail(err);
   }
@@ -616,6 +619,9 @@ const brunoState = {
 
 function initBruno() {
   if (typeof BrunoAvatar === 'undefined') return;
+  if (typeof BrunoAudioPlayer !== 'undefined') {
+    BrunoAudioPlayer.init();
+  }
 
   $('#bruno-trigger-avatar').innerHTML = BrunoAvatar.render('IDLE', 34);
   $('#bruno-header-avatar').innerHTML = BrunoAvatar.render('IDLE', 24);

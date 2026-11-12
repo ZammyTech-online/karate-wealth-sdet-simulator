@@ -116,5 +116,28 @@ Resultado esperado:
 ✔ BrunoHeuristics: diagnostica 8 categorías de error
 ✔ BrunoLinter: detecta antipatrones y datos hardcodeados
 ✔ BrunoBridge: conmuta entre local e IA con fallback
-ℹ tests 17 · pass 17 · fail 0
+✔ BrunoAudioPlayer: formateo de tiempo y escape HTML
+✔ Archivos de Audio ElevenLabs: L00, L01 y L02 presentes y conformes
+ℹ tests 19 · pass 19 · fail 0
 ```
+
+---
+
+## 🎙️ 7. Sistema Auditivo y Predictivo con ElevenLabs (Teleprompter & Retos en Vivo)
+
+El sistema integra locución profesional con la API oficial de ElevenLabs mediante el endpoint `/v1/text-to-speech/{voice_id}/with-timestamps`:
+
+### Características Clave:
+1. **Voz Estable de Alta Fidelidad**: Emplea el modelo `eleven_multilingual_v2` con la voz técnica de **Liam** (`TX3LPaxmHKxFdv7VOQHJ`), ofreciendo pronunciación natural en inglés para sintaxis Gherkin y contratos HTTP.
+2. **Teleprompter Sincronizado Palabra a Palabra**:
+   - Cada palabra leída en el audio tiene un timestamp exacto de inicio y fin en milisegundos.
+   - En la Academia, la palabra activa se ilumina en **cian neón** (`.kw-active`) con scroll suave automático.
+3. **Modo Predictivo Interactivo ("Bruno Te Reta")**:
+   - En momentos clave de la lección, el audio se pausa automáticamente.
+   - Aparece un desafío interactivo con 3 opciones sobre la sintaxis correcta.
+   - Al responder correctamente, Bruno festeja (`SUCCESS`) y reanuda el audio.
+4. **Pre-Generación y Caché en Disco**:
+   - Los audios se generan una sola vez mediante `scripts/generate-lesson-audio.mjs` y se almacenan en `torre/web/audio/{lessonId}.mp3` y `{lessonId}.json`.
+   - Se sirven de forma estática con soporte de streaming HTTP (`Accept-Ranges: bytes`), con coste 0 y consumo de tokens 0 en las reproducciones posteriores.
+5. **Fallback Offline Universal**: Si una lección no cuenta con audio pre-generado, se activa el motor nativo del navegador (`Web Speech API`) sin interrumpir la experiencia.
+

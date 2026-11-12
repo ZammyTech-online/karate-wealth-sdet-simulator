@@ -1,0 +1,1419 @@
+{
+  "lessonId": "L00",
+  "title": "What is an API?",
+  "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+  "language": "en",
+  "duration": 103.52,
+  "wordsCount": 228,
+  "words": [
+    {
+      "word": "Welcome",
+      "raw": "Welcome",
+      "start": 0,
+      "end": 0.418
+    },
+    {
+      "word": "to",
+      "raw": "to",
+      "start": 0.441,
+      "end": 0.499
+    },
+    {
+      "word": "Lesson",
+      "raw": "Lesson",
+      "start": 0.569,
+      "end": 0.871
+    },
+    {
+      "word": "L00",
+      "raw": "L00",
+      "start": 0.987,
+      "end": 1.463
+    },
+    {
+      "word": "of",
+      "raw": "of",
+      "start": 1.846,
+      "end": 1.962
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 2.02,
+      "end": 2.09
+    },
+    {
+      "word": "Karate",
+      "raw": "Karate",
+      "start": 2.136,
+      "end": 2.566
+    },
+    {
+      "word": "SDET",
+      "raw": "SDET",
+      "start": 2.635,
+      "end": 3.019
+    },
+    {
+      "word": "Academy",
+      "raw": "Academy:",
+      "start": 3.065,
+      "end": 3.657
+    },
+    {
+      "word": "What",
+      "raw": "What",
+      "start": 4.354,
+      "end": 4.598
+    },
+    {
+      "word": "is",
+      "raw": "is",
+      "start": 4.667,
+      "end": 4.772
+    },
+    {
+      "word": "an",
+      "raw": "an",
+      "start": 4.807,
+      "end": 4.876
+    },
+    {
+      "word": "API",
+      "raw": "API?",
+      "start": 4.946,
+      "end": 5.677
+    },
+    {
+      "word": "In",
+      "raw": "In",
+      "start": 6.374,
+      "end": 6.513
+    },
+    {
+      "word": "this",
+      "raw": "this",
+      "start": 6.548,
+      "end": 6.687
+    },
+    {
+      "word": "lesson",
+      "raw": "lesson,",
+      "start": 6.769,
+      "end": 7.187
+    },
+    {
+      "word": "you",
+      "raw": "you",
+      "start": 7.338,
+      "end": 7.43
+    },
+    {
+      "word": "will",
+      "raw": "will",
+      "start": 7.488,
+      "end": 7.651
+    },
+    {
+      "word": "understand",
+      "raw": "understand",
+      "start": 7.697,
+      "end": 8.104
+    },
+    {
+      "word": "how",
+      "raw": "how",
+      "start": 8.162,
+      "end": 8.278
+    },
+    {
+      "word": "programs",
+      "raw": "programs",
+      "start": 8.359,
+      "end": 8.812
+    },
+    {
+      "word": "communicate",
+      "raw": "communicate",
+      "start": 8.87,
+      "end": 9.369
+    },
+    {
+      "word": "over",
+      "raw": "over",
+      "start": 9.404,
+      "end": 9.578
+    },
+    {
+      "word": "HTTP",
+      "raw": "HTTP",
+      "start": 9.648,
+      "end": 10.263
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 10.774,
+      "end": 10.948
+    },
+    {
+      "word": "execute",
+      "raw": "execute",
+      "start": 11.029,
+      "end": 11.552
+    },
+    {
+      "word": "your",
+      "raw": "your",
+      "start": 11.587,
+      "end": 11.714
+    },
+    {
+      "word": "very",
+      "raw": "very",
+      "start": 11.807,
+      "end": 12.063
+    },
+    {
+      "word": "first",
+      "raw": "first",
+      "start": 12.144,
+      "end": 12.411
+    },
+    {
+      "word": "automated",
+      "raw": "automated",
+      "start": 12.457,
+      "end": 12.887
+    },
+    {
+      "word": "test",
+      "raw": "test.",
+      "start": 12.922,
+      "end": 13.375
+    },
+    {
+      "word": "An",
+      "raw": "An",
+      "start": 14.187,
+      "end": 14.338
+    },
+    {
+      "word": "API",
+      "raw": "API",
+      "start": 14.408,
+      "end": 14.896
+    },
+    {
+      "word": "is",
+      "raw": "is",
+      "start": 14.988,
+      "end": 15.081
+    },
+    {
+      "word": "a",
+      "raw": "a",
+      "start": 15.128,
+      "end": 15.163
+    },
+    {
+      "word": "doorway",
+      "raw": "doorway",
+      "start": 15.221,
+      "end": 15.662
+    },
+    {
+      "word": "through",
+      "raw": "through",
+      "start": 15.72,
+      "end": 15.929
+    },
+    {
+      "word": "which",
+      "raw": "which",
+      "start": 15.952,
+      "end": 16.115
+    },
+    {
+      "word": "one",
+      "raw": "one",
+      "start": 16.184,
+      "end": 16.416
+    },
+    {
+      "word": "software",
+      "raw": "software",
+      "start": 16.463,
+      "end": 16.928
+    },
+    {
+      "word": "service",
+      "raw": "service",
+      "start": 16.963,
+      "end": 17.381
+    },
+    {
+      "word": "requests",
+      "raw": "requests",
+      "start": 17.555,
+      "end": 17.984
+    },
+    {
+      "word": "actions",
+      "raw": "actions",
+      "start": 18.054,
+      "end": 18.437
+    },
+    {
+      "word": "from",
+      "raw": "from",
+      "start": 18.472,
+      "end": 18.6
+    },
+    {
+      "word": "another",
+      "raw": "another.",
+      "start": 18.646,
+      "end": 19.122
+    },
+    {
+      "word": "At",
+      "raw": "At",
+      "start": 19.819,
+      "end": 19.958
+    },
+    {
+      "word": "Nordvik",
+      "raw": "Nordvik,",
+      "start": 20.028,
+      "end": 20.597
+    },
+    {
+      "word": "each",
+      "raw": "each",
+      "start": 20.922,
+      "end": 21.107
+    },
+    {
+      "word": "microservice",
+      "raw": "microservice",
+      "start": 21.165,
+      "end": 21.839
+    },
+    {
+      "word": "is",
+      "raw": "is",
+      "start": 21.874,
+      "end": 21.955
+    },
+    {
+      "word": "one",
+      "raw": "one",
+      "start": 22.025,
+      "end": 22.176
+    },
+    {
+      "word": "of",
+      "raw": "of",
+      "start": 22.199,
+      "end": 22.245
+    },
+    {
+      "word": "those",
+      "raw": "those",
+      "start": 22.292,
+      "end": 22.489
+    },
+    {
+      "word": "doors",
+      "raw": "doors.",
+      "start": 22.524,
+      "end": 23.011
+    },
+    {
+      "word": "You",
+      "raw": "You,",
+      "start": 23.708,
+      "end": 24.091
+    },
+    {
+      "word": "using",
+      "raw": "using",
+      "start": 24.265,
+      "end": 24.544
+    },
+    {
+      "word": "Karate",
+      "raw": "Karate",
+      "start": 24.614,
+      "end": 24.997
+    },
+    {
+      "word": "DSL",
+      "raw": "DSL,",
+      "start": 25.066,
+      "end": 25.751
+    },
+    {
+      "word": "are",
+      "raw": "are",
+      "start": 25.879,
+      "end": 26.076
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 26.111,
+      "end": 26.181
+    },
+    {
+      "word": "client",
+      "raw": "client.",
+      "start": 26.216,
+      "end": 26.727
+    },
+    {
+      "word": "The",
+      "raw": "The",
+      "start": 27.539,
+      "end": 27.655
+    },
+    {
+      "word": "microservice",
+      "raw": "microservice",
+      "start": 27.702,
+      "end": 28.375
+    },
+    {
+      "word": "is",
+      "raw": "is",
+      "start": 28.422,
+      "end": 28.503
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 28.549,
+      "end": 28.619
+    },
+    {
+      "word": "server",
+      "raw": "server.",
+      "start": 28.666,
+      "end": 29.188
+    },
+    {
+      "word": "Every",
+      "raw": "Every",
+      "start": 29.885,
+      "end": 30.198
+    },
+    {
+      "word": "HTTP",
+      "raw": "HTTP",
+      "start": 30.256,
+      "end": 30.825
+    },
+    {
+      "word": "interaction",
+      "raw": "interaction",
+      "start": 30.941,
+      "end": 31.429
+    },
+    {
+      "word": "consists",
+      "raw": "consists",
+      "start": 31.487,
+      "end": 31.87
+    },
+    {
+      "word": "of",
+      "raw": "of",
+      "start": 31.916,
+      "end": 31.974
+    },
+    {
+      "word": "two",
+      "raw": "two",
+      "start": 32.044,
+      "end": 32.241
+    },
+    {
+      "word": "halves",
+      "raw": "halves:",
+      "start": 32.323,
+      "end": 32.81
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 33.507,
+      "end": 33.6
+    },
+    {
+      "word": "request",
+      "raw": "request,",
+      "start": 33.669,
+      "end": 34.354
+    },
+    {
+      "word": "where",
+      "raw": "where",
+      "start": 34.563,
+      "end": 34.807
+    },
+    {
+      "word": "you",
+      "raw": "you",
+      "start": 34.842,
+      "end": 34.923
+    },
+    {
+      "word": "specify",
+      "raw": "specify",
+      "start": 34.981,
+      "end": 35.492
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 35.561,
+      "end": 35.643
+    },
+    {
+      "word": "HTTP",
+      "raw": "HTTP",
+      "start": 35.712,
+      "end": 36.316
+    },
+    {
+      "word": "method",
+      "raw": "method",
+      "start": 36.467,
+      "end": 36.746
+    },
+    {
+      "word": "like",
+      "raw": "like",
+      "start": 36.804,
+      "end": 37.094
+    },
+    {
+      "word": "GET",
+      "raw": "GET",
+      "start": 37.338,
+      "end": 37.535
+    },
+    {
+      "word": "or",
+      "raw": "or",
+      "start": 37.57,
+      "end": 37.64
+    },
+    {
+      "word": "POST",
+      "raw": "POST,",
+      "start": 37.698,
+      "end": 38.243
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 38.452,
+      "end": 38.545
+    },
+    {
+      "word": "target",
+      "raw": "target",
+      "start": 38.592,
+      "end": 38.894
+    },
+    {
+      "word": "URL",
+      "raw": "URL,",
+      "start": 38.952,
+      "end": 39.602
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 39.776,
+      "end": 40.02
+    },
+    {
+      "word": "optional",
+      "raw": "optional",
+      "start": 40.136,
+      "end": 40.542
+    },
+    {
+      "word": "headers",
+      "raw": "headers",
+      "start": 40.612,
+      "end": 40.925
+    },
+    {
+      "word": "or",
+      "raw": "or",
+      "start": 41.007,
+      "end": 41.181
+    },
+    {
+      "word": "JSON",
+      "raw": "JSON",
+      "start": 41.274,
+      "end": 41.633
+    },
+    {
+      "word": "body",
+      "raw": "body;",
+      "start": 41.692,
+      "end": 42.133
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 42.829,
+      "end": 43.073
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 43.143,
+      "end": 43.212
+    },
+    {
+      "word": "response",
+      "raw": "response,",
+      "start": 43.282,
+      "end": 43.909
+    },
+    {
+      "word": "returned",
+      "raw": "returned",
+      "start": 43.979,
+      "end": 44.408
+    },
+    {
+      "word": "by",
+      "raw": "by",
+      "start": 44.478,
+      "end": 44.617
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 44.687,
+      "end": 44.757
+    },
+    {
+      "word": "server",
+      "raw": "server",
+      "start": 44.815,
+      "end": 45.105
+    },
+    {
+      "word": "with",
+      "raw": "with",
+      "start": 45.151,
+      "end": 45.279
+    },
+    {
+      "word": "an",
+      "raw": "an",
+      "start": 45.314,
+      "end": 45.384
+    },
+    {
+      "word": "HTTP",
+      "raw": "HTTP",
+      "start": 45.465,
+      "end": 46.138
+    },
+    {
+      "word": "status",
+      "raw": "status",
+      "start": 46.266,
+      "end": 46.626
+    },
+    {
+      "word": "code",
+      "raw": "code,",
+      "start": 46.684,
+      "end": 47.032
+    },
+    {
+      "word": "response",
+      "raw": "response",
+      "start": 47.241,
+      "end": 47.706
+    },
+    {
+      "word": "headers",
+      "raw": "headers,",
+      "start": 47.74,
+      "end": 48.182
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 48.39,
+      "end": 48.588
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 48.634,
+      "end": 48.704
+    },
+    {
+      "word": "payload",
+      "raw": "payload.",
+      "start": 48.739,
+      "end": 49.308
+    },
+    {
+      "word": "Here",
+      "raw": "Here",
+      "start": 50.26,
+      "end": 50.457
+    },
+    {
+      "word": "is",
+      "raw": "is",
+      "start": 50.504,
+      "end": 50.585
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 50.62,
+      "end": 50.689
+    },
+    {
+      "word": "golden",
+      "raw": "golden",
+      "start": 50.759,
+      "end": 51.084
+    },
+    {
+      "word": "contract",
+      "raw": "contract",
+      "start": 51.142,
+      "end": 51.676
+    },
+    {
+      "word": "of",
+      "raw": "of",
+      "start": 51.723,
+      "end": 51.781
+    },
+    {
+      "word": "HTTP",
+      "raw": "HTTP",
+      "start": 51.874,
+      "end": 52.524
+    },
+    {
+      "word": "status",
+      "raw": "status",
+      "start": 52.675,
+      "end": 53.046
+    },
+    {
+      "word": "codes",
+      "raw": "codes.",
+      "start": 53.104,
+      "end": 53.569
+    },
+    {
+      "word": "Two",
+      "raw": "Two",
+      "start": 54.265,
+      "end": 54.463
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 54.532,
+      "end": 54.776
+    },
+    {
+      "word": "series",
+      "raw": "series",
+      "start": 54.823,
+      "end": 55.136
+    },
+    {
+      "word": "codes",
+      "raw": "codes",
+      "start": 55.194,
+      "end": 55.473
+    },
+    {
+      "word": "mean",
+      "raw": "mean",
+      "start": 55.519,
+      "end": 55.682
+    },
+    {
+      "word": "success",
+      "raw": "success.",
+      "start": 55.752,
+      "end": 56.437
+    },
+    {
+      "word": "Two",
+      "raw": "Two",
+      "start": 57.133,
+      "end": 57.307
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 57.365,
+      "end": 57.598
+    },
+    {
+      "word": "OK",
+      "raw": "OK",
+      "start": 57.667,
+      "end": 57.934
+    },
+    {
+      "word": "means",
+      "raw": "means",
+      "start": 58.178,
+      "end": 58.457
+    },
+    {
+      "word": "your",
+      "raw": "your",
+      "start": 58.573,
+      "end": 58.77
+    },
+    {
+      "word": "request",
+      "raw": "request",
+      "start": 58.84,
+      "end": 59.2
+    },
+    {
+      "word": "succeeded",
+      "raw": "succeeded.",
+      "start": 59.235,
+      "end": 59.838
+    },
+    {
+      "word": "Two",
+      "raw": "Two",
+      "start": 60.535,
+      "end": 60.709
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 60.779,
+      "end": 61.011
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 61.034,
+      "end": 61.104
+    },
+    {
+      "word": "one",
+      "raw": "one",
+      "start": 61.173,
+      "end": 61.394
+    },
+    {
+      "word": "means",
+      "raw": "means",
+      "start": 61.44,
+      "end": 61.707
+    },
+    {
+      "word": "a",
+      "raw": "a",
+      "start": 61.789,
+      "end": 61.858
+    },
+    {
+      "word": "new",
+      "raw": "new",
+      "start": 61.986,
+      "end": 62.137
+    },
+    {
+      "word": "resource",
+      "raw": "resource",
+      "start": 62.218,
+      "end": 62.625
+    },
+    {
+      "word": "was",
+      "raw": "was",
+      "start": 62.659,
+      "end": 62.741
+    },
+    {
+      "word": "created",
+      "raw": "created.",
+      "start": 62.799,
+      "end": 63.344
+    },
+    {
+      "word": "Four",
+      "raw": "Four",
+      "start": 64.041,
+      "end": 64.296
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 64.355,
+      "end": 64.598
+    },
+    {
+      "word": "series",
+      "raw": "series",
+      "start": 64.656,
+      "end": 64.97
+    },
+    {
+      "word": "codes",
+      "raw": "codes",
+      "start": 65.028,
+      "end": 65.307
+    },
+    {
+      "word": "mean",
+      "raw": "mean",
+      "start": 65.353,
+      "end": 65.516
+    },
+    {
+      "word": "client",
+      "raw": "client",
+      "start": 65.585,
+      "end": 66.026
+    },
+    {
+      "word": "error",
+      "raw": "error.",
+      "start": 66.084,
+      "end": 66.572
+    },
+    {
+      "word": "Four",
+      "raw": "Four",
+      "start": 67.385,
+      "end": 67.617
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 67.675,
+      "end": 67.942
+    },
+    {
+      "word": "Bad",
+      "raw": "Bad",
+      "start": 68.023,
+      "end": 68.29
+    },
+    {
+      "word": "Request",
+      "raw": "Request",
+      "start": 68.36,
+      "end": 68.766
+    },
+    {
+      "word": "means",
+      "raw": "means",
+      "start": 68.836,
+      "end": 69.08
+    },
+    {
+      "word": "invalid",
+      "raw": "invalid",
+      "start": 69.196,
+      "end": 69.684
+    },
+    {
+      "word": "input",
+      "raw": "input.",
+      "start": 69.73,
+      "end": 70.171
+    },
+    {
+      "word": "Four",
+      "raw": "Four",
+      "start": 70.868,
+      "end": 71.088
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 71.135,
+      "end": 71.355
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 71.379,
+      "end": 71.448
+    },
+    {
+      "word": "one",
+      "raw": "one",
+      "start": 71.541,
+      "end": 71.773
+    },
+    {
+      "word": "means",
+      "raw": "means",
+      "start": 71.82,
+      "end": 72.075
+    },
+    {
+      "word": "unauthorized",
+      "raw": "unauthorized.",
+      "start": 72.191,
+      "end": 73.201
+    },
+    {
+      "word": "Four",
+      "raw": "Four",
+      "start": 73.898,
+      "end": 74.095
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 74.13,
+      "end": 74.339
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 74.362,
+      "end": 74.432
+    },
+    {
+      "word": "four",
+      "raw": "four",
+      "start": 74.502,
+      "end": 74.722
+    },
+    {
+      "word": "means",
+      "raw": "means",
+      "start": 74.792,
+      "end": 75.047
+    },
+    {
+      "word": "not",
+      "raw": "not",
+      "start": 75.198,
+      "end": 75.431
+    },
+    {
+      "word": "found",
+      "raw": "found.",
+      "start": 75.489,
+      "end": 75.918
+    },
+    {
+      "word": "Four",
+      "raw": "Four",
+      "start": 76.731,
+      "end": 76.951
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 76.986,
+      "end": 77.219
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 77.253,
+      "end": 77.323
+    },
+    {
+      "word": "nine",
+      "raw": "nine",
+      "start": 77.393,
+      "end": 77.695
+    },
+    {
+      "word": "indicates",
+      "raw": "indicates",
+      "start": 77.753,
+      "end": 78.217
+    },
+    {
+      "word": "a",
+      "raw": "a",
+      "start": 78.252,
+      "end": 78.275
+    },
+    {
+      "word": "state",
+      "raw": "state",
+      "start": 78.321,
+      "end": 78.577
+    },
+    {
+      "word": "conflict",
+      "raw": "conflict.",
+      "start": 78.612,
+      "end": 79.273
+    },
+    {
+      "word": "Five",
+      "raw": "Five",
+      "start": 79.97,
+      "end": 80.295
+    },
+    {
+      "word": "hundred",
+      "raw": "hundred",
+      "start": 80.33,
+      "end": 80.585
+    },
+    {
+      "word": "series",
+      "raw": "series",
+      "start": 80.632,
+      "end": 80.969
+    },
+    {
+      "word": "codes",
+      "raw": "codes",
+      "start": 81.038,
+      "end": 81.386
+    },
+    {
+      "word": "mean",
+      "raw": "mean",
+      "start": 81.445,
+      "end": 81.63
+    },
+    {
+      "word": "server",
+      "raw": "server",
+      "start": 81.746,
+      "end": 82.106
+    },
+    {
+      "word": "failure",
+      "raw": "failure.",
+      "start": 82.164,
+      "end": 82.756
+    },
+    {
+      "word": "In",
+      "raw": "In",
+      "start": 83.453,
+      "end": 83.639
+    },
+    {
+      "word": "Karate",
+      "raw": "Karate,",
+      "start": 83.72,
+      "end": 84.417
+    },
+    {
+      "word": "we",
+      "raw": "we",
+      "start": 84.626,
+      "end": 84.858
+    },
+    {
+      "word": "express",
+      "raw": "express",
+      "start": 84.939,
+      "end": 85.357
+    },
+    {
+      "word": "this",
+      "raw": "this",
+      "start": 85.403,
+      "end": 85.543
+    },
+    {
+      "word": "deterministically",
+      "raw": "deterministically.",
+      "start": 85.601,
+      "end": 86.646
+    },
+    {
+      "word": "We",
+      "raw": "We",
+      "start": 87.342,
+      "end": 87.528
+    },
+    {
+      "word": "specify",
+      "raw": "specify",
+      "start": 87.586,
+      "end": 88.294
+    },
+    {
+      "word": "Given",
+      "raw": "Given",
+      "start": 88.41,
+      "end": 88.712
+    },
+    {
+      "word": "url",
+      "raw": "url,",
+      "start": 88.828,
+      "end": 89.618
+    },
+    {
+      "word": "And",
+      "raw": "And",
+      "start": 89.653,
+      "end": 89.862
+    },
+    {
+      "word": "path",
+      "raw": "path,",
+      "start": 89.931,
+      "end": 90.419
+    },
+    {
+      "word": "When",
+      "raw": "When",
+      "start": 90.744,
+      "end": 90.976
+    },
+    {
+      "word": "method",
+      "raw": "method",
+      "start": 91.046,
+      "end": 91.336
+    },
+    {
+      "word": "get",
+      "raw": "get,",
+      "start": 91.394,
+      "end": 91.766
+    },
+    {
+      "word": "and",
+      "raw": "and",
+      "start": 91.847,
+      "end": 92.021
+    },
+    {
+      "word": "Then",
+      "raw": "Then",
+      "start": 92.091,
+      "end": 92.253
+    },
+    {
+      "word": "status",
+      "raw": "status",
+      "start": 92.323,
+      "end": 92.787
+    },
+    {
+      "word": "200",
+      "raw": "200.",
+      "start": 92.962,
+      "end": 93.623
+    },
+    {
+      "word": "A",
+      "raw": "A",
+      "start": 94.227,
+      "end": 94.308
+    },
+    {
+      "word": "great",
+      "raw": "great",
+      "start": 94.378,
+      "end": 94.61
+    },
+    {
+      "word": "SDET",
+      "raw": "SDET",
+      "start": 94.657,
+      "end": 95.109
+    },
+    {
+      "word": "always",
+      "raw": "always",
+      "start": 95.318,
+      "end": 95.713
+    },
+    {
+      "word": "predicts",
+      "raw": "predicts",
+      "start": 95.783,
+      "end": 96.108
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 96.143,
+      "end": 96.212
+    },
+    {
+      "word": "exact",
+      "raw": "exact",
+      "start": 96.27,
+      "end": 96.665
+    },
+    {
+      "word": "status",
+      "raw": "status",
+      "start": 96.712,
+      "end": 97.037
+    },
+    {
+      "word": "code",
+      "raw": "code",
+      "start": 97.095,
+      "end": 97.385
+    },
+    {
+      "word": "before",
+      "raw": "before",
+      "start": 97.536,
+      "end": 97.884
+    },
+    {
+      "word": "sending",
+      "raw": "sending",
+      "start": 97.931,
+      "end": 98.209
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 98.244,
+      "end": 98.314
+    },
+    {
+      "word": "request",
+      "raw": "request.",
+      "start": 98.36,
+      "end": 98.941
+    },
+    {
+      "word": "Complete",
+      "raw": "Complete",
+      "start": 99.637,
+      "end": 100.067
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 100.09,
+      "end": 100.16
+    },
+    {
+      "word": "gaps",
+      "raw": "gaps",
+      "start": 100.206,
+      "end": 100.508
+    },
+    {
+      "word": "in",
+      "raw": "in",
+      "start": 100.543,
+      "end": 100.601
+    },
+    {
+      "word": "the",
+      "raw": "the",
+      "start": 100.636,
+      "end": 100.705
+    },
+    {
+      "word": "exercise",
+      "raw": "exercise",
+      "start": 100.775,
+      "end": 101.263
+    },
+    {
+      "word": "editor",
+      "raw": "editor",
+      "start": 101.321,
+      "end": 101.588
+    },
+    {
+      "word": "to",
+      "raw": "to",
+      "start": 101.646,
+      "end": 101.704
+    },
+    {
+      "word": "verify",
+      "raw": "verify",
+      "start": 101.785,
+      "end": 102.215
+    },
+    {
+      "word": "your",
+      "raw": "your",
+      "start": 102.284,
+      "end": 102.458
+    },
+    {
+      "word": "understanding",
+      "raw": "understanding.",
+      "start": 102.528,
+      "end": 103.515
+    }
+  ],
+  "challenges": [
+    {
+      "id": "c1",
+      "timeRatio": 0.28,
+      "prompt": "Which HTTP method should be used to read data from a catalog without altering server state?",
+      "options": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct! GET is safe and idempotent, ideal for reading data.",
+      "time": 28.98
+    },
+    {
+      "id": "c2",
+      "timeRatio": 0.62,
+      "prompt": "According to HTTP standards, which status code indicates that the requested endpoint does not exist?",
+      "options": [
+        "400 Bad Request",
+        "404 Not Found",
+        "500 Server Error"
+      ],
+      "answerIndex": 1,
+      "explanation": "Spot on! 404 indicates the resource path was not found on the server.",
+      "time": 64.18
+    },
+    {
+      "id": "c3",
+      "timeRatio": 0.88,
+      "prompt": "In Karate DSL, how do we assert that the response status code equals 200?",
+      "options": [
+        "* sleep 200",
+        "Then status 200",
+        "assert status = 200"
+      ],
+      "answerIndex": 1,
+      "explanation": "Excellent! \"Then status 200\" is Karate's built-in declarative assertion.",
+      "time": 91.09
+    }
+  ]
+}
