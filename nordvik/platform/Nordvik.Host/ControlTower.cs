@@ -595,6 +595,22 @@ public static class ControlTower
             return Results.NotFound(new { error = $"Tema con ID '{id}' no encontrado en el currículo pedagógico." });
         });
 
+        api.MapGet("/temas/{id}/feature", (string id) =>
+        {
+            var cleanId = Path.GetFileName(id).ToUpperInvariant();
+            var featDir = Path.Combine(repoRoot, "features", "pedagogicos");
+            if (!Directory.Exists(featDir)) return Results.NotFound(new { error = "Directorio de features no encontrado." });
+            
+            var matched = Directory.GetFiles(featDir, $"{cleanId}-*.feature").FirstOrDefault();
+            if (matched is null || !File.Exists(matched))
+            {
+                return Results.NotFound(new { error = $"Feature para el tema '{id}' no encontrada." });
+            }
+
+            var text = File.ReadAllText(matched);
+            return Results.Text(text, "text/plain; charset=utf-8");
+        });
+
         api.MapFallback((HttpContext http) => Problem(http, 404, "ROUTE_NOT_FOUND", $"La ruta {http.Request.Method} {http.Request.Path} no existe en la torre.", "Las rutas de la torre empiezan por /api/v1 (estado, niveles, servicios, dominios, misiones, lecciones, trampas, proxy)."));
         return app;
     }

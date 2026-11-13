@@ -31,6 +31,19 @@
           "fase3_reto": {
             "exerciseId": "JR-0001",
             "prompt": "Rellena los huecos '___' en el Gym para completar tu primera petición GET al catálogo de fondos y certificar el status 200."
+          },
+          "microservicios": [
+            "api-gateway",
+            "product-catalog",
+            "market-data"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test (SDET)\n  participant GW as API Gateway (6080)\n  participant Cat as Product Catalog (6801)\n  participant DB as Catalog Store\n\n  Test->>GW: GET /api/v1/funds (Accept: application/json)\n  GW->>Cat: Proxy Request (Inmutable)\n  Cat->>DB: Query Approved Funds (Read-Only)\n  DB-->>Cat: List<FundEntity> (4 items)\n  Cat-->>GW: HTTP 200 OK + JSON Catalog\n  GW-->>Test: HTTP 200 OK (Safe & Idempotent)",
+          "brokenTest": {
+            "title": "Bug J-A: Verbo Mutador en Consulta y Aserción Prematura",
+            "badScenario": "Feature: Consulta de Fondos con Error\n  Scenario: Consultar catálogo de fondos de forma insegura\n    Given url 'http://localhost:5125'\n    And path '/api/v1/funds'\n    # ERROR 1: Aserción colocada antes del disparo HTTP\n    And match response.total == 4\n    # ERROR 2: Se usa POST en lugar de GET para una lectura\n    When method post\n    Then status 200",
+            "hint": "Mueve el match después del status y cambia el método a get.",
+            "fixTarget": "When method get",
+            "validSolution": "Feature: Consulta de Fondos Corregida\n  Scenario: Consultar catálogo de fondos de forma segura\n    Given url 'http://localhost:5125'\n    And path '/api/v1/funds'\n    When method get\n    Then status 200\n    And match response.total == 4"
           }
         },
         {
@@ -57,6 +70,19 @@
           "fase3_reto": {
             "exerciseId": "JR-0050",
             "prompt": "Accede a la posición consolidada del cliente y valida la divisa y existencia de saldo disponible en el Gym."
+          },
+          "microservicios": [
+            "api-gateway",
+            "portfolio-service",
+            "account-registry"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant GW as API Gateway\n  participant Port as Portfolio Service (6902)\n  participant Acc as Account Registry\n\n  Test->>GW: GET /api/v1/portfolios/P-100234\n  GW->>Port: Get Holdings & Balances\n  Port->>Acc: Fetch Multi-Currency Accounts (SEK/EUR)\n  Acc-->>Port: Accounts Data\n  Port-->>GW: Portfolio View with Dynamic NAV\n  GW-->>Test: HTTP 200 OK + Nested JSON Tree",
+          "brokenTest": {
+            "title": "Bug J-B: Aserción Frágil por Comparación de Cadena Exacta",
+            "badScenario": "Feature: Cartera Multidivisa\n  Scenario: Validar cartera mediante string estático\n    Given url 'http://localhost:5125'\n    And path '/api/v1/portfolios/P-100234'\n    When method get\n    Then status 200\n    # ERROR: Comparar JSON con igualdad estricta de string falla al fluctuar el NAV\n    And match response == '{\"portfolioId\":\"P-100234\",\"nav\":145.2}'",
+            "hint": "Usa el operador \"contains\" o marcadores \"#object\" en vez de string idéntico.",
+            "fixTarget": "contains",
+            "validSolution": "Feature: Cartera Multidivisa Corregida\n  Scenario: Validar cartera mediante contains\n    Given url 'http://localhost:5125'\n    And path '/api/v1/portfolios/P-100234'\n    When method get\n    Then status 200\n    And match response contains { portfolioId: 'P-100234', status: 'ACTIVE' }"
           }
         },
         {
@@ -83,6 +109,19 @@
           "fase3_reto": {
             "exerciseId": "JR-0120",
             "prompt": "Valida el contrato estricto de una orden en el Gym garantizando identificador con prefijo y comisiones positivas."
+          },
+          "microservicios": [
+            "api-gateway",
+            "customer-registry",
+            "synthetic-person-service"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant GW as API Gateway\n  participant Cust as Customer Registry (6301)\n  participant Synth as Person Verifier (6008)\n\n  Test->>GW: GET /api/v1/customers/C-9011\n  GW->>Cust: Fetch KYC Profile\n  Cust->>Synth: Validate Swedish Personnummer (Luhn Check)\n  Synth-->>Cust: Valid Personal ID\n  Cust-->>GW: Customer Entity with KYC State\n  GW-->>Test: HTTP 200 + Schema compliant JSON",
+          "brokenTest": {
+            "title": "Bug J-C: Número de Identidad Personal (PNR) Hardcodeado",
+            "badScenario": "Feature: KYC Customer\n  Scenario: Validar expediente KYC con valor quemado\n    Given url 'http://localhost:5125'\n    And path '/api/v1/customers/C-9011'\n    When method get\n    Then status 200\n    # ERROR: PNR hardcodeado que se rompe en entornos de pruebas rotativos\n    And match response.personalNumber == '19850504-2384'",
+            "hint": "Reemplaza el PNR fijo por el marcador fuzzy de expresión regular #regex.",
+            "fixTarget": "#regex",
+            "validSolution": "Feature: KYC Customer Corregido\n  Scenario: Validar expediente KYC con fuzzy regex\n    Given url 'http://localhost:5125'\n    And path '/api/v1/customers/C-9011'\n    When method get\n    Then status 200\n    And match response.personalNumber == '#regex ^(19|20)\\\\d{6}-\\\\d{4}$'"
           }
         },
         {
@@ -109,6 +148,19 @@
           "fase3_reto": {
             "exerciseId": "JR-0250",
             "prompt": "Configura los filtros de búsqueda paginada en el Gym y valida la respuesta con 'match each'."
+          },
+          "microservicios": [
+            "api-gateway",
+            "market-data",
+            "fund-factsheet"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant GW as API Gateway\n  participant Mkt as Market Data (6802)\n  participant Fact as Fund Factsheet (6805)\n\n  Test->>GW: GET /api/v1/funds?assetClass=FixedIncome&maxRisk=2\n  GW->>Mkt: Filter Request with Query Params\n  Mkt->>Fact: Verify Risk Classification\n  Fact-->>Mkt: Filtered Assets\n  Mkt-->>GW: Filtered Collection (Risk <= 2)\n  GW-->>Test: HTTP 200 + Items array",
+          "brokenTest": {
+            "title": "Bug J-D: Parámetros de Consulta Concatenados Manualmente",
+            "badScenario": "Feature: Filtro de Mercado\n  Scenario: Filtrar fondos concatenando query string a mano\n    Given url 'http://localhost:5125'\n    # ERROR: Concatenar parámetros en la URL rompe la codificación de caracteres y la legibilidad\n    And path '/api/v1/funds?assetClass=FixedIncome&maxRisk=2'\n    When method get\n    Then status 200",
+            "hint": "Usa la palabra clave nativa \"param\" de Karate para cada parámetro.",
+            "fixTarget": "param assetClass",
+            "validSolution": "Feature: Filtro de Mercado Corregido\n  Scenario: Filtrar fondos con directiva param\n    Given url 'http://localhost:5125'\n    And path '/api/v1/funds'\n    And param assetClass = 'FixedIncome'\n    And param maxRisk = 2\n    When method get\n    Then status 200"
           }
         }
       ]
@@ -143,6 +195,19 @@
           "fase3_reto": {
             "exerciseId": "MID-0001",
             "prompt": "Estructura la tabla de ejemplos de aportación en el Gym para cubrir casos válidos y rechazos por límite."
+          },
+          "microservicios": [
+            "api-gateway",
+            "order-management",
+            "validation-engine"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Scenario Outline\n  participant GW as API Gateway\n  participant Ord as Order Management (6901)\n  participant Val as Validation Engine\n\n  loop Por cada fila en Examples\n    Test->>GW: POST /api/v1/orders/validate (amount, currency)\n    GW->>Ord: Route Validation\n    Ord->>Val: Check Min/Max Limits per Currency\n    Val-->>Ord: Valid/Invalid Flag\n    Ord-->>GW: Result Status (200 / 422)\n    GW-->>Test: HTTP Response matched against Examples\n  end",
+          "brokenTest": {
+            "title": "Bug M-A: Scenario Outline sin Tabla Examples o Variables Desalineadas",
+            "badScenario": "Feature: Validación de Órdenes\n  Scenario Outline: Validar órdenes con tabla rota\n    Given url 'http://localhost:5125'\n    And path '/api/v1/orders/validate'\n    And request { isin: '<isin>', amount: <monto> }\n    When method post\n    # ERROR: Falta Then status antes del match y la cabecera Examples no coincide\n    And match response.valid == true\n\n    Examples:\n      | isin   | amount |\n      | SE0001 | 1000.0 |",
+            "hint": "Agrega \"Then status <expectedStatus>\" y alinea el nombre de la columna <amount>.",
+            "fixTarget": "Then status",
+            "validSolution": "Feature: Validación de Órdenes Corregida\n  Scenario Outline: Validar órdenes con tabla\n    Given url 'http://localhost:5125'\n    And path '/api/v1/orders/validate'\n    And request { isin: '<isin>', amount: <amount> }\n    When method post\n    Then status 200\n    And match response.valid == true\n\n    Examples:\n      | isin   | amount |\n      | SE0001 | 1000.0 |"
           }
         },
         {
@@ -169,6 +234,19 @@
           "fase3_reto": {
             "exerciseId": "MID-0150",
             "prompt": "Diseña el validador de esquema de mercado en el Gym y aplícalo contra la cotización oficial."
+          },
+          "microservicios": [
+            "api-gateway",
+            "collective-agreement-rules",
+            "calculation-service"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant FS as File System (read('...'))\n  participant GW as API Gateway\n  participant Pen as Collective Rules (7101)\n\n  Test->>FS: read('classpath:data/pension-itp1.json')\n  FS-->>Test: Raw JSON Payload\n  Test->>GW: POST /api/v1/pensions/calculate (Payload)\n  GW->>Pen: Execute Actuarial Formula (SAF-LO / ITP1)\n  Pen-->>GW: Mandatory Contribution Breakdown\n  GW-->>Test: HTTP 200 + Calculated Tier",
+          "brokenTest": {
+            "title": "Bug M-B: Inyección de JSON como String con Comillas Escapadas",
+            "badScenario": "Feature: Cálculo de Pensión\n  Scenario: Enviar payload sucio con strings escapados\n    Given url 'http://localhost:5125'\n    And path '/api/v1/pensions/calculate'\n    # ERROR: Pasar JSON serializado como string escapado causa HTTP 400 Bad Request\n    And request \"{\\\"planType\\\":\\\"ITP1\\\",\\\"salary\\\":52000}\"\n    When method post\n    Then status 200",
+            "hint": "Usa bloques de triples comillas (\"\"\") o define una variable def con JSON nativo.",
+            "fixTarget": "def basePayload",
+            "validSolution": "Feature: Cálculo de Pensión Corregido\n  Scenario: Enviar payload JSON limpio\n    Given url 'http://localhost:5125'\n    And path '/api/v1/pensions/calculate'\n    And request { planType: 'ITP1', salary: 52000 }\n    When method post\n    Then status 200"
           }
         },
         {
@@ -195,6 +273,19 @@
           "fase3_reto": {
             "exerciseId": "MID-0300",
             "prompt": "Integra la llamada de autenticación modular en el Gym e inyecta la cabecera Bearer en la petición."
+          },
+          "microservicios": [
+            "api-gateway",
+            "iam-service",
+            "account-service"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Main Feature\n  participant Sub as Sub-Feature (auth.feature)\n  participant IAM as IAM Service (6201)\n  participant Acc as Account Service (6902)\n\n  Test->>Sub: karate.call('classpath:auth.feature')\n  Sub->>IAM: POST /oauth/token (credentials)\n  IAM-->>Sub: Bearer JWT Token\n  Sub-->>Test: { token: 'eyJ...' }\n  Test->>Acc: GET /api/v1/accounts/ACC-7721 (Authorization: Bearer)\n  Acc-->>Test: HTTP 200 + Account Statement",
+          "brokenTest": {
+            "title": "Bug M-C: Login Repetido en Cada Petición sin Reutilización",
+            "badScenario": "Feature: Consulta de Cuentas\n  Scenario: Iniciar sesión manualmente antes de cada consulta\n    Given url 'http://localhost:5125'\n    # ERROR: Login directo quemado en el escenario en lugar de reutilizar token\n    And path '/api/v1/login'\n    And request { user: 'admin', pass: 'secret' }\n    When method post\n    * def token = response.token\n    Given path '/api/v1/accounts/ACC-7721'\n    When method get\n    Then status 200",
+            "hint": "Separa la autenticación en un Background o reutiliza la cabecera Authorization.",
+            "fixTarget": "header Authorization",
+            "validSolution": "Feature: Consulta de Cuentas Corregida\n  Background:\n    * def token = 'MOCK_TOKEN_7721'\n    * header Authorization = 'Bearer ' + token\n\n  Scenario: Consultar cuenta autenticada\n    Given url 'http://localhost:5125'\n    And path '/api/v1/accounts/ACC-7721'\n    When method get\n    Then status 200"
           }
         },
         {
@@ -221,6 +312,19 @@
           "fase3_reto": {
             "exerciseId": "MID-0450",
             "prompt": "Escribe una función de cálculo de comisión en GraalVM JS y valida el resultado actuarial en el Gym."
+          },
+          "microservicios": [
+            "api-gateway",
+            "fx-rates",
+            "pricing-calculator"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant GW as API Gateway\n  participant FX as FX Rates Service (6803)\n  participant JVM as GraalVM JavaScript Engine\n\n  Test->>GW: GET /api/v1/fx/rates\n  GW->>FX: Query Real-time Rates\n  FX-->>GW: Collection of Currency Pairs\n  GW-->>Test: HTTP 200 + Rates Array\n  Test->>JVM: Execute .filter(r => r.pair == 'EURSEK')\n  JVM-->>Test: Mid-Market Exchange Rate\n  Test->>Test: Assert expectedSek > threshold",
+          "brokenTest": {
+            "title": "Bug M-D: Comparación de Tipos Incompatibles en JavaScript",
+            "badScenario": "Feature: FX Rates Conversion\n  Scenario: Comparar número contra string en Karate\n    Given url 'http://localhost:5125'\n    And path '/api/v1/fx/rates'\n    When method get\n    Then status 200\n    * def rate = response.rates[0].midRate\n    # ERROR: Comparar un número de tipo float con una cadena causa discrepancia en GraalVM\n    And match rate == '11.45'",
+            "hint": "Usa comparación numérica (#number o valor float sin comillas).",
+            "fixTarget": "#number",
+            "validSolution": "Feature: FX Rates Conversion Corregida\n  Scenario: Comparar tipo numérico\n    Given url 'http://localhost:5125'\n    And path '/api/v1/fx/rates'\n    When method get\n    Then status 200\n    * def rate = response.rates[0].midRate\n    And match rate == '#number'"
           }
         }
       ]
@@ -255,6 +359,19 @@
           "fase3_reto": {
             "exerciseId": "SR-0001",
             "prompt": "Configura el bloque retry until en el Gym para una saga de traspaso de pensión sin pausas pasivas."
+          },
+          "microservicios": [
+            "api-gateway",
+            "order-management",
+            "custodian-sim"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant GW as API Gateway\n  participant Ord as Order Management (6901)\n  participant Cust as Custodian Broker\n\n  Test->>GW: POST /api/v1/orders (Create Order)\n  GW->>Ord: Enqueue Order\n  Ord-->>Test: HTTP 201 Created (orderId, status: 'PENDING')\n  \n  loop Polling Inteligente (retry until status == 'SETTLED')\n    Test->>GW: GET /api/v1/orders/{orderId}\n    GW->>Ord: Check Settlement State\n    Ord-->>Test: status: 'PROCESSING'\n  end\n  Ord->>Cust: Confirm Stock Clearing\n  Cust-->>Ord: Clearing Done\n  Test->>GW: GET /api/v1/orders/{orderId}\n  GW-->>Test: HTTP 200 OK (status: 'SETTLED')",
+          "brokenTest": {
+            "title": "Bug S-A: Uso del Anti-Patrón java.lang.Thread.sleep()",
+            "badScenario": "Feature: Liquidación Asíncrona\n  Scenario: Esperar liquidación con pausa estática\n    Given url 'http://localhost:5125'\n    And path '/api/v1/orders'\n    And request { isin: 'SE0001', units: 10 }\n    When method post\n    Then status 201\n    * def id = response.orderId\n    # ERROR GRAVE: Pausa fija de 5 segundos que ralentiza el pipeline\n    * java.lang.Thread.sleep(5000)\n    Given path '/api/v1/orders/' + id\n    When method get\n    Then status 200",
+            "hint": "Reemplaza sleep con la directiva nativa \"retry until response.status == 'SETTLED'\".",
+            "fixTarget": "retry until",
+            "validSolution": "Feature: Liquidación Asíncrona Corregida\n  Scenario: Esperar liquidación con retry until\n    Given url 'http://localhost:5125'\n    * configure retry = { count: 10, interval: 500 }\n    And path '/api/v1/orders'\n    And request { isin: 'SE0001', units: 10 }\n    When method post\n    Then status 201\n    * def id = response.orderId\n    Given path '/api/v1/orders/' + id\n    And retry until response.status == 'SETTLED'\n    When method get\n    Then status 200"
           }
         },
         {
@@ -281,6 +398,20 @@
           "fase3_reto": {
             "exerciseId": "SR-0100",
             "prompt": "Orquesta el test de compensación de saga en el Gym verificando el estado final COMPENSATED."
+          },
+          "microservicios": [
+            "api-gateway",
+            "pension-transfer-orchestrator",
+            "source-bank",
+            "target-bank"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant Orch as Saga Orchestrator\n  participant Src as Source Bank (Debit)\n  participant Tgt as Target Institution (Credit)\n\n  Test->>Orch: POST /api/v1/pensions/transfer-saga\n  Orch->>Src: Step 1: Debit Accumulated Capital (150,000 SEK)\n  Src-->>Orch: Debit OK\n  Orch->>Tgt: Step 2: Register Policy at Target\n  Tgt-->>Orch: REJECTED (Target Institution Blocked)\n  Note over Orch,Src: Disparo de Compensación Automática\n  Orch->>Src: Compensation: Refund 150,000 SEK to Source Account\n  Src-->>Orch: Balance Restored\n  Orch-->>Test: HTTP 409 Conflict + { sagaStatus: 'COMPENSATED' }",
+          "brokenTest": {
+            "title": "Bug S-B: Ignorar el Código de Estado de Compensación de la Saga",
+            "badScenario": "Feature: Saga de Pensiones\n  Scenario: Validar compensación esperando HTTP 200\n    Given url 'http://localhost:5125'\n    And path '/api/v1/pensions/transfer-saga'\n    And request { targetInstitution: 'BLOCKED' }\n    When method post\n    # ERROR: Una compensación ante fallo debe responder HTTP 409 Conflict o 422, nunca 200\n    Then status 200\n    And match response.sagaStatus == 'COMPENSATED'",
+            "hint": "Cambia Then status 200 a Then status 409.",
+            "fixTarget": "status 409",
+            "validSolution": "Feature: Saga de Pensiones Corregida\n  Scenario: Validar compensación con status 409\n    Given url 'http://localhost:5125'\n    And path '/api/v1/pensions/transfer-saga'\n    And request { targetInstitution: 'BLOCKED' }\n    When method post\n    Then status 409\n    And match response.sagaStatus == 'COMPENSATED'"
           }
         },
         {
@@ -307,6 +438,20 @@
           "fase3_reto": {
             "exerciseId": "SR-0250",
             "prompt": "Implementa la prueba de doble disparo con Idempotency-Key en el Gym y certifica el retorno de la misma transacción."
+          },
+          "microservicios": [
+            "api-gateway",
+            "idempotency-store",
+            "cash-management",
+            "ledger-service"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Karate Test\n  participant GW as API Gateway\n  participant Idemp as Idempotency Store (6102)\n  participant Cash as Cash Management (7002)\n\n  Test->>GW: POST /api/v1/payments (Idempotency-Key: K-991)\n  GW->>Idemp: Check Key K-991\n  Idemp-->>GW: Key Not Found -> Lock Acquired\n  GW->>Cash: Execute Transfer\n  Cash-->>GW: Payment Created (PAY-001)\n  GW->>Idemp: Save Response Cached\n  GW-->>Test: HTTP 201 Created\n\n  Note over Test,GW: Reintento de Red con la Misma Clave\n  Test->>GW: POST /api/v1/payments (Idempotency-Key: K-991)\n  GW->>Idemp: Check Key K-991\n  Idemp-->>GW: Key Exists -> Return Cached Response\n  GW-->>Test: HTTP 200/201 (replayed: true, Cero Doble Débito)",
+          "brokenTest": {
+            "title": "Bug S-C: Omisión de la Cabecera Idempotency-Key",
+            "badScenario": "Feature: Pago Idempotente\n  Scenario: Enviar reintento sin Idempotency-Key\n    Given url 'http://localhost:5125'\n    And path '/api/v1/payments'\n    # ERROR: Sin la cabecera Idempotency-Key el servidor procesará dos transferencias\n    And request { from: 'ACC-1', to: 'ACC-2', amount: 5000 }\n    When method post\n    Then status 201",
+            "hint": "Agrega \"And header Idempotency-Key = uniqueKey\" para asegurar idempotencia.",
+            "fixTarget": "header Idempotency-Key",
+            "validSolution": "Feature: Pago Idempotente Corregido\n  Scenario: Enviar pago con Idempotency-Key\n    Given url 'http://localhost:5125'\n    And path '/api/v1/payments'\n    And header Idempotency-Key = 'IDEMP-TEST-9921'\n    And request { from: 'ACC-1', to: 'ACC-2', amount: 5000 }\n    When method post\n    Then status 201"
           }
         },
         {
@@ -333,6 +478,19 @@
           "fase3_reto": {
             "exerciseId": "SR-0400",
             "prompt": "Construye la prueba de denegación de permisos IDOR en el Gym y valida el cumplimiento del RFC 9457."
+          },
+          "microservicios": [
+            "api-gateway",
+            "customer-registry",
+            "audit-logger"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Attacker as Test (User A Token)\n  participant GW as API Gateway\n  participant Cust as Customer Registry (6301)\n  participant Audit as Security Audit Log\n\n  Attacker->>GW: GET /api/v1/customers/USER-B/tax-statement\n  GW->>Cust: Forward Token & Route\n  Cust->>Cust: Compare Token Identity with Target URL ID\n  Note over Cust: IDOR Vulnerability Prevented\n  Cust->>Audit: Log Security Violation (ACCESS_DENIED_IDOR)\n  Cust-->>GW: RFC 9457 Problem Details (403 Forbidden)\n  GW-->>Attacker: HTTP 403 (type, title, status, detail)",
+          "brokenTest": {
+            "title": "Bug S-D: Aserción Incompleta del Estándar RFC 9457",
+            "badScenario": "Feature: Seguridad IDOR\n  Scenario: Validar error sin verificar esquema RFC 9457\n    Given url 'http://localhost:5125'\n    And path '/api/v1/customers/USER-B/tax-statement'\n    When method get\n    Then status 403\n    # ERROR: Validar solo el texto simple ignora los campos obligatorios del RFC 9457\n    And match response == 'Error 403'",
+            "hint": "Verifica los campos estándar de Problem Details: type, title, status, detail.",
+            "fixTarget": "title: 'Forbidden'",
+            "validSolution": "Feature: Seguridad IDOR Corregida\n  Scenario: Validar esquema RFC 9457\n    Given url 'http://localhost:5125'\n    And path '/api/v1/customers/USER-B/tax-statement'\n    When method get\n    Then status 403\n    And match response contains { title: 'Forbidden', status: 403, code: 'ACCESS_DENIED_IDOR' }"
           }
         }
       ]
@@ -367,6 +525,19 @@
           "fase3_reto": {
             "exerciseId": "STF-0002",
             "prompt": "Arranca el mock dinámico en el Gym en puerto efímero, dispara la consulta y libéralo con stop()."
+          },
+          "microservicios": [
+            "karate-mock-server",
+            "order-management",
+            "swift-adapter"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Staff SDET Suite\n  participant Mock as karate.start({ mock: 'custodian.feature' })\n  participant App as Order Management\n\n  Test->>Mock: Start In-Memory Mock Server on Dynamic Port\n  Mock-->>Test: Mock Listening on localhost:8998\n  Test->>App: Trigger Settlement against Mock URL\n  App->>Mock: POST /swift/settlement (MT541)\n  Mock-->>App: HTTP 200 (ACK_MT541_PROCESSED)\n  App-->>Test: Order Settled\n  Test->>Mock: mockServer.stop()",
+          "brokenTest": {
+            "title": "Bug T-A: Puerto Fijo en Servidor Mock que Provoca BindException",
+            "badScenario": "Feature: Mock en Memoria\n  Scenario: Iniciar mock en puerto 80 quemado\n    # ERROR: Intentar vincular puerto 80 o fijo causa java.net.BindException en CI/CD\n    * def server = karate.start({ mock: 'mock.feature', port: 80 })\n    Given url 'http://localhost:80'\n    When method get\n    Then status 200",
+            "hint": "Usa un puerto de pruebas no privilegiado o variable dinámica.",
+            "fixTarget": "port: 8998",
+            "validSolution": "Feature: Mock en Memoria Corregido\n  Scenario: Iniciar mock en puerto dinámico\n    * def server = karate.start({ mock: 'mock.feature', port: 8998 })\n    Given url 'http://localhost:8998'\n    When method get\n    Then status 200\n    * server.stop()"
           }
         },
         {
@@ -393,6 +564,19 @@
           "fase3_reto": {
             "exerciseId": "STF-0001",
             "prompt": "Programa una falla de latencia en el microservicio de caos en el Gym y valida el comportamiento resiliente."
+          },
+          "microservicios": [
+            "api-gateway",
+            "chaos-control",
+            "price-feed-adapter"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Staff SDET\n  participant Chaos as Chaos Control (7601)\n  participant GW as API Gateway (Resilience4j)\n  participant Feed as Price Feed Adapter (7503)\n\n  Test->>Chaos: POST /chaos/latency { target: 'price-feed', latencyMs: 3000 }\n  Chaos-->>Test: Latency Injected\n  Test->>GW: GET /api/v1/market/prices/SE0001\n  GW->>Feed: Call Price Feed (Timeout 1000ms)\n  Feed-->>GW: [Delayed Response...]\n  Note over GW: Circuit Breaker OPEN: Fallback Triggered\n  GW-->>Test: HTTP 200 (source: 'CIRCUIT_BREAKER_FALLBACK', price: LastKnownClose)",
+          "brokenTest": {
+            "title": "Bug T-B: Olvidar Restaurar el Estado del Clúster tras la Prueba de Caos",
+            "badScenario": "Feature: Prueba de Caos\n  Scenario: Activar latencia sin limpiar estado\n    Given url 'http://localhost:5125'\n    And path '/api/v1/chaos/latency'\n    And request { target: 'price-feed', latencyMs: 3000, enabled: true }\n    When method post\n    Then status 200\n    # ERROR: Dejar el caos encendido contamina las pruebas de los siguientes tests de la suite",
+            "hint": "Añade un bloque de limpieza enviando enabled: false para restaurar el clúster.",
+            "fixTarget": "enabled: false",
+            "validSolution": "Feature: Prueba de Caos Corregida\n  Scenario: Activar y limpiar caos\n    Given url 'http://localhost:5125'\n    And path '/api/v1/chaos/latency'\n    And request { target: 'price-feed', enabled: true }\n    When method post\n    Then status 200\n    # Restauración obligatoria\n    Given path '/api/v1/chaos/latency'\n    And request { target: 'price-feed', enabled: false }\n    When method post\n    Then status 200"
           }
         },
         {
@@ -419,6 +603,19 @@
           "fase3_reto": {
             "exerciseId": "STF-0010",
             "prompt": "Congela y adelanta el reloj virtual en el Gym para certificar el devengo automático de intereses."
+          },
+          "microservicios": [
+            "api-gateway",
+            "permission-service",
+            "insurance-policy"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Advisor as Junior Advisor Token\n  participant GW as API Gateway\n  participant RBAC as Permission Service (6202)\n  participant Ins as Insurance Policy (7201)\n\n  Advisor->>GW: PUT /api/v1/insurance/POL-992/beneficiary\n  GW->>RBAC: Validate Permissions for Token Role\n  RBAC->>RBAC: Check Matrix (Role: JUNIOR_ADVISOR, Action: EDIT_BENEFICIARY)\n  RBAC-->>GW: ACCESS_DENIED (Policyholder consent required)\n  GW-->>Advisor: HTTP 403 Forbidden\n  Note over Ins: La póliza permanece inmutable",
+          "brokenTest": {
+            "title": "Bug T-C: Autorización con Token Elevado en Caso Negativo",
+            "badScenario": "Feature: Matriz RBAC\n  Scenario: Validar restricción usando el token de Administrador\n    Given url 'http://localhost:5125'\n    And path '/api/v1/insurance/POL-992/beneficiary'\n    # ERROR: Probar rechazo con token de ADMIN causa falso negativo (recibe 200 en vez de 403)\n    And header Authorization = 'Bearer ADMIN_TOKEN'\n    When method put\n    Then status 403",
+            "hint": "Usa el rol restringido (JUNIOR_ADVISOR) para validar la regla de bloqueo 403.",
+            "fixTarget": "JUNIOR_ADVISOR",
+            "validSolution": "Feature: Matriz RBAC Corregida\n  Scenario: Validar restricción con rol adecuado\n    Given url 'http://localhost:5125'\n    And path '/api/v1/insurance/POL-992/beneficiary'\n    And header Authorization = 'Bearer JUNIOR_ADVISOR'\n    When method put\n    Then status 403"
           }
         },
         {
@@ -445,6 +642,20 @@
           "fase3_reto": {
             "exerciseId": "STF-0020",
             "prompt": "Estructura la suite de paralelismo y aislamiento de datos en el Gym para certificar el rendimiento actuarial."
+          },
+          "microservicios": [
+            "api-gateway",
+            "clock-service",
+            "tax-engine",
+            "statement-service"
+          ],
+          "diagramaSecuencia": "sequenceDiagram\n  autonumber\n  actor Test as Staff SDET\n  participant Clock as Clock Service (6003)\n  participant Tax as Tax Engine (7301)\n  participant Acc as Account Registry\n\n  Test->>Clock: GET /api/v1/clock\n  Clock-->>Test: Current Virtual Time (e.g., 2026-10-01)\n  Test->>Clock: POST /api/v1/clock/fast-forward { days: 90 }\n  Clock-->>Test: Time Advanced to 2026-12-31T23:59:59\n  Clock->>Tax: Publish Event: FiscalYearClosed\n  Tax->>Acc: Calculate ISK Tax on Average Quarterly Balances\n  Test->>Tax: GET /api/v1/accounts/ACC-ISK-100/tax-accruals\n  Tax-->>Test: HTTP 200 (status: 'ACCRUED', taxYear: 2026)",
+          "brokenTest": {
+            "title": "Bug T-D: Aserción sobre Fecha Real del Sistema en Lugar del Reloj Virtual",
+            "badScenario": "Feature: Reloj Virtual\n  Scenario: Verificar devengo usando reloj del sistema local\n    Given url 'http://localhost:5125'\n    And path '/api/v1/clock/fast-forward'\n    And request { days: 90 }\n    When method post\n    Then status 200\n    # ERROR: Comparar con java.time.LocalDate.now() ignora el reloj virtual acelerado\n    And match response.virtualTime contains java.time.LocalDate.now().toString()",
+            "hint": "Compara contra la fecha del evento objetivo (12-31) devuelta por el reloj virtual.",
+            "fixTarget": "12-31",
+            "validSolution": "Feature: Reloj Virtual Corregido\n  Scenario: Verificar devengo con reloj virtual\n    Given url 'http://localhost:5125'\n    And path '/api/v1/clock/fast-forward'\n    And request { days: 90 }\n    When method post\n    Then status 200\n    And match response.virtualTime contains '12-31'"
           }
         }
       ]

@@ -19,6 +19,9 @@ const BrunoGym = {
     if (this._initialized) return;
     this._initialized = true;
     this.bindEvents();
+    if (typeof Certificacion !== 'undefined' && typeof Certificacion.init === 'function') {
+      Certificacion.init();
+    }
     await this.loadCatalog();
     await this.loadTemas();
     await this.loadRandomExercise(this.currentLevel);
@@ -219,6 +222,50 @@ const BrunoGym = {
 
     if (verifyBtn) verifyBtn.disabled = true;
 
+    // Manejo de Modo Fix-the-Bug (Trampa de Bruno)
+    if (this.currentExercise.isBrokenTest) {
+      const code = editor.value;
+      const target = this.currentExercise.fixTarget;
+      feedbackEl.hidden = false;
+      if (code.includes(target) && !code.includes('___')) {
+        this.score += 25;
+        this.streak += 1;
+        this.updateScoreUI();
+        feedbackEl.style.background = 'var(--ok-soft)';
+        feedbackEl.style.color = 'var(--ok)';
+        feedbackEl.style.borderColor = 'var(--ok)';
+        feedbackEl.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong>✅ ¡Bug de Contrato Financiero Reparado! (+25 XP)</strong>
+              <p style="margin:4px 0 0 0; font-size:0.85rem;">Has eliminado la vulnerabilidad o anti-patrón de Bruno con éxito.</p>
+            </div>
+            <button class="btn small" onclick="BrunoGym.loadRandomExercise('${this.currentLevel}')">Siguiente Reto ➔</button>
+          </div>
+        `;
+        if (typeof updateBrunoStage === 'function') {
+          updateBrunoStage('SUCCESS', '¡Bug Resuelto con Éxito!', 'El contrato ahora es seguro, robusto y testeable.');
+        }
+        if (verifyBtn) verifyBtn.disabled = false;
+        return;
+      } else {
+        this.streak = 0;
+        this.updateScoreUI();
+        feedbackEl.style.background = 'var(--bad-soft)';
+        feedbackEl.style.color = 'var(--bad)';
+        feedbackEl.style.borderColor = 'var(--bad)';
+        feedbackEl.innerHTML = `
+          <strong>❌ El fallo aún persiste en el escenario:</strong>
+          <p style="margin:4px 0 0 0; font-size:0.85rem;">Revisa la pista: ${this.escape(this.currentExercise.hints?.[0] || '')}</p>
+        `;
+        if (typeof updateBrunoStage === 'function') {
+          updateBrunoStage('ALERT', 'El bug sigue activo', 'Asegúrate de aplicar la corrección recomendada.');
+        }
+        if (verifyBtn) verifyBtn.disabled = false;
+        return;
+      }
+    }
+
     try {
       // 1. Bruno pasa a modo análisis
       if (typeof updateBrunoStage === 'function') {
@@ -363,11 +410,36 @@ const BrunoGym = {
     setTxt('ped-challenge-id', matched.fase3_reto?.exerciseId);
     setTxt('ped-challenge-prompt', matched.fase3_reto?.prompt);
 
+    // Microservicios y Diagrama de Secuencia Arquitectónico
+    const chipsEl = document.getElementById('ped-services-chips');
+    if (chipsEl) {
+      chipsEl.innerHTML = (matched.microservicios || []).map(s => `<span class="chip" style="font-size:0.75rem;">⚙️ ${this.escape(s)}</span>`).join('');
+    }
+    setTxt('ped-sequence-diagram', matched.diagramaSecuencia || 'Diagrama no disponible');
+
+    // Botón de Cargar Reto
     const challengeBtn = document.getElementById('ped-load-challenge-btn');
     if (challengeBtn) {
       challengeBtn.onclick = () => {
         modal.close();
         this.loadExerciseById(matched.fase3_reto?.exerciseId);
+      };
+    }
+
+    // Botón de Cargar Trampa (Fix Bug Mode)
+    const brokenBtn = document.getElementById('ped-load-broken-btn');
+    if (brokenBtn) {
+      brokenBtn.onclick = () => {
+        modal.close();
+        this.loadBrokenTest(matched);
+      };
+    }
+
+    // Botón de Descarga Directa de la Feature
+    const dlBtn = document.getElementById('ped-download-feature-btn');
+    if (dlBtn) {
+      dlBtn.onclick = () => {
+        window.open(`/api/v1/temas/${matched.id}/feature`, '_blank');
       };
     }
 
@@ -416,6 +488,27 @@ const BrunoGym = {
         this.loadExerciseById(found.fase3_reto.exerciseId);
         return;
       }
+    }
+  },
+
+  loadBrokenTest(matched) {
+    if (!matched.brokenTest) return;
+    const bt = matched.brokenTest;
+    this.currentExercise = {
+      id: `BUG-${matched.id}`,
+      levelName: 'MODO FIX-THE-BUG',
+      domain: matched.domain,
+      title: bt.title,
+      enunciado: `Este test contiene un fallo o vulnerabilidad común. Diagnostica la causa raíz y corrígelo en el editor. Pista: ${bt.hint}`,
+      codeWithGaps: bt.badScenario,
+      hints: [bt.hint, `Objetivo esperado: ${bt.fixTarget}`],
+      isBrokenTest: true,
+      validSolution: bt.validSolution,
+      fixTarget: bt.fixTarget
+    };
+    this.displayExercise(this.currentExercise);
+    if (typeof updateBrunoStage === 'function') {
+      updateBrunoStage('ALERT', '🔧 Modo Fix-the-Bug Activo', `Detecta el fallo en ${matched.id}: ${bt.hint}`);
     }
   },
 

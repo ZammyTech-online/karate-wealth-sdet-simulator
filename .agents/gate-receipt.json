@@ -1,18 +1,31 @@
 {
-  "version": "3.0.0",
+  "sprint": "V6",
   "status": "PASSED",
-  "timestamp": "2026-11-12T22:31:06.791Z",
-  "workspaceRoot": "D:\\WORKSPACE_KARATE",
-  "checks": [
-    {
-      "name": "SPRINT.md Tickets Completed",
-      "passed": true,
-      "details": "13 tickets DONE, 0 tickets pendientes (READY/IN_PROGRESS)"
+  "timestamp": "2026-11-14T00:27:50+01:00",
+  "gates": {
+    "robot_cli": {
+      "status": "PASSED",
+      "dotnet_build_errors": 0,
+      "node_tests_passed": 63,
+      "node_tests_failed": 0,
+      "pedagogical_features_on_disk": 16,
+      "secrets_exposed": 0
     },
-    {
-      "name": "Automated Tests Gate",
-      "passed": true,
-      "details": "node --test nordvik/tests/*.test.mjs -> exit 0"
+    "robot_browser": {
+      "status": "PASSED",
+      "active_url": "http://localhost:3000/#gym",
+      "http_404_errors": 0,
+      "console_errors": 0,
+      "broken_test_mode_verified": true,
+      "exam_modal_and_timer_verified": true,
+      "evidence_screenshot": "evidence_certification_exam.png"
+    },
+    "cross_agent_review": {
+      "dev_executor": "PASSED",
+      "qa_auto_verifier": "PASSED",
+      "security_guardian": "PASSED",
+      "ux_persona_tester": "PASSED",
+      "stakeholder_guardian": "PASSED"
     }
-  ]
+  }
 }

@@ -269,6 +269,7 @@ academia corregir L00</code></pre></li>
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
           <span class="chip" id="gym-active-level-chip">Junior SDET</span>
+          <button id="cert-start-btn" class="btn small" style="background:var(--accent); color:#0b1120; font-weight:700;">🎓 Examen de Certificación SDET</button>
           <button id="gym-topic-toggle-btn" class="btn small ghost" title="Mostrar/Ocultar Temas">Colapsar ▲</button>
         </div>
       </div>
@@ -389,6 +390,15 @@ academia corregir L00</code></pre></li>
       <h4 id="ped-anatomy-title" style="margin:0; font-size:0.95rem;"></h4>
       <pre style="background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:14px; overflow-x:auto;"><code id="ped-anatomy-code" class="language-gherkin" style="font-family:var(--mono); font-size:0.88rem; line-height:1.5;"></code></pre>
       <p id="ped-anatomy-explanation" class="muted" style="margin:0; line-height:1.5; font-size:0.9rem;"></p>
+
+      <!-- Diagrama de Secuencia & Arquitectura de Microservicios -->
+      <div id="ped-architecture-box" style="margin-top:8px; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <h5 style="margin:0; font-size:0.88rem; color:var(--accent);">🏛️ Flujo Arquitectónico &amp; Microservicios Involucrados</h5>
+          <div id="ped-services-chips" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+        </div>
+        <pre id="ped-sequence-diagram" style="margin:0; padding:10px; background:var(--surface-2); border-radius:6px; font-family:var(--mono); font-size:0.8rem; overflow-x:auto; line-height:1.45;"></pre>
+      </div>
     </div>
 
     <div id="ped-pane-trap" role="tabpanel" aria-labelledby="ped-tab-trap" hidden style="display:flex; flex-direction:column; gap:10px;">
@@ -396,6 +406,9 @@ academia corregir L00</code></pre></li>
         <h4 id="ped-trap-title" style="margin:0 0 8px 0; color:var(--bad); font-size:0.95rem;"></h4>
         <pre style="background:rgba(0,0,0,0.25); border-radius:6px; padding:10px; overflow-x:auto;"><code id="ped-trap-code" class="language-gherkin" style="font-family:var(--mono); font-size:0.86rem; color:var(--bad);"></code></pre>
         <p id="ped-trap-explanation" style="margin:8px 0 0 0; line-height:1.5; font-size:0.88rem;"></p>
+        <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+          <button class="btn small" id="ped-load-broken-btn" style="background:var(--bad); color:#fff;">🔧 Cargar Trampa en el Editor (Fix Bug Mode) ➔</button>
+        </div>
       </div>
     </div>
 
@@ -406,9 +419,12 @@ academia corregir L00</code></pre></li>
           <span class="chip lv" id="ped-challenge-id">JR-0001</span>
         </div>
         <p id="ped-challenge-prompt" style="margin:0 0 14px 0; line-height:1.5; font-size:0.92rem;"></p>
-        <div style="display:flex; justify-content:flex-end; gap:8px;">
-          <button class="btn ghost small" onclick="document.getElementById('pedagogical-modal').close()">Cerrar</button>
-          <button class="btn small" id="ped-load-challenge-btn">Cargar Reto en el Editor ➔</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+          <button class="btn ghost small" id="ped-download-feature-btn" title="Descargar archivo .feature para ejecutar localmente con Karate CLI">📥 Descargar .feature</button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn ghost small" onclick="document.getElementById('pedagogical-modal').close()">Cerrar</button>
+            <button class="btn small" id="ped-load-challenge-btn">Cargar Reto en el Editor ➔</button>
+          </div>
         </div>
       </div>
     </div>
@@ -416,6 +432,49 @@ academia corregir L00</code></pre></li>
     <div class="modal-actions" style="margin-top:16px; border-top:1px solid var(--line); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
       <span class="muted" style="font-size:0.8rem;">Nordvik Actuarial Pedagogical Engine</span>
       <button class="btn quiet small" onclick="document.getElementById('pedagogical-modal').close()">Entendido</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Modal de Examen de Certificación SDET -->
+<dialog class="modal modal-lg" id="cert-exam-modal" closedby="any" aria-labelledby="cert-exam-title">
+  <div class="modal-card" style="max-width:860px; width:92vw;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:12px;">
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span class="chip lv" id="cert-exam-level">Junior SDET</span>
+          <span class="pill warn" id="cert-timer-label" style="font-family:var(--mono); font-size:0.95rem; font-weight:700;">10:00</span>
+        </div>
+        <h2 id="cert-exam-title" style="margin:0; font-size:1.25rem;">Examen Oficial de Certificación SDET</h2>
+      </div>
+      <button class="icon-btn" aria-label="Cerrar examen" onclick="document.getElementById('cert-exam-modal').close()">&times;</button>
+    </div>
+    <div id="cert-questions-container" style="max-height:60vh; overflow-y:auto; padding-right:6px;"></div>
+    <div class="modal-actions" style="margin-top:16px; border-top:1px solid var(--line); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+      <span class="muted" style="font-size:0.82rem;">Criterio de aprobación: mínimo 80% (4 de 5 aciertos)</span>
+      <div style="display:flex; gap:8px;">
+        <button class="btn ghost small" onclick="document.getElementById('cert-exam-modal').close()">Cancelar</button>
+        <button class="btn small" id="cert-submit-btn">Entregar y Calificar Examen ✓</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- Modal de Diploma Digital Oficial SDET (Imprimible & Exportable) -->
+<dialog class="modal modal-lg" id="diploma-modal" closedby="any" aria-labelledby="diploma-modal-title">
+  <div class="modal-card" style="max-width:880px; width:94vw;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--line); padding-bottom:10px;">
+      <h3 id="diploma-modal-title" style="margin:0; color:var(--accent);">🎓 Acreditación Oficial SDET Concedida</h3>
+      <button class="icon-btn" aria-label="Cerrar diploma" onclick="document.getElementById('diploma-modal').close()">&times;</button>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center; margin-bottom:14px; background:var(--surface); padding:8px 12px; border-radius:8px; border:1px solid var(--line);">
+      <label for="diploma-student-name" style="font-size:0.85rem; font-weight:600;">Nombre del Titular:</label>
+      <input type="text" id="diploma-student-name" value="SDET Software Engineer in Test" style="flex:1; padding:4px 8px; border:1px solid var(--line); border-radius:6px; background:var(--surface-2); color:var(--fg); font-size:0.9rem;" oninput="Certificacion.showDiploma(Certificacion.currentLevel, 100)">
+      <button class="btn small quiet" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+    </div>
+    <div id="diploma-render-area"></div>
+    <div class="modal-actions" style="margin-top:16px; border-top:1px solid var(--line); padding-top:12px; display:flex; justify-content:flex-end;">
+      <button class="btn small" onclick="document.getElementById('diploma-modal').close()">Cerrar y Continuar Entrenando</button>
     </div>
   </div>
 </dialog>
@@ -498,6 +557,7 @@ academia corregir L00</code></pre></li>
 <script src="bruno-bridge.js"></script>
 <script src="bruno-audio-player.js"></script>
 <script src="bruno-gym.js"></script>
+<script src="certificacion.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
