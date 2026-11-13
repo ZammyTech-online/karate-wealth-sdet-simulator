@@ -77,6 +77,17 @@ test('JS: modal y drawer invocan showModal() y close() nativos', () => {
   assert.ok(!jsContent.includes("$('#scrim')"), 'No debe referenciar ni manipular #scrim');
 });
 
+test('JS: Bruno Copilot implementa Popover API nativa en Top Layer', () => {
+  assert.ok(htmlContent.includes('popover="manual"'), 'El dock de Bruno debe usar popover="manual"');
+  assert.ok(jsContent.includes('showPopover()'), 'Debe usar showPopover() nativo');
+  assert.ok(cssContent.includes('[popover]'), 'Debe definir estilos para popover');
+});
+
+test('JS: Transiciones de vistas nativas con View Transitions API', () => {
+  assert.ok(jsContent.includes('document.startViewTransition'), 'Debe usar document.startViewTransition() para navegación SPA');
+  assert.ok(jsContent.includes('prefers-reduced-motion'), 'Debe respetar la preferencia de reducción de movimiento');
+});
+
 test('JS: formateo de fechas y horas con Intl.DateTimeFormat en lugar de manipulación de strings', () => {
   assert.ok(jsContent.includes('Intl.DateTimeFormat'), 'Debe usar Intl.DateTimeFormat para formatear fechas de reloj');
 });

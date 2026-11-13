@@ -423,8 +423,9 @@ dialog.drawer:modal {
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
-/* ---------- Copiloto SDET Bruno (Dock & Avatar) ---------- */
+/* ---------- Copiloto SDET Bruno (Dock & Popover API con Anchor Positioning) ---------- */
 .bruno-floating-btn {
+  anchor-name: --bruno-anchor;
   position: fixed;
   bottom: calc(18px + env(safe-area-inset-bottom));
   right: max(18px, env(safe-area-inset-right));
@@ -437,12 +438,12 @@ dialog.drawer:modal {
   border-radius: 30px;
   padding: 4px 14px 4px 4px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgb(0 0 0 / .14);
+  box-shadow: 0 6px 20px oklch(0% 0 0 / .14);
   transition: transform .2s ease, box-shadow .2s ease;
 }
 .bruno-floating-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgb(0 0 0 / .18);
+  box-shadow: 0 8px 24px oklch(0% 0 0 / .18);
 }
 .bruno-floating-btn .bruno-badge {
   font-weight: 700;
@@ -463,14 +464,33 @@ dialog.drawer:modal {
   right: max(18px, env(safe-area-inset-right));
   width: min(390px, calc(100vw - 32px));
   max-height: min(620px, calc(100vh - 80px));
-  z-index: 55;
   background: var(--surface);
+  color: var(--fg);
   border: 1px solid var(--line);
   border-radius: 14px;
-  box-shadow: 0 12px 36px rgb(0 0 0 / .22);
+  box-shadow: 0 12px 36px oklch(0% 0 0 / .22);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.bruno-dock[popover] {
+  inset: auto;
+  border: 1px solid var(--line);
+}
+.bruno-dock[popover]:not(:popover-open) {
+  display: none;
+}
+.bruno-dock[popover]:popover-open {
+  display: flex;
+}
+@supports (position-anchor: --a) {
+  .bruno-dock {
+    position-anchor: --bruno-anchor;
+    position-area: block-start span-inline-start;
+    margin-bottom: 8px;
+  }
 }
 .bruno-header {
   padding: 10px 14px;

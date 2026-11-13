@@ -432,17 +432,26 @@ $('#fault-form').addEventListener('submit', (e) => {
   busy(e.submitter, async () => { await post('/proxy/chaos-control/api/v1/faults', body); toast(`Fallo aÃ±adido a ${body.service}`); loadFaults(); });
 });
 
-// ---------- navegación ----------
+// ---------- navegación con View Transitions API (Baseline) ----------
 const views = ['escalera', 'academia', 'gym', 'misiones', 'mapa', 'laboratorio', 'guia'];
 function show(view) {
   if (!views.includes(view)) view = 'escalera';
-  views.forEach((v) => { $('#view-' + v).hidden = v !== view; });
-  document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === view)));
-  if (!location.hash.includes(':') && location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
-  if (view === 'misiones') renderMissions();
-  if (view === 'academia') loadAcademia();
-  if (view === 'gym') { if (typeof BrunoGym !== 'undefined') BrunoGym.init(); }
-  if (view === 'laboratorio') { loadTraps(); loadFaults(); }
+
+  const updateDOM = () => {
+    views.forEach((v) => { $('#view-' + v).hidden = v !== view; });
+    document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === view)));
+    if (!location.hash.includes(':') && location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
+    if (view === 'misiones') renderMissions();
+    if (view === 'academia') loadAcademia();
+    if (view === 'gym') { if (typeof BrunoGym !== 'undefined') BrunoGym.init(); }
+    if (view === 'laboratorio') { loadTraps(); loadFaults(); }
+  };
+
+  if (typeof document.startViewTransition === 'function' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.startViewTransition(updateDOM);
+  } else {
+    updateDOM();
+  }
 }
 document.querySelector('.tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-view]'); if (b) show(b.dataset.view); });
 // Enlaces directos: #ficha:product-catalog abre la ficha de un servicio y #flujo:F-07-traspaso.md un flujo (Ãºtil para la guÃ­a y para compartir)
@@ -707,7 +716,15 @@ function initBruno() {
 function toggleBruno(open) {
   brunoState.open = open;
   const dock = $('#bruno-dock');
-  dock.hidden = !open;
+  if (typeof dock.showPopover === 'function') {
+    if (open) {
+      try { dock.showPopover(); } catch { dock.hidden = false; }
+    } else {
+      try { dock.hidePopover(); } catch { dock.hidden = true; }
+    }
+  } else {
+    dock.hidden = !open;
+  }
   $('#bruno-trigger').setAttribute('aria-expanded', open ? 'true' : 'false');
   if (open) {
     auditActiveLessonExercises();
