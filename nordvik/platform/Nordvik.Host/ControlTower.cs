@@ -544,6 +544,57 @@ public static class ControlTower
             });
         });
 
+        // ---------- Temas Pedagógicos por Nivel y Dominio ----------
+        var temasFile = Path.Combine(repoRoot, "torre", "web", "temas.json");
+
+        api.MapGet("/temas", (string? nivel) =>
+        {
+            if (!File.Exists(temasFile)) return Results.NotFound(new { error = "Archivo de temas pedagógicos no encontrado." });
+            var json = File.ReadAllText(temasFile);
+            if (string.IsNullOrWhiteSpace(nivel))
+            {
+                return Results.Content(json, "application/json");
+            }
+
+            var lvl = nivel.ToLowerInvariant();
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.TryGetProperty("niveles", out var niveles))
+            {
+                foreach (var el in niveles.EnumerateArray())
+                {
+                    if (el.TryGetProperty("id", out var idProp) && idProp.GetString()?.Equals(lvl, StringComparison.OrdinalIgnoreCase) == true)
+                    {
+                        return Results.Content(el.GetRawText(), "application/json");
+                    }
+                }
+            }
+            return Results.NotFound(new { error = $"Nivel '{nivel}' no encontrado en el currículo pedagógico." });
+        });
+
+        api.MapGet("/temas/{id}", (string id) =>
+        {
+            if (!File.Exists(temasFile)) return Results.NotFound(new { error = "Archivo de temas pedagógicos no encontrado." });
+            var upper = id.ToUpperInvariant();
+            using var doc = JsonDocument.Parse(File.ReadAllText(temasFile));
+            if (doc.RootElement.TryGetProperty("niveles", out var niveles))
+            {
+                foreach (var lvl in niveles.EnumerateArray())
+                {
+                    if (lvl.TryGetProperty("temas", out var temasList))
+                    {
+                        foreach (var el in temasList.EnumerateArray())
+                        {
+                            if (el.TryGetProperty("id", out var idProp) && idProp.GetString()?.Equals(upper, StringComparison.OrdinalIgnoreCase) == true)
+                            {
+                                return Results.Content(el.GetRawText(), "application/json");
+                            }
+                        }
+                    }
+                }
+            }
+            return Results.NotFound(new { error = $"Tema con ID '{id}' no encontrado en el currículo pedagógico." });
+        });
+
         api.MapFallback((HttpContext http) => Problem(http, 404, "ROUTE_NOT_FOUND", $"La ruta {http.Request.Method} {http.Request.Path} no existe en la torre.", "Las rutas de la torre empiezan por /api/v1 (estado, niveles, servicios, dominios, misiones, lecciones, trampas, proxy)."));
         return app;
     }

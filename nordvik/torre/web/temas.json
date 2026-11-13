@@ -1,0 +1,453 @@
+{
+  "totalTemas": 16,
+  "niveles": [
+    {
+      "id": "junior",
+      "name": "Junior SDET",
+      "tagline": "Fundamentos de Protocolo y Verificación de Datos Bancarios",
+      "color": "var(--ok)",
+      "temas": [
+        {
+          "id": "J-A",
+          "title": "El Contrato HTTP en Sistemas Bancarios",
+          "subtitle": "Ciclo Request/Response, verbos seguros y códigos de estado financieros",
+          "icon": "🏛️",
+          "domain": "funds",
+          "xp": 15,
+          "businessContext": "En un banco o gestora de fondos, una API REST es un contrato legal y operativo. Una petición GET nunca debe debitar dinero ni alterar estados patrimoniales; solo los métodos POST, PUT o DELETE tienen autorización para modificar saldos, suscripciones o participaciones.",
+          "catastrofeFinanciera": "Si un desarrollador comete el error de procesar una orden de compra mediante un endpoint GET, cualquier rastreador web, prefretch de navegador o reintento de red comprará fondos accidentalmente con el dinero del cliente.",
+          "karateConcept": "Karate DSL modela el contrato HTTP con claridad quirúrgica: 'Given url' define el microservicio, 'path' el recurso, 'When method' ejecuta la acción y 'Then status' valida el código HTTP exacto esperado.",
+          "analogia": "Imagina la ventanilla de un banco: pedir que te impriman tus últimos movimientos (GET) no cambia tu dinero en cuenta. Entregar una orden firmada para transferir 10.000 coronas (POST) sí.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Consulta de Catálogo de Fondos",
+            "code": "Feature: Catálogo de Fondos de Inversión Nordvik\n\n  Background:\n    * url 'http://localhost:6801'\n\n  Scenario: Obtener lista pública de fondos aprobados (HTTP 200)\n    # [ARRANGE] Definimos el recurso exacto según el contrato de la API\n    Given path '/api/v1/funds'\n    # [ACT] Disparamos la acción de lectura\n    When method get\n    # [ASSERT] Verificamos el código HTTP que garantiza éxito sin mutaciones\n    Then status 200",
+            "explanation": "El Background asegura la URL base. Given path apunta a la colección de fondos. When method get ejecuta la llamada. Then status 200 afirma que el servidor respondió con el catálogo íntegro."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Verbo Equivocado o Aserción Prematura",
+            "badCode": "Scenario: Consultar fondos\n  Given path '/api/v1/funds'\n  # TRAMPA: Intentar validar la respuesta antes de haber realizado la llamada HTTP\n  And match response.total == 5\n  When method get",
+            "explanation": "No puedes hacer 'match response' en la fase Given. La respuesta (response) no existe en memoria hasta que ejecutas 'When method'. BrunoLinter detecta este error como GHERKIN_ASSERTION_IN_GIVEN."
+          },
+          "fase3_reto": {
+            "exerciseId": "JR-0001",
+            "prompt": "Rellena los huecos '___' en el Gym para completar tu primera petición GET al catálogo de fondos y certificar el status 200."
+          }
+        },
+        {
+          "id": "J-B",
+          "title": "Inspección de JSON & Estructuras de Cartera",
+          "subtitle": "Navegación de árboles jerárquicos, arrays de participaciones y operadores contains",
+          "icon": "📊",
+          "domain": "accounts",
+          "xp": 15,
+          "businessContext": "Las respuestas bancarias nunca son planas: un extracto de posición global contiene al cliente, sus cuentas multidivisa (SEK/EUR), su cartera de fondos y las participaciones con su precio de adquisición.",
+          "catastrofeFinanciera": "Validar una cartera comparando todo el JSON contra una cadena de texto fija falla en cuanto el valor liquidativo (NAV) del fondo cambia un céntimo, rompiendo los tests de regresión nocturnos de la gestora.",
+          "karateConcept": "Karate permite acceder directamente a propiedades profundas con sintaxis de puntos ('response.accounts[0].balance') y verificar pertenencia con 'contains' sin importar el orden de los elementos.",
+          "analogia": "Es como revisar el ticket de la compra: no necesitas que los artículos salgan exactamente en el mismo orden que en la cinta, pero sí comprobar que la leche y el pan están en la bolsa con su precio.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Inspección de Saldos y Cuentas",
+            "code": "Scenario: Validar saldo disponible en cuenta corriente\n  Given url 'http://localhost:6801'\n  And path '/api/v1/accounts/ACC-1001'\n  When method get\n  Then status 200\n  # Aserción precisa sobre un nodo interno del árbol JSON\n  And match response.currency == 'SEK'\n  And match response.holder.country == 'SE'\n  And match response.balances contains { type: 'AVAILABLE' }",
+            "explanation": "Validamos campos específicos del árbol JSON sin requerir que toda la respuesta sea idéntica al milímetro."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Comparación Rígida de Arrays",
+            "badCode": "Then status 200\n# TRAMPA: Comparación exacta '==' sobre una lista donde el orden de los elementos no está garantizado por la base de datos\nAnd match response.tags == ['PENSION', 'PRIVATE']",
+            "explanation": "Si el microservicio devuelve ['PRIVATE', 'PENSION'], la prueba fallará falsamente. Usa 'contains only' o 'contains' para verificar elementos de colecciones bancarias de forma robusta."
+          },
+          "fase3_reto": {
+            "exerciseId": "JR-0050",
+            "prompt": "Accede a la posición consolidada del cliente y valida la divisa y existencia de saldo disponible en el Gym."
+          }
+        },
+        {
+          "id": "J-C",
+          "title": "Tipado Estricto con Fuzzy Matchers",
+          "subtitle": "Validación de IDs dinámicos, expresiones regulares y aserciones booleanas",
+          "icon": "🎯",
+          "domain": "orders",
+          "xp": 15,
+          "businessContext": "En un sistema transaccional, cada orden de compra genera un identificador único (UUID o TX-XXXXXXXX), una marca de tiempo ISO-8601 y un importe positivo. Ninguno de estos datos se puede predecir de antemano.",
+          "catastrofeFinanciera": "Si un test no valida que el identificador devuelto cumple el formato estándar del sistema de compensación (ej. TX-8 dígitos), el sistema puede enviar identificadores nulos o corruptos a la cámara de liquidación.",
+          "karateConcept": "Los Fuzzy Matchers de Karate (#string, #number, #regex, #uuid, #? _ > 0) permiten validar tipos estrictos y reglas de negocio sobre datos autogenerados sin recurrir a datos quemados en el código.",
+          "analogia": "El control de pasaportes del aeropuerto: al policía no le importa si tu nombre es Ana o Carlos, le importa que tu documento tenga 9 caracteres alfanuméricos válidos y no esté caducado.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Validación de Contrato de Orden",
+            "code": "Scenario: Validar orden de suscripción con Fuzzy Matchers\n  Given url 'http://localhost:6801'\n  And path '/api/v1/orders/ORD-8821'\n  When method get\n  Then status 200\n  # Comprobamos que el ID cumple el formato TX seguido de 8 números\n  And match response.transactionId == '#regex ^TX-[0-9]{8}$'\n  # El importe debe ser un número estrictamente mayor que cero\n  And match response.amount == '#? _ > 0'\n  And match response.createdAt == '#regex ^\\\\d{4}-\\\\d{2}-\\\\d{2}T.*'",
+            "explanation": "Validamos que la respuesta cumple rigurosamente el tipo de dato financiero sin acoplarnos a valores estáticos."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Comparación Numérica Errónea",
+            "badCode": "Then status 200\n# TRAMPA: Intentar usar '<' o '>' directamente dentro de match en lugar de la sintaxis fuzzy o assert\nAnd match response.fee < 100",
+            "explanation": "Karate DSL no admite operadores relacionales ('<', '>') directamente tras match. Debes usar '* assert response.fee < 100' o el fuzzy matcher '#? _ < 100'."
+          },
+          "fase3_reto": {
+            "exerciseId": "JR-0120",
+            "prompt": "Valida el contrato estricto de una orden en el Gym garantizando identificador con prefijo y comisiones positivas."
+          }
+        },
+        {
+          "id": "J-D",
+          "title": "Parámetros, Filtros & Paginación de Fondos",
+          "subtitle": "Filtrado por categoría de activo, ordenación y control de sobrecarga con limit/offset",
+          "icon": "🔍",
+          "domain": "funds",
+          "xp": 15,
+          "businessContext": "Nordvik gestiona más de 800 fondos de inversión. Los clientes consultan la oferta filtrando por clase de activo (Renta Fija, Renta Variable, Mixtos) y paginan los resultados para una visualización ágil.",
+          "catastrofeFinanciera": "Una consulta sin paginación ni filtros que intente descargar los 800 fondos con todo su histórico de cotizaciones puede colapsar la memoria del microservicio y degradar el servicio para toda la entidad.",
+          "karateConcept": "Karate simplifica el envío de Query Parameters mediante 'param nombre = valor'. Construye automáticamente la URL codificada (?category=EQUITY&limit=10) de forma segura.",
+          "analogia": "Entrar a una zapatería: no le pides al dependiente que te saque los 5.000 zapatos del almacén a la vez; le pides los zapatos de la talla 42, color negro y de 10 en 10.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Consulta Paginada por Categoría",
+            "code": "Scenario: Filtrar fondos de Renta Variable con paginación de 5 elementos\n  Given url 'http://localhost:6801'\n  And path '/api/v1/funds'\n  And param category = 'EQUITY'\n  And param limit = 5\n  And param offset = 0\n  When method get\n  Then status 200\n  # La lista devuelta no debe superar el límite solicitado\n  And match response.items == '#[5]'\n  # Cada elemento debe pertenecer a la categoría solicitada\n  And match each response.items contains { category: 'EQUITY' }",
+            "explanation": "Usamos 'param' para modularizar los filtros y 'match each' para asegurar que todos los fondos devueltos cumplen la condición de negocio."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Concatenar Parámetros en el Path",
+            "badCode": "Given url 'http://localhost:6801'\n# TRAMPA: Escribir los query params a mano en el path en lugar de usar la directiva 'param'\nAnd path '/api/v1/funds?category=EQUITY&limit=5'\nWhen method get",
+            "explanation": "Concatenar '?' en el path provoca que Karate escape los caracteres o confunda la ruta REST. Usa siempre 'And param category = ...'."
+          },
+          "fase3_reto": {
+            "exerciseId": "JR-0250",
+            "prompt": "Configura los filtros de búsqueda paginada en el Gym y valida la respuesta con 'match each'."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mid",
+      "name": "Mid SDET",
+      "tagline": "Pruebas Conducidas por Datos, Esquemas y Reutilización Modular",
+      "color": "var(--accent)",
+      "temas": [
+        {
+          "id": "M-A",
+          "title": "Pruebas Tabulares con Scenario Outline",
+          "subtitle": "Matrices de prueba data-driven, límites de aportación y valores frontera",
+          "icon": "📑",
+          "domain": "pensions",
+          "xp": 20,
+          "businessContext": "Las aportaciones a planes de pensiones están sujetas a límites legales estrictos según la edad, régimen fiscal (público sueco AP7 vs privado) e importes mínimos y máximos anuales deducibles.",
+          "catastrofeFinanciera": "Si el motor de validación acepta una aportación superior al límite legal de 15.000 SEK sin alertar al cliente, el usuario sufre una sanción de la agencia tributaria sueca (Skatteverket).",
+          "karateConcept": "'Scenario Outline' permite ejecutar un mismo flujo de prueba contra una tabla de ejemplos delimitada por barras ('Examples: | valor | status |'), probando múltiples combinaciones en segundos.",
+          "analogia": "La báscula del aeropuerto: una misma cinta transportadora evalúa maletas de 10 kg (pasa), 23 kg (pasa al límite) y 32 kg (bloqueada por exceso de equipaje).",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Matriz de Aportación de Pensiones",
+            "code": "Scenario Outline: Validar límites de aportación a pensión (<caso>)\n  Given url 'http://localhost:6801'\n  And path '/api/v1/pensions/contributions/validate'\n  And request { amount: <importe>, currency: 'SEK' }\n  When method post\n  Then status <codigoEsperado>\n\n  Examples:\n    | caso             | importe | codigoEsperado |\n    | Aportación válida| 5000    | 200            |\n    | Mínimo legal     | 100     | 200            |\n    | Menor al mínimo  | 50      | 422            |\n    | Supera el límite | 95000   | 422            |",
+            "explanation": "Cada fila de Examples genera una ejecución independiente y parametrizada, cubriendo casos de éxito y de borde."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Scenario Outline sin Tabla de Ejemplos",
+            "badCode": "Scenario Outline: Validación de aportación\n  Given path '/api/v1/pensions'\n  And request { amount: <importe> }\n  When method post\n  Then status 200\n  # TRAMPA: Olvidar declarar el bloque 'Examples:' con sus columnas",
+            "explanation": "Un Scenario Outline sin su bloque 'Examples:' es un error de sintaxis que impide la compilación del test. BrunoLinter lo detecta como GHERKIN_SCENARIO_OUTLINE_NO_EXAMPLES."
+          },
+          "fase3_reto": {
+            "exerciseId": "MID-0001",
+            "prompt": "Estructura la tabla de ejemplos de aportación en el Gym para cubrir casos válidos y rechazos por límite."
+          }
+        },
+        {
+          "id": "M-B",
+          "title": "Validación de Esquemas JSON Estrictos",
+          "subtitle": "Cumplimiento normativo MiFID II y protección contra breaking changes",
+          "icon": "📐",
+          "domain": "market",
+          "xp": 20,
+          "businessContext": "Bajo la normativa europea MiFID II, cualquier recomendación de inversión o informe de idoneidad debe contener obligatoriamente campos de desglose de costes, perfil de riesgo del 1 al 7 y advertencia de volatilidad.",
+          "catastrofeFinanciera": "Si un despliegue elimina inadvertidamente el campo 'costsBreakdown', el banco incurre en una infracción regulatoria grave con multas de la autoridad financiera (Finansinspektionen).",
+          "karateConcept": "Karate permite definir un esquema completo como variable JSON y validar la respuesta íntegra en una sola línea ('match response == schema'), asegurando que no falte ningún campo obligatorio.",
+          "analogia": "Un contrato notarial: no puedes firmar un documento en el que falte la cláusula de responsabilidad o el sello oficial; la estructura debe estar completa al 100%.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Contrato de Idoneidad MiFID II",
+            "code": "Scenario: Certificar esquema estricto de recomendación financiera\n  * def recommendationSchema =\n  \"\"\"\n  {\n    id: '#regex ^REC-[0-9]+$',\n    fundIsin: '#regex ^[A-Z]{2}[0-9A-Z]{10}$',\n    riskScore: '#number? _ >= 1 && _ <= 7',\n    suitable: '#boolean',\n    costs: {\n      managementFee: '#number',\n      custodyFee: '#number'\n    }\n  }\n  \"\"\"\n  Given url 'http://localhost:6801'\n  And path '/api/v1/advice/REC-9001'\n  When method get\n  Then status 200\n  And match response == recommendationSchema",
+            "explanation": "Definimos el esquema con validaciones de rango numérico y expresiones regulares, certificando la estructura completa del contrato."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Confundir Validación Parcial con Esquema Estricto",
+            "badCode": "Then status 200\n# TRAMPA: Usar 'contains' en vez de '==' cuando se exige certificar el esquema completo sin campos extras inesperados\nAnd match response contains recommendationSchema",
+            "explanation": "El operador 'contains' solo comprueba que los campos existen, pero ignora si la API devuelve campos no autorizados o maliciosos. Para contratos estrictos, usa '=='."
+          },
+          "fase3_reto": {
+            "exerciseId": "MID-0150",
+            "prompt": "Diseña el validador de esquema de mercado en el Gym y aplícalo contra la cotización oficial."
+          }
+        },
+        {
+          "id": "M-C",
+          "title": "Modularidad con karate.call & Autenticación",
+          "subtitle": "Reutilización de tokens OAuth2, sesión de BankID y aislamiento entre suites",
+          "icon": "🔐",
+          "domain": "identity",
+          "xp": 20,
+          "businessContext": "En banca no existen endpoints anónimos: cada operación exige un token portador (Bearer JWT) autenticado mediante BankID. Autenticarse desde cero en cada escenario saturaría el servidor de identidad.",
+          "catastrofeFinanciera": "Duplicar el código de login en cientos de tests genera suites lentas e inestables; si cambia la URL del proveedor de identidad, se rompen 500 pruebas a la vez.",
+          "karateConcept": "'karate.call(read('classpath:...'), { user: ... })' permite invocar features auxiliares que devuelven tokens y cabeceras reutilizables en cualquier escenario.",
+          "analogia": "La tarjeta magnética del hotel: haces check-in una sola vez en recepción y usas la tarjeta para abrir el ascensor, la habitación y el gimnasio.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Reutilización de Token OAuth2",
+            "code": "Feature: Consulta de Cuentas Privadas\n\n  Background:\n    * url 'http://localhost:6801'\n    # Invocamos el feature de autenticación pasando el usuario deseado\n    * def auth = call read('this:_login.feature') { pnr: '19850101-1234' }\n    # Inyectamos el token en las cabeceras de todas las peticiones del escenario\n    * header Authorization = 'Bearer ' + auth.token\n\n  Scenario: Consultar cuentas del usuario autenticado\n    Given path '/api/v1/my-accounts'\n    When method get\n    Then status 200",
+            "explanation": "Modularizamos la identidad: el login vive en su propio archivo y los escenarios consumen el resultado limpiamente."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Rutas Relativas Rotas",
+            "badCode": "* def auth = call read('_login.feature')\n# TRAMPA: Omitir 'this:' o 'classpath:' en la llamada a read(), provocando FileNotFoundException en CI/CD",
+            "explanation": "Karate requiere indicar el prefijo 'this:' (directorio local del feature) o 'classpath:' para encontrar recursos de apoyo sin fallar en entornos de integración continua."
+          },
+          "fase3_reto": {
+            "exerciseId": "MID-0300",
+            "prompt": "Integra la llamada de autenticación modular en el Gym e inyecta la cabecera Bearer en la petición."
+          }
+        },
+        {
+          "id": "M-D",
+          "title": "Transformaciones con GraalVM JavaScript",
+          "subtitle": "Conversión de divisas spot, redondeo actuarial y cómputo dinámico en el test",
+          "icon": "⚡",
+          "domain": "fx",
+          "xp": 20,
+          "businessContext": "En carteras internacionales con activos cotizados en distintas monedas (USD, EUR, SEK), el valor de la cartera se convierte al tipo de cambio spot en tiempo real aplicando un redondeo financiero de 2 decimales.",
+          "catastrofeFinanciera": "Un error de redondeo de 1 céntimo (truncamiento en lugar de redondeo bancario Half-Even) repetido en 1.000.000 de liquidaciones diarias descuadra el balance contable de la entidad.",
+          "karateConcept": "Karate incorpora el motor GraalVM JavaScript nativo. Puedes definir funciones con '* def convertir = function(monto, tasa){ return Math.round(monto * tasa * 100) / 100 }' y asertar el resultado exacto.",
+          "analogia": "La calculadora de precisión del actuario: no te fías de lo que diga la pantalla a ciegas; haces la multiplicación en paralelo para auditar que el banco no te cobró de más.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Auditoría de Redondeo en Conversión FX",
+            "code": "Scenario: Auditar conversión exacta de 1500 EUR a SEK\n  Given url 'http://localhost:6801'\n  And path '/api/v1/fx/convert'\n  And param from = 'EUR'\n  And param to = 'SEK'\n  And param amount = 1500\n  When method get\n  Then status 200\n  # Función actuarial de verificación en JavaScript nativo\n  * def computeExpected = function(eur, rate){ return Number((eur * rate).toFixed(2)); }\n  * def expectedSek = computeExpected(1500, response.appliedRate)\n  And match response.resultAmount == expectedSek",
+            "explanation": "Calculamos el importe esperado dentro del propio test y lo confrontamos con la respuesta del microservicio de divisas."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Variables No Interpoladas en JSON",
+            "badCode": "And request { from: 'EUR', amount: expectedSek }\n# TRAMPA: Escribir expectedSek sin comillas o sin '#(expectedSek)' provocando que se envíe como string literal",
+            "explanation": "En cuerpos JSON declarados en bloque, las variables deben escribirse con la sintaxis '#(variable)' o como claves directas de objetos Karate."
+          },
+          "fase3_reto": {
+            "exerciseId": "MID-0450",
+            "prompt": "Escribe una función de cálculo de comisión en GraalVM JS y valida el resultado actuarial en el Gym."
+          }
+        }
+      ]
+    },
+    {
+      "id": "senior",
+      "name": "Senior SDET",
+      "tagline": "Asincronía, Sagas Financieras, Idempotencia y Resiliencia",
+      "color": "var(--warn)",
+      "temas": [
+        {
+          "id": "S-A",
+          "title": "Asincronía & Polling sin Sleep",
+          "subtitle": "El patrón retry until, configuración de intervalos y SLAs de liquidación",
+          "icon": "⏳",
+          "domain": "payments",
+          "xp": 25,
+          "businessContext": "En liquidaciones bancarias (como transferencias interbancarias SEPA o cobros domiciliados), la respuesta inmediata es un acuse de recibo 201/202 PENDING. La confirmación real ocurre tras el procesamiento por lotes.",
+          "catastrofeFinanciera": "Usar pausas fijas (sleep 5000ms) hace que una suite de 200 pruebas tarde horas en ejecutarse y continúe fallando aleatoriamente en servidores de integración continua lentos.",
+          "karateConcept": "'retry until condition' repite una petición GET a intervalos configurados (* configure retry = { count: 20, interval: 500 }) hasta que el estado del recurso alcanza 'CONFIRMED' o agota el tiempo con fallo explícito.",
+          "analogia": "El seguimiento de un paquete por mensajería: no te vas a dormir 3 horas seguidas esperando que llegue; miras el móvil cada 10 minutos hasta que el estado cambia a 'Entregado'.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Polling Actuarial con retry until",
+            "code": "Scenario: Seguimiento no bloqueante de liquidación de pago\n  # Configuramos un máximo de 10 segundos (20 intentos cada 500ms)\n  * configure retry = { count: 20, interval: 500 }\n  Given url 'http://localhost:6801'\n  And path '/api/v1/payments/PAY-9912'\n  # Karate reintentará la petición hasta que se cumpla la expresión booleana\n  And retry until response.status == 'SETTLED' || response.status == 'FAILED'\n  When method get\n  Then status 200\n  # Certificamos que el estado final fue exitoso y no fallido\n  And match response.status == 'SETTLED'\n  And match response.settledAt == '#regex ^\\\\d{4}-\\\\d{2}-\\\\d{2}T.*'",
+            "explanation": "El test se completa en cuanto el microservicio termina de liquidar, minimizando el tiempo total de ejecución y garantizando cero inestabilidad."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: El Anti-patrón de Thread.sleep",
+            "badCode": "When method post\nThen status 201\n# TRAMPA: Pausa estática con java.lang.Thread.sleep(5000)\n* eval java.lang.Thread.sleep(5000)\nWhen method get\nThen status 200",
+            "explanation": "El uso de sleep está estrictamente vetado en ingeniería SDET. Consume hilos innecesariamente y enmascara problemas de latencia. BrunoLinter bloquea esto con la regla FORBIDDEN_SLEEP."
+          },
+          "fase3_reto": {
+            "exerciseId": "SR-0001",
+            "prompt": "Configura el bloque retry until en el Gym para una saga de traspaso de pensión sin pausas pasivas."
+          }
+        },
+        {
+          "id": "S-B",
+          "title": "Sagas Distribuidas de Pensiones & Compensación",
+          "subtitle": "Flujos multi-servicio, consistencia eventual y transacciones compensatorias",
+          "icon": "🔄",
+          "domain": "pensions",
+          "xp": 25,
+          "businessContext": "Un traspaso de fondo de pensiones entre dos entidades financieras es un proceso distribuido: requiere debitar el plan origen, verificar conformidad regulatoria, transferir el capital y acreditar el plan destino.",
+          "catastrofeFinanciera": "Si el microservicio del banco receptor falla en el último paso y no existe un mecanismo compensatorio que revierta el débito original, el dinero del cliente queda 'perdido' en el limbo interbancario.",
+          "karateConcept": "Karate permite orquestar escenarios de prueba extremo a extremo que ejecutan el flujo completo y provocan intencionalmente un fallo en el último paso para verificar que la saga revierte el saldo al estado original.",
+          "analogia": "Reservar un viaje combinado de avión + hotel: si pagas el vuelo pero el hotel se queda sin habitaciones libres, la agencia debe cancelar el vuelo y devolverte el dinero íntegro inmediatamente.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Verificación de Saga Compensatoria",
+            "code": "Scenario: Traspaso de pensión con fallo de entidad receptora y compensación\n  Given url 'http://localhost:6801'\n  And path '/api/v1/sagas/pension-transfer'\n  And request\n  \"\"\"\n  {\n    sourcePlanId: 'PLAN-A',\n    targetEntityIban: 'SE99990000FAIL',\n    amount: 50000\n  }\n  \"\"\"\n  When method post\n  Then status 202\n  * def sagaId = response.sagaId\n  \n  # Polling hasta que la saga detecta el fallo del receptor y ejecuta compensación\n  * configure retry = { count: 15, interval: 400 }\n  Given path '/api/v1/sagas/', sagaId\n  And retry until response.sagaState == 'COMPENSATED'\n  When method get\n  Then status 200\n  And match response.refundIssued == true",
+            "explanation": "Validamos que ante un fallo distribuido, el sistema ejecuta la transacción de compensación y deja los saldos balanceados."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Dar por Exitosa una Saga Pendiente",
+            "badCode": "When method post\nThen status 202\n# TRAMPA: Asumir que un código HTTP 202 Accepted significa que la transferencia ya terminó con éxito\nAnd match response.transferred == true",
+            "explanation": "HTTP 202 solo significa que la solicitud fue aceptada para trámite. Debes consultar el estado de la saga hasta su resolución definitiva."
+          },
+          "fase3_reto": {
+            "exerciseId": "SR-0100",
+            "prompt": "Orquesta el test de compensación de saga en el Gym verificando el estado final COMPENSATED."
+          }
+        },
+        {
+          "id": "S-C",
+          "title": "Idempotencia & Prevención de Doble Cobro",
+          "subtitle": "Cabeceras Idempotency-Key, reintentos de red seguros y aislamiento de pagos",
+          "icon": "🛡️",
+          "domain": "orders",
+          "xp": 25,
+          "businessContext": "En aplicaciones móviles de banca, los fallos de cobertura o el nerviosismo del usuario pueden provocar que el cliente pulse dos veces el botón de 'Confirmar Transferencia' en cuestión de 500ms.",
+          "catastrofeFinanciera": "Sin control de idempotencia, el backend procesará dos cobros idénticos de 10.000 coronas, dejando la cuenta en descubierto y dañando irremediablemente la reputación del banco.",
+          "karateConcept": "Karate permite generar UUIDs dinámicos ('* def idemKey = java.util.UUID.randomUUID() + '''), inyectar la cabecera 'Idempotency-Key' y disparar dos peticiones idénticas comprobando que la segunda devuelve la misma transacción.",
+          "analogia": "El ascensor: aunque pulses el botón del piso 4 tres veces seguidas con fuerza, el ascensor solo va al piso 4 una vez.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Auditoría de Idempotencia en Cobros",
+            "code": "Scenario: Doble envío con la misma Idempotency-Key no duplica la transacción\n  * def idemKey = 'IDEM-' + java.util.UUID.randomUUID()\n  \n  # Primera petición: Crea la transacción\n  Given url 'http://localhost:6801'\n  And path '/api/v1/orders/charge'\n  And header Idempotency-Key = idemKey\n  And request { accountId: 'ACC-01', amount: 2500 }\n  When method post\n  Then status 201\n  * def firstTxId = response.transactionId\n\n  # Segunda petición idéntica: Reintento por desconexión\n  Given path '/api/v1/orders/charge'\n  And header Idempotency-Key = idemKey\n  And request { accountId: 'ACC-01', amount: 2500 }\n  When method post\n  Then status 200\n  # El identificador de transacción debe ser exactamente el mismo de la primera llamada\n  And match response.transactionId == firstTxId\n  And match response.duplicateDetected == true",
+            "explanation": "Validamos que dos disparos con la misma clave de idempotencia son idempotentes y no duplican el impacto contable."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Reutilizar Claves de Idempotencia entre Tests",
+            "badCode": "* def idemKey = 'IDEM-FIJA-12345'\n# TRAMPA: Usar una clave de idempotencia fija hace que el test solo funcione la primera vez y falle en las siguientes ejecuciones",
+            "explanation": "Las claves de idempotencia deben ser únicas por prueba o ejecución. Usa siempre generadores dinámicos de UUID."
+          },
+          "fase3_reto": {
+            "exerciseId": "SR-0250",
+            "prompt": "Implementa la prueba de doble disparo con Idempotency-Key en el Gym y certifica el retorno de la misma transacción."
+          }
+        },
+        {
+          "id": "S-D",
+          "title": "Contratos de Error RFC 9457 & Seguridad IDOR",
+          "subtitle": "Estandarización de application/problem+json y prevención de fugas de datos de cuentas",
+          "icon": "🔒",
+          "domain": "security",
+          "xp": 25,
+          "businessContext": "Las normativas de ciberseguridad financiera exigen que los errores nunca revelen trazas de pila (stack traces) internas y que ningún usuario pueda consultar extractos o fondos de otro cambiando el ID en la URL (vulnerabilidad IDOR).",
+          "catastrofeFinanciera": "Una brecha de seguridad IDOR que permita acceder a carteras privadas mediante el cambio de un parámetro numérico acarrea sanciones de hasta 20 millones de euros por el Reglamento General de Protección de Datos (GDPR).",
+          "karateConcept": "Karate valida que los errores respetan el estándar RFC 9457 ('application/problem+json') y permite crear tests de seguridad negativos que confirman que un token sin permisos recibe estricto HTTP 403 Forbidden.",
+          "analogia": "El diagnóstico médico confidencial: si el médico comete un error, el sistema te entrega un informe oficial estandarizado sin revelar los expedientes de otros pacientes del hospital.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Auditoría IDOR y Formato RFC 9457",
+            "code": "Scenario: Usuario no autorizado intentando acceder a cuenta ajena recibe 403 Problem Details\n  Given url 'http://localhost:6801'\n  # Intentamos acceder a la cuenta de otro cliente con nuestro token\n  And path '/api/v1/accounts/ACC-VICTIM-99'\n  And header Authorization = 'Bearer ' + attackerToken\n  When method get\n  # El microservicio debe denegar el acceso sin filtrar datos\n  Then status 403\n  And match header Content-Type contains 'application/problem+json'\n  And match response.type == 'https://nordvik.se/errors/forbidden-access'\n  And match response.title == 'Forbidden'\n  And match response.detail == '#string'\n  # Verificamos que jamás se filtre la traza técnica de base de datos\n  And match response.stackTrace == '#notpresent'",
+            "explanation": "Garantizamos que la API responde con un formato de error estandarizado y sin fugas de información interna."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Aceptar un Código 200 con Cuerpo de Error",
+            "badCode": "When method get\n# TRAMPA: Aceptar un código HTTP 200 cuando el servidor devolvió un error de permisos en el cuerpo JSON\nThen status 200\nAnd match response.error == 'Access Denied'",
+            "explanation": "El antipatrón de devolver HTTP 200 con un error en el cuerpo viola los contratos REST y engaña a los balanceadores de carga. Las APIs de seguridad deben responder con 401 o 403."
+          },
+          "fase3_reto": {
+            "exerciseId": "SR-0400",
+            "prompt": "Construye la prueba de denegación de permisos IDOR en el Gym y valida el cumplimiento del RFC 9457."
+          }
+        }
+      ]
+    },
+    {
+      "id": "staff",
+      "name": "Staff / Lead SDET",
+      "tagline": "Gobernanza, Mocks en Memoria, Caos y Manipulación Temporal",
+      "color": "var(--bad)",
+      "temas": [
+        {
+          "id": "T-A",
+          "title": "Mocks Dinámicos con karate.start",
+          "subtitle": "Simulación de pasarelas externas en memoria, puertos efímeros y cero dependencias",
+          "icon": "🎭",
+          "domain": "mocks",
+          "xp": 35,
+          "businessContext": "En el sector financiero se interactúa constantemente con sistemas de terceros que cobran por cada petición de prueba (como agencias de scoring crediticio) o que no tienen entornos de pruebas estables las 24 horas.",
+          "catastrofeFinanciera": "Ejecutar 500 pruebas nocturnas contra una pasarela externa real de verificación de antecedentes puede costar miles de euros al mes y bloquear el pipeline si la pasarela externa cae.",
+          "karateConcept": "'karate.start({ mock: '...', port: 0 })' levanta un servidor HTTP simulado en memoria dentro de la misma máquina virtual de Java en un puerto efímero libre, respondiendo de forma idéntica a la API real.",
+          "analogia": "El simulador de vuelo para pilotos: entrenas aterrizajes con viento cruzado y tormentas sin arriesgar un avión real de 80 millones de dólares ni gastar queroseno.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Despliegue de Mock Dinámico en Puerto Libre",
+            "code": "Scenario: Pruebas de pasarela bancaria con mock en memoria\n  # Levantamos el mock en un puerto efímero automático (port: 0)\n  * def mockServer = karate.start({ mock: 'this:_mock_central_bank.feature', port: 0 })\n  * def mockPort = mockServer.port\n  \n  # Configuramos nuestro cliente para hablar con el mock local\n  Given url 'http://localhost:' + mockPort\n  And path '/api/v1/central-bank/clear'\n  And request { amount: 1000000, currency: 'SEK' }\n  When method post\n  Then status 200\n  And match response.cleared == true\n  \n  # Detenemos el servidor mock para liberar el socket\n  * mockServer.stop()",
+            "explanation": "El mock se levanta en memoria, atiende las peticiones y se destruye al finalizar, logrando pruebas 100% aisladas e independientes de internet."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Usar un Puerto Fijo en el Mock",
+            "badCode": "* def mock = karate.start({ mock: 'mock.feature', port: 8080 })\n# TRAMPA: Fijar el puerto 8080 provoca fallos con 'BindException: Address already in use' cuando corres pruebas en paralelo",
+            "explanation": "En CI/CD y pruebas paralelas, nunca fijes puertos estáticos. Usa siempre port: 0 para que el sistema operativo asigne un puerto efímero libre."
+          },
+          "fase3_reto": {
+            "exerciseId": "STF-0002",
+            "prompt": "Arranca el mock dinámico en el Gym en puerto efímero, dispara la consulta y libéralo con stop()."
+          }
+        },
+        {
+          "id": "T-B",
+          "title": "Ingeniería de Caos & Resiliencia Parcial",
+          "subtitle": "Inyección de latencia, simulación de cortes de servicio y circuit breakers",
+          "icon": "💥",
+          "domain": "chaos",
+          "xp": 35,
+          "businessContext": "En un entorno de microservicios financieros interconectados, los fallos son inevitables: una base de datos saturada puede tardar 2 segundos en responder o una pasarela de divisas puede arrojar un HTTP 503 intermitente.",
+          "catastrofeFinanciera": "Si un microservicio dependiente entra en timeout de 30 segundos y el cliente no tiene un Circuit Breaker configurado, el hilo se queda bloqueado, agotando el pool de conexiones y tirando toda la banca online.",
+          "karateConcept": "Karate interactúa con la API de control de caos ('POST /api/v1/chaos/faults') para programar fallos transitorios y certificar que la aplicación conmuta a su plan de contingencia (fallback degradado con elegancia).",
+          "analogia": "El generador diésel de emergencia de un hospital: si se corta el suministro eléctrico de la ciudad, el generador arranca en 3 segundos manteniendo encendidos los quirófanos.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Inyección de Latencia y Verificación de Timeout",
+            "code": "Scenario: Resiliencia ante latencia inyectada de 1500ms en el servicio de cotizaciones\n  # 1. Programamos el fallo en el microservicio de caos\n  Given url 'http://localhost:3000'\n  And path '/proxy/chaos-control/api/v1/faults'\n  And request { service: 'market-data', delayMs: 1500, status: 503, times: 1 }\n  When method post\n  Then status 200\n\n  # 2. Consultamos la cartera: la app debe responder con el último valor en caché en lugar de fallar\n  Given url 'http://localhost:6801'\n  And path '/api/v1/portfolio/summary'\n  When method get\n  Then status 200\n  And match response.cached == true\n  And match response.degradedMode == true",
+            "explanation": "Provocamos un fallo artificial en una dependencia y auditamos que el sistema responde de forma segura y degradada."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Olvidar Limpiar las Fallas de Caos",
+            "badCode": "When method post\n# Inyectamos un fallo permanente del 100% de errores 500\n# TRAMPA: No ejecutar la llamada de reset al finalizar, rompiendo los tests siguientes de la suite",
+            "explanation": "Las pruebas de caos deben garantizar limpieza total tras su ejecución mediante llamadas de 'reset' o tiempos de vida acotados (times: 1)."
+          },
+          "fase3_reto": {
+            "exerciseId": "STF-0001",
+            "prompt": "Programa una falla de latencia en el microservicio de caos en el Gym y valida el comportamiento resiliente."
+          }
+        },
+        {
+          "id": "T-C",
+          "title": "Manipulación Temporal con Reloj Virtual",
+          "subtitle": "Congelamiento y avance del tiempo para devengo de intereses y cierres fiscales",
+          "icon": "⏰",
+          "domain": "clock",
+          "xp": 35,
+          "businessContext": "Muchos procesos financieros dependen críticamente del paso del tiempo: el abono de intereses de una cuenta remunerada a 30 días, la caducidad de una orden al cierre de mercado o la amortización anual de una hipoteca.",
+          "catastrofeFinanciera": "Esperar 30 días reales para verificar que el abono de intereses de fin de mes se calculó correctamente es física y comercialmente imposible en un ciclo ágil de desarrollo.",
+          "karateConcept": "Nordvik implementa un microservicio de reloj virtual ('clock-service') que permite a las pruebas de Karate congelar la hora ('POST /freeze') o adelantarla 30 días en el futuro ('POST /advance') para probar cierres en segundos.",
+          "analogia": "La máquina del tiempo de los auditores: ajustas las agujas del reloj al 31 de diciembre para comprobar si los balances cuadran y vuelves al presente al instante.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Avance Temporal para Liquidación de Intereses",
+            "code": "Scenario: Cierre mensual de cuenta con adelanto de reloj virtual\n  # 1. Congelamos el reloj en el primer día del mes\n  Given url 'http://localhost:3000'\n  And path '/proxy/clock-service/api/v1/clock/freeze'\n  And request { at: '2026-06-01T09:00:00Z' }\n  When method post\n  Then status 200\n\n  # 2. Adelantamos el reloj 30 días simulando el paso del mes completo\n  Given path '/proxy/clock-service/api/v1/clock/advance'\n  And request { days: 30 }\n  When method post\n  Then status 200\n\n  # 3. Verificamos que el microservicio de cuentas liquidó los intereses devengados\n  Given url 'http://localhost:6801'\n  And path '/api/v1/accounts/ACC-01/interest-statement'\n  When method get\n  Then status 200\n  And match response.interestCredited == '#? _ > 0'",
+            "explanation": "Manipulamos el tiempo del clúster de forma determinista para probar eventos periódicos en milisegundos."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Depender del Reloj del Sistema Operativo",
+            "badCode": "* def now = java.time.Instant.now()\n# TRAMPA: Usar el reloj real de la máquina hace que el test falle si se corre a fin de mes o en año bisiesto",
+            "explanation": "Los tests financieros nunca deben depender del reloj de la máquina. Deben consultar siempre la hora unificada del 'clock-service'."
+          },
+          "fase3_reto": {
+            "exerciseId": "STF-0010",
+            "prompt": "Congela y adelanta el reloj virtual en el Gym para certificar el devengo automático de intereses."
+          }
+        },
+        {
+          "id": "T-D",
+          "title": "CI/CD, Paralelismo Masivo & Gatling",
+          "subtitle": "Ejecución paralela sin colisiones de base de datos y pruebas de estrés actuarial",
+          "icon": "🚀",
+          "domain": "quality",
+          "xp": 35,
+          "businessContext": "En un pipeline de integración continua con 4.000 pruebas, ejecutarlas de forma secuencial tardaría más de 3 horas. Es indispensable ejecutarlas en 16 hilos paralelos garantizando que ningún test sobreescriba los datos de otro.",
+          "catastrofeFinanciera": "Si dos tests concurrentes usan la misma cuenta bancaria de prueba al mismo tiempo, se producirán falsos positivos por condiciones de carrera, bloqueando despliegues críticos a producción.",
+          "karateConcept": "El runner de Karate en JUnit 5 ('Runner.path(...).parallel(threads)') distribuye la carga entre CPUs, mientras que la integración nativa con Gatling permite reutilizar los mismos escenarios BDD para certificar SLAs de rendimiento.",
+          "analogia": "Un peaje de autopista en hora punta: en lugar de obligar a todos los coches a pasar por una sola ventanilla, abres 16 cabinas de cobro simultáneas sin que ningún vehículo choque con otro.",
+          "fase1_anatomia": {
+            "title": "Anatomía del Escenario: Prueba de Rendimiento Gatling con Escenario BDD",
+            "code": "// Simulación de Gatling en Scala reutilizando el feature de Karate\nval protocol = karateProtocol(\n  \"/api/v1/funds/{id}\" -> Nil\n)\n\nval scn = scenario(\"Carga de Consulta de Fondos\").exec(karateFeature(\"classpath:funds.feature\"))\n\nsetUp(\n  scn.inject(\n    rampUsers(200).during(30.seconds)\n  ).protocols(protocol)\n).assertions(\n  global.responseTime.percentile3.lt(250), // p95 menor a 250ms\n  global.successfulRequests.percent.gt(99.9) // 99.9% de éxito\n)",
+            "explanation": "El mismo archivo feature funcional que diseñó el equipo de calidad se convierte en el benchmark de estrés para certificar los acuerdos de nivel de servicio (SLAs)."
+          },
+          "fase2_trampa": {
+            "title": "La Trampa de Bruno: Pruebas de Carga contra Bases de Datos de Producción",
+            "badCode": "// TRAMPA: Ejecutar simulaciones de Gatling masivas sin aislar las bases de datos transaccionales de los clientes",
+            "explanation": "Las pruebas de carga deben ejecutarse contra entornos clonados o servicios con mocks en memoria para no saturar los registros contables reales."
+          },
+          "fase3_reto": {
+            "exerciseId": "STF-0020",
+            "prompt": "Estructura la suite de paralelismo y aislamiento de datos en el Gym para certificar el rendimiento actuarial."
+          }
+        }
+      ]
+    }
+  ]
+}

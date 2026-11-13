@@ -257,6 +257,28 @@ academia corregir L00</code></pre></li>
       </div>
     </div>
 
+    <!-- Selector Temático Pedagógico: Árbol de Maestría Actuarial -->
+    <div id="gym-topic-hub" class="gym-topic-hub" style="margin-top:14px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+        <div>
+          <h3 style="margin:0; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+            <span>🧭</span>
+            <span>Ruta Pedagógica de Dominio: Elige tu Tema</span>
+          </h3>
+          <p id="gym-topic-tagline" class="muted" style="margin:4px 0 0 0; font-size:0.85rem;">Fundamentos de Protocolo y Verificación de Datos Bancarios</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="chip" id="gym-active-level-chip">Junior SDET</span>
+          <button id="gym-topic-toggle-btn" class="btn small ghost" title="Mostrar/Ocultar Temas">Colapsar ▲</button>
+        </div>
+      </div>
+
+      <!-- Grid de Temas del Nivel Seleccionado -->
+      <div id="gym-topic-cards" class="gym-topic-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:10px;">
+        <!-- Se inyecta dinámicamente desde temas.json -->
+      </div>
+    </div>
+
     <!-- Workspace del Gym (Split View) -->
     <div class="gym-layout" style="display:grid; grid-template-columns: minmax(320px, 1fr) 1.3fr; gap: 20px; margin-top: 10px;">
       <!-- Columna Izquierda: Enunciado y Catálogo -->
@@ -321,6 +343,80 @@ academia corregir L00</code></pre></li>
     <h2 id="modal-title"></h2>
     <div id="modal-body"></div>
     <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</dialog>
+
+<dialog class="modal modal-lg" id="pedagogical-modal" closedby="any" aria-labelledby="ped-modal-title">
+  <div class="modal-card" style="max-width:840px; width:92vw;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:12px;">
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span class="chip lv" id="ped-modal-id">J-A</span>
+          <span class="chip" id="ped-modal-domain">FUNDS</span>
+          <span class="pill ok" id="ped-modal-xp">+15 XP</span>
+        </div>
+        <h2 id="ped-modal-title" style="margin:0; font-size:1.25rem;">Título del Módulo</h2>
+        <p id="ped-modal-subtitle" class="muted" style="margin:2px 0 0 0; font-size:0.88rem;"></p>
+      </div>
+      <button class="icon-btn" id="ped-modal-close" aria-label="Cerrar modal pedagógico" onclick="document.getElementById('pedagogical-modal').close()">×</button>
+    </div>
+
+    <!-- Pestañas del Embudo Pedagógico -->
+    <div class="tabs" role="tablist" aria-label="Fases pedagógicas del tema" style="margin-bottom:14px;">
+      <button role="tab" aria-selected="true" aria-controls="ped-pane-analogy" class="btn small active" id="ped-tab-analogy" onclick="BrunoGym.switchPedTab('analogy')">🏦 Analogía &amp; Riesgo</button>
+      <button role="tab" aria-selected="false" aria-controls="ped-pane-anatomy" class="btn small ghost" id="ped-tab-anatomy" onclick="BrunoGym.switchPedTab('anatomy')">🔬 Anatomía Karate (I Do)</button>
+      <button role="tab" aria-selected="false" aria-controls="ped-pane-trap" class="btn small ghost" id="ped-tab-trap" onclick="BrunoGym.switchPedTab('trap')">⚠️ Trampa de Bruno</button>
+      <button role="tab" aria-selected="false" aria-controls="ped-pane-challenge" class="btn small ghost" id="ped-tab-challenge" onclick="BrunoGym.switchPedTab('challenge')">🥋 Reto BDD Gym (You Do)</button>
+    </div>
+
+    <!-- Paneles -->
+    <div id="ped-pane-analogy" role="tabpanel" aria-labelledby="ped-tab-analogy" style="display:flex; flex-direction:column; gap:14px;">
+      <div style="background:var(--surface-2); border-left:4px solid var(--accent); padding:12px 14px; border-radius:6px;">
+        <h4 style="margin:0 0 6px 0; color:var(--accent); font-size:0.95rem;">💡 Analogía del Mundo Real</h4>
+        <p id="ped-analogy-text" style="margin:0; line-height:1.55; font-size:0.92rem;"></p>
+      </div>
+      <div style="background:var(--surface-2); border-left:4px solid var(--bad); padding:12px 14px; border-radius:6px;">
+        <h4 style="margin:0 0 6px 0; color:var(--bad); font-size:0.95rem;">🚨 Catástrofe Financiera que Evitamos</h4>
+        <p id="ped-disaster-text" style="margin:0; line-height:1.55; font-size:0.92rem;"></p>
+      </div>
+      <div style="padding:10px 14px; border:1px solid var(--line); border-radius:6px;">
+        <h4 style="margin:0 0 6px 0; font-size:0.95rem;">🎯 Concepto Clave de Karate DSL</h4>
+        <p id="ped-concept-text" style="margin:0; line-height:1.55; font-size:0.92rem;"></p>
+      </div>
+    </div>
+
+    <div id="ped-pane-anatomy" role="tabpanel" aria-labelledby="ped-tab-anatomy" hidden style="display:flex; flex-direction:column; gap:10px;">
+      <h4 id="ped-anatomy-title" style="margin:0; font-size:0.95rem;"></h4>
+      <pre style="background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:14px; overflow-x:auto;"><code id="ped-anatomy-code" class="language-gherkin" style="font-family:var(--mono); font-size:0.88rem; line-height:1.5;"></code></pre>
+      <p id="ped-anatomy-explanation" class="muted" style="margin:0; line-height:1.5; font-size:0.9rem;"></p>
+    </div>
+
+    <div id="ped-pane-trap" role="tabpanel" aria-labelledby="ped-tab-trap" hidden style="display:flex; flex-direction:column; gap:10px;">
+      <div style="background:var(--bad-soft); border:1px solid var(--bad); border-radius:8px; padding:12px 14px;">
+        <h4 id="ped-trap-title" style="margin:0 0 8px 0; color:var(--bad); font-size:0.95rem;"></h4>
+        <pre style="background:rgba(0,0,0,0.25); border-radius:6px; padding:10px; overflow-x:auto;"><code id="ped-trap-code" class="language-gherkin" style="font-family:var(--mono); font-size:0.86rem; color:var(--bad);"></code></pre>
+        <p id="ped-trap-explanation" style="margin:8px 0 0 0; line-height:1.5; font-size:0.88rem;"></p>
+      </div>
+    </div>
+
+    <div id="ped-pane-challenge" role="tabpanel" aria-labelledby="ped-tab-challenge" hidden style="display:flex; flex-direction:column; gap:14px;">
+      <div style="background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <h4 style="margin:0; font-size:1rem;">🥋 Reto Práctico Asociado</h4>
+          <span class="chip lv" id="ped-challenge-id">JR-0001</span>
+        </div>
+        <p id="ped-challenge-prompt" style="margin:0 0 14px 0; line-height:1.5; font-size:0.92rem;"></p>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+          <button class="btn ghost small" onclick="document.getElementById('pedagogical-modal').close()">Cerrar</button>
+          <button class="btn small" id="ped-load-challenge-btn">Cargar Reto en el Editor ➔</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions" style="margin-top:16px; border-top:1px solid var(--line); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+      <span class="muted" style="font-size:0.8rem;">Nordvik Actuarial Pedagogical Engine</span>
+      <button class="btn quiet small" onclick="document.getElementById('pedagogical-modal').close()">Entendido</button>
+    </div>
   </div>
 </dialog>
 

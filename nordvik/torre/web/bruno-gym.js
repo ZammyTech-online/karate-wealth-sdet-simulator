@@ -10,6 +10,8 @@ const BrunoGym = {
   score: 0,
   streak: 0,
   mode: 'endless', // 'endless' | 'catalog'
+  temas: [],
+  temasCollapsed: false,
 
   _initialized: false,
 
@@ -18,6 +20,7 @@ const BrunoGym = {
     this._initialized = true;
     this.bindEvents();
     await this.loadCatalog();
+    await this.loadTemas();
     await this.loadRandomExercise(this.currentLevel);
   },
 
@@ -33,9 +36,16 @@ const BrunoGym = {
         btn.classList.add('active');
         btn.classList.remove('ghost');
         this.currentLevel = btn.dataset.level;
+        this.renderTopicCards();
         this.loadRandomExercise(this.currentLevel);
       };
     });
+
+    // Toggle de colapso de temas
+    const toggleTemasBtn = document.getElementById('gym-topic-toggle-btn');
+    if (toggleTemasBtn) {
+      toggleTemasBtn.onclick = () => this.toggleTopicHub();
+    }
 
     // Filtros de dominio
     const domainFilter = document.getElementById('gym-domain-filter');
@@ -270,6 +280,151 @@ const BrunoGym = {
     } finally {
       if (verifyBtn) verifyBtn.disabled = false;
     }
+  },
+
+  async loadTemas() {
+    try {
+      const res = await fetch('/api/v1/temas');
+      if (res.ok) {
+        const data = await res.json();
+        this.temas = data.niveles || [];
+        this.renderTopicCards();
+      }
+    } catch (err) {
+      console.warn('Error cargando temas pedagógicos:', err);
+    }
+  },
+
+  renderTopicCards() {
+    const container = document.getElementById('gym-topic-cards');
+    const taglineEl = document.getElementById('gym-topic-tagline');
+    const chipEl = document.getElementById('gym-active-level-chip');
+    if (!container) return;
+
+    const lvlData = this.temas.find(l => l.id === this.currentLevel);
+    if (!lvlData) return;
+
+    if (taglineEl) taglineEl.textContent = lvlData.tagline || '';
+    if (chipEl) chipEl.textContent = `${lvlData.name} (${lvlData.temas?.length || 0} temas)`;
+
+    container.innerHTML = (lvlData.temas || []).map(t => `
+      <div class="topic-card" style="background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; transition:border-color 0.2s;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:1.15rem;">${t.icon || '📘'}</span>
+              <strong style="font-size:0.85rem; color:var(--accent);">${t.id}</strong>
+            </div>
+            <span class="chip" style="font-size:0.7rem; text-transform:uppercase;">${t.domain}</span>
+          </div>
+          <h4 style="margin:0 0 4px 0; font-size:0.92rem; line-height:1.3;">${this.escape(t.title)}</h4>
+          <p class="muted" style="margin:0; font-size:0.8rem; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${this.escape(t.subtitle)}</p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding-top:8px; margin-top:4px;">
+          <button class="btn small quiet" onclick="BrunoGym.openPedModal('${t.id}')" style="padding:4px 8px; font-size:0.78rem;">📘 Guía</button>
+          <button class="btn small" onclick="BrunoGym.loadChallengeFromTopic('${t.id}')" style="padding:4px 8px; font-size:0.78rem;">🥋 Reto ➔</button>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  openPedModal(temaId) {
+    let matched = null;
+    for (const lvl of this.temas) {
+      const found = (lvl.temas || []).find(t => t.id === temaId);
+      if (found) {
+        matched = found;
+        break;
+      }
+    }
+    if (!matched) return;
+
+    const modal = document.getElementById('pedagogical-modal');
+    if (!modal) return;
+
+    const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || ''; };
+    setTxt('ped-modal-id', matched.id);
+    setTxt('ped-modal-domain', matched.domain?.toUpperCase());
+    setTxt('ped-modal-xp', `+${matched.xp || 15} XP`);
+    setTxt('ped-modal-title', `${matched.icon || '📘'} ${matched.title}`);
+    setTxt('ped-modal-subtitle', matched.subtitle);
+    setTxt('ped-analogy-text', matched.analogia);
+    setTxt('ped-disaster-text', matched.catastrofeFinanciera);
+    setTxt('ped-concept-text', matched.karateConcept);
+
+    setTxt('ped-anatomy-title', matched.fase1_anatomia?.title);
+    setTxt('ped-anatomy-code', matched.fase1_anatomia?.code);
+    setTxt('ped-anatomy-explanation', matched.fase1_anatomia?.explanation);
+
+    setTxt('ped-trap-title', matched.fase2_trampa?.title);
+    setTxt('ped-trap-code', matched.fase2_trampa?.badCode);
+    setTxt('ped-trap-explanation', matched.fase2_trampa?.explanation);
+
+    setTxt('ped-challenge-id', matched.fase3_reto?.exerciseId);
+    setTxt('ped-challenge-prompt', matched.fase3_reto?.prompt);
+
+    const challengeBtn = document.getElementById('ped-load-challenge-btn');
+    if (challengeBtn) {
+      challengeBtn.onclick = () => {
+        modal.close();
+        this.loadExerciseById(matched.fase3_reto?.exerciseId);
+      };
+    }
+
+    this.switchPedTab('analogy');
+
+    // Light dismiss fallback
+    if (!('closedBy' in HTMLDialogElement.prototype) && !modal._hasLightDismiss) {
+      modal._hasLightDismiss = true;
+      modal.addEventListener('click', (event) => {
+        if (event.target !== modal) return;
+        const rect = modal.getBoundingClientRect();
+        const inside = (
+          rect.top <= event.clientY &&
+          event.clientY <= rect.top + rect.height &&
+          rect.left <= event.clientX &&
+          event.clientX <= rect.left + rect.width
+        );
+        if (!inside) modal.close();
+      });
+    }
+
+    modal.showModal();
+  },
+
+  switchPedTab(tabName) {
+    const tabs = ['analogy', 'anatomy', 'trap', 'challenge'];
+    tabs.forEach(t => {
+      const btn = document.getElementById(`ped-tab-${t}`);
+      const pane = document.getElementById(`ped-pane-${t}`);
+      const isActive = (t === tabName);
+      if (btn) {
+        btn.classList.toggle('active', isActive);
+        btn.classList.toggle('ghost', !isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      }
+      if (pane) {
+        pane.hidden = !isActive;
+      }
+    });
+  },
+
+  loadChallengeFromTopic(temaId) {
+    for (const lvl of this.temas) {
+      const found = (lvl.temas || []).find(t => t.id === temaId);
+      if (found && found.fase3_reto?.exerciseId) {
+        this.loadExerciseById(found.fase3_reto.exerciseId);
+        return;
+      }
+    }
+  },
+
+  toggleTopicHub() {
+    this.temasCollapsed = !this.temasCollapsed;
+    const cards = document.getElementById('gym-topic-cards');
+    const btn = document.getElementById('gym-topic-toggle-btn');
+    if (cards) cards.hidden = this.temasCollapsed;
+    if (btn) btn.textContent = this.temasCollapsed ? 'Expandir Temas ▼' : 'Colapsar ▲';
   },
 
   updateScoreUI() {

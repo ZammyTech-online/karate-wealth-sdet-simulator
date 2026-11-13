@@ -744,3 +744,24 @@ dialog.drawer:modal {
   pointer-events: none;
 }
 
+/* ---------- Pedagogical Topic Hub & Modal (Modern Web Baseline) ---------- */
+.topic-card {
+  container-type: inline-size;
+  container-name: topic-item;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.topic-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+@container topic-item (max-width: 250px) {
+  .topic-card {
+    padding: 10px;
+  }
+}
+.modal.modal-lg .modal-card {
+  max-width: 840px;
+  width: min(92vw, 840px);
+}
+
+
