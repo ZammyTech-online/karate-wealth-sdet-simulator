@@ -92,6 +92,7 @@
   * [modern-web.test.mjs](file:///D:/WORKSPACE_KARATE/nordvik/tests/modern-web.test.mjs) (11 tests verdes)
   * [bruno.test.mjs](file:///D:/WORKSPACE_KARATE/nordvik/tests/bruno.test.mjs) (23 tests verdes)
 * 🖼️ **Capturas de Pantalla de Evidencia**:
+  * [evidence_digital_diploma.png](file:///C:/Users/zammy/.gemini/antigravity/brain/3ededaa7-344e-40dd-b1f0-f7e29df4a52f/evidence_digital_diploma.png) (Diploma Digital Oficial SDET con Calificación 100% y Firma de Bruno)
   * [evidence_certification_exam.png](file:///C:/Users/zammy/.gemini/antigravity/brain/3ededaa7-344e-40dd-b1f0-f7e29df4a52f/evidence_certification_exam.png) (Examen Oficial de Certificación SDET)
   * [evidence_pedagogical_gym.png](file:///C:/Users/zammy/.gemini/antigravity/brain/3ededaa7-344e-40dd-b1f0-f7e29df4a52f/evidence_pedagogical_gym.png) (Árbol Pedagógico y BDD Gym)
 
