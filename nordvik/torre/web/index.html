@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>Torre de control · Nordvik</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div id="scroll-progress" aria-hidden="true"></div>
 <header class="topbar">
   <div class="brand">
     <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 L22 29 H10 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="16" cy="9" r="3" fill="currentColor"/><path d="M5 9 h4 M23 9 h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -306,22 +308,21 @@ academia corregir L00</code></pre></li>
   </section>
 </main>
 
-<aside class="drawer" id="drawer" hidden aria-label="Ficha del servicio">
+<dialog class="drawer" id="drawer" aria-labelledby="d-name">
   <div class="drawer-head">
     <div><div class="eyebrow" id="d-domain"></div><h2 id="d-name"></h2></div>
     <button class="icon-btn" id="drawer-close" aria-label="Cerrar">×</button>
   </div>
   <div class="drawer-body" id="d-body"></div>
-</aside>
-<div class="scrim" id="scrim" hidden></div>
+</dialog>
 
-<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<dialog class="modal" id="modal" aria-labelledby="modal-title">
   <div class="modal-card">
     <h2 id="modal-title"></h2>
     <div id="modal-body"></div>
     <div class="modal-actions" id="modal-actions"></div>
   </div>
-</div>
+</dialog>
 
 <div class="toasts" id="toasts" aria-live="polite"></div>
 

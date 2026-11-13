@@ -29,8 +29,9 @@ async function busy(btn, fn) {
   try { await fn(); } catch (e) { fail(e); } finally { if (btn) btn.disabled = false; }
 }
 
-// ---------- modal ----------
+// ---------- modal nativo (<dialog>) ----------
 function modal(title, html, actions) {
+  const dlg = $('#modal');
   $('#modal-title').textContent = title;
   $('#modal-body').innerHTML = html;
   const box = $('#modal-actions');
@@ -42,21 +43,42 @@ function modal(title, html, actions) {
     b.onclick = async () => { if (a.run) await busy(b, a.run); closeModal(); };
     box.append(b);
   }
-  $('#modal').hidden = false;
+  if (typeof dlg.showModal === 'function') {
+    if (!dlg.open) dlg.showModal();
+  } else {
+    dlg.hidden = false;
+  }
   box.lastElementChild?.focus();
 }
-function closeModal() { $('#modal').hidden = true; }
+
+function closeModal() {
+  const dlg = $('#modal');
+  if (typeof dlg.close === 'function' && dlg.open) {
+    dlg.close();
+  } else {
+    dlg.hidden = true;
+  }
+}
+
 function openModal(title, html) {
   modal(title, html, [{ label: 'Cerrar', kind: 'quiet' }]);
 }
-$('#modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+
+// Light dismiss: cerrar al hacer clic en el backdrop nativo
+$('#modal').addEventListener('click', (e) => {
+  const card = $('#modal .modal-card');
+  if (!card) return;
+  const r = card.getBoundingClientRect();
+  const outside = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+  if (outside) closeModal();
+});
 
 // ---------- estado (barra superior) ----------
 async function refreshStatus() {
   try {
     const st = await api('/estado');
     const lvl = $('#st-level');
-    lvl.textContent = st.currentLevel >= 0 ? `Nivel ${st.currentLevel} completo` : 'NingÃºn nivel completo';
+    lvl.textContent = st.currentLevel >= 0 ? `Nivel ${st.currentLevel} completo` : 'Ningún nivel completo';
     lvl.className = 'pill ' + (st.currentLevel >= 0 ? 'ok' : 'warn');
     $('#st-services').innerHTML = `<span class="dot"></span>${st.running}/${st.total} servicios`;
     $('#st-services').className = 'pill ' + (st.running === st.total ? 'ok' : 'warn');
@@ -68,10 +90,15 @@ async function refreshStatus() {
   } catch { $('#st-services').textContent = 'torre sin respuesta'; $('#st-services').className = 'pill bad'; }
   try {
     const now = await api('/proxy/clock-service/api/v1/clock/now');
-    const t = now.now.replace('T', ' ').slice(0, 19);
-    $('#st-clock').textContent = `${t}${now.mode === 'FROZEN' ? ' Â· congelado' : ''}`;
+    const d = new Date(now.now);
+    const t = isNaN(d.getTime()) ? String(now.now).replace('T', ' ').slice(0, 19) : new Intl.DateTimeFormat('sv-SE', {
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false
+    }).format(d);
+    $('#st-clock').textContent = `${t}${now.mode === 'FROZEN' ? ' · congelado' : ''}`;
     $('#st-clock').className = 'pill' + (now.mode === 'REAL' ? '' : ' warn');
-    $('#clock-now').textContent = `${t} Â· ${now.timezone} Â· ${now.mode === 'REAL' ? 'hora real' : now.mode === 'FROZEN' ? 'congelado' : 'desplazado'}`;
+    $('#clock-now').textContent = `${t} · ${now.timezone} · ${now.mode === 'REAL' ? 'hora real' : now.mode === 'FROZEN' ? 'congelado' : 'desplazado'}`;
   } catch { $('#st-clock').textContent = 'reloj apagado'; }
 }
 
@@ -333,12 +360,26 @@ async function openService(name) {
     <div class="section"><h4>Lecciones que lo usan</h4>${d.lessons.length ? `<div class="chips">${d.lessons.map((l) => `<span class="chip" title="${esc(l.title)}">${l.id}</span>`).join('')}</div>` : '<p class="muted">Ninguna lecciÃ³n todavÃ­a: practÃ­calo con una misiÃ³n o desde Swagger.</p>'}</div>
     <div class="section"><h4>Misiones</h4>${d.missions.length ? `<div class="chips">${d.missions.map((m) => `<span class="chip">${m.id} Â· ${esc(m.title)}</span>`).join('')}</div>` : '<p class="muted">No sale en ninguna misiÃ³n.</p>'}</div>
     <div class="section"><h4>${d.endpoints.filter((e) => !e.path.startsWith('/_test')).length} endpoints</h4><ul class="eplist">${d.endpoints.filter((e) => !e.path.startsWith('/_test')).map((e) => `<li><span class="method ${e.method}">${e.method}</span><span><code>${esc(e.path)}</code>${e.summary ? `<br><small class="muted">${esc(e.summary)}</small>` : ''}</span></li>`).join('')}</ul></div>`;
-  $('#drawer').hidden = false; $('#scrim').hidden = false;
+  const drawer = $('#drawer');
+  if (typeof drawer.showModal === 'function') {
+    if (!drawer.open) drawer.showModal();
+  } else {
+    drawer.hidden = false;
+  }
 }
-function closeDrawer() { $('#drawer').hidden = true; $('#scrim').hidden = true; }
+function closeDrawer() {
+  const drawer = $('#drawer');
+  if (typeof drawer.close === 'function' && drawer.open) {
+    drawer.close();
+  } else {
+    drawer.hidden = true;
+  }
+}
 $('#drawer-close').onclick = closeDrawer;
-$('#scrim').onclick = closeDrawer;
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeDrawer(); } });
+$('#drawer').addEventListener('click', (e) => {
+  const r = $('#drawer').getBoundingClientRect();
+  if (e.clientX < r.left) closeDrawer();
+});
 $('#d-body').addEventListener('click', async (e) => {
   const b = e.target.closest('button');
   if (!b) return;

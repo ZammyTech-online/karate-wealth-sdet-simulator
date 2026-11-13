@@ -400,7 +400,14 @@ public static class ControlTower
             }
             else
             {
-                targetFile = $"{level!.ToLowerInvariant()}.json";
+                var lvl = (level ?? "junior").ToLowerInvariant();
+                targetFile = lvl switch
+                {
+                    "mid" => "mid.json",
+                    "senior" => "senior.json",
+                    "staff" => "staff.json",
+                    _ => "junior.json"
+                };
             }
 
             var path = Path.Combine(gymDir, targetFile);
