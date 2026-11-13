@@ -122,3 +122,26 @@ test('API /api/v1/temas/INVALID: responde 404 para un ID inexistente', async () 
   const res = await fetch(`${HOST_URL}/api/v1/temas/XYZ-999`);
   assert.equal(res.status, 404, 'Debe responder HTTP 404');
 });
+
+test('temas.json: todos los exerciseId de fase3_reto existen en gym/*.json', () => {
+  const data = JSON.parse(readFileSync(temasPath, 'utf-8'));
+  const gymDir = resolve(webDir, 'gym');
+  const allExercises = new Map();
+  for (const file of ['junior.json', 'mid.json', 'senior.json', 'staff.json']) {
+    const arr = JSON.parse(readFileSync(resolve(gymDir, file), 'utf-8'));
+    for (const ex of arr) allExercises.set(ex.id, ex);
+  }
+  for (const lvl of data.niveles) {
+    for (const tema of lvl.temas) {
+      const exId = tema.fase3_reto?.exerciseId;
+      assert.ok(allExercises.has(exId), `exerciseId ${exId} de tema ${tema.id} debe existir en gym/*.json`);
+    }
+  }
+});
+
+test('API /api/v1/gym/random?level=junior&domain=fx: filtra por dominio fx', async () => {
+  const res = await fetch(`${HOST_URL}/api/v1/gym/random?level=junior&domain=fx`);
+  assert.equal(res.status, 200, 'Debe responder HTTP 200');
+  const ex = await res.json();
+  assert.equal(ex.domain, 'fx', 'El ejercicio devuelto debe pertenecer al dominio fx');
+});

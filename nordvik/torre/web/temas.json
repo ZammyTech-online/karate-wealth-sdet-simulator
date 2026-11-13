@@ -68,7 +68,7 @@
             "explanation": "Si el microservicio devuelve ['PRIVATE', 'PENSION'], la prueba fallará falsamente. Usa 'contains only' o 'contains' para verificar elementos de colecciones bancarias de forma robusta."
           },
           "fase3_reto": {
-            "exerciseId": "JR-0050",
+            "exerciseId": "JR-0002",
             "prompt": "Accede a la posición consolidada del cliente y valida la divisa y existencia de saldo disponible en el Gym."
           },
           "microservicios": [
@@ -107,7 +107,7 @@
             "explanation": "Karate DSL no admite operadores relacionales ('<', '>') directamente tras match. Debes usar '* assert response.fee < 100' o el fuzzy matcher '#? _ < 100'."
           },
           "fase3_reto": {
-            "exerciseId": "JR-0120",
+            "exerciseId": "JR-0003",
             "prompt": "Valida el contrato estricto de una orden en el Gym garantizando identificador con prefijo y comisiones positivas."
           },
           "microservicios": [
@@ -146,7 +146,7 @@
             "explanation": "Concatenar '?' en el path provoca que Karate escape los caracteres o confunda la ruta REST. Usa siempre 'And param category = ...'."
           },
           "fase3_reto": {
-            "exerciseId": "JR-0250",
+            "exerciseId": "JR-0008",
             "prompt": "Configura los filtros de búsqueda paginada en el Gym y valida la respuesta con 'match each'."
           },
           "microservicios": [
@@ -232,7 +232,7 @@
             "explanation": "El operador 'contains' solo comprueba que los campos existen, pero ignora si la API devuelve campos no autorizados o maliciosos. Para contratos estrictos, usa '=='."
           },
           "fase3_reto": {
-            "exerciseId": "MID-0150",
+            "exerciseId": "MID-0005",
             "prompt": "Diseña el validador de esquema de mercado en el Gym y aplícalo contra la cotización oficial."
           },
           "microservicios": [
@@ -271,7 +271,7 @@
             "explanation": "Karate requiere indicar el prefijo 'this:' (directorio local del feature) o 'classpath:' para encontrar recursos de apoyo sin fallar en entornos de integración continua."
           },
           "fase3_reto": {
-            "exerciseId": "MID-0300",
+            "exerciseId": "MID-0004",
             "prompt": "Integra la llamada de autenticación modular en el Gym e inyecta la cabecera Bearer en la petición."
           },
           "microservicios": [
@@ -310,7 +310,7 @@
             "explanation": "En cuerpos JSON declarados en bloque, las variables deben escribirse con la sintaxis '#(variable)' o como claves directas de objetos Karate."
           },
           "fase3_reto": {
-            "exerciseId": "MID-0450",
+            "exerciseId": "MID-0003",
             "prompt": "Escribe una función de cálculo de comisión en GraalVM JS y valida el resultado actuarial en el Gym."
           },
           "microservicios": [
@@ -357,7 +357,7 @@
             "explanation": "El uso de sleep está estrictamente vetado en ingeniería SDET. Consume hilos innecesariamente y enmascara problemas de latencia. BrunoLinter bloquea esto con la regla FORBIDDEN_SLEEP."
           },
           "fase3_reto": {
-            "exerciseId": "SR-0001",
+            "exerciseId": "SR-0002",
             "prompt": "Configura el bloque retry until en el Gym para una saga de traspaso de pensión sin pausas pasivas."
           },
           "microservicios": [
@@ -396,7 +396,7 @@
             "explanation": "HTTP 202 solo significa que la solicitud fue aceptada para trámite. Debes consultar el estado de la saga hasta su resolución definitiva."
           },
           "fase3_reto": {
-            "exerciseId": "SR-0100",
+            "exerciseId": "SR-0001",
             "prompt": "Orquesta el test de compensación de saga en el Gym verificando el estado final COMPENSATED."
           },
           "microservicios": [
@@ -436,7 +436,7 @@
             "explanation": "Las claves de idempotencia deben ser únicas por prueba o ejecución. Usa siempre generadores dinámicos de UUID."
           },
           "fase3_reto": {
-            "exerciseId": "SR-0250",
+            "exerciseId": "SR-0005",
             "prompt": "Implementa la prueba de doble disparo con Idempotency-Key en el Gym y certifica el retorno de la misma transacción."
           },
           "microservicios": [
@@ -476,7 +476,7 @@
             "explanation": "El antipatrón de devolver HTTP 200 con un error en el cuerpo viola los contratos REST y engaña a los balanceadores de carga. Las APIs de seguridad deben responder con 401 o 403."
           },
           "fase3_reto": {
-            "exerciseId": "SR-0400",
+            "exerciseId": "SR-0003",
             "prompt": "Construye la prueba de denegación de permisos IDOR en el Gym y valida el cumplimiento del RFC 9457."
           },
           "microservicios": [
@@ -601,7 +601,7 @@
             "explanation": "Los tests financieros nunca deben depender del reloj de la máquina. Deben consultar siempre la hora unificada del 'clock-service'."
           },
           "fase3_reto": {
-            "exerciseId": "STF-0010",
+            "exerciseId": "STF-0003",
             "prompt": "Congela y adelanta el reloj virtual en el Gym para certificar el devengo automático de intereses."
           },
           "microservicios": [

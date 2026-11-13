@@ -12,12 +12,48 @@ const BrunoGym = {
   mode: 'endless', // 'endless' | 'catalog'
   temas: [],
   temasCollapsed: false,
+  activeTopicId: null,
+  completedTopics: [],
 
   _initialized: false,
+
+  loadProgress() {
+    try {
+      if (typeof localStorage === 'undefined') return;
+      const raw = localStorage.getItem('nordvik_gym_progress_v1');
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.score === 'number') this.score = data.score;
+      if (typeof data.streak === 'number') this.streak = data.streak;
+      if (Array.isArray(data.completedTopics)) this.completedTopics = data.completedTopics;
+    } catch (_) { /* noop */ }
+  },
+
+  saveProgress() {
+    try {
+      if (typeof localStorage === 'undefined') return;
+      localStorage.setItem('nordvik_gym_progress_v1', JSON.stringify({
+        score: this.score,
+        streak: this.streak,
+        completedTopics: this.completedTopics
+      }));
+    } catch (_) { /* noop */ }
+  },
+
+  markTopicCompleted(temaId) {
+    if (!temaId) return;
+    if (!this.completedTopics.includes(temaId)) {
+      this.completedTopics.push(temaId);
+      this.saveProgress();
+      this.renderTopicCards();
+    }
+  },
 
   async init() {
     if (this._initialized) return;
     this._initialized = true;
+    this.loadProgress();
+    this.updateScoreUI();
     this.bindEvents();
     if (typeof Certificacion !== 'undefined' && typeof Certificacion.init === 'function') {
       Certificacion.init();
@@ -149,7 +185,8 @@ const BrunoGym = {
 
   async loadRandomExercise(level = 'junior') {
     try {
-      const res = await fetch(`/api/v1/gym/random?level=${level}`);
+      const domain = encodeURIComponent(this.currentDomain || 'all');
+      const res = await fetch(`/api/v1/gym/random?level=${encodeURIComponent(level)}&domain=${domain}`);
       if (!res.ok) throw new Error('Error al cargar ejercicio aleatorio');
       const ex = await res.json();
       this.displayExercise(ex);
@@ -226,11 +263,15 @@ const BrunoGym = {
     if (this.currentExercise.isBrokenTest) {
       const code = editor.value;
       const target = this.currentExercise.fixTarget;
+      const linterIssues = (typeof BrunoLinter !== 'undefined' && typeof BrunoLinter.audit === 'function')
+        ? BrunoLinter.audit(code)
+        : [];
       feedbackEl.hidden = false;
-      if (code.includes(target) && !code.includes('___')) {
+      if (code.includes(target) && !code.includes('___') && linterIssues.length === 0) {
         this.score += 25;
         this.streak += 1;
         this.updateScoreUI();
+        this.markTopicCompleted(this.activeTopicId || this.currentExercise.id?.replace(/^BUG-/, ''));
         feedbackEl.style.background = 'var(--ok-soft)';
         feedbackEl.style.color = 'var(--ok)';
         feedbackEl.style.borderColor = 'var(--ok)';
@@ -254,8 +295,12 @@ const BrunoGym = {
         feedbackEl.style.background = 'var(--bad-soft)';
         feedbackEl.style.color = 'var(--bad)';
         feedbackEl.style.borderColor = 'var(--bad)';
+        const linterMsg = linterIssues.length > 0
+          ? `<p style="margin:4px 0 0 0; font-size:0.85rem;">Linter de Bruno (${linterIssues.length}): ${this.escape(linterIssues[0].msg || linterIssues[0].message || 'Anti-patrón detectado')}</p>`
+          : '';
         feedbackEl.innerHTML = `
           <strong>❌ El fallo aún persiste en el escenario:</strong>
+          ${linterMsg}
           <p style="margin:4px 0 0 0; font-size:0.85rem;">Revisa la pista: ${this.escape(this.currentExercise.hints?.[0] || '')}</p>
         `;
         if (typeof updateBrunoStage === 'function') {
@@ -288,6 +333,8 @@ const BrunoGym = {
         this.score += (data.xp || 15);
         this.streak += 1;
         this.updateScoreUI();
+        const matchedTopic = this.activeTopicId || this.findTopicIdByExerciseId(this.currentExercise.id);
+        this.markTopicCompleted(matchedTopic);
 
         feedbackEl.style.background = 'var(--ok-soft)';
         feedbackEl.style.color = 'var(--ok)';
@@ -352,15 +399,29 @@ const BrunoGym = {
     if (!lvlData) return;
 
     if (taglineEl) taglineEl.textContent = lvlData.tagline || '';
-    if (chipEl) chipEl.textContent = `${lvlData.name} (${lvlData.temas?.length || 0} temas)`;
+    const temas = lvlData.temas || [];
+    if (chipEl) chipEl.textContent = `${lvlData.name} (${temas.length} temas)`;
 
-    container.innerHTML = (lvlData.temas || []).map(t => `
-      <div class="topic-card" style="background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; transition:border-color 0.2s;">
+    const doneCount = temas.filter(t => this.completedTopics.includes(t.id)).length;
+    const progLabel = document.getElementById('gym-topic-progress-label');
+    const progBar = document.getElementById('gym-topic-progress-bar');
+    if (progLabel) progLabel.textContent = `${doneCount}/${temas.length} temas dominados`;
+    if (progBar) {
+      progBar.max = Math.max(1, temas.length);
+      progBar.value = doneCount;
+    }
+
+    container.innerHTML = temas.map(t => {
+      const isDone = this.completedTopics.includes(t.id);
+      const isActive = this.activeTopicId === t.id;
+      return `
+      <div class="topic-card ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}" data-topic-id="${t.id}" style="background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; transition:border-color 0.2s;">
         <div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-size:1.15rem;">${t.icon || '📘'}</span>
               <strong style="font-size:0.85rem; color:var(--accent);">${t.id}</strong>
+              ${isDone ? '<span class="pill ok" style="font-size:0.68rem; padding:1px 6px;">✓ Dominado</span>' : ''}
             </div>
             <span class="chip" style="font-size:0.7rem; text-transform:uppercase;">${t.domain}</span>
           </div>
@@ -372,7 +433,65 @@ const BrunoGym = {
           <button class="btn small" onclick="BrunoGym.loadChallengeFromTopic('${t.id}')" style="padding:4px 8px; font-size:0.78rem;">🥋 Reto ➔</button>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
+  },
+
+  findTopicIdByExerciseId(exerciseId) {
+    if (!exerciseId) return null;
+    for (const lvl of this.temas) {
+      const found = (lvl.temas || []).find(t => t.fase3_reto?.exerciseId === exerciseId);
+      if (found) return found.id;
+    }
+    return null;
+  },
+
+  renderSequenceVisual(mermaidText) {
+    const visualEl = document.getElementById('ped-sequence-visual');
+    if (!visualEl) return;
+    if (!mermaidText) {
+      visualEl.innerHTML = '<p class="muted" style="margin:0; font-size:0.82rem;">Flujo visual no disponible.</p>';
+      return;
+    }
+    const actors = [];
+    const steps = [];
+    const lines = String(mermaidText).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    for (const line of lines) {
+      if (line.startsWith('participant ')) {
+        const rest = line.slice('participant '.length).trim();
+        const asParts = rest.split(/\s+as\s+/i);
+        const id = asParts[0].trim();
+        const label = (asParts[1] || id).trim();
+        if (!actors.some(a => a.id === id)) actors.push({ id, label });
+      } else {
+        const m = line.match(/^([A-Za-z0-9_-]+)\s*(-->>|->>|-->|->)\s*([A-Za-z0-9_-]+)\s*:\s*(.+)$/);
+        if (m) {
+          const [, from, arrow, to, msg] = m;
+          if (!actors.some(a => a.id === from)) actors.push({ id: from, label: from });
+          if (!actors.some(a => a.id === to)) actors.push({ id: to, label: to });
+          steps.push({ from, isReturn: arrow.startsWith('--'), to, msg: msg.trim() });
+        }
+      }
+    }
+    if (steps.length === 0) {
+      visualEl.innerHTML = '';
+      return;
+    }
+    const labelOf = id => (actors.find(a => a.id === id)?.label || id);
+    visualEl.innerHTML = `
+      <div class="seq-actors">${actors.map(a => `<span class="seq-actor">${this.escape(a.label)}</span>`).join('')}</div>
+      <ol class="seq-steps">
+        ${steps.map((s, i) => `
+          <li class="seq-step ${s.isReturn ? 'is-return' : ''}">
+            <span class="seq-idx">${i + 1}</span>
+            <span class="seq-node">${this.escape(labelOf(s.from))}</span>
+            <span class="seq-arrow">${s.isReturn ? '⇠' : '➔'}</span>
+            <span class="seq-node">${this.escape(labelOf(s.to))}</span>
+            <span class="seq-msg">${this.escape(s.msg)}</span>
+          </li>
+        `).join('')}
+      </ol>
+    `;
   },
 
   openPedModal(temaId) {
@@ -385,6 +504,8 @@ const BrunoGym = {
       }
     }
     if (!matched) return;
+    this.activeTopicId = temaId;
+    this.renderTopicCards();
 
     const modal = document.getElementById('pedagogical-modal');
     if (!modal) return;
@@ -416,6 +537,7 @@ const BrunoGym = {
       chipsEl.innerHTML = (matched.microservicios || []).map(s => `<span class="chip" style="font-size:0.75rem;">⚙️ ${this.escape(s)}</span>`).join('');
     }
     setTxt('ped-sequence-diagram', matched.diagramaSecuencia || 'Diagrama no disponible');
+    this.renderSequenceVisual(matched.diagramaSecuencia || '');
 
     // Botón de Cargar Reto
     const challengeBtn = document.getElementById('ped-load-challenge-btn');
@@ -482,6 +604,8 @@ const BrunoGym = {
   },
 
   loadChallengeFromTopic(temaId) {
+    this.activeTopicId = temaId;
+    this.renderTopicCards();
     for (const lvl of this.temas) {
       const found = (lvl.temas || []).find(t => t.id === temaId);
       if (found && found.fase3_reto?.exerciseId) {
@@ -525,6 +649,7 @@ const BrunoGym = {
     const streakEl = document.getElementById('gym-score-streak');
     if (scoreEl) scoreEl.textContent = `${this.score} XP`;
     if (streakEl) streakEl.textContent = `🔥 ${this.streak}`;
+    this.saveProgress();
   },
 
   escape(s) {

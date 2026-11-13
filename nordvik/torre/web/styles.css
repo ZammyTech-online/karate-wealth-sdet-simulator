@@ -764,4 +764,125 @@ dialog.drawer:modal {
   width: min(92vw, 840px);
 }
 
+.topic-card.active {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--accent) 30%, transparent);
+}
+
+.topic-card.done {
+  border-color: color-mix(in oklch, var(--ok) 65%, var(--line));
+}
+
+/* ---------- Visual Sequence Diagram ---------- */
+.seq-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.seq-actors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.seq-actor {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: color-mix(in oklch, var(--accent) 16%, var(--surface));
+  border: 1px solid color-mix(in oklch, var(--accent) 45%, var(--line));
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.seq-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.seq-step {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  font-size: 0.82rem;
+}
+
+.seq-step.is-return {
+  border-left-color: var(--ok);
+}
+
+.seq-idx {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.seq-node {
+  font-weight: 700;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.seq-arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.seq-step.is-return .seq-arrow {
+  color: var(--ok);
+}
+
+.seq-msg {
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+/* ---------- Diploma Print Styles ---------- */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #diploma-modal,
+  #diploma-render-area,
+  #diploma-render-area * {
+    visibility: visible;
+  }
+  #diploma-modal {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+  }
+  #diploma-render-area {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
 

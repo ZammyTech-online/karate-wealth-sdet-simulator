@@ -130,3 +130,27 @@ test('Certificacion: generación de Diploma Digital Oficial con firma de Bruno y
   assert.ok(innerHtmlSet.includes('Bruno SDET'), 'Debe incluir firma de Bruno');
   assert.ok(innerHtmlSet.includes('CERT-NORDVIK-SENIOR-'), 'Debe incluir código único de certificado');
 });
+
+test('Certificacion: updateDiplomaName actualiza el nombre sin regenerar certId ni reabrir modal', () => {
+  let displayText = '';
+  let showModalCalls = 0;
+  globalThis.document = {
+    getElementById: (id) => {
+      if (id === 'diploma-render-area') return { innerHTML: '' };
+      if (id === 'diploma-modal') return { open: true, showModal: () => { showModalCalls++; } };
+      if (id === 'diploma-student-name') return { value: 'Ana QA' };
+      if (id === 'diploma-student-display') return { set textContent(v) { displayText = v; } };
+      return null;
+    }
+  };
+
+  Certificacion.showDiploma('mid', 80);
+  const initialCertId = Certificacion.currentCertId;
+  assert.equal(showModalCalls, 0, 'No debe llamar showModal si el dialog ya está abierto');
+  assert.equal(Certificacion.lastPercentage, 80);
+
+  Certificacion.updateDiplomaName('Carlos Senior SDET');
+  assert.equal(displayText, 'Carlos Senior SDET');
+  assert.equal(Certificacion.currentCertId, initialCertId, 'No debe regenerar certId al editar nombre');
+  assert.equal(Certificacion.lastPercentage, 80, 'No debe sobrescribir la calificación');
+});

@@ -431,7 +431,7 @@ public static class ControlTower
             return Results.Content(first.GetRawText(), "application/json");
         });
 
-        api.MapGet("/gym/random", (string? level) =>
+        api.MapGet("/gym/random", (string? level, string? domain) =>
         {
             var lvl = (level ?? "junior").ToLowerInvariant();
             var targetFile = lvl switch
@@ -447,6 +447,21 @@ public static class ControlTower
 
             using var doc = JsonDocument.Parse(File.ReadAllText(path));
             var arr = doc.RootElement;
+            if (!string.IsNullOrWhiteSpace(domain) && !domain.Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
+                var matching = new List<string>();
+                foreach (var el in arr.EnumerateArray())
+                {
+                    if (el.TryGetProperty("domain", out var dProp) && dProp.GetString()?.Equals(domain, StringComparison.OrdinalIgnoreCase) == true)
+                    {
+                        matching.Add(el.GetRawText());
+                    }
+                }
+                if (matching.Count > 0)
+                {
+                    return Results.Content(matching[Random.Shared.Next(0, matching.Count)], "application/json");
+                }
+            }
             var len = arr.GetArrayLength();
             var idx = Random.Shared.Next(0, len);
             return Results.Content(arr[idx].GetRawText(), "application/json");

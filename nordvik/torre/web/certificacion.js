@@ -7,6 +7,8 @@ const Certificacion = {
   timerInterval: null,
   timeLeftSeconds: 600, // 10 minutos
   score: 0,
+  lastPercentage: 100,
+  currentCertId: '',
 
   examQuestions: {
     junior: [
@@ -278,6 +280,11 @@ const Certificacion = {
 
     if (title) title.textContent = `Examen Oficial de Certificación SDET: Nivel ${this.getLevelName(level)}`;
     if (levelBadge) levelBadge.textContent = this.getLevelName(level);
+    const feedbackEl = document.getElementById('cert-exam-feedback');
+    if (feedbackEl) {
+      feedbackEl.hidden = true;
+      feedbackEl.innerHTML = '';
+    }
 
     if (container) {
       container.innerHTML = this.activeExam.map((item, idx) => `
@@ -334,10 +341,13 @@ const Certificacion = {
     if (!this.activeExam) return;
 
     let correctCount = 0;
+    const missed = [];
     this.activeExam.forEach((item, idx) => {
       const selected = document.querySelector(`input[name="cert_q_${idx}"]:checked`);
       if (selected && parseInt(selected.value, 10) === item.answer) {
         correctCount++;
+      } else {
+        missed.push({ num: idx + 1, q: item.q, exp: item.explanation || 'Revisa los módulos pedagógicos de este nivel.' });
       }
     });
 
@@ -346,20 +356,42 @@ const Certificacion = {
     const passed = percentage >= 80;
 
     const examModal = document.getElementById('cert-exam-modal');
-    if (examModal) examModal.close();
 
     if (passed) {
+      if (examModal && examModal.open) examModal.close();
       this.showDiploma(this.currentLevel, percentage);
     } else {
-      alert(`Examen no superado: Has obtenido ${percentage}% (${correctCount}/${total} aciertos). El criterio de acreditación exige al menos un 80%. Revisa los módulos pedagógicos e inténtalo de nuevo.`);
+      const feedbackEl = document.getElementById('cert-exam-feedback');
+      if (feedbackEl) {
+        const prefix = timedOut ? 'Tiempo agotado. ' : '';
+        feedbackEl.hidden = false;
+        feedbackEl.innerHTML = `
+          <strong>${prefix}Examen no superado (${percentage}% — ${correctCount}/${total} aciertos).</strong>
+          Se requiere al menos un 80% para acreditar.
+          <ul style="margin:8px 0 0 18px; padding:0; font-size:0.84rem; line-height:1.45;">
+            ${missed.map(m => `<li><strong>Pregunta ${m.num}:</strong> ${this.escape(m.exp)}</li>`).join('')}
+          </ul>
+        `;
+        feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  },
+
+  updateDiplomaName(name) {
+    const clean = String(name ?? '').trim() || 'SDET Software Engineer in Test';
+    const display = document.getElementById('diploma-student-display');
+    if (display) {
+      display.textContent = clean;
     }
   },
 
   showDiploma(level, percentage) {
     const diplomaModal = document.getElementById('diploma-modal');
-    const certName = document.getElementById('diploma-student-name')?.value || 'SDET Software Engineer in Test';
+    const certName = (document.getElementById('diploma-student-name')?.value || '').trim() || 'SDET Software Engineer in Test';
     const dateStr = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' }).format(new Date());
-    const certId = `CERT-NORDVIK-${level.toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
+    this.lastPercentage = percentage;
+    this.currentCertId = `CERT-NORDVIK-${level.toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
+    const certId = this.currentCertId;
 
     const diplomaContainer = document.getElementById('diploma-render-area');
     if (diplomaContainer) {
@@ -384,7 +416,7 @@ const Certificacion = {
           <p style="font-size:0.95rem; color:#cbd5e1; margin:16px 0; font-style:italic;">
             Se certifica formalmente que el profesional
           </p>
-          <div style="font-size:1.4rem; font-weight:bold; color:#fff; border-bottom:1px solid rgba(255,255,255,0.2); display:inline-block; padding:0 30px 4px 30px; margin-bottom:16px;">
+          <div id="diploma-student-display" style="font-size:1.4rem; font-weight:bold; color:#fff; border-bottom:1px solid rgba(255,255,255,0.2); display:inline-block; padding:0 30px 4px 30px; margin-bottom:16px;">
             ${this.escape(certName)}
           </div>
           <p style="font-size:0.88rem; color:#cbd5e1; max-width:620px; margin:0 auto 24px auto; line-height:1.5;">
@@ -409,7 +441,7 @@ const Certificacion = {
       `;
     }
 
-    if (diplomaModal) diplomaModal.showModal();
+    if (diplomaModal && !diplomaModal.open) diplomaModal.showModal();
   },
 
   getLevelName(lvl) {
